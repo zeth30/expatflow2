@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WG Template Calibration — Berlin Butler</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; background: #f8f9fb; }
+    h1   { font-size: 18px; color: #0f172a; margin-bottom: 4px; }
+    p    { color: #64748b; font-size: 14px; margin: 0 0 20px; }
+    .card { background: white; border-radius: 14px; border: 1px solid #e8ecf4; padding: 24px; margin-bottom: 16px; }
+    label { display: block; font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    input { width: 100%; box-sizing: border-box; border: 2px solid #e8ecf4; border-radius: 9px; padding: 9px 12px; font-size: 14px; font-family: inherit; margin-bottom: 10px; }
+    button { display: flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 11px; background: linear-gradient(135deg,#1e3a8a,#2563eb); color: white; font-weight: 700; font-size: 14px; border: none; cursor: pointer; }
+    .warn { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #78350f; margin-bottom: 16px; }
+    #status { margin-top: 14px; font-size: 13px; color: #374151; }
+    .ok  { color: #15803d; font-weight: 700; }
+    .err { color: #dc2626; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>WG Template Calibration Tool</h1>
+  <p>Verifies that persons' names land exactly inside the table rows of the official Wohnungsgeberbestätigung template. Run this whenever the template changes.</p>
+
+  <div class="warn">
+    <strong>Instructions:</strong> Place <code>wg-template.pdf</code> in the same folder as this file and open via a local server (e.g. <code>npx serve .</code>). Enter test names below, generate the PDF, and check visually that names appear inside the table rows.
+  </div>
+
+  <div class="card">
+    <label>Test Persons (one per line: LastName, FirstName)</label>
+    <textarea id="persons" rows="4" style="width:100%;box-sizing:border-box;border:2px solid #e8ecf4;border-radius:9px;padding:9px 12px;font-size:14px;font-family:monospace;"
+      >MUELLER, Maria
+SCHMIDT, Klaus
+GARCIA, Ana</textarea>
+
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#374151;text-transform:none;letter-spacing:0;">
+        <input type="checkbox" id="showGrid" style="width:auto;margin:0;"> Show coordinate grid (dev mode)
+      </label>
+    </div>
+  </div>
+
+  <button onclick="generate()">Generate Calibration PDF</button>
+  <div id="status"></div>
+
+<script>
+// ── Exact coordinates (must match buildWGPDF in page.tsx) ─────────────────
+const WG_ROW_Y    = [300, 283, 265, 247, 230, 212, 195, 178]; // text baseline, from bottom
+const WG_COL_FNAM = 47;   // Familienname x
+const WG_COL_VNAM = 274;  // Vorname x
+const WG_FONT_SZ  = 8;
+const WG_PAGE_W   = 491;
+const WG_PAGE_H   = 772;
+
+async function generate() {
+  const status = document.getElementById('status');
+  status.innerHTML = 'Loading template...';
+
+  try {
+    const { PDFDocument, rgb, StandardFonts } = PDFLib;
+
+    // Load template
+    const resp = await fetch('wg-template.pdf');
+    if (!resp.ok) throw new Error(`Cannot load wg-template.pdf — HTTP ${resp.status}. Serve this folder via a local HTTP server.`);
+    const bytes = await resp.arrayBuffer();
+    const doc   = await PDFDocument.load(bytes);
+    const page  = doc.getPages()[0];
+    const HB    = await doc.embedFont(StandardFonts.HelveticaBold);
+    const HV    = await doc.embedFont(StandardFonts.Helvetica);
+
+    // ── Self-check: page dimensions ──────────────────────────────────────
+    const { width, height } = page.getSize();
+    if (Math.abs(width - WG_PAGE_W) > 2 || Math.abs(height - WG_PAGE_H) > 2) {
+      status.innerHTML = `<span class="err">FAIL: Page size ${width.toFixed(0)}×${height.toFixed(0)} ≠ expected ${WG_PAGE_W}×${WG_PAGE_H}. Coordinates will be wrong!</span>`;
+      return;
+    }
+    status.innerHTML = `<span class="ok">✓ Page dimensions OK: ${width.toFixed(0)}×${height.toFixed(0)} pt</span><br>Generating...`;
+
+    const BLUE = rgb(0.14, 0.35, 0.82);
+    const RED  = rgb(0.80, 0.05, 0.05);
+    const INK  = rgb(0.06, 0.08, 0.20);
+
+    // ── Optional grid ─────────────────────────────────────────────────────
+    if (document.getElementById('showGrid').checked) {
+      for (let y = 0; y <= WG_PAGE_H; y += 10) {
+        const thick = y % 50 === 0 ? 0.6 : 0.2;
+        const col   = y % 50 === 0 ? BLUE : rgb(0.87, 0.92, 1);
+        page.drawLine({ start:{x:0,y}, end:{x:WG_PAGE_W,y}, thickness:thick, color:col });
+        if (y % 50 === 0) page.drawText(String(y), {x:2, y:y+1, size:5, font:HB, color:BLUE});
+      }
+      for (let x = 0; x <= WG_PAGE_W; x += 50) {
+        page.drawLine({ start:{x,y:0}, end:{x,y:WG_PAGE_H}, thickness:0.3, color:rgb(0.87,0.92,1) });
+        page.drawText(String(x), {x:x+1, y:6, size:5, font:HB, color:BLUE});
+      }
+      // Mark row Y lines
+      WG_ROW_Y.forEach((y, i) => {
+        page.drawLine({ start:{x:WG_COL_FNAM,y}, end:{x:460,y}, thickness:0.4, color:RED });
+        page.drawText(`y=${y}`, {x:2, y:y+1, size:4, font:HV, color:RED});
+      });
+      // Mark column X lines
+      [WG_COL_FNAM, WG_COL_VNAM].forEach(x => {
+        page.drawLine({ start:{x,y:160}, end:{x,y:320}, thickness:0.5, color:RED });
+        page.drawText(`x=${x}`, {x:x+1, y:165, size:4, font:HV, color:RED});
+      });
+    }
+
+    // ── Draw test names ───────────────────────────────────────────────────
+    const lines = document.getElementById('persons').value
+      .split('\n').map(l => l.trim()).filter(Boolean);
+
+    let placed = 0;
+    lines.forEach((line, i) => {
+      if (i >= WG_ROW_Y.length) return;
+      const parts = line.split(',').map(s => s.trim());
+      const lastName  = (parts[0] || '').toUpperCase();
+      const firstName = parts[1] || '';
+      const y = WG_ROW_Y[i];
+      if (lastName)  page.drawText(lastName,  {x:WG_COL_FNAM, y, size:WG_FONT_SZ, font:HB, color:INK});
+      if (firstName) page.drawText(firstName, {x:WG_COL_VNAM, y, size:WG_FONT_SZ, font:HV, color:INK});
+      placed++;
+    });
+
+    // ── Download ──────────────────────────────────────────────────────────
+    const pdfBytes = await doc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'wg_calibration_result.pdf'; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 8000);
+
+    status.innerHTML = `
+      <span class="ok">✓ Generated! ${placed} name(s) placed.</span><br>
+      <span style="font-size:12px;color:#64748b;">
+        Open <code>wg_calibration_result.pdf</code> and verify each name sits cleanly inside its table row.
+        If it looks off, adjust <code>WG_ROW_Y</code> and <code>WG_COL_FNAM/VNAM</code> in both this file and <code>page.tsx</code>.
+      </span>
+    `;
+  } catch (e) {
+    status.innerHTML = `<span class="err">Error: ${e.message}</span>`;
+    console.error(e);
+  }
+}
+</script>
+</body>
+</html>
