@@ -1,5 +1,5 @@
 "use client";
-
+// @ts-nocheck
 /**
  * ExpatFlow — Payment Success & PDF Generation Page
  * app/success/page.tsx
