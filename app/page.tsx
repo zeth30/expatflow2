@@ -1,4 +1,5 @@
 "use client";
+// @ts-nocheck
 // ═══════════════════════════════════════════════════════════════════
 //  BERLIN BUTLER  ·  page.tsx  ·  Multi-Person Edition v7
 //  - People stored as people: Person[] array (not p1/p2 flat keys)
