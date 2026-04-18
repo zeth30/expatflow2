@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 // @ts-nocheck
 /**
  * ExpatFlow — Payment Success & PDF Generation Page
