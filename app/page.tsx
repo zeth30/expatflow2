@@ -388,7 +388,7 @@ async function loadPdfLib(): Promise<any> {
 }
 
 function savePDF(bytes: Uint8Array, name: string) {
-  const url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+  const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: "application/pdf" }));
   const a = document.createElement("a");
   a.href = url; a.download = name; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 6000);
