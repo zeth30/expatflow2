@@ -1185,14 +1185,18 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   if (isDivorced) {
     items.push({
-      text: "Divorce decree — original + one certified copy",
-      tag: "required",
-      warn: "Foreign divorce judgements may require official recognition by the Berlin Standesamt. Check in advance.",
+      text: "Divorce decree — NOT required for Anmeldung",
+      tag: "recommended",
+      note: "Marital status is self-declared on the form. The Bürgeramt does not verify it. You may optionally bring it if asked, but it is not required.",
     });
   }
 
   if (isWidowed) {
-    items.push({ text: "Death certificate of your spouse — original", tag: "required" });
+    items.push({
+      text: "Death certificate — NOT required for Anmeldung",
+      tag: "recommended",
+      note: "Marital status is self-declared. The Bürgeramt does not require proof of widowhood for registration.",
+    });
   }
 
   if (hasForeignBirth) {
@@ -1434,6 +1438,8 @@ function getError(step: WizardStep, f: FormData): string {
 // ═══════════════════════════════════════════════════════════════════
 export default function BerlinButler() {
   const [phase, setPhase] = useState<AppPhase>("landing");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const [form, setForm] = useState<FormData>(EMPTY);
   const [step, setStep] = useState<WizardStep>("origin");
   const [paid, setPaid] = useState(false);
@@ -1628,7 +1634,7 @@ export default function BerlinButler() {
         input::placeholder{color:#cbd5e1}
         ::-webkit-scrollbar{width:4px}
         ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:2px}
-        @keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}@keyframes urgency-slide{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}@keyframes ring-fill{from{stroke-dashoffset:var(--from)}to{stroke-dashoffset:var(--to)}}@keyframes conf-fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}.conf-ring circle.track{fill:none;stroke:#e8ecf4;stroke-width:5}.conf-ring circle.fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 0.8s cubic-bezier(0.34,1.56,0.64,1),stroke 0.6s ease}.conf-mob{display:none!important}@media(max-width:768px){.conf-mob{display:flex!important}}
+        @keyframes spin{to{transform:rotate(360deg)}}@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}@keyframes urgency-slide{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}@keyframes ring-fill{from{stroke-dashoffset:var(--from)}to{stroke-dashoffset:var(--to)}}@keyframes conf-fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}.conf-ring circle.track{fill:none;stroke:#e8ecf4;stroke-width:5}.conf-ring circle.fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 0.8s cubic-bezier(0.34,1.56,0.64,1),stroke 0.6s ease}.conf-mob{display:none!important}@media(max-width:768px){.conf-mob{display:flex!important}}
         button{cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
         button:active:not(:disabled){transform:scale(0.97)}
         button:disabled{opacity:0.5;cursor:not-allowed}
@@ -1655,7 +1661,7 @@ export default function BerlinButler() {
           .hero-pad{padding:36px 20px 32px!important}
           .section-pad{padding:28px 20px 36px!important}
           .wizard-aside{display:none!important}
-          .wizard-main-pad{padding:16px 16px 90px!important}
+          .wizard-main-pad{padding:16px 16px 120px!important}
           .wizard-max{max-width:100%!important}
           .landing-grid{grid-template-columns:1fr!important;gap:24px!important}
           .nav-pad{padding:0 16px!important}
@@ -1671,6 +1677,7 @@ export default function BerlinButler() {
         }
         /* Mobile bottom nav for wizard */
         .mobile-bottom-nav{display:none}
+        input:focus,select:focus{scroll-margin-bottom:140px}
         @media(max-width:768px){
           .mobile-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e8ecf4;padding:12px 16px;gap:10px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
         }
@@ -1683,7 +1690,20 @@ export default function BerlinButler() {
         </div>
       )}
 
-      {phase === "landing"  && <LandingPage onStart={() => { setPhase("wizard"); pushNav("wizard", "origin"); }} onDownloadWG={downloadWG} />}
+      {!mounted ? (
+        <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>E</span>
+            </div>
+            <div style={{ width: 80, height: 4, borderRadius: 99, background: "#e8ecf4", margin: "0 auto", overflow: "hidden", position: "relative" }}>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#0075FF,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
+            </div>
+          </div>
+        </div>
+      ) : phase === "landing" ? (
+        <LandingPage onStart={() => { setPhase("wizard"); pushNav("wizard", "origin"); }} onDownloadWG={downloadWG} />
+      ) : null}
       <CookieBanner />
 
       {isWizard             && <WizardLayout form={form} step={step} setStep={setStep} upd={upd} set_={set_} updPerson={updPerson} addPerson={addPerson} removePerson={removePerson} err={err} setErr={setErr} anxiety={anxiety} sheets={sheets} pushNav={pushNav} onGoHome={() => { setPhase("landing"); pushNav("landing"); }} onComplete={() => { setPhase("payment"); pushNav("payment"); }} />}
@@ -1846,7 +1866,7 @@ function BureaucracyBattleIllustration() {
 
       {/* ── Caption below ── */}
       <text x="210" y="358" textAnchor="middle" fontSize="11" fill="#64748b" fontWeight="600" fontFamily="Arial, sans-serif">
-        You vs. German Bureaucracy
+        German Paperwork
       </text>
 
     </svg>
@@ -2068,19 +2088,22 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
 }
 
 function LandingLegalFooter() {
-  const [modal, setModal] = useState<"tos" | "cancel" | "privacy" | null>(null);
+  const [modal, setModal] = useState<"tos" | "cancel" | "privacy" | "impressum" | null>(null);
   const linkStyle: React.CSSProperties = { background: "none", border: "none", color: "#475569", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 };
   return (
     <>
-      {modal === "tos"     && <TermsOfService     onClose={() => setModal(null)} />}
-      {modal === "cancel"  && <CancellationPolicy onClose={() => setModal(null)} />}
-      {modal === "privacy" && <PrivacyPolicy      onClose={() => setModal(null)} />}
+      {modal === "tos"       && <TermsOfService     onClose={() => setModal(null)} />}
+      {modal === "cancel"    && <CancellationPolicy onClose={() => setModal(null)} />}
+      {modal === "privacy"   && <PrivacyPolicy      onClose={() => setModal(null)} />}
+      {modal === "impressum" && <Impressum          onClose={() => setModal(null)} />}
       <div style={{ marginTop: 28, display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
         <button style={linkStyle} onClick={() => setModal("tos")}>Terms of Service</button>
         <span style={{ color: "#334155", fontSize: 12 }}>·</span>
         <button style={linkStyle} onClick={() => setModal("cancel")}>Cancellation Policy</button>
         <span style={{ color: "#334155", fontSize: 12 }}>·</span>
         <button style={linkStyle} onClick={() => setModal("privacy")}>Privacy Policy</button>
+        <span style={{ color: "#334155", fontSize: 12 }}>·</span>
+        <button style={linkStyle} onClick={() => setModal("impressum")}>Impressum</button>
       </div>
       <p style={{ color: "#334155", fontSize: 11.5, marginTop: 14 }}>© 2026 ExpatFlow GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
@@ -2353,8 +2376,8 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           {/* Auto-save + header */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e" }} />
-              <span style={{ fontSize: 10.5, color: "#94a3b8" }}>Auto-saved</span>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 0 2px rgba(34,197,94,0.2)" }} />
+              <span style={{ fontSize: 10.5, color: "#64748b" }}>Progress saved on your device</span>
             </div>
             <div style={{ display: "flex", gap: 4 }}>
               {steps.map((s, i) => (
@@ -3290,19 +3313,39 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
               </div>
             )}
             <button
-              onClick={async () => {
+              onClick={async (e) => {
                 if (form.isBerlin !== true) return;
+                const btn = e.currentTarget as HTMLButtonElement;
+                btn.disabled = true;
+                btn.textContent = "Opening Stripe...";
                 try {
                   const res = await fetch("/api/checkout", { method: "POST" });
                   const data = await res.json();
-                  if (data.url) window.location.href = data.url;
-                  else alert("Could not start checkout. Please try again.");
-                } catch { alert("Network error. Please try again."); }
+                  if (data.url) {
+                    window.location.href = data.url;
+                  } else {
+                    btn.disabled = false;
+                    btn.innerHTML = "Pay €15 — Secure Stripe Checkout";
+                    alert("Could not start checkout. Please try again.");
+                  }
+                } catch {
+                  btn.disabled = false;
+                  btn.innerHTML = "Pay €15 — Secure Stripe Checkout";
+                  alert("Network error. Please try again.");
+                }
               }}
+              id="stripe-pay-btn"
               disabled={form.isBerlin !== true}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "16px", borderRadius: 14, background: form.isBerlin === true ? "linear-gradient(135deg,#0f172a,#1e3a8a)" : "#e2e8f0", color: form.isBerlin === true ? "white" : "#94a3b8", fontWeight: 800, fontSize: 15, border: "none", boxShadow: form.isBerlin === true ? "0 8px 28px rgba(15,23,42,0.35)" : "none", cursor: form.isBerlin === true ? "pointer" : "not-allowed", fontFamily: "inherit" }}>
               <CreditCard size={16} /> Pay €15 — Secure Stripe Checkout
             </button>
+            {/* Re-enable button when user returns from Stripe via back button */}
+            <script dangerouslySetInnerHTML={{ __html: `
+              window.addEventListener('pageshow', function(e) {
+                var btn = document.getElementById('stripe-pay-btn');
+                if (btn) { btn.disabled = false; btn.innerHTML = '<span>Pay €15 — Secure Stripe Checkout</span>'; }
+              });
+            `}} />
             <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "4px 0" }}>
               <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} />
               <span style={{ color: "#94a3b8", fontSize: 11, padding: "0 12px" }}>Development mode</span>
@@ -3529,24 +3572,9 @@ function DonePage({ form, sheets, generatedPDFs }: {
     });
   }
 
-  if (isDivorced) {
-    cards.push({
-      title: "Divorce Certificate / Decree",
-      color: "#dc2626", bg: "#fef2f2", border: "#fecaca",
-      items: [{
-        text: "Scheidungsurteil — original + one certified copy",
-        warn: "Foreign divorce judgements may need official recognition by a German Standesamt. Check in advance.",
-      }],
-    });
-  }
+  // Divorce decree NOT required for Anmeldung — marital status is self-declared
 
-  if (isWidowed) {
-    cards.push({
-      title: "Death Certificate of Spouse",
-      color: "#374151", bg: "#f8fafc", border: "#e2e8f0",
-      items: [{ text: "Sterbeurkunde — death certificate of the deceased spouse", detail: "Original required." }],
-    });
-  }
+  // Death certificate NOT required for Anmeldung — marital status is self-declared
 
   if (hasForeignBirth) {
     const foreignPeople = form.people.filter(p =>
@@ -3770,15 +3798,15 @@ function DonePage({ form, sheets, generatedPDFs }: {
 
         {/* ── Personalised checklist ── */}
         {/* ── Foreign document heads-up ── */}
-        {(hasForeignBirth || hasForeignMarriage || !form.isEU) && (
+        {(hasForeignBirth || hasForeignMarriage) && (
           <div style={{ borderRadius: 16, overflow: "hidden", marginBottom: 20, border: "1px solid #bae6fd", boxShadow: "0 4px 16px rgba(14,116,144,0.08)" }}>
             <div style={{ background: "linear-gradient(135deg,#0c4a6e,#0e7490)", padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
               <AlertCircle size={18} color="#7dd3fc" style={{ flexShrink: 0 }} />
-              <div style={{ fontWeight: 800, color: "white", fontSize: 13.5 }}>Heads up — moving from outside Germany?</div>
+              <div style={{ fontWeight: 800, color: "white", fontSize: 13.5 }}>Heads up — foreign documents detected</div>
             </div>
             <div style={{ background: "#f0f9ff", padding: "14px 18px" }}>
               <p style={{ color: "#0c4a6e", fontSize: 13, lineHeight: 1.7 }}>
-                The Berlin authorities require your official documents — such as birth or marriage certificates — to be <strong>translated into German by a certified translator</strong> (<em>beglaubigte Übersetzung</em>). Some documents may also require an <strong>Apostille</strong>. Do not show up without these — missing translations are the most common reason registrations cannot be completed at the appointment.
+                Some of your documents (birth or marriage certificates) are from outside Germany. The Berlin authorities require these to be <strong>translated into German by a certified translator</strong> (<em>beglaubigte Übersetzung</em>). Some may also require an <strong>Apostille</strong>. Missing translations are the most common reason registrations cannot be completed.
               </p>
               <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap" }}>
                 <span style={{ fontSize: 11.5, fontWeight: 700, color: "#0e7490", background: "white", border: "1px solid #bae6fd", padding: "3px 10px", borderRadius: 999 }}>Certified translation required</span>
@@ -3893,6 +3921,39 @@ const LHighlight = ({ children }: { children: React.ReactNode }) => (
 //  Legal basis: §312i BGB (e-commerce), TDG/TTDSG, EU DSA Art.13
 //  Key framing: Ausfüllhilfe (filing aid) NOT legal advice (§2 RDG)
 // ═══════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════
+//  IMPRESSUM (§5 TMG — required for German commercial websites)
+// ═══════════════════════════════════════════════════════════════════
+export function Impressum({ onClose }: { onClose: () => void }) {
+  return (
+    <LegalModal title="Impressum" onClose={onClose}>
+      <LH2>Angaben gemäß §5 TMG</LH2>
+      <LP>
+        Karl Fasselt<br/>
+        Fürbringerstraße 25<br/>
+        10961 Berlin<br/>
+        Germany
+      </LP>
+
+      <LH2>Kontakt</LH2>
+      <LP>E-Mail: legal@expatflow.de</LP>
+
+      <LH2>Verantwortlich für den Inhalt nach §18 Abs. 2 MStV</LH2>
+      <LP>
+        Karl Fasselt<br/>
+        Fürbringerstraße 25<br/>
+        10961 Berlin
+      </LP>
+
+      <LH2>Haftungsausschluss</LH2>
+      <LP>ExpatFlow ist ein technisches Hilfsmittel (Ausfüllhilfe) gemäß §2 RDG und stellt keine Rechtsberatung dar. Die generierten Dokumente ersetzen keine rechtliche Beratung. Die Richtigkeit der eingegebenen Daten liegt in der alleinigen Verantwortung des Nutzers.</LP>
+
+      <LH2>Streitschlichtung</LH2>
+      <LP>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <strong>ec.europa.eu/consumers/odr</strong>. Wir sind nicht bereit und nicht verpflichtet, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</LP>
+    </LegalModal>
+  );
+}
+
 export function TermsOfService({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Terms of Service — ExpatFlow" onClose={onClose}>
@@ -3920,7 +3981,7 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
       <LP>You warrant that all information you enter is truthful, accurate, and matches your official identity documents. Deliberately providing false information on an Anmeldung constitutes an administrative offence (Ordnungswidrigkeit) under German law. ExpatFlow bears no liability for errors arising from incorrect user inputs.</LP>
 
       <LH2>5. Payment and Delivery</LH2>
-      <LP>The service fee is <strong>€15 (one-time, no subscription)</strong>. Payment is processed by Stripe. Upon successful payment, PDF documents are generated instantly in your browser. Delivery is considered complete at the moment the PDF generation process finishes. No physical documents are sent.</LP>
+      <LP>The service fee is <strong>€15 (one-time, no subscription)</strong>. Payment is processed by Stripe via a secure hosted checkout page. ExpatFlow never handles your card details. Upon successful payment confirmation, you are redirected to a success page where PDF documents are generated instantly in your browser. Delivery is considered complete at the moment the PDF generation process finishes in your browser. No physical documents are sent.</LP>
 
       <LH2>6. Limitation of Liability</LH2>
       <LP>To the maximum extent permitted by applicable law, ExpatFlow's total liability to you for any claim arising from or relating to these Terms or the service shall not exceed the amount you paid for the service (€15). We are not liable for indirect, incidental, or consequential damages, including any administrative fees, fines, or costs arising from a rejected Anmeldung.</LP>
@@ -3993,7 +4054,7 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
       <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: April 2026</p>
 
       <LHighlight>
-        <strong>Technical reality, precisely stated:</strong> All personal data you enter is held exclusively in your own browser's localStorage — a storage area on your device that ExpatFlow has no access to. Nothing is transmitted to ExpatFlow servers during the registration process or PDF generation. The only server-side data flows are: (1) Stripe for payment processing, and (2) Resend for PDF email delivery — the latter only if you explicitly consent.
+        <strong>Technical reality, precisely stated:</strong> All personal data you enter is held exclusively in your own browser's localStorage — a storage area on your device that ExpatFlow has no access to. Nothing is transmitted to ExpatFlow servers during the registration process or PDF generation. The only server-side data flows are: (1) Stripe for secure payment processing via hosted checkout, (2) our server verifies your Stripe payment session ID after checkout, and (3) Resend sends an optional appointment reminder email — only if you provide your email address. No personal form data ever leaves your browser.
       </LHighlight>
 
       <LH2>1. Controller</LH2>
@@ -4010,7 +4071,7 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
       <LH2>3. Data Flows — Complete Technical Inventory</LH2>
       <LP><strong>a) Registration form data</strong> (names, dates of birth, addresses, passport numbers, citizenship, religious affiliation, marital status): Stored in browser localStorage under the key 'expatflow-v1' on your own device only. Never transmitted to ExpatFlow servers. Automatically deleted upon successful document generation. If you leave mid-way, it remains in your browser until you return and complete the flow, or until you manually clear your browser's site data.</LP>
       <LP><strong>b) PDF generation</strong>: Occurs entirely client-side using the pdf-lib library loaded from cdnjs.cloudflare.com. The generated PDF bytes exist in browser memory only and are never sent to ExpatFlow servers.</LP>
-      <LP><strong>c) Payment data</strong>: Handled exclusively by Stripe, Inc. (a certified PCI-DSS Level 1 provider). ExpatFlow receives only a payment confirmation — never card details. Stripe's Privacy Policy applies: stripe.com/privacy.</LP>
+      <LP><strong>c) Payment data</strong>: Handled exclusively by Stripe, Inc. (a certified PCI-DSS Level 1 provider) via a Stripe-hosted checkout page. ExpatFlow never sees your card details. After payment, your browser sends your Stripe session ID to our server solely to verify payment status (paid/not paid). No personal form data is included in this verification. Stripe's Privacy Policy applies: stripe.com/privacy.</LP>
       <LP><strong>d) Email reminder (optional)</strong>: If you enter your email address at checkout, only your first name and email are transmitted to our API route and forwarded to Resend, Inc. to send a brief appointment reminder. No PDF documents, no passport data, no sensitive or special-category data is transmitted. Resend is our Data Processor. Data is not retained by ExpatFlow after transmission. Resend's Privacy Policy: resend.com/privacy.</LP>
       <LP><strong>e) Cookie consent flag</strong>: A flag ('expatflow-cookie-ack-v1') is stored in your browser's localStorage when you acknowledge the cookie notice. This contains no personal data.</LP>
 
