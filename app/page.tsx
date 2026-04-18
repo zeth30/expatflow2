@@ -1,5 +1,4 @@
 "use client";
-// @ts-nocheck
 // ═══════════════════════════════════════════════════════════════════
 //  BERLIN BUTLER  ·  page.tsx  ·  Multi-Person Edition v7
 //  - People stored as people: Person[] array (not p1/p2 flat keys)
@@ -389,7 +388,7 @@ async function loadPdfLib(): Promise<any> {
 }
 
 function savePDF(bytes: Uint8Array, name: string) {
-  const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: "application/pdf" }));
+  const url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
   const a = document.createElement("a");
   a.href = url; a.download = name; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 6000);
@@ -1646,7 +1645,7 @@ export default function BerlinButler() {
         .wizard-aside{width:268px;flex-shrink:0}
         .wizard-main-pad{padding:36px 40px 80px}
         .wizard-max{max-width:620px}
-        .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+        .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:block}
         .nav-pad{padding:0 40px}
         @media(max-width:768px){
           .mob-hide{display:none!important}
@@ -1659,8 +1658,6 @@ export default function BerlinButler() {
           .wizard-main-pad{padding:16px 16px 90px!important}
           .wizard-max{max-width:100%!important}
           .landing-grid{grid-template-columns:1fr!important;gap:24px!important}
-          .hero-grid{grid-template-columns:1fr!important;gap:0!important}
-          .hero-illustration{display:none!important}
           .nav-pad{padding:0 16px!important}
           .mob-stack{flex-direction:column!important}
           .mob-full{width:100%!important}
@@ -1947,10 +1944,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
         </div>
       </div>
 
-      {/* ── Hero illustration: Expat vs Bureaucracy Monster ── */}
-      <div className="hero-illustration" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }}>
-        <BureaucracyBattleIllustration />
-      </div>
+
 
       {/* ── Battle Illustration Section ── */}
       <div style={{ background: "#0f172a", borderTop: "1px solid #1e293b", padding: "24px 20px 16px", textAlign: "center" }}>
