@@ -1,50 +1,139 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://expatflow.de";
+
 export const metadata: Metadata = {
-  title: "ExpatFlow Berlin — Anmeldung in 3 Minutes",
+  title: "Anmeldung Berlin in English | ExpatFlow — Official PDF, No Data Stored",
   description:
-    "Register in Berlin in 3 minutes. We fill your official Anmeldung form — all 54 fields, perfectly in German. For every nationality. €15 one-time.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_DOMAIN ?? "http://localhost:3000"
-  ),
+    "Generate your official Berlin Anmeldung PDF in English — all 54 fields filled in perfect German. No data stored on any server. Expert relocation help for expats. Every nationality. Takes 3 minutes.",
+  keywords: [
+    "Anmeldung Berlin English",
+    "Anmeldung Berlin PDF",
+    "Anmeldung Berlin English PDF",
+    "Bürgeramt Berlin form help",
+    "Bürgeramt form no data storage",
+    "Berlin registration form English",
+    "Berlin Anmeldung form fill in English",
+    "expat Berlin registration",
+    "expat relocation Berlin paperwork",
+    "expert relocation Berlin paperwork",
+    "Berlin address registration help",
+    "Anmeldung ausfüllen English",
+    "Berlin Bürgeramt appointment form",
+    "register Berlin address expat",
+    "Meldeformular Berlin English",
+  ].join(", "),
+  metadataBase: new URL(DOMAIN),
+  alternates: { canonical: DOMAIN },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+    },
+  },
   openGraph: {
-    title: "ExpatFlow Berlin — Anmeldung in 3 Minutes",
+    title: "Anmeldung Berlin in English — Official PDF, No Data Stored | ExpatFlow",
     description:
-      "Fill your Berlin Anmeldung form in plain English. 54 fields, perfect German, every nationality. €15.",
-    url: process.env.NEXT_PUBLIC_DOMAIN ?? "http://localhost:3000",
+      "Fill your Berlin Anmeldung form in English in 3 minutes. All 54 fields in perfect German. Your data never leaves your browser. Expert relocation paperwork for expats.",
+    url: DOMAIN,
     siteName: "ExpatFlow Berlin",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "ExpatFlow Berlin — Anmeldung Preparation",
-      },
-    ],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ExpatFlow Berlin — Anmeldung PDF in English" }],
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ExpatFlow Berlin — Anmeldung in 3 Minutes",
-    description: "Fill your Berlin registration form in English. €15.",
+    title: "Anmeldung Berlin in English | ExpatFlow",
+    description: "Official Berlin registration PDF, filled in English. No data stored. Expert expat relocation help.",
     images: ["/og-image.png"],
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
     apple: "/apple-touch-icon.png",
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "ExpatFlow Berlin",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Generate your official Berlin Anmeldung PDF in English. All 54 fields filled in perfect German. No data stored. Expert relocation paperwork for expats.",
+        "offers": {
+          "@type": "Offer",
+          "price": "15",
+          "priceCurrency": "EUR",
+          "priceValidUntil": "2027-12-31",
+          "availability": "https://schema.org/InStock",
+        },
+        "url": DOMAIN,
+        "inLanguage": "en",
+        "featureList": [
+          "Official Anmeldung PDF generation",
+          "All 54 form fields filled in German",
+          "Personalised document checklist",
+          "Zero data storage — client-side only",
+          "Every nationality supported",
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I fill in the Anmeldung form in English?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ExpatFlow lets you fill in your Berlin Anmeldung form in English. You answer questions in plain English and we generate the official German PDF automatically — all 54 fields correctly filled.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "Is my data stored when I use ExpatFlow?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. All form data is stored exclusively in your browser's localStorage. It never reaches our servers. Once your PDF is generated, the data is deleted from your device.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "What documents do I need for the Berlin Bürgeramt Anmeldung?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You need a valid passport or national ID (EU citizens), your rental contract or landlord confirmation (Wohnungsgeberbestätigung), and your completed Anmeldung form. ExpatFlow generates a personalised checklist based on your exact situation.",
+            },
+          },
+          {
+            "@type": "Question",
+            "name": "How long does the Berlin Anmeldung take with ExpatFlow?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Filling in the form takes about 3 minutes. ExpatFlow generates your official PDF and personalised checklist instantly.",
+            },
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body style={{ margin: 0, padding: 0 }}>{children}</body>
     </html>
   );
