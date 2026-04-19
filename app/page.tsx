@@ -2071,9 +2071,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
               style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 32px", borderRadius: 14, background: "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", fontWeight: 800, fontSize: 16, border: "none", boxShadow: hov ? "0 20px 50px rgba(0,117,255,0.5)" : "0 8px 28px rgba(0,117,255,0.35)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.2s", letterSpacing: "-0.01em" }}>
               Prepare My Anmeldung — 3 Minutes <ArrowRight size={17} />
             </button>
-            <span style={{ color: "#64748b", fontSize: 13.5, display: "flex", alignItems: "center", gap: 6 }}>
-              <strong style={{ color: "#0f172a" }}>€15</strong> · One-time · No subscription
-            </span>
+
           </div>
         </div>
 
@@ -2176,18 +2174,15 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
                 </div>
               </div>
 
-              {/* Appointment */}
-              <div style={{ background: "white", border: "1px solid #e8ecf4", borderRadius: 18, padding: 22 }}>
-                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5, marginBottom: 10, display: "flex", alignItems: "center", gap: 7 }}>
-                  <Zap size={13} color="#2563eb" /> Appointment Hacks
+              {/* Appointment — teaser only, full hacks in guide */}
+              <div style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)", border: "1.5px solid #bfdbfe", borderRadius: 18, padding: 22 }}>
+                <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13.5, marginBottom: 8, display: "flex", alignItems: "center", gap: 7 }}>
+                  <Zap size={13} color="#2563eb" /> Appointment Hacks — In Your Guide
                 </div>
-                {[["Tuesdays 7:55–8:00 AM","New slots on service.berlin.de — refresh immediately."],["Call 115 at 7:00 AM","Cancellation slots — best success in the morning."],["Walk-in","Buergeramt Tempelhof, Mitte — 30 min before opening."]].map(([t,d]) => (
-                  <div key={t} style={{ display: "flex", gap: 9, marginBottom: 8 }}>
-                    <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#2563eb", flexShrink: 0, marginTop: 7 }} />
-                    <p style={{ fontSize: 12.5, color: "#475569", lineHeight: 1.5 }}><strong style={{ color: "#0f172a" }}>{t}</strong> — {d}</p>
-                  </div>
-                ))}
-                <a href="https://service.berlin.de/dienstleistung/120686/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, color: "#2563eb", fontSize: 12.5, fontWeight: 700, textDecoration: "none" }}>
+                <p style={{ fontSize: 13, color: "#1d4ed8", lineHeight: 1.65, marginBottom: 14 }}>
+                  Getting a Bürgeramt slot is the hardest part. Your <strong>Guide PDF includes exclusive appointment hacks</strong> — the exact times, phone tricks, and walk-in locations that actually work.
+                </p>
+                <a href="https://service.berlin.de/dienstleistung/120686/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "#2563eb", fontSize: 12.5, fontWeight: 700, textDecoration: "none" }}>
                   <ExternalLink size={11} /> Book official appointment
                 </a>
               </div>
@@ -2234,6 +2229,12 @@ function LandingLegalFooter() {
         <span style={{ color: "#334155", fontSize: 12 }}>·</span>
         <button style={linkStyle} onClick={() => setModal("impressum")}>Impressum</button>
       </div>
+      {/* SEO long-tail paragraph — visible but subtle, naturally written */}
+      <p style={{ color: "#94a3b8", fontSize: 11, marginTop: 20, marginBottom: 10, lineHeight: 1.7, maxWidth: 680, textAlign: "center" }}>
+        ExpatFlow helps expats complete the Berlin Anmeldung form in English and generate an official PDF ready for the Bürgeramt — with zero data stored on any server.
+        Whether you need Anmeldung Berlin English PDF support, expert relocation Berlin paperwork assistance, or simply want to fill your Bürgeramt form without storing your data anywhere,
+        ExpatFlow prepares everything in 3 minutes. Available for every nationality moving to Berlin.
+      </p>
       <p style={{ color: "#334155", fontSize: 11.5, marginTop: 14 }}>© 2026 ExpatFlow GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
   );
@@ -2447,8 +2448,17 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           {steps.map((s, i) => {
             const isCur = s === step, isDone = i < idx;
             return (
-              <button key={s} onClick={() => { setErr(""); setStep(s); pushNav("wizard", s); }}
-                style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 9px", borderRadius: 9, border: "none", background: isCur ? "#eff6ff" : "transparent", marginBottom: 1, transition: "background 0.15s", textAlign: "left" }}>
+              <button key={s}
+                onClick={() => {
+                  // Only allow navigating to current step or already-completed steps
+                  if (!isDone && !isCur) return;
+                  // Validate current step before going back — in case user wants to edit
+                  setErr("");
+                  setStep(s);
+                  pushNav("wizard", s);
+                }}
+                disabled={!isDone && !isCur}
+                style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 9px", borderRadius: 9, border: "none", background: isCur ? "#eff6ff" : "transparent", marginBottom: 1, transition: "background 0.15s", textAlign: "left", cursor: (isDone || isCur) ? "pointer" : "default", opacity: (!isDone && !isCur) ? 0.4 : 1 }}>
                 <div style={{ width: 20, height: 20, borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: isCur ? "#2563eb" : isDone ? "#dcfce7" : "#f1f5f9" }}>
                   {isDone ? <Check size={10} color="#16a34a" /> : <span style={{ fontSize: 9, fontWeight: 800, color: isCur ? "white" : "#94a3b8" }}>{i + 1}</span>}
                 </div>
@@ -3857,6 +3867,27 @@ function DonePage({ form, sheets, generatedPDFs }: {
               Tip: scroll to the bottom of the booking page and select any of the 44 Bürgeramt locations — not just the nearest.
             </p>
           )}
+
+          {/* Appointment Hacks — exclusive, shown only after purchase */}
+          <div style={{ marginTop: 24, maxWidth: 500, margin: "24px auto 0", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 16, padding: "18px 22px", textAlign: "left" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 14 }}>
+              <Zap size={14} color="#fbbf24" />
+              <span style={{ fontWeight: 800, color: "white", fontSize: 13.5 }}>Appointment Hacks</span>
+              <span style={{ fontSize: 10, fontWeight: 700, color: "#fbbf24", background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 999, padding: "2px 8px", letterSpacing: "0.05em" }}>EXCLUSIVE</span>
+            </div>
+            {[
+              ["Tuesdays 7:55–8:00 AM", "New slots appear on service.berlin.de at 8:00 AM sharp. Start refreshing at 7:55. Slots vanish in under 60 seconds."],
+              ["Call 115 at 7:00 AM", "Ask for cancellation slots. Morning calls have the highest success rate."],
+              ["Walk-in", "Bürgeramt Tempelhof (Tempelhofer Damm 165) or Mitte (Karl-Marx-Allee 31). Arrive 30 min before opening."],
+            ].map(([t, d]) => (
+              <div key={t} style={{ display: "flex", gap: 10, marginBottom: 12, alignItems: "flex-start" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fbbf24", flexShrink: 0, marginTop: 6 }} />
+                <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.85)", lineHeight: 1.55 }}>
+                  <strong style={{ color: "white" }}>{t}</strong> — {d}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -3865,7 +3896,7 @@ function DonePage({ form, sheets, generatedPDFs }: {
 
         {/* ══ PRODUCT CARDS — the hero of this page ══ */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#166534", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12, textAlign: "center" }}>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.01em", marginBottom: 16, textAlign: "center" }}>
             What you just got
           </div>
 
@@ -4069,6 +4100,45 @@ function DonePage({ form, sheets, generatedPDFs }: {
             All PDFs generated <strong style={{ color: "#111111" }}>locally in your browser</strong>. Your passport details, religious affiliation, and personal data are never stored on any server — guaranteed.
           </p>
         </div>
+
+        {/* ── Referral block ── */}
+        <div style={{ margin: "28px 0 8px", borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "24px 26px 20px", textAlign: "center" }}>
+            <div style={{ fontSize: 28, marginBottom: 10 }}>🗡️</div>
+            <h3 style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.25 }}>
+              Saved your life?<br/>Send this to another expat and save theirs too.
+            </h3>
+            <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 13, lineHeight: 1.6, maxWidth: 380, margin: "0 auto 18px" }}>
+              Every expat in Berlin needs this. Most of them are googling right now. One link from you saves them hours of confusion.
+            </p>
+            <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+              <a
+                href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20form%20in%20English%20in%203%20minutes%20%E2%80%94%20no%20data%20stored%2C%20perfectly%20in%20German.%20You%20need%20this%3A%20https%3A%2F%2Fexpatflow.de"
+                target="_blank" rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 11, background: "#25D366", color: "white", fontWeight: 800, fontSize: 13.5, textDecoration: "none" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.09.541 4.05 1.487 5.757L.057 23.882l6.291-1.649A11.935 11.935 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.954a9.942 9.942 0 01-5.071-1.388l-.364-.215-3.735.979.996-3.638-.237-.374A9.935 9.935 0 012.046 12C2.046 6.479 6.479 2.046 12 2.046c5.52 0 9.954 4.433 9.954 9.954 0 5.52-4.434 9.954-9.954 9.954z"/></svg>
+                Share on WhatsApp
+              </a>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText("https://expatflow.de").then(() => {
+                    const btn = document.getElementById("copy-link-btn");
+                    if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); }
+                  });
+                }}
+                id="copy-link-btn"
+                style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 11, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.25)", color: "white", fontWeight: 800, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit" }}>
+                Copy link
+              </button>
+            </div>
+          </div>
+          <div style={{ background: "#f8fafc", padding: "14px 22px", textAlign: "center" }}>
+            <p style={{ color: "#64748b", fontSize: 12, lineHeight: 1.6 }}>
+              No referral scheme. No commission. Just one expat helping another.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
