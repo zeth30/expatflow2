@@ -1457,6 +1457,7 @@ export default function BerlinButler() {
   const [form, setForm] = useState<FormData>(EMPTY);
   const [step, setStep] = useState<WizardStep>("origin");
   const [paid, setPaid] = useState(false);
+  const stripeReturnRef = React.useRef(false); // flag: came back from Stripe
   const [genStatus, setGenStatus] = useState("");
   const [allDone, setAllDone] = useState(false);
   const [generatedPDFs, setGeneratedPDFs] = useState<{ anmeldung: { bytes: Uint8Array; name: string }[]; guide: Uint8Array | null }>({ anmeldung: [], guide: null });
@@ -1489,9 +1490,8 @@ export default function BerlinButler() {
     // Check if returning from Stripe payment — ?paid=verified in URL
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get("paid") === "verified") {
-      // Clean the URL without reload
       window.history.replaceState({}, "", window.location.pathname);
-      // Move straight to payment phase with paid=true, auto-generate
+      stripeReturnRef.current = true; // mark — will trigger after form restores
       setPaid(true);
       setPhase("payment");
       return;
@@ -1519,14 +1519,23 @@ export default function BerlinButler() {
   }, [form]);
 
   // ── Auto-generate after Stripe redirect ──────────────────────────
-  // When paid flips to true AND we have form data, trigger generation immediately
+  // Fires when form state updates after localStorage restore on Stripe return.
+  // Using stripeReturnRef avoids the race condition where doGenerate() was
+  // called before setForm() had applied the restored data.
   useEffect(() => {
-    if (paid && phase === "payment" && !allDone && !genStatus) {
-      // Small delay to let the UI render the "Payment confirmed" state first
+    if (
+      stripeReturnRef.current &&
+      paid &&
+      phase === "payment" &&
+      !allDone &&
+      !genStatus &&
+      form.people[0]?.firstName // form has been restored
+    ) {
+      stripeReturnRef.current = false; // clear flag so it only fires once
       const t = setTimeout(() => { doGenerate(); }, 600);
       return () => clearTimeout(t);
     }
-  }, [paid, phase]);
+  }, [form, paid, phase, allDone, genStatus]);
 
   // ── Browser back / forward button support ───────────────────────
   useEffect(() => {
@@ -1614,7 +1623,7 @@ export default function BerlinButler() {
       // special-category data. No Art. 9 issue. No Resend AVV needed
       // beyond standard email-address processing (Art. 6(1)(a) DSGVO).
       if (userEmail && userEmail.includes("@")) {
-        setGenStatus("Sending your appointment reminder...");
+        setGenStatus("Sending your next steps by email...");
         try {
           await fetch("/api/send-email", {
             method: "POST",
@@ -1899,9 +1908,7 @@ function BureaucracyBattleIllustration() {
         fill="none" stroke="#f59e0b" strokeWidth="1.5" opacity="0.7" />
 
       {/* ── Caption below ── */}
-      <text x="210" y="358" textAnchor="middle" fontSize="11" fill="#64748b" fontWeight="600" fontFamily="Arial, sans-serif">
-        German Paperwork
-      </text>
+
 
     </svg>
   );
@@ -1934,7 +1941,7 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                   </div>
                   <button onClick={onStart}
                     style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
-                    Register Now <ArrowRight size={13} />
+                    Prepare My Anmeldung <ArrowRight size={13} />
                   </button>
                 </div>
               </nav>
@@ -1963,8 +1970,8 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                         <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                           <FileText size={20} color="white" />
                         </div>
-                        <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Anmeldung</div>
-                        <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Register your Berlin address in 3 minutes. Official form, 54 fields, perfectly in German.</div>
+                        <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
+                        <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
                         <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
                           Start now <ArrowRight size={11} />
                         </div>
@@ -2036,14 +2043,11 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
           </h1>
 
           {/* Fear + promise */}
-          <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.75, maxWidth: 480, marginBottom: 10 }}>
-            You have <strong style={{ color: "#dc2626" }}>14 days from your move-in date</strong> to register at a Berlin Bürgeramt. Miss it and you risk a <strong style={{ color: "#dc2626" }}>€1,000 fine</strong>. The form is in German. The system is confusing. Forget one document and the clerk sends you home.
-            </p>
-            <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.75, maxWidth: 480, marginBottom: 10 }}>
-              That's why we give you a <strong style={{ color: "#0075FF" }}>personalised checklist</strong> — every document you need, based on your exact situation, ready before you walk in.
+          <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.75, maxWidth: 480, marginBottom: 20 }}>
+            You have <strong style={{ color: "#dc2626" }}>14 days from your move-in date</strong> to register at a Berlin Bürgeramt. Miss it and you risk a <strong style={{ color: "#dc2626" }}>€1,000 fine</strong>. The form is in German. Forget one document and the clerk sends you home.
           </p>
           <p style={{ fontSize: 16, color: "#0f172a", fontWeight: 800, lineHeight: 1.65, maxWidth: 480, marginBottom: 28 }}>
-            ExpatFlow solves this in 3 minutes — in plain English.
+            We auto-generate your <strong style={{ color: "#0075FF" }}>official Anmeldung PDF</strong> — all 54 fields filled in perfect German — plus your personalised document checklist. In 3 minutes, in English.
           </p>
 
           {/* 4 promise pills */}
@@ -2065,7 +2069,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
             <button onClick={onStart}
               onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
               style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 32px", borderRadius: 14, background: "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", fontWeight: 800, fontSize: 16, border: "none", boxShadow: hov ? "0 20px 50px rgba(0,117,255,0.5)" : "0 8px 28px rgba(0,117,255,0.35)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.2s", letterSpacing: "-0.01em" }}>
-              Register Now — It Takes 3 Minutes <ArrowRight size={17} />
+              Prepare My Anmeldung — 3 Minutes <ArrowRight size={17} />
             </button>
             <span style={{ color: "#64748b", fontSize: 13.5, display: "flex", alignItems: "center", gap: 6 }}>
               <strong style={{ color: "#0f172a" }}>€15</strong> · One-time · No subscription
@@ -2953,7 +2957,14 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
           {/* Multi-citizenship via shared CitizenshipField component */}
           <CitizenshipField
             value={p1citizenship}
-            onChange={handleCitizenshipChange}
+            onChange={(val: string) => {
+              updPerson(0, "citizenship", val);
+              const citizenships = val.split(",").map((s: string) => s.trim()).filter(Boolean);
+              const anyEU = citizenships.some((c: string) => (CITIZENSHIP_TO_COUNTRY[c] ?? {isEU: false}).isEU);
+              const { country } = citizenshipToOrigin(val);
+              set_("originCountry", country);
+              set_("isEU", anyEU);
+            }}
           />
 
           {/* EU / Non-EU personalised cards */}
@@ -3461,7 +3472,7 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
           <div style={{ marginBottom: 14 }}>
             <div style={{ padding: "14px 16px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4", boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
               <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 6 }}>
-                Get an appointment reminder by email <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>(optional)</span>
+                Get your next steps by email <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>(optional)</span>
               </div>
               <input
                 type="email"
@@ -3471,7 +3482,7 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
                 style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 15, color: "#0f172a", background: "#f8fafc", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
               />
               <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 7, lineHeight: 1.55 }}>
-                We will send you a short reminder with your next steps and the booking link. <strong>No PDFs, no personal data</strong> — just your first name and email address are used. Basis: Art. 6(1)(a) DSGVO.
+                We will send you a short email with your next steps and the Bürgeramt booking link. <strong>No PDFs, no personal data</strong> — only your first name and email address are used. Basis: Art. 6(1)(a) DSGVO.
               </p>
             </div>
           </div>
@@ -3482,7 +3493,7 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
           <div style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 12, background: "#f0f9ff", border: "1px solid #bae6fd", display: "flex", gap: 9, alignItems: "flex-start" }}>
             <Shield size={14} color="#0284c7" style={{ flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12, color: "#0c4a6e", lineHeight: 1.6 }}>
-              <strong>Your data never reaches our servers.</strong> Everything you enter — address, passport details, birth dates, family data — is held only in your own browser's local storage. ExpatFlow has no access to it. It is automatically deleted from your device once your documents are generated. If you provide your email, only your first name and email address are transmitted — solely to send a brief appointment reminder. No PDFs, no passport data, no sensitive information leaves your browser.
+              <strong>Your data never reaches our servers.</strong> Everything you enter — address, passport details, birth dates, family data — is held only in your own browser's local storage. ExpatFlow has no access to it. It is automatically deleted from your device once your documents are generated. No PDFs, no passport data, no sensitive information ever leaves your browser.
             </p>
           </div>
         )}
@@ -4237,56 +4248,63 @@ export function CancellationPolicy({ onClose }: { onClose: () => void }) {
 export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Privacy Policy — ExpatFlow" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: April 2026</p>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: April 2026 · Verantwortlicher: Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
 
       <LHighlight>
-        <strong>Technical reality, precisely stated:</strong> All personal data you enter is held exclusively in your own browser's localStorage — a storage area on your device that ExpatFlow has no access to. Nothing is transmitted to ExpatFlow servers during the registration process or PDF generation. The only server-side data flows are: (1) Stripe for secure payment processing via hosted checkout, (2) our server verifies your Stripe payment session ID after checkout, and (3) Resend sends an optional appointment reminder email — only if you provide your email address. No personal form data ever leaves your browser.
+        <strong>In plain English:</strong> The form data you enter (address, passport details, family information) never leaves your device. It is stored only in your browser and deleted once your PDFs are generated. The only personal data that reaches our servers is: (1) your payment via Stripe, and (2) optionally your first name and email address if you choose to receive a post-purchase confirmation email with your next steps.
       </LHighlight>
 
-      <LH2>1. Controller</LH2>
-      <LP>ExpatFlow GmbH (in formation), Berlin, Germany. Contact: privacy@expatflow.de · Data Protection enquiries: privacy@expatflow.de</LP>
+      <LH2>1. Controller (Verantwortlicher)</LH2>
+      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: privacy@expatflow.de. Operating under the brand name ExpatFlow (GmbH in formation).</LP>
 
-      <LH2>2. Legal Basis for Processing (GDPR Art. 6 and Art. 9)</LH2>
-      <LP>ExpatFlow does not process personal data on its own servers during normal use. The legal basis for each data flow that does occur is:</LP>
+      <LH2>2. What data we process and why</LH2>
+
+      <LP><strong>a) Registration form data</strong> — names, dates of birth, addresses, passport numbers, citizenship, marital status, religious affiliation: Stored exclusively in your browser's localStorage on your own device under the key "expatflow-v1". ExpatFlow has no technical access to this data at any point. It is never transmitted to our servers. It is automatically deleted from your browser once document generation is complete. Legal basis: this is not a processing activity by ExpatFlow within the meaning of Art. 4 No. 2 GDPR, as the data never reaches our systems (see GDPR Recital 26).</LP>
+
+      <LP><strong>b) PDF generation</strong>: Your completed Anmeldung form and personalised checklist are generated entirely in your browser using the open-source pdf-lib library. The PDF bytes exist only in browser memory and are downloaded directly to your device. They are never transmitted to ExpatFlow servers.</LP>
+
+      <LP><strong>c) Payment processing</strong>: Your payment of €15 is handled exclusively by Stripe, Inc. (510 Townsend Street, San Francisco, CA 94103, USA), a PCI-DSS Level 1 certified payment processor. You are redirected to a Stripe-hosted payment page. ExpatFlow never receives or processes your card number, bank details, or any payment credentials. After your payment is completed, your browser transmits only your Stripe session ID to our server for the sole purpose of confirming payment status (paid / not paid). No personal form data is included in this request. Legal basis: Art. 6(1)(b) GDPR — performance of a contract. Stripe's Privacy Policy: stripe.com/privacy.</LP>
+
+      <LP><strong>d) Post-purchase next-steps email (optional)</strong>: After your documents are generated, you may optionally provide your email address to receive a transactional confirmation email. This email contains your next steps: printing your form, booking your Bürgeramt appointment, and your document checklist. The only data transmitted to our server and forwarded to our email service provider Resend, Inc. for delivery is: your email address, your first name, and the number of forms generated. No form data, no passport information, no special-category data (Art. 9 GDPR) is included. This field is entirely optional — the service is fully functional without providing an email. Legal basis: Art. 6(1)(a) GDPR — your freely given, specific, informed, and unambiguous consent by voluntarily entering your email address. You may withdraw this consent at any time by contacting privacy@expatflow.de; withdrawal does not affect the lawfulness of processing prior to withdrawal. Resend, Inc. Privacy Policy: resend.com/privacy.</LP>
+
+      <LP><strong>e) Cookie / localStorage consent flag</strong>: When you acknowledge the cookie notice, a flag ("expatflow-cookie-ack-v1") is stored in your browser's localStorage. This flag contains no personal data and is used solely to avoid showing the notice repeatedly. Legal basis: §25(2) No. 2 TTDSG — strictly necessary.</LP>
+
+      <LH2>3. Special category data — Religious affiliation (Art. 9 GDPR)</LH2>
+      <LP>Religious affiliation is special-category personal data under Art. 9(1) GDPR. The Anmeldung form includes an optional field for religious affiliation for tax purposes (Kirchensteuer). Because all form data is processed exclusively in your browser and never transmitted to ExpatFlow servers, ExpatFlow does not process this data within the meaning of Art. 4 No. 2 GDPR. You may leave this field blank or select "None" — this is a valid choice that results in no church tax obligation.</LP>
+
+      <LH2>4. Cookies and browser storage (§25 TTDSG)</LH2>
+      <LP>We use no marketing, tracking, or analytics cookies. We use no third-party advertising cookies. The only storage mechanisms are:</LP>
       <LUL items={[
-        "Payment processing via Stripe: Art. 6(1)(b) GDPR — necessary for the performance of a contract.",
-        "Email reminder via Resend (optional): Art. 6(1)(a) DSGVO — your consent given by entering your email at checkout. No PDFs transmitted. No special-category data (Art. 9). Only first name and email address are used. You may withdraw consent at any time by not using the email feature.",
-        "Browser localStorage: Not a processing activity by ExpatFlow. Under GDPR Recital 26, data processed by the data subject on their own device, without access by the controller, is outside the scope of controller obligations.",
+        "localStorage 'expatflow-v1': Your registration form state. Stored on your device only. Deleted automatically upon document generation. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for the service you explicitly requested.",
+        "localStorage 'expatflow-cookie-ack-v1': Records that you have acknowledged the cookie notice. Contains no personal data. Legal basis: §25(2) No. 2 TTDSG.",
+        "Stripe cookies: Set by Stripe on their hosted checkout page to enable secure payment processing. Governed by Stripe's cookie policy. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for payment.",
       ]} />
 
-      <LH2>3. Data Flows — Complete Technical Inventory</LH2>
-      <LP><strong>a) Registration form data</strong> (names, dates of birth, addresses, passport numbers, citizenship, religious affiliation, marital status): Stored in browser localStorage under the key 'expatflow-v1' on your own device only. Never transmitted to ExpatFlow servers. Automatically deleted upon successful document generation. If you leave mid-way, it remains in your browser until you return and complete the flow, or until you manually clear your browser's site data.</LP>
-      <LP><strong>b) PDF generation</strong>: Occurs entirely client-side using the pdf-lib library loaded from cdnjs.cloudflare.com. The generated PDF bytes exist in browser memory only and are never sent to ExpatFlow servers.</LP>
-      <LP><strong>c) Payment data</strong>: Handled exclusively by Stripe, Inc. (a certified PCI-DSS Level 1 provider) via a Stripe-hosted checkout page. ExpatFlow never sees your card details. After payment, your browser sends your Stripe session ID to our server solely to verify payment status (paid/not paid). No personal form data is included in this verification. Stripe's Privacy Policy applies: stripe.com/privacy.</LP>
-      <LP><strong>d) Email reminder (optional)</strong>: If you enter your email address at checkout, only your first name and email are transmitted to our API route and forwarded to Resend, Inc. to send a brief appointment reminder. No PDF documents, no passport data, no sensitive or special-category data is transmitted. Resend is our Data Processor. Data is not retained by ExpatFlow after transmission. Resend's Privacy Policy: resend.com/privacy.</LP>
-      <LP><strong>e) Cookie consent flag</strong>: A flag ('expatflow-cookie-ack-v1') is stored in your browser's localStorage when you acknowledge the cookie notice. This contains no personal data.</LP>
-
-      <LH2>4. Special Category Data — Religious Affiliation (Art. 9 GDPR)</LH2>
-      <LP>Religious affiliation is special-category personal data under Art. 9 GDPR. Because ExpatFlow sends reminder emails only — no PDF attachments — this data is never transmitted to our servers under any circumstances. It remains exclusively in your browser's localStorage and is deleted upon completion. ExpatFlow does not act as a data controller for this data in any scenario.</LP>
-      <LP>You may enter "none" for religious affiliation. This is a valid choice that results in no church tax (Kirchensteuer) and avoids any special-category data entering the system.</LP>
-
-      <LH2>5. Cookies and Storage (§25 TTDSG)</LH2>
-      <LP>We use no marketing, tracking, or analytics cookies. The only storage mechanisms we use are:</LP>
+      <LH2>5. Data processors (Auftragsverarbeiter)</LH2>
+      <LP>We use the following data processors who process personal data on our behalf under Art. 28 GDPR:</LP>
       <LUL items={[
-        "localStorage 'expatflow-v1': Registration form state. Client-side only. Deleted on completion. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for the service you explicitly requested.",
-        "localStorage 'expatflow-cookie-ack-v1': Cookie notice acknowledgement. No personal data. §25(2) No. 2 TTDSG.",
-        "Stripe session cookie: Set by Stripe to enable secure payment. Duration: session. §25(2) No. 2 TTDSG.",
+        "Stripe, Inc., 510 Townsend Street, San Francisco, CA 94103, USA — payment processing. Data processed: payment session ID for verification. Basis: Art. 28 GDPR + Standard Contractual Clauses (SCCs).",
+        "Resend, Inc. — transactional email delivery. Data processed: email address and first name, only when you voluntarily provide your email. Basis: Art. 28 GDPR + Standard Contractual Clauses (SCCs). Only used if you opt in to the confirmation email.",
       ]} />
 
-      <LH2>6. Your Rights under GDPR (Art. 15–22)</LH2>
-      <LP>You have the right to access, rectify, erase, restrict, and port your personal data, and to object to processing. Because ExpatFlow does not retain personal data on its servers after service completion, most of these rights apply to your own browser storage (which you control directly) or to Stripe and Resend. For data held by Stripe, contact Stripe. For data transmitted to Resend for email delivery, contact privacy@expatflow.de and we will coordinate with Resend under our DPA.</LP>
-      <LP>You also have the right to lodge a complaint with the Berlin Commissioner for Data Protection and Freedom of Information (Berliner Beauftragte für Datenschutz und Informationsfreiheit): datenschutz-berlin.de.</LP>
+      <LH2>6. International data transfers (Art. 44–49 GDPR)</LH2>
+      <LP>Stripe and Resend are US-based companies. Data transfers to the USA are carried out on the basis of Standard Contractual Clauses (SCCs) pursuant to Art. 46(2)(c) GDPR, as adopted by the European Commission. You may request a copy of the applicable SCCs by contacting privacy@expatflow.de.</LP>
 
-      <LH2>7. International Data Transfers</LH2>
-      <LP>Stripe and Resend process data in the United States and the EU. Both operate under Standard Contractual Clauses (SCCs) approved by the European Commission as a transfer mechanism under GDPR Art. 46(2)(c).</LP>
+      <LH2>7. Your rights (Art. 15–22 GDPR)</LH2>
+      <LP>You have the following rights regarding your personal data: the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20), and the right to object (Art. 21). Because ExpatFlow does not store your form data on our servers, most of these rights apply to data held by Stripe (for payment records) or Resend (for email delivery, if you opted in). To exercise any right, contact privacy@expatflow.de. We will respond within 30 days.</LP>
+      <LP>If you provided your email address and wish to withdraw consent for email processing, contact privacy@expatflow.de and we will instruct Resend to delete any data associated with your email. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</LP>
+      <LP>You also have the right to lodge a complaint with a supervisory authority. The competent authority for ExpatFlow is: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin, mailbox@datenschutz-berlin.de.</LP>
 
-      <LH2>8. Data Retention</LH2>
-      <LP>ExpatFlow retains no personal data on its own systems. Your browser localStorage is deleted upon completion and is under your control at all times. Resend deletes email content after delivery per their retention policy. Stripe retains payment records per their legal obligations (typically 7 years for financial records under §257 HGB).</LP>
+      <LH2>8. Data retention</LH2>
+      <LP>ExpatFlow retains no personal data on its own systems. Browser localStorage data is deleted upon service completion. Stripe retains payment records for 7 years per §257 HGB (German Commercial Code). Resend retains email delivery data per their own retention policy; contact privacy@expatflow.de to request deletion.</LP>
 
-      <LH2>9. Changes to This Policy</LH2>
-      <LP>Material changes will be communicated via the website with at least 14 days notice before taking effect. Continued use after the notice period constitutes acceptance.</LP>
+      <LH2>9. Automated decision-making</LH2>
+      <LP>ExpatFlow does not use automated decision-making or profiling within the meaning of Art. 22 GDPR.</LP>
 
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>DPA / GDPR enquiries: privacy@expatflow.de</p>
+      <LH2>10. Changes to this policy</LH2>
+      <LP>We will notify you of material changes via the website at least 14 days before they take effect. The current version is always available at expatflow.de. The effective date is shown at the top of this document.</LP>
+
+      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Datenschutzanfragen / GDPR enquiries: privacy@expatflow.de · Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
     </LegalModal>
   );
 }
