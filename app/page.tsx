@@ -1412,24 +1412,38 @@ function getError(step: WizardStep, f: FormData): string {
   if (step === "origin" && !f.people[0]?.citizenship) return "Please enter your citizenship.";
   if (step === "origin" && !f.maritalStatus) return "Please select your marital status.";
   if (step === "origin" && f.furtherAddresses === "ja") return "Beiblatt is not supported yet. Please uncheck \"I have additional residences\" to continue.";
+
   if (step === "new-address") {
     if (!f.newStreet || !f.newNumber) return "Please enter street and house number.";
     if (!f.newPostalCode) return "Please enter the postal code (PLZ).";
+    // Berlin PLZ must start with 1 (10xxx–14xxx)
+    if (!/^1[0-4]\d{3}$/.test(f.newPostalCode.trim()))
+      return "That postal code doesn't look like a Berlin PLZ. Berlin postcodes start with 10, 11, 12, 13, or 14.";
     if (!f.moveInDate) return "Please enter your move-in date.";
   }
+
   if (step === "prev-address" && !f.prevCountry) return "Please enter the country of your previous address.";
+
   if (step === "people") {
-    const p1 = f.people[0];
-    if (!p1.lastName || !p1.firstName) return "Please enter the full name of Person 1.";
-    if (!p1.birthDate || !p1.birthPlace) return "Please enter date and place of birth for Person 1.";
-    if (!p1.citizenship) return "Please enter the citizenship of Person 1.";
-    if (!p1.gender) return "Please select the gender of Person 1.";
+    for (let i = 0; i < f.people.length; i++) {
+      const p = f.people[i];
+      const label = i === 0 ? "Person 1" : `Person ${i + 1}`;
+      if (!p.lastName || !p.firstName) return `Please enter the full name of ${label}.`;
+      if (!p.birthDate || !p.birthPlace) return `Please enter date and place of birth for ${label}.`;
+      if (!p.citizenship) return `Please enter the citizenship of ${label}.`;
+      if (!p.gender) return `Please select the gender of ${label}.`;
+    }
   }
+
   if (step === "documents") {
-    const p1 = f.people[0];
-    if (!p1.docSerial) return "Please enter the document serial number for Person 1.";
-    if (!p1.docAuthority) return "Please enter the issuing authority for Person 1.";
+    for (let i = 0; i < f.people.length; i++) {
+      const p = f.people[i];
+      const label = i === 0 ? "Person 1" : `Person ${i + 1}`;
+      if (!p.docSerial) return `Please enter the document serial number for ${label}.`;
+      if (!p.docAuthority) return `Please enter the issuing authority for ${label}.`;
+    }
   }
+
   return "";
 }
 
@@ -1463,7 +1477,6 @@ export default function BerlinButler() {
   }, []);
 
   // ── Restore form data from localStorage (data only, never phase) ─
-  // Phase is always driven by the URL hash so a fresh load always shows landing.
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -1473,10 +1486,21 @@ export default function BerlinButler() {
       }
     } catch {}
 
+    // Check if returning from Stripe payment — ?paid=verified in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("paid") === "verified") {
+      // Clean the URL without reload
+      window.history.replaceState({}, "", window.location.pathname);
+      // Move straight to payment phase with paid=true, auto-generate
+      setPaid(true);
+      setPhase("payment");
+      return;
+    }
+
     // Read initial hash — if the user bookmarked mid-flow, honour it.
     const readHash = () => {
       const h = window.location.hash.replace("#", "");
-      if (!h) return; // no hash → stay on landing
+      if (!h) return;
       if (h === "payment") { setPhase("payment"); return; }
       if (h === "done")    { setPhase("done");    return; }
       if (h.startsWith("wizard/")) {
@@ -1493,6 +1517,16 @@ export default function BerlinButler() {
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ form })); } catch {}
   }, [form]);
+
+  // ── Auto-generate after Stripe redirect ──────────────────────────
+  // When paid flips to true AND we have form data, trigger generation immediately
+  useEffect(() => {
+    if (paid && phase === "payment" && !allDone && !genStatus) {
+      // Small delay to let the UI render the "Payment confirmed" state first
+      const t = setTimeout(() => { doGenerate(); }, 600);
+      return () => clearTimeout(t);
+    }
+  }, [paid, phase]);
 
   // ── Browser back / forward button support ───────────────────────
   useEffect(() => {
@@ -1877,23 +1911,110 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
   const [hov, setHov] = useState(false);
   return (
     <div className="fu">
-      {/* ── Clean sticky header: branding + CTA only ── */}
-      <div style={{ position: "sticky", top: 0, zIndex: 40, background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", borderBottom: "1px solid #e8ecf4", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
-        <nav className="nav-pad">
-          <div style={{ maxWidth: 1100, margin: "0 auto", height: 52, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Building2 size={14} color="white" />
-              </div>
-              <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>ExpatFlow <span style={{ color: "#0075FF" }}>Berlin</span></span>
+      {/* ── Sticky header with Services mega-menu ── */}
+      {(() => {
+        const [menuOpen, setMenuOpen] = React.useState(false);
+        return (
+          <div style={{ position: "sticky", top: 0, zIndex: 40 }}>
+            <div style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", borderBottom: "1px solid #e8ecf4", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
+              <nav className="nav-pad">
+                <div style={{ maxWidth: 1100, margin: "0 auto", height: 52, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Building2 size={14} color="white" />
+                      </div>
+                      <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>ExpatFlow <span style={{ color: "#0075FF" }}>Berlin</span></span>
+                    </div>
+                    {/* Services tab */}
+                    <button
+                      onClick={() => setMenuOpen(o => !o)}
+                      style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: menuOpen ? "#eff6ff" : "transparent", color: menuOpen ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
+                      Services
+                      <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: menuOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
+                        <path d="M2 4 L6 8 L10 4" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <button onClick={onStart}
+                    style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
+                    Register Now <ArrowRight size={13} />
+                  </button>
+                </div>
+              </nav>
             </div>
-            <button onClick={onStart}
-              style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
-              Register Now <ArrowRight size={13} />
-            </button>
+
+            {/* Mega menu dropdown */}
+            {menuOpen && (
+              <>
+                {/* Backdrop */}
+                <div onClick={() => setMenuOpen(false)} style={{ position: "fixed", inset: 0, zIndex: -1 }} />
+                <div style={{
+                  position: "absolute", top: "100%", left: 0, right: 0,
+                  background: "white", borderBottom: "1px solid #e8ecf4",
+                  boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
+                  padding: "28px 40px 32px",
+                  animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)",
+                }}>
+                  <style>{`@keyframes menuSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}`}</style>
+                  <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
+
+                      {/* Service 1 — Anmeldung (active) */}
+                      <button onClick={() => { setMenuOpen(false); onStart(); }}
+                        style={{ textAlign: "left", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                          <FileText size={20} color="white" />
+                        </div>
+                        <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Anmeldung</div>
+                        <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Register your Berlin address in 3 minutes. Official form, 54 fields, perfectly in German.</div>
+                        <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                          Start now <ArrowRight size={11} />
+                        </div>
+                      </button>
+
+                      {/* Service 2 — Steuerliche Erfassung (coming soon) */}
+                      <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
+                        <div style={{ position: "absolute", top: 12, right: 12, padding: "3px 9px", borderRadius: 999, background: "#f1f5f9", border: "1px solid #e2e8f0", fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>COMING SOON</div>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                          {/* Tax icon */}
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                          </svg>
+                        </div>
+                        <div style={{ fontWeight: 800, color: "#94a3b8", fontSize: 15, marginBottom: 4 }}>Steuerliche Erfassung</div>
+                        <div style={{ fontSize: 12.5, color: "#94a3b8", lineHeight: 1.5 }}>Freelancer tax registration (Fragebogen zur steuerlichen Erfassung) — simplified, in English.</div>
+                      </div>
+
+                      {/* Service 3 — Elterngeld (coming soon) */}
+                      <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
+                        <div style={{ position: "absolute", top: 12, right: 12, padding: "3px 9px", borderRadius: 999, background: "#f1f5f9", border: "1px solid #e2e8f0", fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>COMING SOON</div>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                          {/* Baby/family icon */}
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                          </svg>
+                        </div>
+                        <div style={{ fontWeight: 800, color: "#94a3b8", fontSize: 15, marginBottom: 4 }}>Elterngeld</div>
+                        <div style={{ fontSize: 12.5, color: "#94a3b8", lineHeight: 1.5 }}>Parental allowance application — guided in English, submitted correctly the first time.</div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-        </nav>
-      </div>
+        );
+      })()}
 
       <div className="hero-pad mob-sm-text hero-grid" style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ maxWidth: 600 }}>
@@ -2587,6 +2708,87 @@ function HandwrittenToggle({ value, onChange }: { value: boolean; onChange: (v: 
 }
 
 // ─── Reusable PersonForm (identical for all people) ───────────────
+// ─── Reusable multi-citizenship field ────────────────────────────
+// Works for all people. Stores comma-separated values in form state.
+// Up to 3 citizenships. EU status derived from the list.
+function CitizenshipField({ value, onChange, isPrefilled }: {
+  value: string;
+  onChange: (v: string) => void;
+  isPrefilled?: boolean;
+}) {
+  const [editing, setEditing] = React.useState(!isPrefilled);
+  const initialSlots = value ? value.split(",").map(s => s.trim()) : [""];
+  const [slots, setSlots] = React.useState<string[]>(initialSlots.length ? initialSlots : [""]);
+
+  // Keep slots in sync if value changes externally (e.g. pre-fill from Step 1)
+  React.useEffect(() => {
+    if (value && !editing) {
+      setSlots(value.split(",").map(s => s.trim()));
+    }
+  }, [value]);
+
+  const commitSlots = (arr: string[]) => {
+    setSlots(arr);
+    const filled = arr.filter(s => s.trim());
+    onChange(filled.join(", "));
+  };
+
+  if (isPrefilled && !editing) {
+    return (
+      <div>
+        <Lbl req>Citizenship (Staatsangehörigkeit)</Lbl>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, background: "#f0fdf4", border: "2px solid #86efac" }}>
+          <CheckCircle2 size={15} color="#16a34a" style={{ flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, color: "#15803d", fontSize: 13 }}>{value}</div>
+            <div style={{ fontSize: 11, color: "#16a34a", marginTop: 1 }}>Pre-filled from Step 1</div>
+          </div>
+          <button onClick={() => setEditing(true)} style={{ fontSize: 11, color: "#94a3b8", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 }}>Edit</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <Lbl req>Citizenship (Staatsangehörigkeit)</Lbl>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {slots.map((cit, i) => (
+          <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+            <div style={{ flex: 1 }}>
+              <SearchableSelect
+                label=""
+                value={cit}
+                onChange={v => {
+                  const next = [...slots];
+                  next[i] = v;
+                  commitSlots(next);
+                }}
+                options={ALL_CITIZENSHIPS}
+                allowCustom
+                placeholder={i === 0 ? "e.g. British, German, Turkish..." : "Add citizenship..."}
+              />
+            </div>
+            {i > 0 && (
+              <button onClick={() => commitSlots(slots.filter((_, j) => j !== i))}
+                style={{ marginTop: 4, padding: "10px 12px", borderRadius: 9, border: "1.5px solid #fecaca", background: "white", color: "#dc2626", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
+                ✕
+              </button>
+            )}
+          </div>
+        ))}
+        {slots.length < 3 && (
+          <button onClick={() => setSlots([...slots, ""])}
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 14px", borderRadius: 9, border: "1.5px dashed #bfdbfe", background: "#f8faff", color: "#0075FF", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", alignSelf: "flex-start" }}>
+            <Plus size={13} /> Add citizenship
+          </button>
+        )}
+      </div>
+      <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 5, lineHeight: 1.5 }}>Stored as comma-separated on the form — e.g. "German, Turkish"</p>
+    </div>
+  );
+}
+
 function PersonForm({ person, idx, onChange, showDocuments = false }: {
   person: Person;
   idx: number;
@@ -2610,29 +2812,12 @@ function PersonForm({ person, idx, onChange, showDocuments = false }: {
         b={<SearchableSelect opt label="Country of Birth" value={person.birthCountry}
               onChange={v => onChange("birthCountry", v)} options={ALL_COUNTRIES} allowCustom placeholder="Search country..." />}
       />
-      {idx === 0 && person.citizenship ? (
-        <div>
-          <Lbl req>Citizenship (Staatsangehörigkeit)</Lbl>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10, background: "#f0fdf4", border: "2px solid #86efac" }}>
-            <CheckCircle2 size={15} color="#16a34a" style={{ flexShrink: 0 }} />
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, color: "#15803d", fontSize: 13 }}>{person.citizenship}</div>
-              <div style={{ fontSize: 11, color: "#16a34a", marginTop: 1 }}>Pre-filled from Step 1 — change there if needed</div>
-            </div>
-            <button onClick={() => onChange("citizenship", "")} style={{ fontSize: 11, color: "#94a3b8", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 }}>Edit</button>
-          </div>
-          <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 4, lineHeight: 1.5 }}>Separate with a comma if you have multiple (e.g., Italian, British)</p>
-        </div>
-      ) : (
-        <SearchableSelect
-          label="Citizenship (Staatsangehörigkeit)" req
-          value={person.citizenship}
-          onChange={v => onChange("citizenship", v)}
-          options={ALL_CITIZENSHIPS}
-          allowCustom
-          info="Separate with a comma if you have multiple (e.g., Italian, British)"
-        />
-      )}
+      {/* Multi-citizenship for every person — up to 3 slots, comma-separated in form */}
+      <CitizenshipField
+        value={person.citizenship}
+        onChange={v => onChange("citizenship", v)}
+        isPrefilled={idx === 0 && !!person.citizenship}
+      />
       <Sel opt label="Religion (Religionsgesellschaft)" value={person.religion} onChange={u("religion")}
         opts={[["none","None / non-religious"],["rk","Catholic (r\u00f6m.-kath.)"],["ev","Protestant (ev.)"],["jd","Jewish (j\u00fcdisch)"],["is","Muslim (islamisch)"],["or","Orthodox (orthodox)"],["bu","Buddhist (buddhistisch)"],["so","Other (sonstige)"]]}
         info="Optional — but if you select Catholic or Protestant, ~8–9% church tax applies automatically. Select 'None' to opt out with no consequences." />
@@ -2717,15 +2902,9 @@ function ComingSoonOverlay({ onBack }: { onBack: () => void }) {
 function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updPerson: (i: number, k: keyof Person, v: string) => void }) {
   const showComingSoon = form.isBerlin === false;
   const p1citizenship = form.people[0]?.citizenship ?? "";
-  const hasOrigin = !!p1citizenship;
+  const hasOrigin = !!(p1citizenship && p1citizenship.trim());
 
-  // When citizenship changes: write to Person 1, derive originCountry + isEU
-  const handleCitizenshipChange = (val: string) => {
-    updPerson(0, "citizenship", val);
-    const { country, isEU } = citizenshipToOrigin(val);
-    set_("originCountry", country);
-    set_("isEU", isEU);
-  };
+
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -2743,7 +2922,7 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             const active = String(form.isBerlin) === v;
             const isYes = v === "true";
             return (
-              <button key={v} onClick={() => set_("isBerlin", isYes)}
+              <button key={v} onClick={() => { set_("isBerlin", isYes); if (isYes) set_("newCity", "Berlin"); }}
                 style={{ flex: 1, padding: "14px 10px", borderRadius: 12, border: `2px solid ${active ? (isYes ? "#0075FF" : "#94a3b8") : "#e8ecf4"}`, background: active ? (isYes ? "#eff6ff" : "#f8fafc") : "white", fontWeight: active ? 700 : 500, fontSize: 13.5, color: active ? (isYes ? "#0075FF" : "#374151") : "#64748b", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, transition: "all 0.15s" }}>
                 {active && isYes && <Check size={13} color="#0075FF" strokeWidth={3} />}
                 {l}
@@ -2767,14 +2946,10 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             Answering here pre-fills it there — and instantly tells us
             whether you are EU or Non-EU, personalising the whole flow. */}
         <div>
-          <SearchableSelect
-            label="Your Citizenship (Staatsangehörigkeit)" req
+          {/* Multi-citizenship via shared CitizenshipField component */}
+          <CitizenshipField
             value={p1citizenship}
             onChange={handleCitizenshipChange}
-            options={ALL_CITIZENSHIPS}
-            allowCustom
-            placeholder="e.g. British, German, Turkish..."
-            info="This also pre-fills your citizenship in your personal details — no need to enter it twice."
           />
 
           {/* EU / Non-EU personalised cards */}
@@ -2856,10 +3031,17 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             options={[["ledig","Single"],["verheiratet","Married"],["partnerschaft","Civil Partnership (eingetr. Lebenspartnerschaft)"],["getrennt","Separated"],["geschieden","Divorced"],["verwitwet","Widowed"]]} />
         </div>
 
-        <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 13px", background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 9 }}>
-          <input type="checkbox" checked={form.furtherAddresses === "ja"} onChange={e => set_("furtherAddresses", e.target.checked ? "ja" : "nein")} style={{ width: 15, height: 15, accentColor: "#0075FF" }} />
-          <span style={{ fontSize: 12.5, color: "#374151", fontWeight: 600 }}>I have additional residences in Germany (Beiblatt required)</span>
-        </label>
+        <div>
+          <div
+            onClick={() => set_("furtherAddresses", form.furtherAddresses === "ja" ? "nein" : "ja")}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 13px", background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 9, cursor: "pointer", userSelect: "none" }}>
+            {/* Custom checkbox */}
+            <div style={{ width: 18, height: 18, borderRadius: 5, border: `2px solid ${form.furtherAddresses === "ja" ? "#0075FF" : "#cbd5e1"}`, background: form.furtherAddresses === "ja" ? "#0075FF" : "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.15s" }}>
+              {form.furtherAddresses === "ja" && <Check size={11} color="white" strokeWidth={3} />}
+            </div>
+            <span style={{ fontSize: 12.5, color: "#374151", fontWeight: 600 }}>I have additional residences in Germany (Beiblatt required)</span>
+          </div>
+        </div>
         {form.furtherAddresses === "ja" && (
           <div style={{ padding: "13px 15px", borderRadius: 11, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 9, alignItems: "flex-start" }}>
             <AlertCircle size={15} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
