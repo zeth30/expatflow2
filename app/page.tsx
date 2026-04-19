@@ -1907,14 +1907,10 @@ function BureaucracyBattleIllustration() {
   );
 }
 
-function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloadWG: () => void }) {
-  const [hov, setHov] = useState(false);
+// ─── Sticky nav with services mega-menu ──────────────────────────
+function StickyNav({ onStart }: { onStart: () => void }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <div className="fu">
-      {/* ── Sticky header with Services mega-menu ── */}
-      {(() => {
-        const [menuOpen, setMenuOpen] = React.useState(false);
-        return (
           <div style={{ position: "sticky", top: 0, zIndex: 40 }}>
             <div style={{ background: "rgba(255,255,255,0.97)", backdropFilter: "blur(16px)", borderBottom: "1px solid #e8ecf4", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
               <nav className="nav-pad">
@@ -2013,8 +2009,16 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
               </>
             )}
           </div>
-        );
-      })()}
+  );
+}
+
+function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloadWG: () => void }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <div className="fu">
+      {/* ── Sticky header with Services mega-menu ── */}
+      {/* ── Sticky header with Services mega-menu ── */}
+      <StickyNav onStart={onStart} />
 
       <div className="hero-pad mob-sm-text hero-grid" style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div style={{ maxWidth: 600 }}>
