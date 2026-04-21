@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://expatflow.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin in English | ExpatFlow — Official PDF, No Data Stored",
+  title: "Anmeldung Berlin in English | SimplyExpat — Official PDF, No Data Stored",
   description:
     "Generate your official Berlin Anmeldung PDF in English — all 54 fields filled in perfect German. No data stored on any server. Expert relocation help for expats. Every nationality. Takes 3 minutes.",
   keywords: [
@@ -37,18 +37,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Anmeldung Berlin in English — Official PDF, No Data Stored | ExpatFlow",
+    title: "Anmeldung Berlin in English — Official PDF, No Data Stored | SimplyExpat",
     description:
       "Fill your Berlin Anmeldung form in English in 3 minutes. All 54 fields in perfect German. Your data never leaves your browser. Expert relocation paperwork for expats.",
     url: DOMAIN,
-    siteName: "ExpatFlow Berlin",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ExpatFlow Berlin — Anmeldung PDF in English" }],
+    siteName: "SimplyExpat Berlin",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "SimplyExpat Berlin — Anmeldung PDF in English" }],
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anmeldung Berlin in English | ExpatFlow",
+    title: "Anmeldung Berlin in English | SimplyExpat",
     description: "Official Berlin registration PDF, filled in English. No data stored. Expert expat relocation help.",
     images: ["/og-image.png"],
   },
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "name": "ExpatFlow Berlin",
+        "name": "SimplyExpat Berlin",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "description": "Generate your official Berlin Anmeldung PDF in English. All 54 fields filled in perfect German. No data stored. Expert relocation paperwork for expats.",
@@ -94,12 +94,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             "name": "How do I fill in the Anmeldung form in English?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "ExpatFlow lets you fill in your Berlin Anmeldung form in English. You answer questions in plain English and we generate the official German PDF automatically — all 54 fields correctly filled.",
+              "text": "SimplyExpat lets you fill in your Berlin Anmeldung form in English. You answer questions in plain English and we generate the official German PDF automatically — all 54 fields correctly filled.",
             },
           },
           {
             "@type": "Question",
-            "name": "Is my data stored when I use ExpatFlow?",
+            "name": "Is my data stored when I use SimplyExpat?",
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "No. All form data is stored exclusively in your browser's localStorage. It never reaches our servers. Once your PDF is generated, the data is deleted from your device.",
@@ -110,15 +110,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             "name": "What documents do I need for the Berlin Bürgeramt Anmeldung?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "You need a valid passport or national ID (EU citizens), your rental contract or landlord confirmation (Wohnungsgeberbestätigung), and your completed Anmeldung form. ExpatFlow generates a personalised checklist based on your exact situation.",
+              "text": "You need a valid passport or national ID (EU citizens), your rental contract or landlord confirmation (Wohnungsgeberbestätigung), and your completed Anmeldung form. SimplyExpat generates a personalised checklist based on your exact situation.",
             },
           },
           {
             "@type": "Question",
-            "name": "How long does the Berlin Anmeldung take with ExpatFlow?",
+            "name": "How long does the Berlin Anmeldung take with SimplyExpat?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Filling in the form takes about 3 minutes. ExpatFlow generates your official PDF and personalised checklist instantly.",
+              "text": "Filling in the form takes about 3 minutes. SimplyExpat generates your official PDF and personalised checklist instantly.",
             },
           },
         ],
