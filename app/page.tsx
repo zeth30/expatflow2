@@ -116,7 +116,7 @@ const FIELD_LIMITS: Record<string, number> = {
 function truncField(fieldName: string, value: string): string {
   const limit = FIELD_LIMITS[fieldName];
   if (!limit || value.length <= limit) return value;
-  console.warn("[ExpatFlow] Truncated:", fieldName, value.length, "->", limit);
+  console.warn("[SimplyExpat] Truncated:", fieldName, value.length, "->", limit);
   return value.slice(0, limit - 1) + "\u2026";
 }
 
@@ -201,7 +201,7 @@ const EMPTY: FormData = {
   keepPrev: "nein", furtherAddresses: "nein",
 };
 
-const STORAGE_KEY = "expatflow-v1";
+const STORAGE_KEY = "simplyexpat-v1";
 const MAX_PEOPLE = 6;
 
 const EU_SET = new Set(["Austria","Belgium","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Ireland","Italy","Latvia","Lithuania","Luxembourg","Malta","Netherlands","Poland","Portugal","Romania","Slovakia","Slovenia","Spain","Sweden","Iceland","Liechtenstein","Norway","Switzerland","United Kingdom"]);
@@ -588,7 +588,7 @@ async function buildWGPDF(d: FormData): Promise<Uint8Array> {
   const { width, height } = page.getSize();
   if (Math.abs(width - WG_PAGE_W) > 2 || Math.abs(height - WG_PAGE_H) > 2) {
     console.warn(
-      `[ExpatFlow] WG template size mismatch: got ${width}×${height}, expected ${WG_PAGE_W}×${WG_PAGE_H}. ` +
+      `[SimplyExpat] WG template size mismatch: got ${width}×${height}, expected ${WG_PAGE_W}×${WG_PAGE_H}. ` +
       `Coordinates may be off — falling back to generated PDF.`
     );
     return buildWGPDFFallback(d);
@@ -720,7 +720,7 @@ async function buildWGPDFFallback(d: FormData): Promise<Uint8Array> {
   legal.forEach(l => { page.drawText(safe(l), { x: M + 8, y, size: 8, font: hv, color: rgb(0.55, 0.1, 0.08) }); y -= 13; });
 
   page.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.82, 0.86, 0.92) });
-  page.drawText("ExpatFlow Berlin  ·  " + new Date().toLocaleDateString("de-DE"), { x: M, y: 20, size: 7, font: hv, color: rgb(0.68, 0.72, 0.8) });
+  page.drawText("SimplyExpat Berlin  ·  " + new Date().toLocaleDateString("de-DE"), { x: M, y: 20, size: 7, font: hv, color: rgb(0.68, 0.72, 0.8) });
   return doc.save();
 }
 
@@ -830,7 +830,7 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
   }
 
   page.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.8, 0.84, 0.92) });
-  page.drawText("ExpatFlow Berlin  \u00b7  service.berlin.de  \u00b7  Ohne Gew\u00e4hr", { x: M, y: 20, size: 7, font: hv, color: rgb(0.65, 0.68, 0.76) });
+  page.drawText("SimplyExpat Berlin  \u00b7  service.berlin.de  \u00b7  Ohne Gew\u00e4hr", { x: M, y: 20, size: 7, font: hv, color: rgb(0.65, 0.68, 0.76) });
   return doc.save();
 }
 
@@ -1100,7 +1100,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     x: ML, y: PH - 34, size: 20, font: HB, color: WHITE,
   });
   // Subtitle
-  p1pg.drawText(safe("ExpatFlow Berlin  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + new Date().toLocaleDateString("en-GB")), {
+  p1pg.drawText(safe("SimplyExpat Berlin  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + new Date().toLocaleDateString("en-GB")), {
     x: ML, y: PH - 52, size: 9, font: HV, color: rgb(0.70, 0.82, 1.00),
   });
 
@@ -1263,7 +1263,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   p1pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  p1pg.drawText("ExpatFlow Berlin  ·  Your personalised checklist  ·  Page 1 of 2", {
+  p1pg.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  Page 1 of 2", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
   p1pg.drawText("service.berlin.de/dienstleistung/120686", {
@@ -1277,7 +1277,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Header ────────────────────────────────────────────────────────────────
   p2pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
-  p2pg.drawText("ExpatFlow Berlin — Anmeldung Expert Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
+  p2pg.drawText("SimplyExpat Berlin — Anmeldung Expert Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
   p2pg.drawText("Everything you need to know, in plain English", {
     x: ML, y: PH - 52, size: 9.5, font: HV, color: rgb(0.70, 0.82, 1.00),
   });
@@ -1334,7 +1334,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     const tipH = 44;
     const tipY = PH - cur2 - tipH;
     p2pg.drawRectangle({ x: ML, y: tipY, width: CW, height: tipH, color: NAVY, borderRadius: 8 });
-    p2pg.drawText("ExpatFlow tip:", { x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE });
+    p2pg.drawText("SimplyExpat tip:", { x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE });
     p2pg.drawText("Bring a pen. Bring passport or ID. Arrive 5 min early. Stay calm.", {
       x: ML + 14, y: tipY + tipH - 29, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00),
     });
@@ -1345,7 +1345,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   p2pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  p2pg.drawText("ExpatFlow Berlin  ·  Expert Guide  ·  Page 2 of 2  ·  All information without guarantee", {
+  p2pg.drawText("SimplyExpat Berlin  ·  Expert Guide  ·  Page 2 of 2  ·  All information without guarantee", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
   p2pg.drawText("service.berlin.de", {
@@ -1484,6 +1484,14 @@ export default function BerlinButler() {
       if (raw) {
         const saved = JSON.parse(raw);
         if (saved.form) setForm(() => ({ ...EMPTY, ...saved.form }));
+      }
+    } catch {}
+
+    // Check if user already completed — land on done page
+    try {
+      if (localStorage.getItem("simplyexpat-done-v1") === "1") {
+        setPhase("done");
+        return;
       }
     } catch {}
 
@@ -1637,14 +1645,17 @@ export default function BerlinButler() {
           });
           setEmailSent(true);
         } catch (emailErr) {
-          console.warn("[ExpatFlow] Reminder email failed (non-critical):", emailErr);
+          console.warn("[SimplyExpat] Reminder email failed (non-critical):", emailErr);
         }
         setGenStatus("");
       }
 
       setPhase("done");
       pushNav("done");
-      try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.setItem("simplyexpat-done-v1", "1"); // returning users land here
+      } catch {}
     } catch (e: any) {
       setGenStatus("");
       if (e.message === "PDF_NOT_FOUND") alert("Place anmeldung.pdf in /public/ folder.");
@@ -1737,7 +1748,7 @@ export default function BerlinButler() {
         <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ textAlign: "center" }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>E</span>
+              <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
             </div>
             <div style={{ width: 80, height: 4, borderRadius: 99, background: "#e8ecf4", margin: "0 auto", overflow: "hidden", position: "relative" }}>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#0075FF,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
@@ -1751,7 +1762,15 @@ export default function BerlinButler() {
 
       {isWizard             && <WizardLayout form={form} step={step} setStep={setStep} upd={upd} set_={set_} updPerson={updPerson} addPerson={addPerson} removePerson={removePerson} err={err} setErr={setErr} anxiety={anxiety} sheets={sheets} pushNav={pushNav} onGoHome={() => { setPhase("landing"); pushNav("landing"); }} onComplete={() => { setPhase("payment"); pushNav("payment"); }} />}
       {phase === "payment"  && <PaymentPage paid={paid} onPay={() => setPaid(true)} genStatus={genStatus} onGenerate={doGenerate} allDone={allDone} sheets={sheets} form={form} downloadWG={downloadWG} userEmail={userEmail} setUserEmail={setUserEmail} emailSent={emailSent} />}
-      {phase === "done"     && <DonePage form={form} sheets={sheets} generatedPDFs={generatedPDFs} />}
+      {phase === "done"     && <DonePage form={form} sheets={sheets} generatedPDFs={generatedPDFs} onRestart={() => {
+        try { localStorage.removeItem("simplyexpat-done-v1"); localStorage.clear(); } catch {}
+        setForm({ ...EMPTY });
+        setPaid(false);
+        setAllDone(false);
+        setGeneratedPDFs({ anmeldung: [], guide: null });
+        setPhase("landing");
+        window.history.replaceState({}, "", window.location.pathname);
+      }} />}
     </div>
   );
 }
@@ -1791,7 +1810,7 @@ function BureaucracyBattleIllustration() {
   return (
     <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg"
       style={{ width: "100%", maxWidth: 420, height: "auto" }}
-      aria-label="Expat fighting the German bureaucracy monster with ExpatFlow">
+      aria-label="Expat fighting the German bureaucracy monster with SimplyExpat">
 
       {/* ── Background glow ── */}
       <defs>
@@ -1925,9 +1944,9 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                   <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <Building2 size={14} color="white" />
+                        <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
                       </div>
-                      <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>ExpatFlow <span style={{ color: "#0075FF" }}>Berlin</span></span>
+                      <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
                     </div>
                     {/* Services tab */}
                     <button
@@ -2041,6 +2060,11 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
             <span style={{ background: "linear-gradient(135deg,#0f172a,#0075FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>is terrifying.</span><br />
             <span style={{ fontSize: 44 }}>We make it disappear.</span>
           </h1>
+          {/* Service name — SEO + clarity: user knows exactly what this page is for */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#0f172a", borderRadius: 10, padding: "8px 16px", marginBottom: 20 }}>
+            <FileText size={14} color="#0075FF" />
+            <span style={{ fontSize: 14, fontWeight: 800, color: "white", letterSpacing: "-0.01em" }}>Bürgeramt Anmeldung <span style={{ color: "#0075FF" }}>(Registration)</span></span>
+          </div>
 
           {/* Fear + promise */}
           <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.75, maxWidth: 480, marginBottom: 20 }}>
@@ -2142,7 +2166,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
                   <div>
                     <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13.5, marginBottom: 5 }}>Automatic Multi-Sheet Logic</div>
                     <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6, marginBottom: 10 }}>
-                      The official form fits exactly <strong>2 people per sheet</strong>. ExpatFlow automatically generates the right number of forms:
+                      The official form fits exactly <strong>2 people per sheet</strong>. SimplyExpat automatically generates the right number of forms:
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                       {[["1–2 people","1 Anmeldung form"],["3–4 people","2 forms (auto-generated)"],["5–6 people","3 forms (auto-generated)"]].map(([p,f]) => (
@@ -2231,11 +2255,11 @@ function LandingLegalFooter() {
       </div>
       {/* SEO long-tail paragraph — visible but subtle, naturally written */}
       <p style={{ color: "#94a3b8", fontSize: 11, marginTop: 20, marginBottom: 10, lineHeight: 1.7, maxWidth: 680, textAlign: "center" }}>
-        ExpatFlow helps expats complete the Berlin Anmeldung form in English and generate an official PDF ready for the Bürgeramt — with zero data stored on any server.
+        SimplyExpat helps expats complete the Berlin Anmeldung form in English and generate an official PDF ready for the Bürgeramt — with zero data stored on any server.
         Whether you need Anmeldung Berlin English PDF support, expert relocation Berlin paperwork assistance, or simply want to fill your Bürgeramt form without storing your data anywhere,
-        ExpatFlow prepares everything in 3 minutes. Available for every nationality moving to Berlin.
+        SimplyExpat prepares everything in 3 minutes. Available for every nationality moving to Berlin.
       </p>
-      <p style={{ color: "#334155", fontSize: 11.5, marginTop: 14 }}>© 2026 ExpatFlow GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
+      <p style={{ color: "#334155", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
   );
 }
@@ -2318,7 +2342,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: 0, flexShrink: 0 }}>
             <div style={{ width: 22, height: 22, borderRadius: 5, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Building2 size={10} color="white" />
+              <span style={{ color: "white", fontSize: 10, fontWeight: 900 }}>S</span>
             </div>
           </button>
 
@@ -2383,9 +2407,9 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
             <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#0075FF,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Building2 size={12} color="white" />
+              <span style={{ color: "white", fontSize: 12, fontWeight: 900 }}>S</span>
             </div>
-            <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>ExpatFlow <span style={{ color: "#0075FF" }}>Berlin</span></span>
+            <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
           </button>
         </div>
 
@@ -2879,7 +2903,7 @@ function ComingSoonOverlay({ onBack }: { onBack: () => void }) {
         </div>
         <h2 style={{ fontSize: 22, fontWeight: 900, color: "#111111", letterSpacing: "-0.02em", marginBottom: 8 }}>Coming to your city soon</h2>
         <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.65, marginBottom: 24 }}>
-          ExpatFlow currently supports <strong>Berlin only</strong>. We are expanding to Hamburg, Munich, and Frankfurt in 2026.
+          SimplyExpat currently supports <strong>Berlin only</strong>. We are expanding to Hamburg, Munich, and Frankfurt in 2026.
         </p>
         {!submitted ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -2933,7 +2957,7 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
       {/* Berlin gate */}
       <div>
         <p style={{ color: "#64748b", fontSize: 13, marginBottom: 12, lineHeight: 1.55 }}>
-          ExpatFlow currently supports Berlin only. Please confirm your new address is within the city of Berlin.
+          SimplyExpat currently supports Berlin only. Please confirm your new address is within the city of Berlin.
         </p>
         <div style={{ display: "flex", gap: 10 }}>
           {([["true", "Yes — my new address is in Berlin"], ["false", "No — different city"]] as const).map(([v, l]) => {
@@ -3073,7 +3097,7 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             <div>
               <div style={{ fontWeight: 700, color: "#991b1b", fontSize: 13, marginBottom: 3 }}>Beiblatt not supported yet</div>
               <p style={{ color: "#7f1d1d", fontSize: 12.5, lineHeight: 1.6 }}>
-                We currently cannot generate the Beiblatt (supplementary sheet for multiple residences). You will need to fill that form manually. You can still use ExpatFlow for the main Anmeldung — uncheck this box to continue.
+                We currently cannot generate the Beiblatt (supplementary sheet for multiple residences). You will need to fill that form manually. You can still use SimplyExpat for the main Anmeldung — uncheck this box to continue.
               </p>
             </div>
           </div>
@@ -3503,7 +3527,7 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
           <div style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 12, background: "#f0f9ff", border: "1px solid #bae6fd", display: "flex", gap: 9, alignItems: "flex-start" }}>
             <Shield size={14} color="#0284c7" style={{ flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12, color: "#0c4a6e", lineHeight: 1.6 }}>
-              <strong>Your data never reaches our servers.</strong> Everything you enter — address, passport details, birth dates, family data — is held only in your own browser's local storage. ExpatFlow has no access to it. It is automatically deleted from your device once your documents are generated. No PDFs, no passport data, no sensitive information ever leaves your browser.
+              <strong>Your data never reaches our servers.</strong> Everything you enter — address, passport details, birth dates, family data — is held only in your own browser's local storage. SimplyExpat has no access to it. It is automatically deleted from your device once your documents are generated. No PDFs, no passport data, no sensitive information ever leaves your browser.
             </p>
           </div>
         )}
@@ -3515,7 +3539,7 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
               <div style={{ padding: "12px 14px", borderRadius: 11, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 9, alignItems: "flex-start" }}>
                 <AlertCircle size={14} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
                 <p style={{ color: "#991b1b", fontSize: 13, lineHeight: 1.5 }}>
-                  <strong>Berlin only:</strong> ExpatFlow currently only supports Berlin addresses. Please go back and confirm your new address is within Berlin before purchasing.
+                  <strong>Berlin only:</strong> SimplyExpat currently only supports Berlin addresses. Please go back and confirm your new address is within Berlin before purchasing.
                 </p>
               </div>
             )}
@@ -3664,15 +3688,18 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
 // ═══════════════════════════════════════════════════════════════════
 //  DONE PAGE — product-first layout, big download cards, no auto-DL
 // ═══════════════════════════════════════════════════════════════════
-function DonePage({ form, sheets, generatedPDFs }: {
+function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   form: FormData;
   sheets: number;
   generatedPDFs: { anmeldung: { bytes: Uint8Array; name: string }[]; guide: Uint8Array | null };
+  onRestart: () => void;
 }) {
   const p1 = form.people[0] ?? EMPTY_PERSON;
   const [dlA, setDlA] = useState(false);
   const [dlG, setDlG] = useState(false);
   const [dlW, setDlW] = useState(false);
+  const [showWipe, setShowWipe] = useState(false);
+  const [wipeChecked, setWipeChecked] = useState(false);
 
   const isMarried = form.maritalStatus === "verheiratet" || form.maritalStatus === "partnerschaft";
   const isDivorced = form.maritalStatus === "geschieden";
@@ -4113,7 +4140,7 @@ function DonePage({ form, sheets, generatedPDFs }: {
             </p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
               <a
-                href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20form%20in%20English%20in%203%20minutes%20%E2%80%94%20no%20data%20stored%2C%20perfectly%20in%20German.%20You%20need%20this%3A%20https%3A%2F%2Fexpatflow.de"
+                href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20form%20in%20English%20in%203%20minutes%20%E2%80%94%20no%20data%20stored%2C%20perfectly%20in%20German.%20You%20need%20this%3A%20https%3A%2F%2Fsimplyexpat.de"
                 target="_blank" rel="noopener noreferrer"
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 11, background: "#25D366", color: "white", fontWeight: 800, fontSize: 13.5, textDecoration: "none" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.09.541 4.05 1.487 5.757L.057 23.882l6.291-1.649A11.935 11.935 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.954a9.942 9.942 0 01-5.071-1.388l-.364-.215-3.735.979.996-3.638-.237-.374A9.935 9.935 0 012.046 12C2.046 6.479 6.479 2.046 12 2.046c5.52 0 9.954 4.433 9.954 9.954 0 5.52-4.434 9.954-9.954 9.954z"/></svg>
@@ -4121,7 +4148,7 @@ function DonePage({ form, sheets, generatedPDFs }: {
               </a>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText("https://expatflow.de").then(() => {
+                  navigator.clipboard.writeText("https://simplyexpat.de").then(() => {
                     const btn = document.getElementById("copy-link-btn");
                     if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); }
                   });
@@ -4138,6 +4165,73 @@ function DonePage({ form, sheets, generatedPDFs }: {
             </p>
           </div>
         </div>
+
+        {/* ── Wipe & Restart button ── */}
+        <div style={{ marginTop: 32, textAlign: "center" }}>
+          <button
+            onClick={() => { setShowWipe(true); setWipeChecked(false); }}
+            style={{ background: "none", border: "none", color: "#94a3b8", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 }}>
+            Clear browser data &amp; restart process
+          </button>
+        </div>
+
+        {/* ── Wipe confirmation popup ── */}
+        {showWipe && (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.7)", backdropFilter: "blur(8px)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px" }}>
+            <div style={{ maxWidth: 420, width: "100%", background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 32px 80px rgba(0,0,0,0.3)" }}>
+              {/* Header */}
+              <div style={{ background: "#fef2f2", padding: "22px 24px 18px", borderBottom: "1px solid #fecaca" }}>
+                <div style={{ fontSize: 24, marginBottom: 8 }}>⚠️</div>
+                <h3 style={{ fontSize: 17, fontWeight: 900, color: "#111111", letterSpacing: "-0.02em", marginBottom: 6 }}>
+                  Clear all data &amp; start over
+                </h3>
+                <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6 }}>
+                  This will permanently delete all your data from this browser.
+                </p>
+              </div>
+              {/* Warning items */}
+              <div style={{ padding: "18px 24px" }}>
+                {[
+                  { icon: "🗑", text: "Your filled Anmeldung form will be deleted from your browser" },
+                  { icon: "📄", text: "Make sure you have already downloaded your PDFs — they cannot be recovered" },
+                  { icon: "💳", text: "Your purchase cannot be restored — we do not store it on any server" },
+                  { icon: "🔁", text: "You will need to pay again if you want new documents" },
+                ].map(({ icon, text }) => (
+                  <div key={text} style={{ display: "flex", gap: 10, marginBottom: 12, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 15, flexShrink: 0 }}>{icon}</span>
+                    <span style={{ fontSize: 13, color: "#374151", lineHeight: 1.5 }}>{text}</span>
+                  </div>
+                ))}
+
+                {/* Checkbox confirmation */}
+                <div
+                  onClick={() => setWipeChecked(c => !c)}
+                  style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 14px", borderRadius: 11, background: wipeChecked ? "#f0fdf4" : "#f8fafc", border: `1.5px solid ${wipeChecked ? "#86efac" : "#e8ecf4"}`, cursor: "pointer", marginTop: 16, transition: "all 0.15s" }}>
+                  <div style={{ width: 18, height: 18, borderRadius: 5, border: `2px solid ${wipeChecked ? "#16a34a" : "#cbd5e1"}`, background: wipeChecked ? "#16a34a" : "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, transition: "all 0.15s" }}>
+                    {wipeChecked && <Check size={11} color="white" strokeWidth={3} />}
+                  </div>
+                  <span style={{ fontSize: 13, color: "#374151", lineHeight: 1.5, fontWeight: 600 }}>
+                    I have downloaded my documents and understand that my purchase cannot be recovered.
+                  </span>
+                </div>
+              </div>
+              {/* Actions */}
+              <div style={{ padding: "0 24px 22px", display: "flex", gap: 10 }}>
+                <button
+                  onClick={() => setShowWipe(false)}
+                  style={{ flex: 1, padding: "12px", borderRadius: 11, border: "1.5px solid #e8ecf4", background: "white", color: "#374151", fontWeight: 700, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit" }}>
+                  Cancel
+                </button>
+                <button
+                  onClick={() => { if (wipeChecked) onRestart(); }}
+                  disabled={!wipeChecked}
+                  style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: wipeChecked ? "#dc2626" : "#e2e8f0", color: wipeChecked ? "white" : "#94a3b8", fontWeight: 800, fontSize: 13.5, cursor: wipeChecked ? "pointer" : "not-allowed", fontFamily: "inherit", transition: "all 0.2s" }}>
+                  Delete everything
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
@@ -4203,7 +4297,7 @@ export function Impressum({ onClose }: { onClose: () => void }) {
       </LP>
 
       <LH2>Kontakt</LH2>
-      <LP>E-Mail: legal@expatflow.de</LP>
+      <LP>E-Mail: info@simplyexpat.de</LP>
 
       <LH2>Verantwortlich für den Inhalt nach §18 Abs. 2 MStV</LH2>
       <LP>
@@ -4213,7 +4307,7 @@ export function Impressum({ onClose }: { onClose: () => void }) {
       </LP>
 
       <LH2>Haftungsausschluss</LH2>
-      <LP>ExpatFlow ist ein technisches Hilfsmittel (Ausfüllhilfe) gemäß §2 RDG und stellt keine Rechtsberatung dar. Die generierten Dokumente ersetzen keine rechtliche Beratung. Die Richtigkeit der eingegebenen Daten liegt in der alleinigen Verantwortung des Nutzers.</LP>
+      <LP>SimplyExpat ist ein technisches Hilfsmittel (Ausfüllhilfe) gemäß §2 RDG und stellt keine Rechtsberatung dar. Die generierten Dokumente ersetzen keine rechtliche Beratung. Die Richtigkeit der eingegebenen Daten liegt in der alleinigen Verantwortung des Nutzers.</LP>
 
       <LH2>Streitschlichtung</LH2>
       <LP>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <strong>ec.europa.eu/consumers/odr</strong>. Wir sind nicht bereit und nicht verpflichtet, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</LP>
@@ -4223,15 +4317,15 @@ export function Impressum({ onClose }: { onClose: () => void }) {
 
 export function TermsOfService({ onClose }: { onClose: () => void }) {
   return (
-    <LegalModal title="Terms of Service — ExpatFlow" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · ExpatFlow GmbH (in formation), Berlin, Germany</p>
+    <LegalModal title="Terms of Service — SimplyExpat" onClose={onClose}>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat GmbH (in formation), Berlin, Germany</p>
 
       <LHighlight>
-        ExpatFlow is a <strong>Technical Filing Aid (Ausfüllhilfe)</strong>. We are a software service, not a law firm, legal advisor, or governmental authority. Use of this service does not constitute legal advice and does not create a legal service relationship under §2 RDG (Rechtsdienstleistungsgesetz).
+        SimplyExpat is a <strong>Technical Filing Aid (Ausfüllhilfe)</strong>. We are a software service, not a law firm, legal advisor, or governmental authority. Use of this service does not constitute legal advice and does not create a legal service relationship under §2 RDG (Rechtsdienstleistungsgesetz).
       </LHighlight>
 
       <LH2>1. Service Description</LH2>
-      <LP>ExpatFlow provides a guided digital form-completion service that generates pre-filled PDF documents for the Berlin Anmeldung process (residential registration under §17 BMG). The service is strictly a technical tool. You remain solely responsible for the accuracy of the information you provide and for submitting completed documents to the relevant authority (Bürgeramt).</LP>
+      <LP>SimplyExpat provides a guided digital form-completion service that generates pre-filled PDF documents for the Berlin Anmeldung process (residential registration under §17 BMG). The service is strictly a technical tool. You remain solely responsible for the accuracy of the information you provide and for submitting completed documents to the relevant authority (Bürgeramt).</LP>
 
       <LH2>2. What We Do Not Do</LH2>
       <LUL items={[
@@ -4242,16 +4336,16 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
       ]} />
 
       <LH2>3. Eligibility</LH2>
-      <LP>The service is available only for registrations at a <strong>Berlin address</strong>. By using ExpatFlow you confirm that your new primary address is located within the city boundaries of Berlin, Germany. Use for other cities or regions is not supported and may produce incorrect outputs.</LP>
+      <LP>The service is available only for registrations at a <strong>Berlin address</strong>. By using SimplyExpat you confirm that your new primary address is located within the city boundaries of Berlin, Germany. Use for other cities or regions is not supported and may produce incorrect outputs.</LP>
 
       <LH2>4. Accuracy of Information</LH2>
-      <LP>You warrant that all information you enter is truthful, accurate, and matches your official identity documents. Deliberately providing false information on an Anmeldung constitutes an administrative offence (Ordnungswidrigkeit) under German law. ExpatFlow bears no liability for errors arising from incorrect user inputs.</LP>
+      <LP>You warrant that all information you enter is truthful, accurate, and matches your official identity documents. Deliberately providing false information on an Anmeldung constitutes an administrative offence (Ordnungswidrigkeit) under German law. SimplyExpat bears no liability for errors arising from incorrect user inputs.</LP>
 
       <LH2>5. Payment and Delivery</LH2>
-      <LP>The service fee is <strong>€15 (one-time, no subscription)</strong>. Payment is processed by Stripe via a secure hosted checkout page. ExpatFlow never handles your card details. Upon successful payment confirmation, you are redirected to a success page where PDF documents are generated instantly in your browser. Delivery is considered complete at the moment the PDF generation process finishes in your browser. No physical documents are sent.</LP>
+      <LP>The service fee is <strong>€15 (one-time, no subscription)</strong>. Payment is processed by Stripe via a secure hosted checkout page. SimplyExpat never handles your card details. Upon successful payment confirmation, you are redirected to a success page where PDF documents are generated instantly in your browser. Delivery is considered complete at the moment the PDF generation process finishes in your browser. No physical documents are sent.</LP>
 
       <LH2>6. Limitation of Liability</LH2>
-      <LP>To the maximum extent permitted by applicable law, ExpatFlow's total liability to you for any claim arising from or relating to these Terms or the service shall not exceed the amount you paid for the service (€15). We are not liable for indirect, incidental, or consequential damages, including any administrative fees, fines, or costs arising from a rejected Anmeldung.</LP>
+      <LP>To the maximum extent permitted by applicable law, SimplyExpat's total liability to you for any claim arising from or relating to these Terms or the service shall not exceed the amount you paid for the service (€15). We are not liable for indirect, incidental, or consequential damages, including any administrative fees, fines, or costs arising from a rejected Anmeldung.</LP>
 
       <LH2>7. Governing Law</LH2>
       <LP>These Terms are governed by the laws of the Federal Republic of Germany. The exclusive place of jurisdiction for all disputes is Berlin, Germany, to the extent permitted by applicable consumer protection law.</LP>
@@ -4259,7 +4353,7 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
       <LH2>8. Changes to Terms</LH2>
       <LP>We may update these Terms from time to time. Material changes will be communicated via the website. Continued use of the service after changes constitutes acceptance.</LP>
 
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: legal@expatflow.de</p>
+      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: info@simplyexpat.de</p>
     </LegalModal>
   );
 }
@@ -4274,18 +4368,18 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
 export function CancellationPolicy({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Cancellation Policy (Widerrufsbelehrung)" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · ExpatFlow GmbH (in formation)</p>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat GmbH (in formation)</p>
 
       <LHighlight>
-        <strong>Important notice:</strong> Because ExpatFlow is a digital service that is performed immediately upon your request, your statutory right of withdrawal expires as soon as the PDF generation is complete — provided you have expressly consented to this at checkout, as required by §356 para. 5 BGB and Article 16(m) of Directive 2011/83/EU.
+        <strong>Important notice:</strong> Because SimplyExpat is a digital service that is performed immediately upon your request, your statutory right of withdrawal expires as soon as the PDF generation is complete — provided you have expressly consented to this at checkout, as required by §356 para. 5 BGB and Article 16(m) of Directive 2011/83/EU.
       </LHighlight>
 
       <LH2>Right of Withdrawal</LH2>
       <LP>You have the right to withdraw from this contract within <strong>14 days</strong> without giving any reason (§355 BGB). The withdrawal period begins on the day the contract is concluded (i.e., the moment payment is confirmed).</LP>
-      <LP>To exercise your right of withdrawal, you must inform us of your decision by an unequivocal statement (e.g., by email to legal@expatflow.de) before the service has been fully performed.</LP>
+      <LP>To exercise your right of withdrawal, you must inform us of your decision by an unequivocal statement (e.g., by email to info@simplyexpat.de) before the service has been fully performed.</LP>
 
       <LH2>Expiry of the Right of Withdrawal for Digital Services</LH2>
-      <LP><strong>You expressly acknowledge and agree</strong> that ExpatFlow will begin performing the service (PDF generation) immediately after your payment is confirmed, and that the service is fully performed at the moment PDF generation completes. By requesting immediate performance and confirming this at the point of payment, <strong>you waive your right of withdrawal</strong> under §356 para. 5 BGB once the service has been fully performed.</LP>
+      <LP><strong>You expressly acknowledge and agree</strong> that SimplyExpat will begin performing the service (PDF generation) immediately after your payment is confirmed, and that the service is fully performed at the moment PDF generation completes. By requesting immediate performance and confirming this at the point of payment, <strong>you waive your right of withdrawal</strong> under §356 para. 5 BGB once the service has been fully performed.</LP>
       <LP>This waiver is legally valid under §356 para. 5 BGB and Article 16(m) of EU Directive 2011/83/EU, which exempts fully-performed digital content services from the right of withdrawal where the consumer has given prior express consent and acknowledged the loss of the withdrawal right.</LP>
 
       <LH2>Consequence of Withdrawal (Before Service Completion)</LH2>
@@ -4294,15 +4388,15 @@ export function CancellationPolicy({ onClose }: { onClose: () => void }) {
       <LH2>Withdrawal Form (Model)</LH2>
       <LP>If you wish to withdraw, you may use the following model form (not mandatory):</LP>
       <div style={{ padding: "12px 16px", background: "#f8fafc", borderRadius: 10, border: "1px solid #e8ecf4", fontFamily: "monospace", fontSize: 12.5, lineHeight: 1.7, marginBottom: 16 }}>
-        To: ExpatFlow GmbH, legal@expatflow.de<br/>
-        I/We hereby give notice that I/we withdraw from my/our contract for the provision of the following service: ExpatFlow Anmeldung PDF Generation<br/>
+        To: SimplyExpat GmbH, info@simplyexpat.de<br/>
+        I/We hereby give notice that I/we withdraw from my/our contract for the provision of the following service: SimplyExpat Anmeldung PDF Generation<br/>
         Ordered on: ___________<br/>
         Name: ___________<br/>
         Signature (if paper): ___________<br/>
         Date: ___________
       </div>
 
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: legal@expatflow.de</p>
+      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: info@simplyexpat.de</p>
     </LegalModal>
   );
 }
@@ -4317,7 +4411,7 @@ export function CancellationPolicy({ onClose }: { onClose: () => void }) {
 // ═══════════════════════════════════════════════════════════════════
 export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
   return (
-    <LegalModal title="Privacy Policy — ExpatFlow" onClose={onClose}>
+    <LegalModal title="Privacy Policy — SimplyExpat" onClose={onClose}>
       <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: April 2026 · Verantwortlicher: Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
 
       <LHighlight>
@@ -4325,28 +4419,28 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
       </LHighlight>
 
       <LH2>1. Controller (Verantwortlicher)</LH2>
-      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: privacy@expatflow.de. Operating under the brand name ExpatFlow (GmbH in formation).</LP>
+      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: info@simplyexpat.de. Operating under the brand name SimplyExpat (GmbH in formation).</LP>
 
       <LH2>2. What data we process and why</LH2>
 
-      <LP><strong>a) Registration form data</strong> — names, dates of birth, addresses, passport numbers, citizenship, marital status, religious affiliation: Stored exclusively in your browser's localStorage on your own device under the key "expatflow-v1". ExpatFlow has no technical access to this data at any point. It is never transmitted to our servers. It is automatically deleted from your browser once document generation is complete. Legal basis: this is not a processing activity by ExpatFlow within the meaning of Art. 4 No. 2 GDPR, as the data never reaches our systems (see GDPR Recital 26).</LP>
+      <LP><strong>a) Registration form data</strong> — names, dates of birth, addresses, passport numbers, citizenship, marital status, religious affiliation: Stored exclusively in your browser's localStorage on your own device under the key "simplyexpat-v1". SimplyExpat has no technical access to this data at any point. It is never transmitted to our servers. It is automatically deleted from your browser once document generation is complete. Legal basis: this is not a processing activity by SimplyExpat within the meaning of Art. 4 No. 2 GDPR, as the data never reaches our systems (see GDPR Recital 26).</LP>
 
-      <LP><strong>b) PDF generation</strong>: Your completed Anmeldung form and personalised checklist are generated entirely in your browser using the open-source pdf-lib library. The PDF bytes exist only in browser memory and are downloaded directly to your device. They are never transmitted to ExpatFlow servers.</LP>
+      <LP><strong>b) PDF generation</strong>: Your completed Anmeldung form and personalised checklist are generated entirely in your browser using the open-source pdf-lib library. The PDF bytes exist only in browser memory and are downloaded directly to your device. They are never transmitted to SimplyExpat servers.</LP>
 
-      <LP><strong>c) Payment processing</strong>: Your payment of €15 is handled exclusively by Stripe, Inc. (510 Townsend Street, San Francisco, CA 94103, USA), a PCI-DSS Level 1 certified payment processor. You are redirected to a Stripe-hosted payment page. ExpatFlow never receives or processes your card number, bank details, or any payment credentials. After your payment is completed, your browser transmits only your Stripe session ID to our server for the sole purpose of confirming payment status (paid / not paid). No personal form data is included in this request. Legal basis: Art. 6(1)(b) GDPR — performance of a contract. Stripe's Privacy Policy: stripe.com/privacy.</LP>
+      <LP><strong>c) Payment processing</strong>: Your payment of €15 is handled exclusively by Stripe, Inc. (510 Townsend Street, San Francisco, CA 94103, USA), a PCI-DSS Level 1 certified payment processor. You are redirected to a Stripe-hosted payment page. SimplyExpat never receives or processes your card number, bank details, or any payment credentials. After your payment is completed, your browser transmits only your Stripe session ID to our server for the sole purpose of confirming payment status (paid / not paid). No personal form data is included in this request. Legal basis: Art. 6(1)(b) GDPR — performance of a contract. Stripe's Privacy Policy: stripe.com/privacy.</LP>
 
-      <LP><strong>d) Post-purchase next-steps email (optional)</strong>: After your documents are generated, you may optionally provide your email address to receive a transactional confirmation email. This email contains your next steps: printing your form, booking your Bürgeramt appointment, and your document checklist. The only data transmitted to our server and forwarded to our email service provider Resend, Inc. for delivery is: your email address, your first name, and the number of forms generated. No form data, no passport information, no special-category data (Art. 9 GDPR) is included. This field is entirely optional — the service is fully functional without providing an email. Legal basis: Art. 6(1)(a) GDPR — your freely given, specific, informed, and unambiguous consent by voluntarily entering your email address. You may withdraw this consent at any time by contacting privacy@expatflow.de; withdrawal does not affect the lawfulness of processing prior to withdrawal. Resend, Inc. Privacy Policy: resend.com/privacy.</LP>
+      <LP><strong>d) Post-purchase next-steps email (optional)</strong>: After your documents are generated, you may optionally provide your email address to receive a transactional confirmation email. This email contains your next steps: printing your form, booking your Bürgeramt appointment, and your document checklist. The only data transmitted to our server and forwarded to our email service provider Resend, Inc. for delivery is: your email address, your first name, and the number of forms generated. No form data, no passport information, no special-category data (Art. 9 GDPR) is included. This field is entirely optional — the service is fully functional without providing an email. Legal basis: Art. 6(1)(a) GDPR — your freely given, specific, informed, and unambiguous consent by voluntarily entering your email address. You may withdraw this consent at any time by contacting info@simplyexpat.de; withdrawal does not affect the lawfulness of processing prior to withdrawal. Resend, Inc. Privacy Policy: resend.com/privacy.</LP>
 
-      <LP><strong>e) Cookie / localStorage consent flag</strong>: When you acknowledge the cookie notice, a flag ("expatflow-cookie-ack-v1") is stored in your browser's localStorage. This flag contains no personal data and is used solely to avoid showing the notice repeatedly. Legal basis: §25(2) No. 2 TTDSG — strictly necessary.</LP>
+      <LP><strong>e) Cookie / localStorage consent flag</strong>: When you acknowledge the cookie notice, a flag ("simplyexpat-cookie-ack-v1") is stored in your browser's localStorage. This flag contains no personal data and is used solely to avoid showing the notice repeatedly. Legal basis: §25(2) No. 2 TTDSG — strictly necessary.</LP>
 
       <LH2>3. Special category data — Religious affiliation (Art. 9 GDPR)</LH2>
-      <LP>Religious affiliation is special-category personal data under Art. 9(1) GDPR. The Anmeldung form includes an optional field for religious affiliation for tax purposes (Kirchensteuer). Because all form data is processed exclusively in your browser and never transmitted to ExpatFlow servers, ExpatFlow does not process this data within the meaning of Art. 4 No. 2 GDPR. You may leave this field blank or select "None" — this is a valid choice that results in no church tax obligation.</LP>
+      <LP>Religious affiliation is special-category personal data under Art. 9(1) GDPR. The Anmeldung form includes an optional field for religious affiliation for tax purposes (Kirchensteuer). Because all form data is processed exclusively in your browser and never transmitted to SimplyExpat servers, SimplyExpat does not process this data within the meaning of Art. 4 No. 2 GDPR. You may leave this field blank or select "None" — this is a valid choice that results in no church tax obligation.</LP>
 
       <LH2>4. Cookies and browser storage (§25 TTDSG)</LH2>
       <LP>We use no marketing, tracking, or analytics cookies. We use no third-party advertising cookies. The only storage mechanisms are:</LP>
       <LUL items={[
-        "localStorage 'expatflow-v1': Your registration form state. Stored on your device only. Deleted automatically upon document generation. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for the service you explicitly requested.",
-        "localStorage 'expatflow-cookie-ack-v1': Records that you have acknowledged the cookie notice. Contains no personal data. Legal basis: §25(2) No. 2 TTDSG.",
+        "localStorage 'simplyexpat-v1': Your registration form state. Stored on your device only. Deleted automatically upon document generation. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for the service you explicitly requested.",
+        "localStorage 'simplyexpat-cookie-ack-v1': Records that you have acknowledged the cookie notice. Contains no personal data. Legal basis: §25(2) No. 2 TTDSG.",
         "Stripe cookies: Set by Stripe on their hosted checkout page to enable secure payment processing. Governed by Stripe's cookie policy. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for payment.",
       ]} />
 
@@ -4358,23 +4452,23 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
       ]} />
 
       <LH2>6. International data transfers (Art. 44–49 GDPR)</LH2>
-      <LP>Stripe and Resend are US-based companies. Data transfers to the USA are carried out on the basis of Standard Contractual Clauses (SCCs) pursuant to Art. 46(2)(c) GDPR, as adopted by the European Commission. You may request a copy of the applicable SCCs by contacting privacy@expatflow.de.</LP>
+      <LP>Stripe and Resend are US-based companies. Data transfers to the USA are carried out on the basis of Standard Contractual Clauses (SCCs) pursuant to Art. 46(2)(c) GDPR, as adopted by the European Commission. You may request a copy of the applicable SCCs by contacting info@simplyexpat.de.</LP>
 
       <LH2>7. Your rights (Art. 15–22 GDPR)</LH2>
-      <LP>You have the following rights regarding your personal data: the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20), and the right to object (Art. 21). Because ExpatFlow does not store your form data on our servers, most of these rights apply to data held by Stripe (for payment records) or Resend (for email delivery, if you opted in). To exercise any right, contact privacy@expatflow.de. We will respond within 30 days.</LP>
-      <LP>If you provided your email address and wish to withdraw consent for email processing, contact privacy@expatflow.de and we will instruct Resend to delete any data associated with your email. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</LP>
-      <LP>You also have the right to lodge a complaint with a supervisory authority. The competent authority for ExpatFlow is: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin, mailbox@datenschutz-berlin.de.</LP>
+      <LP>You have the following rights regarding your personal data: the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20), and the right to object (Art. 21). Because SimplyExpat does not store your form data on our servers, most of these rights apply to data held by Stripe (for payment records) or Resend (for email delivery, if you opted in). To exercise any right, contact info@simplyexpat.de. We will respond within 30 days.</LP>
+      <LP>If you provided your email address and wish to withdraw consent for email processing, contact info@simplyexpat.de and we will instruct Resend to delete any data associated with your email. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</LP>
+      <LP>You also have the right to lodge a complaint with a supervisory authority. The competent authority for SimplyExpat is: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin, mailbox@datenschutz-berlin.de.</LP>
 
       <LH2>8. Data retention</LH2>
-      <LP>ExpatFlow retains no personal data on its own systems. Browser localStorage data is deleted upon service completion. Stripe retains payment records for 7 years per §257 HGB (German Commercial Code). Resend retains email delivery data per their own retention policy; contact privacy@expatflow.de to request deletion.</LP>
+      <LP>SimplyExpat retains no personal data on its own systems. Browser localStorage data is deleted upon service completion. Stripe retains payment records for 7 years per §257 HGB (German Commercial Code). Resend retains email delivery data per their own retention policy; contact info@simplyexpat.de to request deletion.</LP>
 
       <LH2>9. Automated decision-making</LH2>
-      <LP>ExpatFlow does not use automated decision-making or profiling within the meaning of Art. 22 GDPR.</LP>
+      <LP>SimplyExpat does not use automated decision-making or profiling within the meaning of Art. 22 GDPR.</LP>
 
       <LH2>10. Changes to this policy</LH2>
-      <LP>We will notify you of material changes via the website at least 14 days before they take effect. The current version is always available at expatflow.de. The effective date is shown at the top of this document.</LP>
+      <LP>We will notify you of material changes via the website at least 14 days before they take effect. The current version is always available at simplyexpat.de. The effective date is shown at the top of this document.</LP>
 
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Datenschutzanfragen / GDPR enquiries: privacy@expatflow.de · Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
+      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Datenschutzanfragen / GDPR enquiries: info@simplyexpat.de · Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
     </LegalModal>
   );
 }
@@ -4384,7 +4478,7 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
 //  §25 TTDSG: essential cookies do not require opt-in consent.
 //  Banner is informational only — "Understood" stores the ack.
 // ═══════════════════════════════════════════════════════════════════
-const COOKIE_KEY = "expatflow-cookie-ack-v1";
+const COOKIE_KEY = "simplyexpat-cookie-ack-v1";
 
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
