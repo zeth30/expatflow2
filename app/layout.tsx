@@ -6,7 +6,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 export const metadata: Metadata = {
   title: "Anmeldung Berlin in English | SimplyExpat — Official PDF, No Data Stored",
   description:
-    "Generate your official Berlin Anmeldung PDF in English — all 54 fields filled in perfect German. No data stored on any server. Expert relocation help for expats. Every nationality. Takes 3 minutes.",
+    "The relocation service Berlin expats trust. Generate your official Anmeldung PDF in English — all 54 fields filled in perfect German. No data stored on any server. Every nationality. Takes 3 minutes.",
   keywords: [
     "Anmeldung Berlin English",
     "Anmeldung Berlin PDF",
@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     "Berlin Bürgeramt appointment form",
     "register Berlin address expat",
     "Meldeformular Berlin English",
+    "relocation service Berlin",
+    "Berlin relocation help",
+    "expat relocation service Berlin",
   ].join(", "),
   metadataBase: new URL(DOMAIN),
   alternates: { canonical: DOMAIN },
