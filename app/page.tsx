@@ -14,62 +14,63 @@ import {
   ArrowRight, ArrowLeft, Check, ChevronRight, Plus, Trash2,
   Download, FileText, Shield, MapPin, User, Users, Home,
   Building2, Info, ExternalLink, Zap, Globe,
-  CreditCard, CheckCircle2, Church, Unlock, Package,
+  CreditCard, CheckCircle2, Church, Package,
   AlertCircle, Sparkles, Layers,
 } from "lucide-react";
 
 // ─── PDF FIELD NAMES ─────────────────────────────────────────────
 const F = {
+  // ── Exact field names extracted from anmeldung_bei_der_meldebehoerde.pdf ──
   FAMILIENSTAND: "Familienstand 1oder 1 und 2Row1",
   NEUE_ALLEINIG: "Die neue Wohnung ist alleinige Wohnung",
   NEUE_HAUPT:    "Die neue Wohnung ist Hauptwohnung",
   NEUE_NEBEN:    "Die neue Wohnung ist Nebenwohnung",
   NEUE_EINZUG:   "Neue Wohnung Tag des Einzugs",
   NEUE_PLZ:      "Neue Wohnung des Einzugs Postleitzahl Gemeinde Ortsteil",
-  NEUE_STRASSE:  "Neue Wohnung Stra\u00dfe Hausnummer Zus\u00e4tze",
-  BIS_ALLEINIG:  "Die (letzte) bisherige Wohnung (im Inland) war alleinige Wohnung",
-  BIS_HAUPT:     "Die (letzte) bisherige Wohnung (im Inland) war Hauptwohnung",
-  BIS_NEBEN:     "Die (letzte) bisherige Wohnung (im Inland) war Nebenwohnung",
+  NEUE_STRASSE:  "Neue Wohnung Straße Hausnummer Zusätze",
+  BIS_ALLEINIG:  "Die \(letzte\) bisherige Wohnung \(im Inland\) war alleinige Wohnung",
+  BIS_HAUPT:     "Die \(letzte\) bisherige Wohnung \(im Inland\) war Hauptwohnung",
+  BIS_NEBEN:     "Die \(letzte\) bisherige Wohnung \(im Inland\) war Nebenwohnung",
   BIS_AUSZUG:    "Bisherige Wohnung Tag des Auszugs",
   BIS_PLZ:       "Bisherige Wohnung Postleitzahl Gemeinde Kreis Land",
-  BIS_STRASSE:   "Bisherige Wohnung Stra\u00dfe Hausnummer Zus\u00e4tze",
+  BIS_STRASSE:   "Bisherige Wohnung Straße Hausnummer Zusätze",
   AUSLAND_STAAT: "Bei Zuzug aus dem Ausland Staat",
   BEIB_NEIN:     "Wird die bisherige Wohnung beibehalten? Nein",
   BEIB_JA:       "Wird die bisherige Wohnung beibehalten? Ja und zwar als",
   BEIB_HAUPT:    "Wird die bisherige Wohnung beibehalten? Ja und zwar als Hauptwohnung",
   BEIB_NEBEN:    "Wird die bisherige Wohnung beibehalten? Ja und zwar als Nebenwohnung",
-  WEITERE_NEIN:  "Haben [.] noch weitere Wohnungen Nein",
-  WEITERE_JA:    "Haben [.] noch weitere Wohnungen Ja",
+  WEITERE_NEIN:  "] noch weitere Wohnungen Nein",
+  WEITERE_JA:    "] noch weitere Wohnungen Ja",
   P1_NAME:       "Person 1 Familienname ggf Doktorgrad Passname",
   P1_VORNAME:    "Person 1 Vornamen Rufnamen unterstreichen",
   P1_GEBURTSNAME:"Person 1 Geburtsname",
   P1_GESCHLECHT: "Person 1 Geschlecht",
   P1_GEBURT:     "Person 1 Tag Ort Land der Geburt",
   P1_RELIGION:   "Person 1 Religionsgesellschaft",
-  P1_STAATSANG:  "Person 1 Staatsangeh\u00f6rigkeiten",
-  P1_ORDENS:     "Person 1 Ordens- K\u00fcnstlername",
+  P1_STAATSANG:  "Person 1 Staatsangehörigkeiten",
+  P1_ORDENS:     "Person 1 Ordens- Künstlername",
   P2_NAME:       "Person 2 Familienname ggf Doktorgrad Passname",
   P2_VORNAME:    "Person 2 Vornamen Rufnamen unterstreichen",
   P2_GEBURTSNAME:"Person 2 Geburtsname",
   P2_GESCHLECHT: "Person 2 Geschlecht",
   P2_GEBURT:     "Person 2 Tag Ort Land der Geburt",
   P2_RELIGION:   "Person 2 Religionsgesellschaft",
-  P2_STAATSANG:  "Person 2 Staatsangeh\u00f6rigkeiten",
-  P2_ORDENS:     "Person 2 Ordens- K\u00fcnstlername",
-  EHE_ANGABEN:   "Angaben zur Eheschlie\u00dfung  Lebenspartnerschaft Datum Ort Land AZ",
+  P2_STAATSANG:  "Person 2 Staatsangehörigkeiten",
+  P2_ORDENS:     "Person 2 Ordens- Künstlername",
+  EHE_ANGABEN:   "Angaben zur Eheschließung  Lebenspartnerschaft Datum Ort Land AZ",
   DOK1_NAME:     "Dokument 1 Name, Vorname",
   DOK1_ART:      "Dokument 1 Art",
-  DOK1_BEHOERDE: "Dokument 1 Ausstellungsbeh\u00f6rde",
+  DOK1_BEHOERDE: "Dokument 1 Ausstellungsbehörde",
   DOK1_SERIAL:   "Dokument 1 Seriennummer",
   DOK1_DATUM:    "Dokument 1 Datum",
-  DOK1_GUELTIG:  "Dokumente 1 g\u00fcltig bis",
+  DOK1_GUELTIG:  "Dokumente 1 gültig bis",
   DOK2_NAME:     "Dokument 2 Name Vorname",
   DOK2_ART:      "Dokument 2 Art",
-  DOK2_BEHOERDE: "Dokument 2 Ausstellungsbeh\u00f6rde",
+  DOK2_BEHOERDE: "Dokument 2 Ausstellungsbehörde",
   DOK2_SERIAL:   "Dokument 2 Seriennummer",
   DOK2_DATUM:    "Dokumen 2 Datum",
-  DOK2_GUELTIG:  "Dokument 2 g\u00fcltig bis",
-  UNTERSCHRIFT:  "Datum, Unterschrift [.]",
+  DOK2_GUELTIG:  "Dokument 2 gültig bis",
+  UNTERSCHRIFT:  "Datum, Unterschrift [",
 } as const;
 
 // ─── Field char limits (px width / 4.5px per char @ Helvetica 8pt) ─
@@ -121,7 +122,7 @@ function truncField(fieldName: string, value: string): string {
 }
 
 // ─── Types ────────────────────────────────────────────────────────
-type AppPhase = "landing" | "wizard" | "payment" | "done";
+type AppPhase = "landing" | "wizard" | "payment" | "generating" | "done";
 type WizardStep = "origin" | "new-address" | "prev-address" | "people" | "status" | "documents" | "review";
 
 // Every person has EXACTLY the same fields
@@ -305,9 +306,13 @@ function ageFromDOB(dob: string): number {
   return (Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 3600 * 1000);
 }
 
-// Marital status for PDF — children under 18 always get ledig
+// Marital status for PDF:
+// - Children under 18 → always ledig regardless of form status
+// - Adults → use whatever marital status was entered
+// Note: FAMILIENSTAND on the PDF represents the whole household (Person 1 POV)
+// so we only apply the ledig override if Person 1 themselves is a minor
 function pdfMaritalStatus(formStatus: string, person: Person): string {
-  if (person.relationship === "child" && ageFromDOB(person.birthDate) < 18)
+  if (ageFromDOB(person.birthDate) < 18)
     return MARITAL_DE["ledig"];
   return MARITAL_DE[formStatus] ?? formStatus;
 }
@@ -516,18 +521,27 @@ async function buildAllAnmeldungPDFs(d: FormData): Promise<{ bytes: Uint8Array; 
     const p1 = people[sheet * 2];
     const p2 = people[sheet * 2 + 1] ?? null;
 
-    // Only include marriage data if at least one person on this sheet is a spouse
-    const sheetHasSpouse = p1.relationship === "spouse" || (p2 && p2.relationship === "spouse");
-    const sheetHasPrimary = p1.relationship === "primary" || (p2 && p2.relationship === "primary");
-    const includeMarriage = sheetHasSpouse || sheetHasPrimary;
+    // Marriage data belongs on a sheet when:
+    // - Person 1 of this sheet is the primary registrant (sheet 0) AND is married/partnered
+    // - OR Person 2 is explicitly a spouse
+    // This covers: married to someone on the form, married to someone outside the form,
+    // and children-only sheets (where we clear marriage data).
+    const isFirstSheet = sheet === 0;
+    const sheetHasSpouse = (p2 && p2.relationship === "spouse");
+    const primaryIsMarried = isFirstSheet && (
+      d.maritalStatus === "verheiratet" ||
+      d.maritalStatus === "partnerschaft"
+    );
+    const includeMarriage = primaryIsMarried || sheetHasSpouse;
 
     const sheetFormData: FormData = {
       ...d,
-      // For sheets without a spouse, clear marriage data
-      // Minor auto-ledig applied per-person via pdfMaritalStatus() in fillAnmeldungSheet
-      maritalStatus: includeMarriage ? d.maritalStatus : "ledig",
-      marriageDate:  includeMarriage ? d.marriageDate : "",
-      marriagePlace: includeMarriage ? d.marriagePlace : "",
+      // Sheet 0 with married primary: always show marital status + marriage details
+      // Sheet 0 without marriage: show status but no marriage details
+      // Sheet 1+: force ledig, clear marriage data (children-only sheets)
+      maritalStatus: isFirstSheet ? d.maritalStatus : "ledig",
+      marriageDate:    includeMarriage ? d.marriageDate : "",
+      marriagePlace:   includeMarriage ? d.marriagePlace : "",
       marriageCountry: includeMarriage ? d.marriageCountry : "",
     };
 
@@ -1501,7 +1515,7 @@ export default function BerlinButler() {
       window.history.replaceState({}, "", window.location.pathname);
       stripeReturnRef.current = true; // mark — will trigger after form restores
       setPaid(true);
-      setPhase("payment");
+      setPhase("generating"); // skip payment page entirely
       return;
     }
 
@@ -1526,6 +1540,14 @@ export default function BerlinButler() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ form })); } catch {}
   }, [form]);
 
+  // ── If somehow still on payment page when done — redirect ────────
+  useEffect(() => {
+    if (allDone && phase === "payment") {
+      setPhase("done");
+      pushNav("done");
+    }
+  }, [allDone, phase]);
+
   // ── Auto-generate after Stripe redirect ──────────────────────────
   // Fires when form state updates after localStorage restore on Stripe return.
   // Using stripeReturnRef avoids the race condition where doGenerate() was
@@ -1534,10 +1556,10 @@ export default function BerlinButler() {
     if (
       stripeReturnRef.current &&
       paid &&
-      phase === "payment" &&
+      (phase === "generating" || phase === "payment") &&
       !allDone &&
       !genStatus &&
-      form.people[0]?.firstName // form has been restored
+      form.people.length > 0 && form.people[0]?.firstName && form.newStreet // full form restored
     ) {
       stripeReturnRef.current = false; // clear flag so it only fires once
       const t = setTimeout(() => { doGenerate(); }, 600);
@@ -1625,6 +1647,9 @@ export default function BerlinButler() {
       setGeneratedPDFs({ anmeldung: anmeldungPDFs, guide: guideBytes });
       setAllDone(true);
       setGenStatus("");
+      // Immediately move to done page — no lingering on payment page
+      setPhase("done");
+      pushNav("done");
 
       // ── Option A: Reminder email only — NO PDF attachments ──────────
       // Only first name + email transmitted. Zero personal data, zero
@@ -1650,8 +1675,6 @@ export default function BerlinButler() {
         setGenStatus("");
       }
 
-      setPhase("done");
-      pushNav("done");
       try {
         localStorage.removeItem(STORAGE_KEY);
         localStorage.setItem("simplyexpat-done-v1", "1"); // returning users land here
@@ -1761,11 +1784,25 @@ export default function BerlinButler() {
       <CookieBanner />
 
       {isWizard             && <WizardLayout form={form} step={step} setStep={setStep} upd={upd} set_={set_} updPerson={updPerson} addPerson={addPerson} removePerson={removePerson} err={err} setErr={setErr} anxiety={anxiety} sheets={sheets} pushNav={pushNav} onGoHome={() => { setPhase("landing"); pushNav("landing"); }} onComplete={() => { setPhase("payment"); pushNav("payment"); }} />}
-      {phase === "payment"  && <PaymentPage paid={paid} onPay={() => setPaid(true)} genStatus={genStatus} onGenerate={doGenerate} allDone={allDone} sheets={sheets} form={form} downloadWG={downloadWG} userEmail={userEmail} setUserEmail={setUserEmail} emailSent={emailSent} />}
+      {phase === "payment"  && <PaymentPage paid={paid} genStatus={genStatus} onGenerate={doGenerate} allDone={allDone} sheets={sheets} form={form} downloadWG={downloadWG} userEmail={userEmail} setUserEmail={setUserEmail} emailSent={emailSent} />}
+      {phase === "generating" && (
+        <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }}>
+          <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+          <div style={{ textAlign: "center", padding: "0 20px" }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>S</span>
+            </div>
+            <div style={{ width: 24, height: 24, border: "3px solid #e8ecf4", borderTopColor: "#0075FF", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+            <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 17, marginBottom: 6 }}>
+              {genStatus || "Generating your documents…"}
+            </div>
+            <p style={{ color: "#64748b", fontSize: 13 }}>Payment confirmed. Please keep this tab open.</p>
+          </div>
+        </div>
+      )}
       {phase === "done"     && <DonePage form={form} sheets={sheets} generatedPDFs={generatedPDFs} onRestart={() => {
         try { localStorage.removeItem("simplyexpat-done-v1"); localStorage.clear(); } catch {}
         setForm({ ...EMPTY });
-        setPaid(false);
         setAllDone(false);
         setGeneratedPDFs({ anmeldung: [], guide: null });
         setPhase("landing");
@@ -3078,6 +3115,7 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
           <Lbl req>Marital Status (Familienstand)</Lbl>
           <TG value={form.maritalStatus} onChange={v => set_("maritalStatus", v)}
             options={[["ledig","Single"],["verheiratet","Married"],["partnerschaft","Civil Partnership (eingetr. Lebenspartnerschaft)"],["getrennt","Separated"],["geschieden","Divorced"],["verwitwet","Widowed"]]} />
+
         </div>
 
         <div>
@@ -3133,14 +3171,13 @@ function StepNewAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: a
 
 // ─── Step: Previous Address ───────────────────────────────────────
 function StepPrevAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: any }) {
+  const fromGermany = form.prevCountry && ["germany","deutschland"].includes(form.prevCountry.toLowerCase());
   const fromAbroad = form.prevCountry && !["germany","deutschland"].includes(form.prevCountry.toLowerCase());
+  const noCountryYet = !form.prevCountry;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <SH icon={Home}>Previous Address</SH>
-      <R2 a={<Inp opt label="Street Name" value={form.prevStreet} onChange={upd("prevStreet")} placeholder="Baker Street" />}
-          b={<Inp opt label="House No." value={form.prevNumber} onChange={upd("prevNumber")} placeholder="21" />} />
-      <R2 a={<Inp opt label="Postal Code" value={form.prevPostalCode} onChange={upd("prevPostalCode")} placeholder="W1U 6SB" />}
-          b={<Inp opt label="City" value={form.prevCity} onChange={upd("prevCity")} placeholder="London" />} />
+
       <SearchableSelect
         label="Country" req
         value={form.prevCountry}
@@ -3149,12 +3186,38 @@ function StepPrevAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: 
         allowCustom
         placeholder="Search country..."
       />
+
+      {/* German address — full details required by Amt */}
+      {fromGermany && (
+        <>
+          <IBox>Your previous address was in Germany — the Amt requires the full address. Please fill in all fields below.</IBox>
+          <R2 a={<Inp req label="Street Name" value={form.prevStreet} onChange={upd("prevStreet")} placeholder="Musterstraße" />}
+              b={<Inp req label="House No." value={form.prevNumber} onChange={upd("prevNumber")} placeholder="12" />} />
+          <R2 a={<Inp req label="Postal Code" value={form.prevPostalCode} onChange={upd("prevPostalCode")} placeholder="10115" />}
+              b={<Inp req label="City" value={form.prevCity} onChange={upd("prevCity")} placeholder="Berlin" />} />
+        </>
+      )}
+
+      {/* Foreign address — country only needed */}
+      {fromAbroad && (
+        <IBox>Moving from outside Germany — only the country is required. The Bürgeramt will use it to fill the "Bei Zuzug aus dem Ausland" field automatically.</IBox>
+      )}
+
+      {/* No country yet — show fields greyed out */}
+      {noCountryYet && (
+        <>
+          <R2 a={<Inp opt label="Street Name" value={form.prevStreet} onChange={upd("prevStreet")} placeholder="Only needed for German address" />}
+              b={<Inp opt label="House No." value={form.prevNumber} onChange={upd("prevNumber")} placeholder="" />} />
+          <R2 a={<Inp opt label="Postal Code" value={form.prevPostalCode} onChange={upd("prevPostalCode")} placeholder="" />}
+              b={<Inp opt label="City" value={form.prevCity} onChange={upd("prevCity")} placeholder="" />} />
+        </>
+      )}
+
       <Inp opt label="Move-out Date" type="date" value={form.moveOutDate} onChange={upd("moveOutDate")} />
       <div>
         <Lbl>Keep previous address?</Lbl>
         <TG value={form.keepPrev} onChange={v => set_("keepPrev", v)} options={[["nein","No — giving it up"],["haupt","Yes — as Hauptwohnung"],["neben","Yes — as Nebenwohnung"]]} />
       </div>
-      {fromAbroad && <IBox>Moving from <strong>{form.prevCountry}</strong> — the "Bei Zuzug aus dem Ausland Staat" field will be filled automatically.</IBox>}
     </div>
   );
 }
@@ -3293,6 +3356,13 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
         ))}
       </div>
 
+      {/* Warning: minors will get ledig in PDF */}
+      {form.people.some((p, i) => i > 0 && ageFromDOB(p.birthDate) < 18) && (
+        <IBox type="info">
+          <strong>Note for minors:</strong> Any person under 18 in your form will have their marital status set to <strong>ledig</strong> (single) in the PDF automatically — this is a legal requirement on the Anmeldung form. Your entered status for Person 1 is not affected.
+        </IBox>
+      )}
+
       {isMarried && (
         <div style={{ background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 12, padding: 16 }}>
           <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 12 }}>Marriage / Partnership Details</div>
@@ -3409,8 +3479,8 @@ function StepReview({ form, sheets }: { form: FormData; sheets: number }) {
 // ═══════════════════════════════════════════════════════════════════
 //  PAYMENT PAGE
 // ═══════════════════════════════════════════════════════════════════
-function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form, downloadWG, userEmail, setUserEmail, emailSent }: {
-  paid: boolean; onPay: () => void; genStatus: string; onGenerate: () => void;
+function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downloadWG, userEmail, setUserEmail, emailSent }: {
+  paid: boolean; genStatus: string; onGenerate: () => void;
   allDone: boolean; sheets: number; form: FormData; downloadWG: () => void;
   userEmail: string; setUserEmail: (v: string) => void; emailSent: boolean;
 }) {
@@ -3577,36 +3647,14 @@ function PaymentPage({ paid, onPay, genStatus, onGenerate, allDone, sheets, form
                 if (btn) { btn.disabled = false; btn.innerHTML = '<span>Pay €15 — Secure Stripe Checkout</span>'; }
               });
             `}} />
-            <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "4px 0" }}>
-              <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} />
-              <span style={{ color: "#94a3b8", fontSize: 11, padding: "0 12px" }}>Development mode</span>
-              <div style={{ flex: 1, height: 1, background: "#e2e8f0" }} />
-            </div>
-            <button onClick={onPay} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "11px", borderRadius: 11, border: "2px dashed #93c5fd", background: "transparent", color: "#2563eb", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-              <Unlock size={12} /> [Dev] Skip Payment
-            </button>
+
           </div>
 
         ) : !allDone ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 11, padding: "12px 16px", display: "flex", alignItems: "center", gap: 10 }}>
-              <CheckCircle2 size={16} color="#16a34a" />
-              <div>
-                <div style={{ fontWeight: 700, color: "#15803d", fontSize: 13.5 }}>Payment confirmed!</div>
-                <div style={{ color: "#16a34a", fontSize: 12 }}>Click below to generate your documents.</div>
-              </div>
-            </div>
-            {!busy ? (
-              <button onClick={onGenerate} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "16px", borderRadius: 14, background: "linear-gradient(135deg,#14532d,#16a34a)", color: "white", fontWeight: 800, fontSize: 15, border: "none", boxShadow: "0 8px 28px rgba(22,163,74,0.35)", cursor: "pointer", fontFamily: "inherit" }}>
-                <Package size={16} /> Generate My Documents
-              </button>
-            ) : (
-              <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 14, padding: "22px", textAlign: "center" }}>
-                <div style={{ width: 22, height: 22, border: "2.5px solid #86efac", borderTopColor: "#16a34a", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
-                <div style={{ fontWeight: 700, color: "#15803d", fontSize: 14 }}>{genStatus}</div>
-                <div style={{ color: "#4ade80", fontSize: 12, marginTop: 4 }}>Please keep this tab open</div>
-              </div>
-            )}
+          <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 14, padding: "22px", textAlign: "center" }}>
+            <div style={{ width: 22, height: 22, border: "2.5px solid #86efac", borderTopColor: "#16a34a", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
+            <div style={{ fontWeight: 700, color: "#15803d", fontSize: 14 }}>{genStatus || "Generating your documents…"}</div>
+            <div style={{ color: "#4ade80", fontSize: 12, marginTop: 4 }}>Please keep this tab open</div>
           </div>
 
         ) : (
@@ -3852,253 +3900,149 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   const berlinPhoto = berlinPhotos[Math.floor(Math.random() * berlinPhotos.length)];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f0fdf4" }} className="fu">
+    <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }} className="fu">
 
-      {/* ── Hero ── */}
-      <div style={{ background: "linear-gradient(160deg,#0f172a 0%,#1e3a8a 60%,#0075FF 100%)", padding: "44px 20px 90px", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 70% 40%, rgba(0,117,255,0.25) 0%, transparent 65%)", pointerEvents: "none" }} />
-        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative" }}>
-          {/* Success badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 999, padding: "6px 16px", marginBottom: 20 }}>
-            <CheckCircle2 size={13} color="#86efac" />
-            <span style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, fontWeight: 700, letterSpacing: "0.05em" }}>DOCUMENTS READY</span>
+      {/* ── Header ── */}
+      <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40, boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ color: "white", fontSize: 13, fontWeight: 900 }}>S</span>
           </div>
-          <h1 style={{ fontSize: 30, fontWeight: 900, color: "white", letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.12 }}>
-            {p1.firstName ? `${p1.firstName}, you're almost registered.` : "You're almost registered."}
-          </h1>
-          <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 15, lineHeight: 1.65, maxWidth: 500, margin: "0 auto 20px" }}>
-            We've done the hard work. Your Anmeldung form is filled out perfectly in German — all 54 official fields. Now there is one thing left: <strong style={{ color: "white" }}>book your Bürgeramt appointment.</strong>
-          </p>
-          {/* Appointment CTA — primary action, highest visibility */}
-          <a href="https://service.berlin.de/dienstleistung/120686/" target="_blank" rel="noopener noreferrer"
-            style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "15px 28px", borderRadius: 14, background: "white", color: "#0f172a", fontWeight: 900, fontSize: 15, textDecoration: "none", boxShadow: "0 12px 40px rgba(0,0,0,0.3)", letterSpacing: "-0.01em" }}>
-            <ExternalLink size={16} color="#0075FF" /> Book Your Bürgeramt Appointment →
-          </a>
-          <p style={{ color: "rgba(147,197,253,0.7)", fontSize: 11.5, marginTop: 10 }}>service.berlin.de · Any of 44 locations · Free</p>
-          {/* Non-EU in-person required — shown directly under CTA */}
-          {!form.isEU && (
-            <div style={{ marginTop: 16, padding: "12px 20px", borderRadius: 12, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", maxWidth: 500, margin: "16px auto 0", textAlign: "left" }}>
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <AlertCircle size={16} color="#fbbf24" style={{ flexShrink: 0, marginTop: 1 }} />
-                <div>
-                  <div style={{ fontWeight: 800, color: "white", fontSize: 13, marginBottom: 3 }}>Non-EU: you must attend in person</div>
-                  <p style={{ color: "rgba(191,219,254,0.9)", fontSize: 12.5, lineHeight: 1.6 }}>
-                    On the booking page, <strong style={{ color: "white" }}>scroll all the way to the bottom</strong> and select your Bürgeramt — you can choose any of the 44 locations in Berlin, not just the nearest one. More locations = more available slots.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-          {form.isEU && (
-            <p style={{ color: "rgba(147,197,253,0.7)", fontSize: 12, marginTop: 10 }}>
-              Tip: scroll to the bottom of the booking page and select any of the 44 Bürgeramt locations — not just the nearest.
-            </p>
-          )}
-
-          {/* Appointment Hacks — exclusive, shown only after purchase */}
-          <div style={{ marginTop: 24, maxWidth: 500, margin: "24px auto 0", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 16, padding: "18px 22px", textAlign: "left" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 14 }}>
-              <Zap size={14} color="#fbbf24" />
-              <span style={{ fontWeight: 800, color: "white", fontSize: 13.5 }}>Appointment Hacks</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: "#fbbf24", background: "rgba(251,191,36,0.15)", border: "1px solid rgba(251,191,36,0.3)", borderRadius: 999, padding: "2px 8px", letterSpacing: "0.05em" }}>EXCLUSIVE</span>
-            </div>
-            {[
-              ["Tuesdays 7:55–8:00 AM", "New slots appear on service.berlin.de at 8:00 AM sharp. Start refreshing at 7:55. Slots vanish in under 60 seconds."],
-              ["Call 115 at 7:00 AM", "Ask for cancellation slots. Morning calls have the highest success rate."],
-              ["Walk-in", "Bürgeramt Tempelhof (Tempelhofer Damm 165) or Mitte (Karl-Marx-Allee 31). Arrive 30 min before opening."],
-            ].map(([t, d]) => (
-              <div key={t} style={{ display: "flex", gap: 10, marginBottom: 12, alignItems: "flex-start" }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fbbf24", flexShrink: 0, marginTop: 6 }} />
-                <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.85)", lineHeight: 1.55 }}>
-                  <strong style={{ color: "white" }}>{t}</strong> — {d}
-                </p>
-              </div>
-            ))}
-          </div>
+          <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 12px" }}>
+          <CheckCircle2 size={12} color="#16a34a" />
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#15803d" }}>Documents ready</span>
         </div>
       </div>
 
-      {/* ── Main content — centred single column ── */}
-      <div style={{ maxWidth: 700, margin: "-52px auto 0", padding: "0 16px 80px", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: 580, margin: "0 auto", padding: "28px 16px 100px" }}>
 
-        {/* ══ PRODUCT CARDS — the hero of this page ══ */}
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 18, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.01em", marginBottom: 16, textAlign: "center" }}>
-            What you just got
-          </div>
-
-          {/* ── Product 1: Anmeldung — Golden Ticket ── */}
-          <div style={{ background: "white", borderRadius: 20, border: "2px solid #0075FF", marginBottom: 14, overflow: "hidden", boxShadow: "0 12px 40px rgba(0,117,255,0.18)" }}>
-            <div style={{ background: "linear-gradient(135deg,#0f172a,#0075FF)", padding: "22px 24px 0" }}>
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-                <div>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "3px 10px", marginBottom: 10 }}>
-                    <Sparkles size={10} color="#fbbf24" />
-                    <span style={{ fontSize: 10, fontWeight: 800, color: "#fbbf24", letterSpacing: "0.06em", textTransform: "uppercase" }}>Your Golden Ticket</span>
-                  </div>
-                  <h2 style={{ fontSize: 21, fontWeight: 900, color: "white", marginBottom: 8, letterSpacing: "-0.01em", lineHeight: 1.15 }}>
-                    {sheets > 1 ? `Anmeldung — ${sheets} Official Forms` : "Your Official Anmeldung Form"}
-                  </h2>
-                  <p style={{ color: "rgba(191,219,254,0.9)", fontSize: 13, lineHeight: 1.65, marginBottom: 18 }}>
-                    Print and bring this to your Bürgeramt appointment. We've done the hard work — all 54 official fields filled out perfectly in German. This is the centrepiece of your appointment: simplified, professional, and ready to go.
-                  </p>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-                    {["All 54 fields filled", "Accepted at all 44 Bürgerämter", "Print & bring"].map(tag => (
-                      <span key={tag} style={{ fontSize: 11, fontWeight: 700, color: "rgba(191,219,254,0.9)", background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.15)", padding: "3px 10px", borderRadius: 999 }}>{tag}</span>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(255,255,255,0.12)", border: "1.5px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <FileText size={24} color="white" />
-                </div>
-              </div>
-            </div>
-            <div style={{ padding: "0 24px 22px", background: "white" }}>
-              <button onClick={dlAnmeldung} disabled={dlA}
-                style={{ width: "100%", marginTop: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "17px 24px", borderRadius: 14, background: dlA ? "#93c5fd" : "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", fontWeight: 900, fontSize: 16, border: "none", cursor: dlA ? "not-allowed" : "pointer", fontFamily: "inherit", boxShadow: "0 8px 24px rgba(0,117,255,0.4)", transition: "all 0.2s", letterSpacing: "-0.01em" }}>
-                <Download size={19} />
-                {dlA ? "Generating..." : sheets > 1 ? `Download ${sheets} Anmeldung Forms` : "Download Anmeldung — Print This"}
-              </button>
-            </div>
-          </div>
-
-          {/* ── Product 2: Checklist + Guide ── */}
-          <div style={{ background: "white", borderRadius: 20, border: "2px solid #99f6e4", marginBottom: 14, overflow: "hidden", boxShadow: "0 8px 32px rgba(15,118,110,0.10)" }}>
-            <div style={{ background: "linear-gradient(135deg,#134e4a,#0f766e)", padding: "20px 24px 0" }}>
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-                <div>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(153,246,228,0.8)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>2-Page PDF</div>
-                  <h2 style={{ fontSize: 20, fontWeight: 900, color: "white", marginBottom: 6, letterSpacing: "-0.01em" }}>Checklist + Berlin Life-Hack Guide</h2>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-                    <div style={{ padding: "6px 10px", borderRadius: 8, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                      <div style={{ fontWeight: 700, color: "rgba(187,247,208,0.9)", fontSize: 10.5, marginBottom: 2 }}>Page 1</div>
-                      <p style={{ color: "rgba(187,247,208,0.75)", fontSize: 11, lineHeight: 1.35 }}>Your personalised checklist</p>
-                    </div>
-                    <div style={{ padding: "6px 10px", borderRadius: 8, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                      <div style={{ fontWeight: 700, color: "rgba(187,247,208,0.9)", fontSize: 10.5, marginBottom: 2 }}>Page 2</div>
-                      <p style={{ color: "rgba(187,247,208,0.75)", fontSize: 11, lineHeight: 1.35 }}>Expert tips & appointment hacks</p>
-                    </div>
-                  </div>
-                </div>
-                <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Sparkles size={22} color="white" />
-                </div>
-              </div>
-            </div>
-            <div style={{ padding: "0 24px 20px", background: "white" }}>
-              <button onClick={dlGuide} disabled={dlG}
-                style={{ width: "100%", marginTop: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "16px 24px", borderRadius: 14, background: dlG ? "#5eead4" : "linear-gradient(135deg,#0d9488,#0f766e)", color: "white", fontWeight: 800, fontSize: 15.5, border: "none", cursor: dlG ? "not-allowed" : "pointer", fontFamily: "inherit", boxShadow: "0 6px 20px rgba(15,118,110,0.3)", transition: "all 0.2s" }}>
-                <Download size={18} />
-                {dlG ? "Generating PDF..." : "Download Checklist + Guide"}
-              </button>
-            </div>
-          </div>
-
-          {/* ── WG Template — with full explanation ── */}
-          <div style={{ background: "#fffbeb", borderRadius: 16, border: "1.5px solid #fde68a", overflow: "hidden", boxShadow: "0 4px 16px rgba(217,119,6,0.08)" }}>
-            <div style={{ padding: "16px 20px 14px" }}>
-              <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <div style={{ width: 38, height: 38, borderRadius: 10, background: "#fef3c7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Home size={17} color="#d97706" />
-                </div>
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                    <div style={{ fontWeight: 800, color: "#78350f", fontSize: 14 }}>Wohnungsgeberbestätigung</div>
-                    <span style={{ fontSize: 9.5, fontWeight: 700, color: "#16a34a", background: "#dcfce7", padding: "2px 7px", borderRadius: 999 }}>Free</span>
-                  </div>
-                  <p style={{ color: "#92400e", fontSize: 13, lineHeight: 1.65, marginBottom: 10 }}>
-                    <strong>What is this?</strong> The Wohnungsgeberbestätigung is a form that your landlord (or the person who owns your flat) must sign to confirm that you actually live at the address you are registering. The Bürgeramt will not process your registration without it.
-                  </p>
-                  <p style={{ color: "#92400e", fontSize: 13, lineHeight: 1.65, marginBottom: 10 }}>
-                    <strong>Do you already have it?</strong> Check your move-in documents — many landlords provide it automatically. It is a single page signed by the property owner with your name and address on it.
-                  </p>
-                  <p style={{ color: "#92400e", fontSize: 13, lineHeight: 1.65 }}>
-                    <strong>If not:</strong> Download the template below, fill in your details, and send it to your landlord by email. Under <strong>§ 19 BMG</strong> they are legally required to sign and return it. Refusal is an administrative offence (fine up to €1,000 for the landlord).
-                  </p>
-                </div>
-              </div>
-            </div>
-            <button onClick={dlWG} disabled={dlW}
-              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 20px", background: "linear-gradient(135deg,#92400e,#d97706)", color: "white", fontWeight: 700, fontSize: 13.5, border: "none", cursor: "pointer", fontFamily: "inherit" }}>
-              <Download size={15} /> {dlW ? "Generating..." : "Download Wohnungsgeberbestätigung Template"}
-            </button>
-          </div>
+        {/* ── 1. HEADLINE ── */}
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", marginBottom: 8, lineHeight: 1.15 }}>
+            {p1.firstName ? `${p1.firstName}, your documents are ready.` : "Your documents are ready."}
+          </h1>
+          <p style={{ color: "#64748b", fontSize: 15, lineHeight: 1.6 }}>
+            Download everything below — then book your Bürgeramt appointment. You must appear in person. We prepared everything so you walk in ready.
+          </p>
         </div>
 
-        {/* ── Print hack — with Berlin photo ── */}
-        <div style={{ borderRadius: 16, overflow: "hidden", marginBottom: 20, border: "1px solid #fde68a", boxShadow: "0 4px 16px rgba(217,119,6,0.1)" }}>
-          <div style={{ position: "relative", height: 120, overflow: "hidden" }}>
-            <img src={berlinPhoto} alt="Berlin" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.55)" }} />
-            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", padding: "0 20px", gap: 12 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(251,191,36,0.25)", border: "1.5px solid rgba(251,191,36,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <AlertCircle size={18} color="#fbbf24" />
-              </div>
-              <div>
-                <div style={{ fontWeight: 900, color: "white", fontSize: 14, marginBottom: 3 }}>Print it on paper — Germany still loves paper way too much.</div>
-                <p style={{ color: "rgba(255,255,255,0.82)", fontSize: 12.5, lineHeight: 1.5 }}>The Bürgeramt will not accept anything digital. Bring a physical printout.</p>
-              </div>
+        {/* ── 2. DOWNLOADS — front and centre ── */}
+        <div style={{ marginBottom: 32 }}>
+
+          {/* Anmeldung */}
+          <button onClick={dlAnmeldung} disabled={dlA}
+            style={{ width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "20px 22px", borderRadius: 18, background: dlA ? "#64748b" : "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", border: "none", cursor: dlA ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 10, boxShadow: dlA ? "none" : "0 8px 32px rgba(0,117,255,0.35)", transition: "all 0.2s", textAlign: "left" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <FileText size={24} color="white" />
             </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 900, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 3 }}>
+                {dlA ? "Generating..." : sheets > 1 ? `Download ${sheets} Anmeldung Forms` : "Download Anmeldung Form"}
+              </div>
+              <div style={{ fontSize: 12.5, opacity: 0.8 }}>All 54 fields filled in German · Print &amp; bring to appointment</div>
+            </div>
+            <Download size={20} style={{ flexShrink: 0, opacity: 0.8 }} />
+          </button>
+
+          {/* Checklist + Guide */}
+          <button onClick={dlGuide} disabled={dlG}
+            style={{ width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "18px 22px", borderRadius: 18, background: dlG ? "#64748b" : "linear-gradient(135deg,#134e4a,#0f766e)", color: "white", border: "none", cursor: dlG ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 10, boxShadow: dlG ? "none" : "0 8px 24px rgba(15,118,110,0.3)", transition: "all 0.2s", textAlign: "left" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Layers size={24} color="white" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 900, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 3 }}>
+                {dlG ? "Generating..." : "Download Checklist + Guide"}
+              </div>
+              <div style={{ fontSize: 12.5, opacity: 0.8 }}>Page 1: your document checklist · Page 2: appointment hacks &amp; tips</div>
+            </div>
+            <Download size={20} style={{ flexShrink: 0, opacity: 0.8 }} />
+          </button>
+
+          {/* WG */}
+          <button onClick={dlWG} disabled={dlW}
+            style={{ width: "100%", display: "flex", alignItems: "center", gap: 14, padding: "14px 18px", borderRadius: 14, background: "white", color: "#374151", border: "1.5px solid #e8ecf4", cursor: dlW ? "not-allowed" : "pointer", fontFamily: "inherit", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", transition: "all 0.2s", textAlign: "left" }}>
+            <div style={{ width: 36, height: 36, borderRadius: 9, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Home size={16} color="#64748b" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 700, fontSize: 13.5, color: "#0f172a", marginBottom: 2 }}>{dlW ? "Generating..." : "Wohnungsgeberbestätigung (optional)"}</div>
+              <div style={{ fontSize: 12, color: "#64748b" }}>Landlord confirmation · §19 BMG · For your landlord to complete &amp; sign</div>
+            </div>
+            <Download size={15} color="#94a3b8" style={{ flexShrink: 0 }} />
+          </button>
+
+          <p style={{ textAlign: "center", marginTop: 10, fontSize: 11.5, color: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+            <Shield size={11} /> Generated in your browser · No data on any server
+          </p>
+        </div>
+
+        {/* ── 3. NEXT STEP — book appointment ── */}
+        <div style={{ background: "white", borderRadius: 20, border: "1.5px solid #e8ecf4", overflow: "hidden", marginBottom: 16, boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "20px 22px" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(147,197,253,0.8)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Your next step</div>
+            <h2 style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.2 }}>Book your Bürgeramt appointment</h2>
+            <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 13.5, lineHeight: 1.65, marginBottom: 16 }}>
+              You must appear in person — this is a legal requirement we cannot fulfil for you. Bring your printed form and the documents from your checklist.
+            </p>
+            <a href="https://service.berlin.de/dienstleistung/120686/" target="_blank" rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 22px", borderRadius: 12, background: "white", color: "#0f172a", fontWeight: 900, fontSize: 14, textDecoration: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }}>
+              <ExternalLink size={15} color="#0075FF" /> Book on service.berlin.de →
+            </a>
+            <p style={{ color: "rgba(147,197,253,0.6)", fontSize: 11.5, marginTop: 10 }}>Any of 44 locations · Free · Scroll to bottom to see all Bürgeramt locations</p>
           </div>
-          <div style={{ background: "#fffbeb", padding: "14px 20px", display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <div>
-              <div style={{ fontWeight: 800, color: "#78350f", fontSize: 12.5, marginBottom: 4 }}>🇩🇪 Berlin Local Hack — Print at DM or Rossmann</div>
-              <p style={{ color: "#92400e", fontSize: 12.5, lineHeight: 1.6 }}>
-                Every neighbourhood has a <strong>DM</strong> or <strong>Rossmann</strong> drugstore with self-service print kiosks. Costs ~<strong>€0.10–0.15 per page</strong>. No need to hunt for a print shop — there's almost certainly one within 5 minutes of your new flat.
+          {!form.isEU && (
+            <div style={{ padding: "14px 22px", background: "#fffbeb", borderTop: "1px solid #fde68a", display: "flex", gap: 10 }}>
+              <AlertCircle size={15} color="#d97706" style={{ flexShrink: 0, marginTop: 1 }} />
+              <p style={{ color: "#92400e", fontSize: 13, lineHeight: 1.6 }}>
+                <strong>Non-EU:</strong> You must attend in person. Bring your passport — national ID cards are not accepted.
               </p>
             </div>
+          )}
+        </div>
+
+        {/* ── 4. APPOINTMENT HACKS TEASER ── */}
+        <div style={{ background: "#fffbeb", borderRadius: 12, border: "1px solid #fde68a", padding: "13px 16px", marginBottom: 24, display: "flex", gap: 10 }}>
+          <Zap size={15} color="#d97706" style={{ flexShrink: 0, marginTop: 2 }} />
+          <div>
+            <div style={{ fontWeight: 800, color: "#92400e", fontSize: 13, marginBottom: 3 }}>Appointment hacks are in your Guide PDF</div>
+            <p style={{ color: "#78350f", fontSize: 12.5, lineHeight: 1.6 }}>Page 2 of your Checklist + Guide includes insider tips on finding slots, walk-in locations, and calling for cancellations.</p>
           </div>
         </div>
 
-
-
-        {/* ── Personalised checklist ── */}
-        {/* ── Foreign document heads-up ── */}
+        {/* ── 5. BRING LIST ── */}
         {(hasForeignBirth || hasForeignMarriage) && (
-          <div style={{ borderRadius: 16, overflow: "hidden", marginBottom: 20, border: "1px solid #bae6fd", boxShadow: "0 4px 16px rgba(14,116,144,0.08)" }}>
-            <div style={{ background: "linear-gradient(135deg,#0c4a6e,#0e7490)", padding: "14px 18px", display: "flex", alignItems: "center", gap: 10 }}>
-              <AlertCircle size={18} color="#7dd3fc" style={{ flexShrink: 0 }} />
-              <div style={{ fontWeight: 800, color: "white", fontSize: 13.5 }}>Heads up — foreign documents detected</div>
+          <div style={{ borderRadius: 14, overflow: "hidden", marginBottom: 12, border: "1px solid #bae6fd" }}>
+            <div style={{ background: "linear-gradient(135deg,#0c4a6e,#0e7490)", padding: "12px 16px", display: "flex", alignItems: "center", gap: 9 }}>
+              <AlertCircle size={15} color="#7dd3fc" style={{ flexShrink: 0 }} />
+              <div style={{ fontWeight: 800, color: "white", fontSize: 13 }}>Foreign documents — translations required</div>
             </div>
-            <div style={{ background: "#f0f9ff", padding: "14px 18px" }}>
-              <p style={{ color: "#0c4a6e", fontSize: 13, lineHeight: 1.7 }}>
-                Some of your documents (birth or marriage certificates) are from outside Germany. The Berlin authorities require these to be <strong>translated into German by a certified translator</strong> (<em>beglaubigte Übersetzung</em>). Some may also require an <strong>Apostille</strong>. Missing translations are the most common reason registrations cannot be completed.
-              </p>
-              <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <span style={{ fontSize: 11.5, fontWeight: 700, color: "#0e7490", background: "white", border: "1px solid #bae6fd", padding: "3px 10px", borderRadius: 999 }}>Certified translation required</span>
-                <span style={{ fontSize: 11.5, fontWeight: 700, color: "#0e7490", background: "white", border: "1px solid #bae6fd", padding: "3px 10px", borderRadius: 999 }}>Apostille may be needed</span>
-                <span style={{ fontSize: 11.5, fontWeight: 700, color: "#0e7490", background: "white", border: "1px solid #bae6fd", padding: "3px 10px", borderRadius: 999 }}>~€50–150 per document</span>
-              </div>
+            <div style={{ background: "#f0f9ff", padding: "12px 16px" }}>
+              <p style={{ color: "#0c4a6e", fontSize: 13, lineHeight: 1.7 }}>Birth or marriage certificates from outside Germany need a <strong>certified German translation</strong> (beglaubigte Übersetzung). Some require an Apostille. Missing translations are the most common reason registrations fail.</p>
             </div>
           </div>
         )}
 
-        <div style={{ fontSize: 10, fontWeight: 700, color: "#64748b", letterSpacing: "0.09em", textTransform: "uppercase", marginBottom: 12 }}>
-          Your checklist — collect these before the appointment
-        </div>
-
+        <div style={{ fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 10 }}>Bring to your appointment</div>
         {cards.map((card, ci) => (
-          <div key={card.title} style={{ background: "white", borderRadius: 16, border: `1.5px solid ${card.border}`, marginBottom: 10, overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-            {/* Card header */}
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderBottom: `1px solid ${card.border}`, background: card.bg }}>
-              <div style={{ width: 32, height: 32, borderRadius: 9, background: card.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <Check size={15} color="white" strokeWidth={3} />
+          <div key={card.title} style={{ background: "white", borderRadius: 14, border: `1.5px solid ${card.border}`, marginBottom: 10, overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", borderBottom: `1px solid ${card.border}`, background: card.bg }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, background: card.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Check size={13} color="white" strokeWidth={3} />
               </div>
-              <div style={{ fontWeight: 800, color: card.color, fontSize: 13.5, flex: 1 }}>{card.title}</div>
-              <span style={{ fontSize: 9.5, fontWeight: 700, color: "#dc2626", background: "#fee2e2", padding: "3px 9px", borderRadius: 999, flexShrink: 0, letterSpacing: "0.04em" }}>REQUIRED</span>
+              <div style={{ fontWeight: 800, color: card.color, fontSize: 13, flex: 1 }}>{card.title}</div>
+              <span style={{ fontSize: 9.5, fontWeight: 700, color: "#dc2626", background: "#fee2e2", padding: "2px 8px", borderRadius: 999, flexShrink: 0 }}>REQUIRED</span>
             </div>
-            {/* Card items */}
-            <div style={{ padding: "12px 16px", display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ padding: "10px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
               {card.items.map((item, i) => (
-                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ width: 20, height: 20, borderRadius: 6, border: `2px solid ${card.border}`, flexShrink: 0, marginTop: 1, background: "white" }} />
+                <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <div style={{ width: 18, height: 18, borderRadius: 5, border: `2px solid ${card.border}`, flexShrink: 0, marginTop: 1 }} />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, color: "#111111", fontSize: 13.5, lineHeight: 1.4 }}>{item.text}</div>
-                    {item.detail && <div style={{ color: "#64748b", fontSize: 12.5, marginTop: 2, lineHeight: 1.45 }}>{item.detail}</div>}
-                    {item.warn && (
-                      <div style={{ marginTop: 8, padding: "9px 12px", background: "#fef2f2", borderRadius: 9, border: "1px solid #fecaca" }}>
-                        <p style={{ fontSize: 12, color: "#991b1b", lineHeight: 1.6, fontWeight: 600 }}>{item.warn}</p>
-                      </div>
-                    )}
+                    <div style={{ fontWeight: 700, color: "#111111", fontSize: 13, lineHeight: 1.4 }}>{item.text}</div>
+                    {item.detail && <div style={{ color: "#64748b", fontSize: 12, marginTop: 2 }}>{item.detail}</div>}
+                    {item.warn && <div style={{ marginTop: 6, padding: "8px 12px", background: "#fef2f2", borderRadius: 8, border: "1px solid #fecaca" }}><p style={{ fontSize: 12, color: "#991b1b", lineHeight: 1.6, fontWeight: 600 }}>{item.warn}</p></div>}
                   </div>
                 </div>
               ))}
@@ -4106,74 +4050,52 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           </div>
         ))}
 
-        {/* Recommended: Mietvertrag */}
-        <div style={{ background: "white", borderRadius: 16, border: "1.5px solid #e8ecf4", marginBottom: 10, overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderBottom: "1px solid #f1f5f9", background: "#f8fafc" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 9, background: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <Check size={15} color="white" strokeWidth={3} />
-            </div>
-            <div style={{ fontWeight: 800, color: "#475569", fontSize: 13.5, flex: 1 }}>Rental contract copy (Mietvertrag)</div>
-            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#0075FF", background: "#eff6ff", padding: "3px 9px", borderRadius: 999, flexShrink: 0, letterSpacing: "0.04em" }}>RECOMMENDED</span>
+        <div style={{ background: "white", borderRadius: 14, border: "1.5px solid #e8ecf4", marginBottom: 20, overflow: "hidden" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", background: "#f8fafc" }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Check size={13} color="white" strokeWidth={3} /></div>
+            <div style={{ fontWeight: 700, color: "#475569", fontSize: 13, flex: 1 }}>Rental contract copy (Mietvertrag)</div>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#0075FF", background: "#eff6ff", padding: "2px 8px", borderRadius: 999 }}>RECOMMENDED</span>
           </div>
-          <div style={{ padding: "12px 16px" }}>
-            <p style={{ color: "#64748b", fontSize: 13, lineHeight: 1.55 }}>Not mandatory, but useful if the clerk has any questions about your address. Bring a copy, not the original.</p>
+          <div style={{ padding: "10px 16px" }}>
+            <p style={{ color: "#64748b", fontSize: 12.5, lineHeight: 1.6 }}>Not mandatory but useful if the clerk has questions. A copy is fine — no original needed.</p>
           </div>
         </div>
 
-        {/* Bottom trust strip */}
-        <div style={{ marginTop: 24, padding: "14px 18px", borderRadius: 14, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", gap: 12 }}>
-          <Shield size={18} color="#0075FF" style={{ flexShrink: 0 }} />
-          <p style={{ fontSize: 12.5, color: "#64748b", lineHeight: 1.55 }}>
-            All PDFs generated <strong style={{ color: "#111111" }}>locally in your browser</strong>. Your passport details, religious affiliation, and personal data are never stored on any server — guaranteed.
-          </p>
+        {/* Print tip */}
+        <div style={{ background: "#0f172a", borderRadius: 14, padding: "16px 18px", marginBottom: 20, display: "flex", gap: 12 }}>
+          <AlertCircle size={16} color="#fbbf24" style={{ flexShrink: 0, marginTop: 2 }} />
+          <div>
+            <div style={{ fontWeight: 900, color: "white", fontSize: 13.5, marginBottom: 3 }}>Print on paper — Germany requires it.</div>
+            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 12.5, lineHeight: 1.5 }}>DM or Rossmann self-service kiosks: ~€0.10 per page. Bürgeramt will not accept digital forms.</p>
+          </div>
         </div>
 
-        {/* ── Referral block ── */}
-        <div style={{ margin: "28px 0 8px", borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
-          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "24px 26px 20px", textAlign: "center" }}>
-            <div style={{ fontSize: 28, marginBottom: 10 }}>🗡️</div>
-            <h3 style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.25 }}>
-              Saved your life?<br/>Send this to another expat and save theirs too.
-            </h3>
-            <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 13, lineHeight: 1.6, maxWidth: 380, margin: "0 auto 18px" }}>
-              Every expat in Berlin needs this. Most of them are googling right now. One link from you saves them hours of confusion.
-            </p>
+        {/* ── 6. REFERRAL ── */}
+        <div style={{ borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4", marginBottom: 20 }}>
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "22px 24px", textAlign: "center" }}>
+            <div style={{ fontSize: 26, marginBottom: 10 }}>🗡️</div>
+            <h3 style={{ fontSize: 17, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.25 }}>Saved your life?<br/>Send this to another expat.</h3>
+            <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 13, lineHeight: 1.6, maxWidth: 340, margin: "0 auto 16px" }}>Every expat in Berlin needs this. One link saves them hours.</p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <a
-                href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20form%20in%20English%20in%203%20minutes%20%E2%80%94%20no%20data%20stored%2C%20perfectly%20in%20German.%20You%20need%20this%3A%20https%3A%2F%2Fsimplyexpat.de"
-                target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 11, background: "#25D366", color: "white", fontWeight: 800, fontSize: 13.5, textDecoration: "none" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.09.541 4.05 1.487 5.757L.057 23.882l6.291-1.649A11.935 11.935 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.954a9.942 9.942 0 01-5.071-1.388l-.364-.215-3.735.979.996-3.638-.237-.374A9.935 9.935 0 012.046 12C2.046 6.479 6.479 2.046 12 2.046c5.52 0 9.954 4.433 9.954 9.954 0 5.52-4.434 9.954-9.954 9.954z"/></svg>
-                Share on WhatsApp
-              </a>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText("https://simplyexpat.de").then(() => {
-                    const btn = document.getElementById("copy-link-btn");
-                    if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); }
-                  });
-                }}
-                id="copy-link-btn"
-                style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 20px", borderRadius: 11, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.25)", color: "white", fontWeight: 800, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit" }}>
-                Copy link
-              </button>
+              <a href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20in%20English%20in%203%20minutes%20%E2%80%94%20perfectly%20in%20German%2C%20no%20data%20stored%3A%20https%3A%2F%2Fsimplyexpat.de" target="_blank" rel="noopener noreferrer"
+                style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 11, background: "#25D366", color: "white", fontWeight: 800, fontSize: 13, textDecoration: "none" }}>Share on WhatsApp</a>
+              <button onClick={() => { navigator.clipboard.writeText("https://simplyexpat.de").then(() => { const btn = document.getElementById("copy-link-btn"); if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); } }); }} id="copy-link-btn"
+                style={{ padding: "11px 18px", borderRadius: 11, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.25)", color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>Copy link</button>
             </div>
           </div>
-          <div style={{ background: "#f8fafc", padding: "14px 22px", textAlign: "center" }}>
-            <p style={{ color: "#64748b", fontSize: 12, lineHeight: 1.6 }}>
-              No referral scheme. No commission. Just one expat helping another.
-            </p>
+          <div style={{ background: "#f8fafc", padding: "11px 20px", textAlign: "center" }}>
+            <p style={{ color: "#64748b", fontSize: 12 }}>No referral scheme. No commission. Just one expat helping another.</p>
           </div>
         </div>
 
-        {/* ── Wipe & Restart button ── */}
-        <div style={{ marginTop: 32, textAlign: "center" }}>
-          <button
-            onClick={() => { setShowWipe(true); setWipeChecked(false); }}
+        {/* ── 7. WIPE ── */}
+        <div style={{ textAlign: "center", marginTop: 8 }}>
+          <button onClick={() => { setShowWipe(true); setWipeChecked(false); }}
             style={{ background: "none", border: "none", color: "#94a3b8", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 }}>
             Clear browser data &amp; restart process
           </button>
         </div>
+
 
         {/* ── Wipe confirmation popup ── */}
         {showWipe && (
