@@ -174,6 +174,7 @@ interface FormData {
   // New address
   newStreet: string;
   newNumber: string;
+  newAddExtra: string;  // Zusätze: Stockwerk, HH/VH etc
   newPostalCode: string;
   newCity: string;
   moveInDate: string;
@@ -195,7 +196,7 @@ const EMPTY: FormData = {
   originCountry: "", isEU: true,
   maritalStatus: "", marriageDate: "", marriagePlace: "", marriageCountry: "",
   people: [{ ...EMPTY_PERSON }],
-  newStreet: "", newNumber: "", newPostalCode: "", newCity: "Berlin",
+  newStreet: "", newNumber: "", newAddExtra: "", newPostalCode: "", newCity: "Berlin",
   moveInDate: "", newResType: "alleinige",
   prevStreet: "", prevNumber: "", prevPostalCode: "", prevCity: "",
   prevCountry: "", moveOutDate: "", prevResType: "alleinige",
@@ -374,7 +375,14 @@ function citizenshipToOrigin(cit: string): { country: string; isEU: boolean } {
 
 
 
-const fmtDate = (iso: string) => iso ? new Date(iso).toLocaleDateString("de-DE") : "";
+const fmtDate = (iso: string): string => {
+  if (!iso) return "";
+  const d = new Date(iso + "T12:00:00"); // noon avoids timezone shifts
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yyyy = d.getFullYear();
+  return `${dd}.${mm}.${yyyy}`;
+};
 const safe = (s: string) => (s || "").replace(/[^\u0000-\u00ff]/g, "");
 
 // How many Anmeldung sheets this family needs
@@ -421,7 +429,7 @@ async function fillAnmeldungSheet(
   // ── Shared address data ──────────────────────────────────────
   txt(F.NEUE_EINZUG,   fmtDate(d.moveInDate));
   txt(F.NEUE_PLZ,      `${d.newPostalCode} ${d.newCity || "Berlin"}`);
-  txt(F.NEUE_STRASSE,  `${d.newStreet} ${d.newNumber}`.trim());
+  txt(F.NEUE_STRASSE,  [d.newStreet, d.newNumber, d.newAddExtra].filter(Boolean).join(" ").trim());
   chk(F.NEUE_ALLEINIG, d.newResType === "alleinige");
   chk(F.NEUE_HAUPT,    d.newResType === "Haupt");
   chk(F.NEUE_NEBEN,    d.newResType === "Neben");
@@ -450,8 +458,33 @@ async function fillAnmeldungSheet(
   const sheetP1Status = pdfMaritalStatus(d.maritalStatus, p1);
   txt(F.FAMILIENSTAND, sheetP1Status);
   if (d.marriageDate || d.marriagePlace || d.marriageCountry) {
-    txt(F.EHE_ANGABEN,
-      [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)].filter(Boolean).join(", "));
+    // EHE_ANGABEN has two child widgets side by side:
+    //   Left (SP 99, wider):  Datum, Ort, Land — our data goes here
+    //   Right (SP 100, small): AZ (Aktenzeichen/case number) — leave blank
+    // Setting the parent field propagates to BOTH children causing duplicate text.
+    // Fix: set only the first child widget's value directly via acroField Kids.
+    const eheValue = [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)].filter(Boolean).join(", ");
+    try {
+      const parentAcroField = (form as any).acroForm.getFields().find(
+        (f: any) => f.getPartialName() === F.EHE_ANGABEN
+      );
+      if (parentAcroField) {
+        const kids = parentAcroField.Kids();
+        if (kids && kids.size() >= 1) {
+          // Access just the first (left) child and set its value
+          const leftChild = kids.get(0);
+          const { PDFString } = await loadPdfLib();
+          leftChild.Value = PDFString.of(truncField(F.EHE_ANGABEN, eheValue));
+        } else {
+          txt(F.EHE_ANGABEN, eheValue);
+        }
+      } else {
+        txt(F.EHE_ANGABEN, eheValue);
+      }
+    } catch {
+      // Fallback: write to parent (will duplicate but better than nothing)
+      txt(F.EHE_ANGABEN, eheValue);
+    }
   }
 
   // prevCountry fallback: blank → "Ausland" (standard Bürgeramt placeholder)
@@ -1289,73 +1322,79 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   // ═════════════════════════════════════════════════════════════════════════
   const p2pg = doc.addPage([PW, PH] as [number, number]);
 
-  // ── Header ────────────────────────────────────────────────────────────────
+  // ── Header — personalised ─────────────────────────────────────────────────
   p2pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
-  p2pg.drawText("SimplyExpat Berlin — Anmeldung Expert Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
-  p2pg.drawText("Everything you need to know, in plain English", {
-    x: ML, y: PH - 52, size: 9.5, font: HV, color: rgb(0.70, 0.82, 1.00),
+  p2pg.drawText("Your Berlin Anmeldung Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
+  const nameStr = (p1.firstName + " " + p1.lastName).trim();
+  const situStr = [
+    isEU ? "EU/EEA citizen" : "Non-EU citizen",
+    d.people.length > 1 ? `${d.people.length} people` : null,
+    isMarried ? "married" : null,
+    hasForeignBirth ? "foreign birth docs" : null,
+  ].filter(Boolean).join(" · ");
+  p2pg.drawText(safe("Prepared for " + nameStr + " · " + situStr), {
+    x: ML, y: PH - 55, size: 8.5, font: HI, color: rgb(0.60, 0.76, 1.00),
   });
-  p2pg.drawText(safe("Personalised for " + (p1.firstName + " " + p1.lastName).trim()), {
-    x: ML, y: PH - 67, size: 8.5, font: HI, color: rgb(0.60, 0.76, 1.00),
-  });
 
-  let cur2 = HDR_H + 14;
+  let cur2 = HDR_H + 12;
 
-  // ── Section 1: What is Anmeldung? ────────────────────────────────────────
-  cur2 = secBlock(p2pg, "What is Anmeldung and why does it matter?", cur2);
-  cur2 = paraBlock(p2pg, "Anmeldung is mandatory residence registration with the German state. Every person living in Germany must register within 14 days of moving in (Bundesmeldegesetz § 17). Without registration: no bank account, no tax ID, no public services, no proof of address.", cur2);
-  cur2 += 6;
-
-  // ── Section 2: 14-day rule ────────────────────────────────────────────────
-  cur2 = secBlock(p2pg, "The 14-day rule — don't panic", cur2);
-  cur2 = calloutBlock(p2pg, "As long as you have a Buergeramt appointment booked, the authorities will tolerate the delay. They know how hard appointments are to get. Book the appointment first — register when the slot arrives.", cur2, BLUEL, BLUE);
-  cur2 = bulletBlock(p2pg, "Late fine:", "officially up to EUR 1,000, but in practice if you show up with an appointment the clerk will process you without comment.", cur2);
-  cur2 = bulletBlock(p2pg, "Landlord refuses:", "document all contact attempts by email. Then call the Buergeramt directly — they have a procedure for exactly this situation.", cur2);
-  cur2 += 6;
-
-  // ── Section 3: Appointment ────────────────────────────────────────────────
-  cur2 = secBlock(p2pg, "How to get a Buergeramt appointment", cur2);
+  // ── Your situation ────────────────────────────────────────────────────────
+  // Personalised callout based on EU status
   if (isEU) {
-    cur2 = calloutBlock(p2pg, "EU/EEA citizens: Book an in-person appointment at any of the 44 Buergeramt locations. Bring your passport or national ID card — either is accepted. No residence permit required.", cur2, GRNL, GRN);
+    cur2 = calloutBlock(p2pg, safe("As an EU/EEA citizen, you can use a passport or national ID card — both are accepted. You must appear in person at any of the 44 Berlin Buergeramt locations."), cur2, GRNL, GRN);
   } else {
-    cur2 = calloutBlock(p2pg, "Non-EU citizens: You must book an in-person appointment — no online option. Scroll to the bottom of service.berlin.de and select In-Person Appointment. Bring your passport. Slots are competitive — use the Tuesday 8 AM trick below.", cur2, AMBL, AMB);
-  }
-  cur2 = bulletBlock(p2pg, "service.berlin.de:", "The official portal. You can book at ANY of the 44 Buergeramt locations — not just the one nearest to your address.", cur2);
-  cur2 = bulletBlock(p2pg, "Tuesday 7:55 AM:", "New slots appear at 8:00 AM sharp. Start refreshing from 7:55. Slots vanish in under 60 seconds. This is the single best hack.", cur2);
-  cur2 = bulletBlock(p2pg, "Call 115 at 7 AM:", "Ask for cancellation slots. Morning calls have the highest success rate.", cur2);
-  cur2 = bulletBlock(p2pg, "Walk-in:", "Buergeramt Tempelhof (Tempelhofer Damm 165) or Mitte (Karl-Marx-Allee 31). Arrive 30 min before opening. No guarantee but often works.", cur2);
-  cur2 += 6;
-
-  // ── Section 4: Printing ───────────────────────────────────────────────────
-  cur2 = secBlock(p2pg, "Printing your Anmeldung form", cur2);
-  cur2 = calloutBlock(p2pg, "The Buergeramt does NOT accept forms on a phone screen. You must print on paper. Bring the printout in a folder — do not fold it.", cur2, REDL, RED);
-  cur2 = bulletBlock(p2pg, "DM / Rossmann:", "Self-service print kiosks at roughly EUR 0.10-0.15 per page. There is one in almost every Berlin neighbourhood.", cur2);
-  cur2 = bulletBlock(p2pg, "Alternatives:", "Copy shops (Copyshop), public libraries, your workplace, or any FedEx Office.", cur2);
-  cur2 += 6;
-
-  // ── Section 5: After registration ───────────────────────────────────────────
-  if (cur2 < PH - FOOTER_H - 80) {
-    cur2 = secBlock(p2pg, "After registration", cur2);
-    cur2 = bulletBlock(p2pg, "Meldebestaetigung:", "Your proof of registration — you receive it the same day. You need it for bank accounts, employers, government services.", cur2);
-    cur2 = bulletBlock(p2pg, "Steuer-ID:", "Your tax ID arrives by post within 4 weeks at your registered address. Keep it forever.", cur2);
-    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you registered Catholic or Protestant, approx. 8-9% church tax applies automatically. Change it at the Finanzamt anytime — no penalty.", cur2);
-    cur2 += 6;
+    cur2 = calloutBlock(p2pg, safe("As a non-EU citizen, you must appear in person — online registration is not available. Bring your passport (national ID is NOT accepted for Anmeldung). Scroll to the bottom of service.berlin.de to select an in-person appointment."), cur2, AMBL, AMB);
   }
 
-  // ── Pro tip closing block ─────────────────────────────────────────────────
-  if (cur2 < PH - FOOTER_H - 52) {
-    cur2 += 4;
-    const tipH = 44;
-    const tipY = PH - cur2 - tipH;
-    p2pg.drawRectangle({ x: ML, y: tipY, width: CW, height: tipH, color: NAVY, borderRadius: 8 });
-    p2pg.drawText("SimplyExpat tip:", { x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE });
-    p2pg.drawText("Bring a pen. Bring passport or ID. Arrive 5 min early. Stay calm.", {
-      x: ML + 14, y: tipY + tipH - 29, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00),
-    });
-    p2pg.drawText("The hardest part was getting the appointment. You already did that.", {
-      x: ML + 14, y: tipY + tipH - 41, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00),
-    });
+  // Family note if multiple people
+  if (d.people.length > 1) {
+    cur2 = calloutBlock(p2pg, safe(`You are registering ${d.people.length} people on ${sheets} form${sheets > 1 ? "s" : ""}. Hand all forms in together at the counter. The clerk will process everyone at once.`), cur2, BLUEL, BLUE);
   }
+
+  // Foreign documents note
+  if (hasForeignBirth || hasForeignMarriage) {
+    cur2 = calloutBlock(p2pg, "IMPORTANT: You have foreign documents. These must be accompanied by a certified German translation (beglaubigte Uebersetzung). Cost: approx. EUR 50-150 per document. Some also require an Apostille. Do not go to the appointment without these.", cur2, REDL, RED);
+  }
+  cur2 += 4;
+
+  // ── Appointment hacks ─────────────────────────────────────────────────────
+  cur2 = secBlock(p2pg, "How to get a Buergeramt appointment fast", cur2);
+  cur2 = bulletBlock(p2pg, "Tuesday 7:55 AM:", "New slots appear on service.berlin.de at 8:00 AM sharp. Refresh from 7:55. Slots vanish in under 60 seconds. This is the single best hack.", cur2);
+  cur2 = bulletBlock(p2pg, "Book any location:", "You are NOT limited to your nearest Buergeramt. Any of the 44 Berlin locations is valid. More locations = more available slots.", cur2);
+  cur2 = bulletBlock(p2pg, "Call 115 at 7 AM:", "Ask specifically for cancellation slots. Morning calls get answered fastest.", cur2);
+  cur2 = bulletBlock(p2pg, "Walk-in options:", "Buergeramt Tempelhof (Tempelhofer Damm 165) or Mitte (Karl-Marx-Allee 31). Arrive 30 min before opening. No guarantee but works regularly.", cur2);
+  cur2 += 4;
+
+  // ── Printing ─────────────────────────────────────────────────────────────
+  cur2 = secBlock(p2pg, "Before you go — printing", cur2);
+  cur2 = calloutBlock(p2pg, "Print on paper — the Buergeramt will NOT accept a phone screen. Sign the form in pen after printing (at the bottom: Datum, Unterschrift). Bring it in a folder, unfolded.", cur2, REDL, RED);
+  cur2 = bulletBlock(p2pg, "DM / Rossmann:", "Self-service kiosks in almost every Berlin neighbourhood. Approx. EUR 0.10-0.15 per page.", cur2);
+  cur2 += 4;
+
+  // ── After registration ────────────────────────────────────────────────────
+  cur2 = secBlock(p2pg, "After your appointment", cur2);
+  cur2 = bulletBlock(p2pg, "Meldebestaetigung:", "You receive your registration confirmation the same day. Keep it — you need it for banks, employers, and government services.", cur2);
+  cur2 = bulletBlock(p2pg, "Steuer-ID:", "Your German tax ID arrives by post within 4 weeks at your new address. Keep it permanently — you will use it for the rest of your life in Germany.", cur2);
+  if (isMarried) {
+    const kirchStr = d.people.some(p => ["rk","ev"].includes(p.religion))
+      ? "You registered a church affiliation — approx. 8-9% Kirchensteuer (church tax) applies. You can change this at the Finanzamt at any time, no penalty."
+      : "You did not register a church affiliation — no church tax applies.";
+    cur2 = bulletBlock(p2pg, "Kirchensteuer:", kirchStr, cur2);
+  } else {
+    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you registered Catholic or Protestant church membership, approx. 8-9% church tax applies. Change it at the Finanzamt anytime — no penalty.", cur2);
+  }
+  cur2 += 4;
+
+  // ── Closing tip ───────────────────────────────────────────────────────────
+  const tipH = 40;
+  const tipY = FOOTER_H + 10;
+  p2pg.drawRectangle({ x: ML, y: tipY, width: CW, height: tipH, color: NAVY, borderRadius: 6 });
+  p2pg.drawText(safe("Good luck, " + (p1.firstName || "expat") + ". Bring a pen. Arrive calm. The form does the talking."), {
+    x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE,
+  });
+  p2pg.drawText("The hardest part was getting the appointment. You already did that.", {
+    x: ML + 14, y: tipY + tipH - 29, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00),
+  });
 
   // ── Footer ────────────────────────────────────────────────────────────────
   p2pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
@@ -1727,6 +1766,10 @@ export default function BerlinButler() {
         .section-pad{padding:56px 40px 64px}
         .wizard-aside{width:268px;flex-shrink:0}
         .wizard-main-pad{padding:36px 40px 80px}
+        .done-layout{display:flex;gap:0;min-height:100vh}
+        .done-main{flex:1;min-width:0;padding:28px 32px 100px}
+        .done-sidebar{width:320px;flex-shrink:0;background:#0f172a;padding:0;display:flex;flex-direction:column}
+        .done-sidebar-sticky{position:sticky;top:0;height:100vh;overflow-y:auto}
         .wizard-max{max-width:620px}
         .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:block}
         .nav-pad{padding:0 40px}
@@ -1739,6 +1782,9 @@ export default function BerlinButler() {
           .section-pad{padding:28px 20px 36px!important}
           .wizard-aside{display:none!important}
           .wizard-main-pad{padding:16px 16px 120px!important}
+          .done-layout{display:block!important}
+          .done-sidebar{display:none!important}
+          .done-main{padding:16px 16px 80px!important}
           .wizard-max{max-width:100%!important}
           .landing-grid{grid-template-columns:1fr!important;gap:24px!important}
           .nav-pad{padding:0 16px!important}
@@ -3146,12 +3192,48 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
 }
 
 // ─── Step: New Address ────────────────────────────────────────────
+// ─── Zusätze field with info toggle ─────────────────────────────
+function ZusaetzeField({ value, onChange }: { value: string; onChange: (e: any) => void }) {
+  const [showInfo, setShowInfo] = React.useState(false);
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+        <label style={{ fontSize: 10.5, fontWeight: 700, color: "#64748b", letterSpacing: "0.07em", textTransform: "uppercase" }}>
+          Zusätze <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: "0.88em" }}>(optional)</span>
+        </label>
+        <button onClick={() => setShowInfo(s => !s)}
+          style={{ width: 16, height: 16, borderRadius: "50%", border: "1.5px solid #94a3b8", background: showInfo ? "#0075FF" : "white", color: showInfo ? "white" : "#94a3b8", fontSize: 10, fontWeight: 900, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0 }}>
+          i
+        </button>
+      </div>
+      {showInfo && (
+        <div style={{ marginBottom: 8, padding: "10px 13px", borderRadius: 10, background: "#eff6ff", border: "1px solid #bfdbfe" }}>
+          <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6 }}>
+            <strong>Zusätze</strong> (additions) are extra address details the Bürgeramt may ask for — for example:<br/>
+            <strong>Stockwerk</strong> (floor): e.g. "2. OG" (2nd floor)<br/>
+            <strong>Vorderhaus / Hinterhaus</strong>: front or rear building (common in Berlin Altbauten)<br/>
+            <strong>Quergebäude / Seitenflügel</strong>: side wing<br/>
+            Leave blank if not applicable — most Berlin addresses don't need this.
+          </p>
+        </div>
+      )}
+      <input
+        value={value}
+        onChange={onChange}
+        placeholder="e.g. 2. OG, Hinterhaus"
+        style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#0f172a", background: "white", fontFamily: "inherit" }}
+      />
+    </div>
+  );
+}
+
 function StepNewAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: any }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <SH icon={MapPin}>New Berlin Address</SH>
       <R2 a={<Inp req label="Street Name" value={form.newStreet} onChange={upd("newStreet")} placeholder="Hauptstrasse" autoFocus />}
           b={<Inp req label="House No." value={form.newNumber} onChange={upd("newNumber")} placeholder="12a" />} />
+      <ZusaetzeField value={form.newAddExtra} onChange={upd("newAddExtra")} />
       <R2 a={<Inp req label="Postal Code (PLZ)" value={form.newPostalCode} onChange={upd("newPostalCode")} placeholder="10115" maxLength={5} inputMode="numeric" />}
           b={<div>
             <Lbl>City</Lbl>
@@ -3525,91 +3607,123 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
   });
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px", background: "#f1f4f9" }} className="fu">
-      <div style={{ maxWidth: 480, width: "100%" }}>
+    <div style={{ minHeight: "100vh", background: "#0f172a", fontFamily: "system-ui,Arial,sans-serif" }} className="fu">
 
-        {/* Header */}
-        <div style={{ marginBottom: 22, textAlign: "center" }}>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.02em", marginBottom: 6 }}>Your documents are ready</h1>
-          <p style={{ color: "#64748b", fontSize: 14 }}>One-time preparation fee. Instant download.</p>
-        </div>
-
-        {/* ── What you get ── */}
-        <div style={{ background: "white", borderRadius: 20, border: "1px solid #e8ecf4", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", overflow: "hidden", marginBottom: 14 }}>
-          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "28px 26px", textAlign: "center" }}>
-            <div style={{ color: "rgba(147,197,253,0.8)", fontSize: 10.5, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>One-time fee · No subscription</div>
-            <div style={{ color: "white", fontSize: 58, fontWeight: 900, lineHeight: 1 }}>15</div>
-            <div style={{ color: "rgba(147,197,253,0.8)", fontSize: 12.5, marginTop: 4 }}>Euro</div>
+      {/* ── Dark hero ── */}
+      <div style={{ background: "linear-gradient(160deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 32 }}>
+            <div style={{ width: 30, height: 30, borderRadius: 8, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontWeight: 900, fontSize: 15 }}>S</span>
+            </div>
+            <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>SimplyExpat <span style={{ color: "#60a5fa" }}>Berlin</span></span>
           </div>
-          <div style={{ padding: "18px 22px" }}>
+          {(() => {
+            const d = form.moveInDate ? Math.ceil((new Date().getTime() - new Date(form.moveInDate).getTime()) / 86400000) : null;
+            const daysLeft = d !== null ? 14 - d : null;
+            return (
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: daysLeft !== null && daysLeft <= 7 ? "rgba(239,68,68,0.15)" : "rgba(251,191,36,0.1)", border: `1px solid ${daysLeft !== null && daysLeft <= 7 ? "rgba(239,68,68,0.4)" : "rgba(251,191,36,0.3)"}`, borderRadius: 999, padding: "5px 14px", marginBottom: 20 }}>
+                <AlertCircle size={11} color={daysLeft !== null && daysLeft <= 7 ? "#f87171" : "#fbbf24"} />
+                <span style={{ color: daysLeft !== null && daysLeft <= 7 ? "#f87171" : "#fbbf24", fontSize: 11.5, fontWeight: 700 }}>
+                  {daysLeft !== null && d! > 0 ? `${daysLeft} day${daysLeft !== 1 ? "s" : ""} left to register` : "14-day deadline from your move-in date"}
+                </span>
+              </div>
+            );
+          })()}
+          <h1 style={{ fontSize: 32, fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 12 }}>
+            One step away from<br/><span style={{ color: "#60a5fa" }}>being registered.</span>
+          </h1>
+          <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 15, lineHeight: 1.65, maxWidth: 380, margin: "0 auto" }}>
+            Your form is filled. Your checklist is ready. Get your documents and walk in prepared.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Card ── */}
+      <div style={{ maxWidth: 480, margin: "-60px auto 0", padding: "0 16px 60px", position: "relative", zIndex: 1 }}>
+
+        {/* What you get */}
+        <div style={{ background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.3)", marginBottom: 14 }}>
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "22px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ color: "rgba(147,197,253,0.7)", fontSize: 10.5, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>One-time · No subscription</div>
+              <span style={{ color: "white", fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em" }}>€15</span>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              {["Instant download","No account needed","Zero data stored"].map(t => (
+                <div key={t} style={{ color: "#86efac", fontSize: 12, fontWeight: 700, marginBottom: 3 }}>✓ {t}</div>
+              ))}
+            </div>
+          </div>
+          <div style={{ padding: "18px 22px 14px" }}>
             {[
-              { label: "Anmeldung (PDF)", desc: sheets > 1 ? `${sheets} official forms — all 54 fields filled, one per 2 persons` : "Official Anmeldung form — all 54 fields filled in German" },
-              { label: "Your Checklist (PDF)", desc: "Page 1: Personalised checklist based on your answers" },
-              { label: "Berlin Life-Hack Guide (PDF)", desc: "Page 2: Expert guide, appointment hacks, what to expect" },
-            ].map(({ label, desc }) => (
-              <div key={label} style={{ display: "flex", gap: 11, marginBottom: 12, alignItems: "flex-start" }}>
-                <div style={{ width: 20, height: 20, borderRadius: 6, background: "#eff6ff", border: "1.5px solid #bfdbfe", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                  <Check size={10} color="#2563eb" />
-                </div>
+              { icon: "📄", label: sheets > 1 ? `${sheets} Official Anmeldung Forms` : "Official Anmeldung Form", desc: "All 54 fields in perfect German. Accepted at all 44 Berlin Bürgerämter." },
+              { icon: "✅", label: "Personalised Document Checklist", desc: "Exactly what you need based on your situation — nothing more, nothing less." },
+              { icon: "🗡️", label: "Berlin Appointment Hacks Guide", desc: "Tuesday 8 AM slots, walk-in locations, phone tricks. Get seen fast." },
+            ].map(({ icon, label, desc }) => (
+              <div key={label} style={{ display: "flex", gap: 12, marginBottom: 14, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>{icon}</span>
                 <div>
-                  <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13 }}>{label}</div>
-                  <div style={{ color: "#64748b", fontSize: 12, marginTop: 1 }}>{desc}</div>
+                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5 }}>{label}</div>
+                  <div style={{ color: "#64748b", fontSize: 12.5, marginTop: 2, lineHeight: 1.5 }}>{desc}</div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* ── Peace of Mind box ── */}
-        <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 14, background: "linear-gradient(135deg,#f0fdf4,#ecfdf5)", border: "1px solid #86efac", display: "flex", gap: 11 }}>
-          <Shield size={16} color="#16a34a" style={{ flexShrink: 0, marginTop: 2 }} />
-          <div>
-            <div style={{ fontWeight: 700, color: "#15803d", fontSize: 13, marginBottom: 5 }}>What this service does — and doesn’t do</div>
-            <p style={{ color: "#166534", fontSize: 12.5, lineHeight: 1.65 }}>
-              We prepare your documents <strong>perfectly</strong> and give you a personalised checklist. We do not carry out the official registration itself — that requires your personal appearance at the Bürgeramt. We are also legally unable to book appointments for you, but our Guide shows you <strong>how to get one in record time</strong>.
-            </p>
-          </div>
-        </div>
-
-        {/* ── Email capture — reminder only, no PDFs transmitted ── */}
-        {!paid && (
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ padding: "14px 16px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4", boxShadow: "0 2px 10px rgba(0,0,0,0.04)" }}>
-              <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 6 }}>
-                Get your next steps by email <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>(optional)</span>
-              </div>
-              <input
-                type="email"
-                value={userEmail}
-                onChange={e => setUserEmail(e.target.value)}
-                placeholder="your@email.com"
-                style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 15, color: "#0f172a", background: "#f8fafc", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
-              />
-              <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 7, lineHeight: 1.55 }}>
-                We will send you a short email with your next steps and the Bürgeramt booking link. <strong>No PDFs, no personal data</strong> — only your first name and email address are used. Basis: Art. 6(1)(a) DSGVO.
-              </p>
+          <div style={{ margin: "0 16px 16px", padding: "12px 14px", borderRadius: 12, background: "#f0fdf4", border: "1px solid #86efac", display: "flex", gap: 9 }}>
+            <Shield size={14} color="#16a34a" style={{ flexShrink: 0, marginTop: 1 }} />
+            <div>
+              <div style={{ fontWeight: 700, color: "#15803d", fontSize: 12.5, marginBottom: 3 }}>What we do — and don't do</div>
+              <p style={{ color: "#166534", fontSize: 12, lineHeight: 1.65 }}>We prepare your documents perfectly. We do not register you — that requires your personal appearance at the Bürgeramt. We cannot book appointments for you, but our Guide shows you how to get one fast.</p>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* ── Data Safety Note ── */}
+        {/* Email capture */}
         {!paid && (
-          <div style={{ marginBottom: 14, padding: "12px 14px", borderRadius: 12, background: "#f0f9ff", border: "1px solid #bae6fd", display: "flex", gap: 9, alignItems: "flex-start" }}>
-            <Shield size={14} color="#0284c7" style={{ flexShrink: 0, marginTop: 1 }} />
-            <p style={{ fontSize: 12, color: "#0c4a6e", lineHeight: 1.6 }}>
-              <strong>Your data never reaches our servers.</strong> Everything you enter — address, passport details, birth dates, family data — is held only in your own browser's local storage. SimplyExpat has no access to it. It is automatically deleted from your device once your documents are generated. No PDFs, no passport data, no sensitive information ever leaves your browser.
+          <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+            <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 6 }}>
+              Get your next steps by email <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>(optional)</span>
+            </div>
+            <input type="email" value={userEmail} onChange={e => setUserEmail(e.target.value)} placeholder="your@email.com"
+              style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 15, color: "#0f172a", background: "#f8fafc", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+            <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 6, lineHeight: 1.55 }}>
+              Next steps + booking link sent to your inbox. <strong>No PDFs, no personal data.</strong> Art. 6(1)(a) DSGVO.
             </p>
           </div>
         )}
 
-        {/* ── Payment / Generate / Downloads ── */}
+        {/* Data safety */}
+        {!paid && (
+          <div style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 12, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", display: "flex", gap: 9 }}>
+            <Shield size={13} color="#60a5fa" style={{ flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 11.5, color: "rgba(191,219,254,0.8)", lineHeight: 1.6 }}>
+              <strong style={{ color: "white" }}>Your data never reaches our servers.</strong> Everything stays in your browser — deleted after generation.
+            </p>
+          </div>
+        )}
+
+        {/* ── Hacks reminder ── */}
+        {!paid && (
+          <div style={{ marginBottom: 14, padding: "13px 16px", borderRadius: 13, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(251,191,36,0.25)" }}>
+            <div style={{ fontWeight: 800, color: "#fbbf24", fontSize: 12.5, marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
+              🗡️ Can't find an appointment?
+            </div>
+            <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 12, lineHeight: 1.6 }}>
+              Your Guide PDF includes insider hacks — Tuesday 8 AM slots, walk-in Bürgeramt locations, and how to call for cancellations. Don't book just one location. The Amt won't fine you as long as you have an appointment booked.
+            </p>
+          </div>
+        )}
+
+        {/* ── Pay button / generating spinner ── */}
         {!paid ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {form.isBerlin !== true && (
-              <div style={{ padding: "12px 14px", borderRadius: 11, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 9, alignItems: "flex-start" }}>
+              <div style={{ padding: "12px 14px", borderRadius: 11, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 9 }}>
                 <AlertCircle size={14} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
                 <p style={{ color: "#991b1b", fontSize: 13, lineHeight: 1.5 }}>
-                  <strong>Berlin only:</strong> SimplyExpat currently only supports Berlin addresses. Please go back and confirm your new address is within Berlin before purchasing.
+                  <strong>Berlin only:</strong> SimplyExpat currently supports Berlin addresses only. Please go back and confirm your address is in Berlin.
                 </p>
               </div>
             )}
@@ -3622,112 +3736,28 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
                 try {
                   const res = await fetch("/api/checkout", { method: "POST" });
                   const data = await res.json();
-                  if (data.url) {
-                    window.location.href = data.url;
-                  } else {
-                    btn.disabled = false;
-                    btn.innerHTML = "Pay €15 — Secure Stripe Checkout";
-                    alert("Could not start checkout. Please try again.");
-                  }
-                } catch {
-                  btn.disabled = false;
-                  btn.innerHTML = "Pay €15 — Secure Stripe Checkout";
-                  alert("Network error. Please try again.");
-                }
+                  if (data.url) { window.location.href = data.url; }
+                  else { btn.disabled = false; btn.innerHTML = "Pay €15 — Secure Stripe Checkout"; alert("Could not start checkout. Please try again."); }
+                } catch { btn.disabled = false; btn.innerHTML = "Pay €15 — Secure Stripe Checkout"; alert("Network error. Please try again."); }
               }}
               id="stripe-pay-btn"
               disabled={form.isBerlin !== true}
-              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "16px", borderRadius: 14, background: form.isBerlin === true ? "linear-gradient(135deg,#0f172a,#1e3a8a)" : "#e2e8f0", color: form.isBerlin === true ? "white" : "#94a3b8", fontWeight: 800, fontSize: 15, border: "none", boxShadow: form.isBerlin === true ? "0 8px 28px rgba(15,23,42,0.35)" : "none", cursor: form.isBerlin === true ? "pointer" : "not-allowed", fontFamily: "inherit" }}>
-              <CreditCard size={16} /> Pay €15 — Secure Stripe Checkout
+              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: form.isBerlin === true ? "linear-gradient(135deg,#0075FF,#2563eb)" : "#334155", color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: form.isBerlin === true ? "0 8px 32px rgba(0,117,255,0.5)" : "none", cursor: form.isBerlin === true ? "pointer" : "not-allowed", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
+              <CreditCard size={18} /> Pay €15 — Secure Checkout
             </button>
-            {/* Re-enable button when user returns from Stripe via back button */}
-            <script dangerouslySetInnerHTML={{ __html: `
-              window.addEventListener('pageshow', function(e) {
-                var btn = document.getElementById('stripe-pay-btn');
-                if (btn) { btn.disabled = false; btn.innerHTML = '<span>Pay €15 — Secure Stripe Checkout</span>'; }
-              });
-            `}} />
-
+            <script dangerouslySetInnerHTML={{ __html: `window.addEventListener('pageshow',function(){var b=document.getElementById('stripe-pay-btn');if(b){b.disabled=false;b.textContent='Pay €15 — Secure Checkout';}});` }} />
+            <p style={{ textAlign: "center", color: "rgba(147,197,253,0.6)", fontSize: 11.5 }}>
+              🔒 Powered by Stripe · Secure · No card stored
+            </p>
           </div>
-
         ) : !allDone ? (
-          <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 14, padding: "22px", textAlign: "center" }}>
-            <div style={{ width: 22, height: 22, border: "2.5px solid #86efac", borderTopColor: "#16a34a", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
-            <div style={{ fontWeight: 700, color: "#15803d", fontSize: 14 }}>{genStatus || "Generating your documents…"}</div>
-            <div style={{ color: "#4ade80", fontSize: 12, marginTop: 4 }}>Please keep this tab open</div>
+          <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 14, padding: "22px", textAlign: "center" }}>
+            <div style={{ width: 22, height: 22, border: "2.5px solid rgba(255,255,255,0.2)", borderTopColor: "#0075FF", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
+            <div style={{ fontWeight: 700, color: "white", fontSize: 14 }}>{genStatus || "Generating your documents…"}</div>
+            <div style={{ color: "rgba(191,219,254,0.6)", fontSize: 12, marginTop: 4 }}>Please keep this tab open</div>
           </div>
+        ) : null}
 
-        ) : (
-          /* ── Individual download buttons ── */
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 11, padding: "11px 14px", display: "flex", alignItems: "center", gap: 9, marginBottom: 2 }}>
-              <CheckCircle2 size={16} color="#16a34a" />
-              <div style={{ fontWeight: 700, color: "#15803d", fontSize: 13 }}>Documents generated — download each one below</div>
-            </div>
-
-            {/* 1. Anmeldung */}
-            <button onClick={redownloadAnmeldung} disabled={dlA}
-              style={dlBtn("linear-gradient(135deg,#1e3a8a,#2563eb)", "0 6px 20px rgba(37,99,235,0.3)")}>
-              <div style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <FileText size={16} color="white" />
-              </div>
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div style={{ fontSize: 14, fontWeight: 800 }}>{dlA ? "Generating..." : sheets > 1 ? `Anmeldung (${sheets} sheets)` : "Anmeldung (PDF)"}</div>
-                <div style={{ fontSize: 11.5, opacity: 0.75, marginTop: 1 }}>Official form · All 54 fields filled in German</div>
-              </div>
-              <Download size={15} />
-            </button>
-
-            {/* 2. Checklist */}
-            <button onClick={redownloadGuide} disabled={dlG}
-              style={dlBtn("linear-gradient(135deg,#134e4a,#0f766e)", "0 6px 20px rgba(15,118,110,0.3)")}>
-              <div style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <FileText size={16} color="white" />
-              </div>
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div style={{ fontSize: 14, fontWeight: 800 }}>{dlG ? "Generating..." : "Your Checklist (PDF)"}</div>
-                <div style={{ fontSize: 11.5, opacity: 0.75, marginTop: 1 }}>Page 1: Personalised checklist based on your answers</div>
-              </div>
-              <Download size={15} />
-            </button>
-
-            {/* 3. Berlin Life-Hack Guide */}
-            <button onClick={redownloadGuide} disabled={dlG}
-              style={dlBtn("linear-gradient(135deg,#312e81,#4f46e5)", "0 6px 20px rgba(79,70,229,0.28)")}>
-              <div style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <FileText size={16} color="white" />
-              </div>
-              <div style={{ flex: 1, textAlign: "left" }}>
-                <div style={{ fontSize: 14, fontWeight: 800 }}>{dlG ? "Generating..." : "Berlin Life-Hack Guide (PDF)"}</div>
-                <div style={{ fontSize: 11.5, opacity: 0.75, marginTop: 1 }}>Page 2: Expert tips, appointment hacks, what to expect</div>
-              </div>
-              <Download size={15} />
-            </button>
-
-            {/* 4. WG template — visually separate, grey-ish */}
-            <div style={{ marginTop: 6, padding: "14px 16px", borderRadius: 14, background: "#f1f5f9", border: "1px solid #e2e8f0" }}>
-              <div style={{ fontSize: 10.5, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>Also available — free template</div>
-              <button onClick={redownloadWG} disabled={dlW}
-                style={{ ...dlBtn("#475569", "0 4px 14px rgba(71,85,105,0.2)"), fontSize: 13 }}>
-                <div style={{ width: 30, height: 30, borderRadius: 7, background: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Home size={14} color="white" />
-                </div>
-                <div style={{ flex: 1, textAlign: "left" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700 }}>{dlW ? "Generating..." : "Wohnungsgeberbestätigung template (PDF)"}</div>
-                  <div style={{ fontSize: 11, opacity: 0.75, marginTop: 1 }}>Pre-filled · For your landlord to complete & sign</div>
-                </div>
-                <Download size={14} />
-              </button>
-              <p style={{ fontSize: 11.5, color: "#64748b", marginTop: 8, lineHeight: 1.5 }}>
-                Send this to your landlord. Under § 19 BMG they are <strong>legally required</strong> to sign it.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <p style={{ textAlign: "center", marginTop: 14, fontSize: 11.5, color: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
-          <Shield size={11} /> Generated locally in your browser · No data stored on any server
-        </p>
       </div>
     </div>
   );
@@ -3916,15 +3946,78 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         </div>
       </div>
 
-      <div style={{ maxWidth: 580, margin: "0 auto", padding: "28px 16px 100px" }}>
+      <div className="done-layout">
+        {/* ── Desktop sidebar ── */}
+        <div className="done-sidebar">
+          <div className="done-sidebar-sticky">
+            {/* Berlin image */}
+            <div style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
+              <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=640&q=80" alt="Berlin" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.7 }} />
+            </div>
+            <div style={{ padding: "24px 20px", flex: 1 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#475569", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>Your registration summary</div>
+              {[
+                ["Name", (p1.firstName + " " + p1.lastName).trim() || "—"],
+                ["Address", form.newStreet ? `${form.newStreet} ${form.newNumber}, ${form.newPostalCode} Berlin` : "—"],
+                ["Move-in", form.moveInDate ? fmtDate(form.moveInDate) : "—"],
+                ["Status", form.isEU ? "EU/EEA citizen" : "Non-EU citizen"],
+                ["People", String(form.people.length)],
+                ["Forms", String(sheets)],
+              ].map(([k, v]) => (
+                <div key={k} style={{ marginBottom: 10 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em" }}>{k}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "white", marginTop: 2 }}>{v}</div>
+                </div>
+              ))}
+              <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 12, background: "rgba(0,117,255,0.1)", border: "1px solid rgba(0,117,255,0.2)" }}>
+                <div style={{ fontWeight: 800, color: "#60a5fa", fontSize: 12.5, marginBottom: 6 }}>🗡️ Appointment hacks</div>
+                <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 12, lineHeight: 1.6 }}>
+                  Tuesday 7:55 AM on service.berlin.de. Refresh from 7:55 — new slots appear at 8:00 AM sharp and vanish in seconds. Any of 44 locations. Full hacks in your Guide PDF.
+                </p>
+              </div>
+              <div style={{ marginTop: 14, padding: "12px 16px", borderRadius: 12, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)" }}>
+                <p style={{ color: "rgba(187,247,208,0.85)", fontSize: 12, lineHeight: 1.6 }}>
+                  <strong style={{ color: "#86efac" }}>Don't stress about the days.</strong> The Amt understands Berlin waiting times. As long as you have an appointment booked, no fine.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        {/* ── 1. HEADLINE ── */}
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", marginBottom: 8, lineHeight: 1.15 }}>
-            {p1.firstName ? `${p1.firstName}, your documents are ready.` : "Your documents are ready."}
+        {/* ── Main content ── */}
+        <div className="done-main">
+
+        {/* ── 1. GREEN SUCCESS BANNER ── */}
+        <div style={{ background: "linear-gradient(135deg,#14532d,#16a34a)", borderRadius: 18, padding: "22px 24px", marginBottom: 20, color: "white", textAlign: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 12 }}>
+            <CheckCircle2 size={20} color="#86efac" />
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#86efac", letterSpacing: "0.06em", textTransform: "uppercase" }}>Payment confirmed · Documents generated</span>
+          </div>
+          <h1 style={{ fontSize: 23, fontWeight: 900, letterSpacing: "-0.025em", marginBottom: 10, lineHeight: 1.15 }}>
+            {p1.firstName ? `${p1.firstName}, you're ready.` : "You're ready."}
           </h1>
-          <p style={{ color: "#64748b", fontSize: 15, lineHeight: 1.6 }}>
-            Download everything below — then book your Bürgeramt appointment. You must appear in person. We prepared everything so you walk in ready.
+          {/* Personalised summary */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center", marginBottom: 10 }}>
+            {[
+              sheets > 1 ? `${sheets} Anmeldung forms` : "1 Anmeldung form",
+              "Personalised checklist",
+              "Appointment guide",
+              ...(form.isEU ? ["EU/EEA — ID or passport"] : ["Non-EU — passport required"]),
+              ...(form.people.length > 1 ? [`${form.people.length} people`] : []),
+            ].map(tag => (
+              <span key={tag} style={{ fontSize: 11.5, fontWeight: 700, color: "rgba(187,247,208,0.95)", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", padding: "3px 10px", borderRadius: 999 }}>{tag}</span>
+            ))}
+          </div>
+          <p style={{ color: "rgba(187,247,208,0.8)", fontSize: 13.5, lineHeight: 1.6 }}>
+            {form.moveInDate ? (() => {
+              const days = Math.ceil((new Date().getTime() - new Date(form.moveInDate).getTime()) / 86400000);
+              const left = 14 - days;
+              return left > 3
+                ? `${left} day${left !== 1 ? "s" : ""} left — but don't stress. The Amt understands Berlin waiting times. Book an appointment and you're protected. See the hacks in your Guide.`
+                : left > 0
+                  ? `${left} day${left !== 1 ? "s" : ""} left — book an appointment immediately. The Amt won't fine you as long as you have one booked.`
+                  : "Past 14 days — book an appointment now. The Amt won't fine you as long as you show up. See the hacks in your Guide PDF.";
+            })() : "Book your Bürgeramt appointment — your Guide PDF has hacks to get one fast."}
           </p>
         </div>
 
@@ -3977,6 +4070,15 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           <p style={{ textAlign: "center", marginTop: 10, fontSize: 11.5, color: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
             <Shield size={11} /> Generated in your browser · No data on any server
           </p>
+
+          {/* Signature reminder */}
+          <div style={{ marginTop: 14, padding: "13px 16px", borderRadius: 12, background: "#fffbeb", border: "1px solid #fde68a", display: "flex", gap: 10, alignItems: "flex-start" }}>
+            <AlertCircle size={15} color="#d97706" style={{ flexShrink: 0, marginTop: 1 }} />
+            <div>
+              <div style={{ fontWeight: 800, color: "#92400e", fontSize: 13, marginBottom: 2 }}>Don't forget to sign before you go in</div>
+              <p style={{ color: "#78350f", fontSize: 12.5, lineHeight: 1.5 }}>The form requires a handwritten signature at the bottom ("Datum, Unterschrift"). Sign it after printing — not before.</p>
+            </div>
+          </div>
         </div>
 
         {/* ── 3. NEXT STEP — book appointment ── */}
@@ -4155,7 +4257,8 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           </div>
         )}
 
-      </div>
+        </div> {/* end done-main */}
+      </div> {/* end done-layout */}
     </div>
   );
 }
