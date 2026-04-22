@@ -429,7 +429,7 @@ async function fillAnmeldungSheet(
   // ── Shared address data ──────────────────────────────────────
   txt(F.NEUE_EINZUG,   fmtDate(d.moveInDate));
   txt(F.NEUE_PLZ,      `${d.newPostalCode} ${d.newCity || "Berlin"}`);
-  txt(F.NEUE_STRASSE,  [d.newStreet, d.newNumber, d.newAddExtra].filter(Boolean).join(" ").trim());
+  txt(F.NEUE_STRASSE,  [d.newStreet + " " + d.newNumber, d.newAddExtra].filter(s => s.trim()).join(", ").trim());
   chk(F.NEUE_ALLEINIG, d.newResType === "alleinige");
   chk(F.NEUE_HAUPT,    d.newResType === "Haupt");
   chk(F.NEUE_NEBEN,    d.newResType === "Neben");
@@ -1188,7 +1188,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   items.push({
     text: "Wohnungsgeberbestaetigung — signed original from your landlord",
     tag: "required",
-    note: "§ 19 BMG: landlord is legally required to provide this. This is on your must-bring checklist — do not forget it.",
+    note: "This is a one-page form your landlord signs confirming you live at the address. Check your move-in documents and email first — many landlords include it automatically. If you don't have it: send them the template from your downloads. Under § 19 BMG they are legally required to provide it (refusal = fine up to EUR 1,000 for the landlord). The Buergeramt cannot process your Anmeldung without this document.",
   });
 
   for (const p of d.people) {
@@ -4055,17 +4055,26 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           </button>
 
           {/* WG */}
-          <button onClick={dlWG} disabled={dlW}
-            style={{ width: "100%", display: "flex", alignItems: "center", gap: 14, padding: "14px 18px", borderRadius: 14, background: "white", color: "#374151", border: "1.5px solid #e8ecf4", cursor: dlW ? "not-allowed" : "pointer", fontFamily: "inherit", boxShadow: "0 2px 8px rgba(0,0,0,0.04)", transition: "all 0.2s", textAlign: "left" }}>
-            <div style={{ width: 36, height: 36, borderRadius: 9, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <Home size={16} color="#64748b" />
+          <div style={{ background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 14, padding: "12px 16px", marginBottom: 2 }}>
+            <div style={{ fontWeight: 700, color: "#92400e", fontSize: 13, marginBottom: 4, display: "flex", alignItems: "center", gap: 6 }}>
+              <Home size={14} color="#d97706" /> Wohnungsgeberbestätigung — do you have it?
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 700, fontSize: 13.5, color: "#0f172a", marginBottom: 2 }}>{dlW ? "Generating..." : "Wohnungsgeberbestätigung (optional)"}</div>
-              <div style={{ fontSize: 12, color: "#64748b" }}>Landlord confirmation · §19 BMG · For your landlord to complete &amp; sign</div>
-            </div>
-            <Download size={15} color="#94a3b8" style={{ flexShrink: 0 }} />
-          </button>
+            <p style={{ color: "#78350f", fontSize: 12.5, lineHeight: 1.6, marginBottom: 10 }}>
+              Many landlords give you this form in your move-in documents — check your email or paperwork first. It's a single signed page with your name and address. If you already have it, you don't need to download this.<br/>
+              <strong>If not:</strong> Download the template below and send it to your landlord. Under §19 BMG they are legally required to sign it.
+            </p>
+            <button onClick={dlWG} disabled={dlW}
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", borderRadius: 10, background: "white", color: "#374151", border: "1.5px solid #fde68a", cursor: dlW ? "not-allowed" : "pointer", fontFamily: "inherit", textAlign: "left" }}>
+              <div style={{ width: 30, height: 30, borderRadius: 7, background: "#fffbeb", border: "1px solid #fde68a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Home size={14} color="#d97706" />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a", marginBottom: 1 }}>{dlW ? "Generating..." : "Download Landlord Confirmation Template"}</div>
+                <div style={{ fontSize: 11.5, color: "#92400e" }}>Only if your landlord hasn't provided it yet</div>
+              </div>
+              <Download size={14} color="#d97706" style={{ flexShrink: 0 }} />
+            </button>
+          </div>
 
           <p style={{ textAlign: "center", marginTop: 10, fontSize: 11.5, color: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
             <Shield size={11} /> Generated in your browser · No data on any server
