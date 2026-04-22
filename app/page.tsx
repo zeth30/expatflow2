@@ -1381,7 +1381,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
       : "You did not register a church affiliation — no church tax applies.";
     cur2 = bulletBlock(p2pg, "Kirchensteuer:", kirchStr, cur2);
   } else {
-    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you registered Catholic or Protestant church membership, approx. 8-9% church tax applies. Change it at the Finanzamt anytime — no penalty.", cur2);
+    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you declared Catholic or Protestant membership, approx. 8-9% church tax on your income tax applies automatically. To leave: you must formally exit (Kirchenaustritt) at the Standesamt or Amtsgericht — approx. EUR 30-40 fee, separate appointment required.", cur2);
   }
   cur2 += 4;
 
@@ -1771,7 +1771,7 @@ export default function BerlinButler() {
         .done-sidebar{width:320px;flex-shrink:0;background:#0f172a;padding:0;display:flex;flex-direction:column}
         .done-sidebar-sticky{position:sticky;top:0;height:100vh;overflow-y:auto}
         .wizard-max{max-width:620px}
-        .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:block}
+        .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:56px;align-items:center}
         .nav-pad{padding:0 40px}
         @media(max-width:768px){
           .mob-hide{display:none!important}
@@ -1786,7 +1786,7 @@ export default function BerlinButler() {
           .done-sidebar{display:none!important}
           .done-main{padding:16px 16px 80px!important}
           .wizard-max{max-width:100%!important}
-          .landing-grid{grid-template-columns:1fr!important;gap:24px!important}
+          .landing-grid{grid-template-columns:1fr!important;gap:24px!important}.hero-grid{grid-template-columns:1fr!important;gap:0!important}
           .nav-pad{padding:0 16px!important}
           .mob-stack{flex-direction:column!important}
           .mob-full{width:100%!important}
@@ -1796,7 +1796,7 @@ export default function BerlinButler() {
           .mob-btn-lg{padding:14px!important;font-size:15px!important}
         }
         @media(max-width:480px){
-          .mob-sm-text h1{font-size:28px!important}
+          .mob-sm-text h1{font-size:28px!important}.hero-berlin-img{display:none!important}
         }
         /* Mobile bottom nav for wizard */
         .mobile-bottom-nav{display:none}
@@ -2179,6 +2179,26 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
               Prepare My Anmeldung — 3 Minutes <ArrowRight size={17} />
             </button>
 
+          </div>
+        </div>
+
+        {/* ── Berlin image — desktop only ── */}
+        <div className="hero-berlin-img" style={{ position: "relative", borderRadius: 24, overflow: "hidden", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", height: 520 }}>
+          <img
+            src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=900&q=85"
+            alt="Berlin street"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+          {/* Overlay gradient */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,23,42,0.7) 0%, rgba(15,23,42,0.1) 60%, transparent 100%)" }} />
+          {/* Caption card */}
+          <div style={{ position: "absolute", bottom: 20, left: 20, right: 20 }}>
+            <div style={{ background: "rgba(15,23,42,0.85)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 18px", border: "1px solid rgba(255,255,255,0.1)" }}>
+              <div style={{ fontWeight: 800, color: "white", fontSize: 14, marginBottom: 4 }}>Berlin, Germany</div>
+              <div style={{ color: "rgba(191,219,254,0.85)", fontSize: 12.5, lineHeight: 1.5 }}>
+                44 Bürgeramt locations. 14-day deadline. We make sure you're ready.
+              </div>
+            </div>
           </div>
         </div>
 
