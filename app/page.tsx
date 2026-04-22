@@ -2201,6 +2201,22 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
             </div>
 
           </div>
+
+          {/* Stats strip — full width, centred, below both columns */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
+            {[
+              { v: "54", l: "Fields filled in German" },
+              { v: "3 min", l: "Average completion" },
+              { v: "44", l: "Berlin Bürgerämter" },
+              { v: "0", l: "Bytes stored on any server" },
+            ].map(({ v, l }) => (
+              <div key={l} style={{ textAlign: "center", padding: "14px 10px" }}>
+                <div style={{ fontSize: 28, fontWeight: 900, color: "#0075FF", letterSpacing: "-0.03em", lineHeight: 1 }}>{v}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 5, fontWeight: 500 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 
