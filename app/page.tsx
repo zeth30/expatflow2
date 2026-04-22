@@ -2122,215 +2122,113 @@ function StickyNav({ onStart }: { onStart: () => void }) {
 }
 
 function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloadWG: () => void }) {
-  const [hov, setHov] = useState(false);
+  const [hov, setHov] = React.useState(false);
   return (
-    <div className="fu">
-      {/* ── Sticky header with Services mega-menu ── */}
-      {/* ── Sticky header with Services mega-menu ── */}
+    <div className="fu" style={{ background: "white" }}>
       <StickyNav onStart={onStart} />
 
-      <div className="hero-pad mob-sm-text hero-grid" style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ maxWidth: 600 }}>
-          {/* Trust badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "5px 14px", marginBottom: 24 }}>
-            <Sparkles size={11} color="#0075FF" />
-            <span style={{ color: "#0075FF", fontSize: 11.5, fontWeight: 700 }}>Trusted by expats · Berlin's Anmeldung service</span>
-          </div>
+      {/* ══ HERO ══ */}
+      <div style={{ background: "white", borderBottom: "1px solid #e8ecf4" }}>
+        <div className="hero-pad" style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div className="hero-grid">
 
-          {/* Headline */}
-          <h1 style={{ fontSize: 52, fontWeight: 900, color: "#0f172a", lineHeight: 1.08, marginBottom: 18, letterSpacing: "-0.03em" }}>
-            Berlin bureaucracy<br />
-            <span style={{ background: "linear-gradient(135deg,#0f172a,#0075FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>is terrifying.</span><br />
-            <span style={{ fontSize: 44 }}>We make it disappear.</span>
-          </h1>
-          {/* Service name — SEO + clarity: user knows exactly what this page is for */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#0f172a", borderRadius: 10, padding: "8px 16px", marginBottom: 20 }}>
-            <FileText size={14} color="#0075FF" />
-            <span style={{ fontSize: 14, fontWeight: 800, color: "white", letterSpacing: "-0.01em" }}>Bürgeramt Anmeldung <span style={{ color: "#0075FF" }}>(Registration)</span></span>
-          </div>
+            {/* ── Left: copy ── */}
+            <div style={{ maxWidth: 560 }}>
 
-          {/* Fear + promise */}
-          <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.75, maxWidth: 480, marginBottom: 20 }}>
-            You have <strong style={{ color: "#dc2626" }}>14 days from your move-in date</strong> to register at a Berlin Bürgeramt. Miss it and you risk a <strong style={{ color: "#dc2626" }}>€1,000 fine</strong>. The form is in German. Forget one document and the clerk sends you home.
-          </p>
-          <p style={{ fontSize: 16, color: "#0f172a", fontWeight: 800, lineHeight: 1.65, maxWidth: 480, marginBottom: 28 }}>
-            We auto-generate your <strong style={{ color: "#0075FF" }}>official Anmeldung PDF</strong> — all 54 fields filled in perfect German — plus your personalised document checklist. In 3 minutes, in English.
-          </p>
-
-          {/* 4 promise pills */}
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 32 }}>
-            {[
-              { icon: "🔒", text: "Zero data storage — ever" },
-              { icon: "🇩🇪", text: "100% translated to German" },
-              { icon: "⚡", text: "Ready in 3 minutes" },
-              { icon: "✓", text: "Every nationality, every situation" },
-            ].map(({ icon, text }) => (
-              <div key={text} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 999, background: "white", border: "1px solid #e8ecf4", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-                <span style={{ fontSize: 13 }}>{icon}</span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{text}</span>
+              {/* Trust */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 14px", marginBottom: 24 }}>
+                <CheckCircle2 size={11} color="#16a34a" />
+                <span style={{ color: "#15803d", fontSize: 12, fontWeight: 700 }}>Trusted by expats in Berlin</span>
               </div>
-            ))}
-          </div>
 
-          <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-            <button onClick={onStart}
-              onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-              style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 32px", borderRadius: 14, background: "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", fontWeight: 800, fontSize: 16, border: "none", boxShadow: hov ? "0 20px 50px rgba(0,117,255,0.5)" : "0 8px 28px rgba(0,117,255,0.35)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.2s", letterSpacing: "-0.01em" }}>
-              Prepare My Anmeldung — 3 Minutes <ArrowRight size={17} />
-            </button>
+              {/* Headline */}
+              <h1 style={{ fontSize: 50, fontWeight: 900, color: "#0f172a", lineHeight: 1.08, marginBottom: 10, letterSpacing: "-0.03em" }}>
+                Your Anmeldung form,<br />
+                <span style={{ color: "#0075FF" }}>filled in 3 minutes.</span>
+              </h1>
 
-          </div>
-        </div>
+              {/* One-liner explainer */}
+              <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.7, marginBottom: 8 }}>
+                Anmeldung is the mandatory Berlin residence registration. The form is in German. Forget one document and the clerk sends you home.
+              </p>
+              <p style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", marginBottom: 28 }}>
+                We auto-generate your official Anmeldung PDF — all 54 fields filled in perfect German — plus your personalised document checklist. In English. In 3 minutes.
+              </p>
 
-        {/* ── Berlin image — desktop only ── */}
-        <div className="hero-berlin-img" style={{ position: "relative", borderRadius: 24, overflow: "hidden", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", height: 520 }}>
-          <img
-            src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=900&q=85"
-            alt="Berlin street"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-          {/* Overlay gradient */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,23,42,0.7) 0%, rgba(15,23,42,0.1) 60%, transparent 100%)" }} />
-          {/* Caption card */}
-          <div style={{ position: "absolute", bottom: 20, left: 20, right: 20 }}>
-            <div style={{ background: "rgba(15,23,42,0.85)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "14px 18px", border: "1px solid rgba(255,255,255,0.1)" }}>
-              <div style={{ fontWeight: 800, color: "white", fontSize: 14, marginBottom: 4 }}>Berlin, Germany</div>
-              <div style={{ color: "rgba(191,219,254,0.85)", fontSize: 12.5, lineHeight: 1.5 }}>
-                44 Bürgeramt locations. 14-day deadline. We make sure you're ready.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stat pills — below copy on mobile, below illustration on desktop */}
-        <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap" }}>
-          {[
-            { v: "3 min", l: "Average completion time" },
-            { v: "54", l: "Fields filled in German" },
-            { v: "0", l: "Bytes stored on servers" },
-            { v: "44", l: "Berlin Bürgerämter covered" },
-          ].map(({ v, l }) => (
-            <div key={v} style={{ flex: "1 1 130px", background: "white", borderRadius: 16, padding: "16px 18px", border: "1px solid #e8ecf4", boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#0075FF", lineHeight: 1, letterSpacing: "-0.02em" }}>{v}</div>
-              <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 4, lineHeight: 1.4 }}>{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-
-
-      {/* ── Battle Illustration Section ── */}
-      <div style={{ background: "#0f172a", borderTop: "1px solid #1e293b", padding: "24px 20px 16px", textAlign: "center" }}>
-        <div style={{ maxWidth: 320, margin: "0 auto", opacity: 0.95 }}>
-          <BureaucracyBattleIllustration />
-        </div>
-      </div>
-
-      {/* Two-column content */}
-      <div style={{ background: "white", borderTop: "1px solid #e8ecf4" }}>
-        <div className="section-pad" style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div className="landing-grid">
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.09em", textTransform: "uppercase", marginBottom: 10 }}>Before you start</div>
-              <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", marginBottom: 8 }}>What you need to have ready</h2>
-              <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.65, marginBottom: 22 }}>Have these details nearby for every person you are registering.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {/* Three deliverables */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 32 }}>
                 {[
-                  { item: "Passport or national ID card for each person", note: "EU/EEA: passport or national ID accepted. Non-EU: passport only — serial number and expiry exactly as printed", req: true },
-                  { item: "New Berlin address", note: "Street, house number, postal code and move-in date", req: true },
-                  { item: "Previous address (for everyone)", note: "Last address in Germany or abroad", req: true },
-                  { item: "Birth details for each person", note: "Date, city and country of birth", req: true },
-                  { item: "Religious affiliation for each person", note: "Determines Kirchensteuer (church tax) liability", req: true },
-                  { item: "Marriage details (if married)", note: "Date, place and country of ceremony", req: false },
-                  
-                ].map(({ item, note, req }) => (
-                  <div key={item} style={{ display: "flex", gap: 12, padding: "10px 14px", borderRadius: 11, background: req ? "#f8fafc" : "#fffbf0", border: `1px solid ${req ? "#e8ecf4" : "#fde68a40"}` }}>
-                    <div style={{ width: 18, height: 18, borderRadius: 5, background: req ? "#eff6ff" : "#fef3c7", border: `1.5px solid ${req ? "#bfdbfe" : "#fde68a"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                      <Check size={9} color={req ? "#2563eb" : "#d97706"} />
-                    </div>
+                  { label: "Anmeldung PDF", sub: "All 54 fields · Perfect German · Accepted at all 44 Berlin Bürgerämter" },
+                  { label: "Document checklist", sub: "Personalised by nationality — exactly what to bring, nothing more" },
+                  { label: "Appointment guide", sub: "How to get a slot fast — hacks that actually work in Berlin" },
+                ].map(({ label, sub }) => (
+                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 16px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4" }}>
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#0075FF", flexShrink: 0 }} />
                     <div>
-                      <span style={{ fontWeight: 700, color: "#0f172a", fontSize: 13 }}>{item}</span>
-                      {!req && <span style={{ marginLeft: 7, fontSize: 10, color: "#d97706", fontWeight: 600, background: "#fef9c3", padding: "1px 7px", borderRadius: 999 }}>if applicable</span>}
-                      <div style={{ color: "#64748b", fontSize: 11.5, marginTop: 1 }}>{note}</div>
+                      <span style={{ fontWeight: 800, color: "#0f172a", fontSize: 14 }}>{label}</span>
+                      <span style={{ color: "#94a3b8", fontSize: 13 }}> — {sub}</span>
                     </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+                <button onClick={onStart}
+                  onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#0066ee" : "#0075FF", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit" }}>
+                  Prepare My Anmeldung <ArrowRight size={18} />
+                </button>
+
+              </div>
+
+              {/* 14-day rule */}
+              <div style={{ marginTop: 22, padding: "12px 16px", borderRadius: 10, background: "#fef2f2", border: "1px solid #fecaca", display: "inline-flex", alignItems: "center", gap: 10 }}>
+                <div style={{ fontWeight: 900, color: "#dc2626", fontSize: 22, lineHeight: 1, letterSpacing: "-0.02em", flexShrink: 0 }}>14</div>
+                <div>
+                  <div style={{ fontWeight: 700, color: "#7f1d1d", fontSize: 13, lineHeight: 1.3 }}>days to register after moving in</div>
+                  <div style={{ color: "#b91c1c", fontSize: 12, marginTop: 2 }}>Bundesmeldegesetz §17 — fines up to €1,000</div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Right: Berlin + stats ── */}
+            <div className="hero-berlin-img" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ borderRadius: 18, overflow: "hidden", border: "1px solid #e8ecf4", boxShadow: "0 8px 40px rgba(0,0,0,0.09)" }}>
+                <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=800&q=85"
+                  alt="Berlin" style={{ width: "100%", height: 280, objectFit: "cover", objectPosition: "center 45%", display: "block" }} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {[
+                  { v: "54", l: "Fields filled in German" },
+                  { v: "3 min", l: "To complete" },
+                  { v: "44", l: "Berlin Bürgerämter" },
+                  { v: "0", l: "Bytes stored on any server" },
+                ].map(({ v, l }) => (
+                  <div key={l} style={{ background: "#f8fafc", borderRadius: 13, padding: "14px 16px", border: "1px solid #e8ecf4", textAlign: "center" }}>
+                    <div style={{ fontSize: 22, fontWeight: 900, color: "#0075FF", letterSpacing: "-0.02em" }}>{v}</div>
+                    <div style={{ fontSize: 11.5, color: "#64748b", marginTop: 4 }}>{l}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {/* Multi-sheet explainer */}
-              <div style={{ background: "linear-gradient(135deg,#f0f9ff,#eff6ff)", border: "1px solid #bfdbfe", borderRadius: 18, padding: 22 }}>
-                <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: "#dbeafe", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Layers size={17} color="#2563eb" />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13.5, marginBottom: 5 }}>Automatic Multi-Sheet Logic</div>
-                    <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6, marginBottom: 10 }}>
-                      The official form fits exactly <strong>2 people per sheet</strong>. SimplyExpat automatically generates the right number of forms:
-                    </p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                      {[["1–2 people","1 Anmeldung form"],["3–4 people","2 forms (auto-generated)"],["5–6 people","3 forms (auto-generated)"]].map(([p,f]) => (
-                        <div key={p} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                          <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6", flexShrink: 0 }} />
-                          <span style={{ fontSize: 12.5, color: "#1d4ed8" }}><strong>{p}</strong> → {f}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* WG Template */}
-              <div style={{ background: "linear-gradient(135deg,#fffbeb,#fef3c7)", border: "1px solid #fde68a", borderRadius: 18, padding: 22 }}>
-                <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: "#fef3c7", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <Home size={16} color="#d97706" />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 800, color: "#78350f", fontSize: 13.5, marginBottom: 4 }}>Wohnungsgeberbestaetigung Template</div>
-                    <p style={{ color: "#92400e", fontSize: 12.5, lineHeight: 1.6, marginBottom: 12 }}>
-                      Send this to your landlord — they are <strong>legally required</strong> to sign it (§19 BMG).
-                    </p>
-                    <button onClick={onDownloadWG} style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "8px 16px", borderRadius: 9, background: "#d97706", color: "white", fontWeight: 700, fontSize: 12.5, border: "none", boxShadow: "0 4px 12px rgba(217,119,6,0.3)" }}>
-                      <Download size={13} /> Download Template (.pdf)
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Appointment — teaser only, full hacks in guide */}
-              <div style={{ background: "linear-gradient(135deg,#eff6ff,#dbeafe)", border: "1.5px solid #bfdbfe", borderRadius: 18, padding: 22 }}>
-                <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13.5, marginBottom: 8, display: "flex", alignItems: "center", gap: 7 }}>
-                  <Zap size={13} color="#2563eb" /> Appointment Hacks — In Your Guide
-                </div>
-                <p style={{ fontSize: 13, color: "#1d4ed8", lineHeight: 1.65, marginBottom: 14 }}>
-                  Getting a Bürgeramt slot is the hardest part. Your <strong>Guide PDF includes exclusive appointment hacks</strong> — the exact times, phone tricks, and walk-in locations that actually work.
-                </p>
-                <a href="https://service.berlin.de/dienstleistung/120686/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "#2563eb", fontSize: 12.5, fontWeight: 700, textDecoration: "none" }}>
-                  <ExternalLink size={11} /> Book official appointment
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      <div style={{ background: "linear-gradient(160deg,#0f172a 0%,#0f172a 60%,#001a3d 100%)", padding: "60px 20px" }}>
-        <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#0075FF", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>No German required. No confusion. No stress.</div>
-          <h2 style={{ fontSize: 32, fontWeight: 900, color: "white", marginBottom: 14, letterSpacing: "-0.02em", lineHeight: 1.15 }}>
-            Better prepared than anyone else<br />in that waiting room.
+      {/* ══ BOTTOM CTA ══ */}
+      <div style={{ background: "#0f172a", padding: "56px 20px" }}>
+        <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: "white", marginBottom: 10, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+            Walk in better prepared than anyone else in that waiting room.
           </h2>
-          <p style={{ color: "#64748b", fontSize: 15, marginBottom: 32, lineHeight: 1.7, maxWidth: 420, margin: "0 auto 32px" }}>
-            We have helped thousands of expats register without stress, without errors, and without showing up twice. Your data never touches our servers. Your form is translated perfectly. Your checklist is personalised. All in 3 minutes.
+          <p style={{ color: "#475569", fontSize: 14, marginBottom: 28, lineHeight: 1.7 }}>
+            Perfect German form. Personalised checklist. Zero data stored. Ready in 3 minutes.
           </p>
-          <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 28px", borderRadius: 10, background: "transparent", color: "white", fontWeight: 700, fontSize: 14, border: "1.5px solid rgba(255,255,255,0.2)", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit" }}>
-            Get started <ArrowRight size={14} />
+          <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.4)" }}>
+            Get started <ArrowRight size={15} />
           </button>
-          {/* Legal footer links */}
           <LandingLegalFooter />
         </div>
       </div>
@@ -2338,9 +2236,10 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
   );
 }
 
+
 function LandingLegalFooter() {
   const [modal, setModal] = useState<"tos" | "cancel" | "privacy" | "impressum" | null>(null);
-  const linkStyle: React.CSSProperties = { background: "none", border: "none", color: "#475569", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 };
+  const linkStyle: React.CSSProperties = { background: "none", border: "none", color: "#64748b", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 };
   return (
     <>
       {modal === "tos"       && <TermsOfService     onClose={() => setModal(null)} />}
@@ -2362,7 +2261,7 @@ function LandingLegalFooter() {
         Whether you need Anmeldung Berlin English PDF support, expert relocation Berlin paperwork assistance, or simply want to fill your Bürgeramt form without storing your data anywhere,
         SimplyExpat prepares everything in 3 minutes. Available for every nationality moving to Berlin.
       </p>
-      <p style={{ color: "#334155", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
+      <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
   );
 }
