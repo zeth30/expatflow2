@@ -4,9 +4,9 @@ import "./globals.css";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin in English | SimplyExpat — Official PDF, No Data Stored",
+  title: "SimplyExpat | Berlin Registration PDF in 2 Minutes",
   description:
-    "The relocation service Berlin expats trust. Generate your official Anmeldung PDF in English — all 54 fields filled in perfect German. No data stored on any server. Every nationality. Takes 3 minutes.",
+    "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
   keywords: [
     "Anmeldung Berlin English",
     "Anmeldung Berlin PDF",
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Anmeldung Berlin in English — Official PDF, No Data Stored | SimplyExpat",
+    title: "SimplyExpat | Berlin Registration PDF in 2 Minutes",
     description:
-      "Fill your Berlin Anmeldung form in English in 3 minutes. All 54 fields in perfect German. Your data never leaves your browser. Expert relocation paperwork for expats.",
+      "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
     url: DOMAIN,
     siteName: "SimplyExpat Berlin",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "SimplyExpat Berlin — Anmeldung PDF in English" }],
