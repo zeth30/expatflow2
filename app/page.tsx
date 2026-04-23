@@ -1143,7 +1143,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   p1pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
 
   // Title
-  p1pg.drawText("Your Personalised Checklist", {
+  p1pg.drawText("Your Personalised Anmeldung Checklist", {
     x: ML, y: PH - 34, size: 20, font: HB, color: WHITE,
   });
   // Subtitle
@@ -1353,14 +1353,14 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // Foreign documents note
   if (hasForeignBirth || hasForeignMarriage) {
-    cur2 = calloutBlock(p2pg, "IMPORTANT: You have foreign documents. These must be accompanied by a certified German translation (beglaubigte Uebersetzung). Cost: approx. EUR 50-150 per document. Some also require an Apostille. Do not go to the appointment without these.", cur2, REDL, RED);
+    cur2 = calloutBlock(p2pg, "You have foreign documents. These must be accompanied by a certified German translation (beglaubigte Uebersetzung). Cost: approx. EUR 50-150 per document. Some also require an Apostille. Do not attend the appointment without these.", cur2, REDL, RED);
   }
   cur2 += 4;
 
   // ── Appointment hacks ─────────────────────────────────────────────────────
   cur2 = secBlock(p2pg, "How to get a Buergeramt appointment fast", cur2);
   cur2 = bulletBlock(p2pg, "Tuesday 7:55 AM:", "New slots appear on service.berlin.de at 8:00 AM sharp. Refresh from 7:55. Slots vanish in under 60 seconds. This is the single best hack.", cur2);
-  cur2 = bulletBlock(p2pg, "Book any location:", "You are NOT limited to your nearest Buergeramt. Any of the 44 Berlin locations is valid. More locations = more available slots.", cur2);
+  cur2 = bulletBlock(p2pg, "Book any location:", "You are not limited to your nearest Buergeramt. Any of the 44 Berlin locations is valid — more options means more available slots.", cur2);
   cur2 = bulletBlock(p2pg, "Call 115 at 7 AM:", "Ask specifically for cancellation slots. Morning calls get answered fastest.", cur2);
   cur2 = bulletBlock(p2pg, "Walk-in options:", "Buergeramt Tempelhof (Tempelhofer Damm 165) or Mitte (Karl-Marx-Allee 31). Arrive 30 min before opening. No guarantee but works regularly.", cur2);
   cur2 += 4;
@@ -1377,7 +1377,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   cur2 = bulletBlock(p2pg, "Steuer-ID:", "Your German tax ID arrives by post within 4 weeks at your new address. Keep it permanently — you will use it for the rest of your life in Germany.", cur2);
   if (isMarried) {
     const kirchStr = d.people.some(p => ["rk","ev"].includes(p.religion))
-      ? "You registered a church affiliation — approx. 8-9% Kirchensteuer (church tax) applies. You can change this at the Finanzamt at any time, no penalty."
+      ? "You registered a church affiliation — approx. 8-9% Kirchensteuer (church tax) applies on your income tax. To leave (Kirchenaustritt), visit the Standesamt — approx. EUR 30-40 fee."
       : "You did not register a church affiliation — no church tax applies.";
     cur2 = bulletBlock(p2pg, "Kirchensteuer:", kirchStr, cur2);
   } else {
@@ -1392,7 +1392,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   p2pg.drawText(safe("Good luck, " + (p1.firstName || "expat") + ". Bring a pen. Arrive calm. The form does the talking."), {
     x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE,
   });
-  p2pg.drawText("The hardest part was getting the appointment. You already did that.", {
+  p2pg.drawText("The hardest part was getting the appointment. You have already done that.", {
     x: ML + 14, y: tipY + tipH - 29, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00),
   });
 
@@ -1764,13 +1764,13 @@ export default function BerlinButler() {
         .grid-1{display:grid;grid-template-columns:1fr;gap:12px}
         .hero-pad{padding:80px 40px 60px}
         .section-pad{padding:56px 40px 64px}
-        .wizard-aside{width:268px;flex-shrink:0}
-        .wizard-main-pad{padding:36px 40px 80px}
+        .wizard-aside{width:300px;flex-shrink:0}
+        .wizard-main-pad{padding:44px 56px 80px}
         .done-layout{display:flex;gap:0;min-height:100vh}
         .done-main{flex:1;min-width:0;padding:28px 32px 100px}
         .done-sidebar{width:320px;flex-shrink:0;background:#0f172a;padding:0;display:flex;flex-direction:column}
         .done-sidebar-sticky{position:sticky;top:0;height:100vh;overflow-y:auto}
-        .wizard-max{max-width:620px}
+        .wizard-max{max-width:720px}
         .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:56px;align-items:center}
         .nav-pad{padding:0 40px}
         @media(max-width:768px){
@@ -2161,7 +2161,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
               <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 32 }}>
                 {[
                   { label: "Anmeldung PDF", sub: "All 54 fields · Perfect German · All 44 Berlin Bürgerämter" },
-                  { label: "Document checklist", sub: "Personalised by nationality — exactly what to bring" },
+                  { label: "Document checklist", sub: "Personalised for your nationality and situation — exactly what to bring" },
                   { label: "Appointment guide", sub: "Hacks to get a slot fast in Berlin" },
                 ].map(({ label, sub }) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 15px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4" }}>
@@ -2391,7 +2391,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
       <aside className="wizard-aside" style={{ background: "white", borderRight: "1px solid #e8ecf4", display: "flex", flexDirection: "column", position: "sticky", top: 3, height: "calc(100vh - 3px)", overflowY: "auto" }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
           {confirmHome && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", backdropFilter: "blur(6px)", zIndex: 400, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+            <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
               <div style={{ maxWidth: 380, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
                 <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
                 <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Leave the registration?</h3>
@@ -3166,7 +3166,7 @@ function StepNewAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: a
       <Inp req label="Move-in Date (Einzugsdatum)" type="date" value={form.moveInDate} onChange={upd("moveInDate")} />
       <div>
         <Lbl req>Residence Type</Lbl>
-        <TG value={form.newResType} onChange={v => set_("newResType", v)} options={[["alleinige","Alleinige Wohnung"],["Haupt","Hauptwohnung"],["Neben","Nebenwohnung"]]} />
+        <TG value={form.newResType} onChange={v => set_("newResType", v)} options={[["alleinige","Sole residence (Alleinige Wohnung)"],["Haupt","Primary residence (Hauptwohnung)"],["Neben","Secondary residence (Nebenwohnung)"]]} />
       </div>
       <IBox type="warn">You have <strong>14 days</strong> from your Einzugsdatum to register (§17 BMG). Fines up to €1,000 for late registration.</IBox>
     </div>
@@ -3220,7 +3220,7 @@ function StepPrevAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: 
       <Inp opt label="Move-out Date" type="date" value={form.moveOutDate} onChange={upd("moveOutDate")} />
       <div>
         <Lbl>Keep previous address?</Lbl>
-        <TG value={form.keepPrev} onChange={v => set_("keepPrev", v)} options={[["nein","No — giving it up"],["haupt","Yes — as Hauptwohnung"],["neben","Yes — as Nebenwohnung"]]} />
+        <TG value={form.keepPrev} onChange={v => set_("keepPrev", v)} options={[["nein","No — giving it up"],["haupt","Yes — keep as primary (Hauptwohnung)"],["neben","Yes — keep as secondary (Nebenwohnung)"]]} />
       </div>
     </div>
   );
@@ -3529,10 +3529,10 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0f172a", fontFamily: "system-ui,Arial,sans-serif" }} className="fu">
+    <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }} className="fu">
 
-      {/* ── Dark hero ── */}
-      <div style={{ background: "linear-gradient(160deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      {/* ── Header ── */}
+      <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 32 }}>
@@ -3554,16 +3554,16 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
             );
           })()}
           <h1 style={{ fontSize: 32, fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 12 }}>
-            One step away from<br/><span style={{ color: "#60a5fa" }}>being registered.</span>
+            A few steps away from<br/><span style={{ color: "#60a5fa" }}>being registered.</span>
           </h1>
           <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 15, lineHeight: 1.65, maxWidth: 380, margin: "0 auto" }}>
-            Your form is filled. Your checklist is ready. Get your documents and walk in prepared.
+            Your form is ready to generate. Get your documents and walk in to the Bürgeramt prepared.
           </p>
         </div>
       </div>
 
       {/* ── Card ── */}
-      <div style={{ maxWidth: 480, margin: "-60px auto 0", padding: "0 16px 60px", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: 560, margin: "-60px auto 0", padding: "0 20px 80px", position: "relative", zIndex: 1 }}>
 
         {/* What you get */}
         <div style={{ background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.3)", marginBottom: 14 }}>
@@ -3604,7 +3604,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
 
         {/* Email capture */}
         {!paid && (
-          <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+          <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 14, background: "white", border: "1px solid #e2e8f0", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
             <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 6 }}>
               Get your next steps by email <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>(optional)</span>
             </div>
@@ -3618,21 +3618,21 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
 
         {/* Data safety */}
         {!paid && (
-          <div style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 12, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", display: "flex", gap: 9 }}>
-            <Shield size={13} color="#60a5fa" style={{ flexShrink: 0, marginTop: 1 }} />
-            <p style={{ fontSize: 11.5, color: "rgba(191,219,254,0.8)", lineHeight: 1.6 }}>
-              <strong style={{ color: "white" }}>Your data never reaches our servers.</strong> Everything stays in your browser — deleted after generation.
+          <div style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 12, background: "#f0f9ff", border: "1px solid #bae6fd", display: "flex", gap: 9 }}>
+            <Shield size={13} color="#0284c7" style={{ flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 11.5, color: "#0c4a6e", lineHeight: 1.6 }}>
+              <strong>Your data never reaches our servers.</strong> Everything stays in your browser — deleted after generation.
             </p>
           </div>
         )}
 
         {/* ── Hacks reminder ── */}
         {!paid && (
-          <div style={{ marginBottom: 14, padding: "13px 16px", borderRadius: 13, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(251,191,36,0.25)" }}>
-            <div style={{ fontWeight: 800, color: "#fbbf24", fontSize: 12.5, marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ marginBottom: 14, padding: "13px 16px", borderRadius: 13, background: "#fffbeb", border: "1px solid #fde68a" }}>
+            <div style={{ fontWeight: 800, color: "#92400e", fontSize: 12.5, marginBottom: 5, display: "flex", alignItems: "center", gap: 6 }}>
               🗡️ Can't find an appointment?
             </div>
-            <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 12, lineHeight: 1.6 }}>
+            <p style={{ color: "#78350f", fontSize: 12, lineHeight: 1.6 }}>
               Your Guide PDF includes insider hacks — Tuesday 8 AM slots, walk-in Bürgeramt locations, and how to call for cancellations. Don't book just one location. The Amt won't fine you as long as you have an appointment booked.
             </p>
           </div>
@@ -3922,7 +3922,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center", marginBottom: 10 }}>
             {[
               sheets > 1 ? `${sheets} Anmeldung forms` : "1 Anmeldung form",
-              "Personalised checklist",
+              "Your personalised checklist",
               "Appointment guide",
               ...(form.isEU ? ["EU/EEA — ID or passport"] : ["Non-EU — passport required"]),
               ...(form.people.length > 1 ? [`${form.people.length} people`] : []),
@@ -3971,7 +3971,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
               <div style={{ fontWeight: 900, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 3 }}>
                 {dlG ? "Generating..." : "Download Checklist + Guide"}
               </div>
-              <div style={{ fontSize: 12.5, opacity: 0.8 }}>Page 1: your document checklist · Page 2: appointment hacks &amp; tips</div>
+              <div style={{ fontSize: 12.5, opacity: 0.8 }}>Your personalised checklist + Berlin appointment guide</div>
             </div>
             <Download size={20} style={{ flexShrink: 0, opacity: 0.8 }} />
           </button>
