@@ -1197,13 +1197,13 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
         items.push({
           text: `Passport or national ID card: ${safe(p.firstName)} ${safe(p.lastName)}`.trim(),
           tag: "required",
-          note: "EU/EEA citizens: either document is accepted — bring whichever you used to fill this form.",
+          note: "EU/EEA citizens: passport or national ID card accepted. If you hold multiple citizenships, bring proof of all of them — the Buergeramt registers all nationalities.",
         });
       } else {
         items.push({
           text: `Passport (original, valid): ${safe(p.firstName)} ${safe(p.lastName)}`.trim(),
           tag: "required",
-          note: "Non-EU citizens: passport only — national ID cards are NOT accepted for Anmeldung.",
+          note: "Non-EU citizens: passport only — national ID cards are not accepted. If you hold multiple citizenships, bring all passports. The Buergeramt registers all nationalities.",
         });
       }
     }
@@ -3759,7 +3759,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
       items: form.people.filter(p => p.firstName || p.lastName).map((p, i) => ({
         text: `${p.firstName} ${p.lastName}`.trim() || `Person ${i + 1}`,
-        detail: "Valid original — passport or national ID card, either is accepted for EU/EEA citizens",
+        detail: "Valid original — passport or national ID card accepted. If you hold multiple citizenships, bring proof of all of them.",
       })),
     });
   } else {
@@ -3768,7 +3768,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       color: "#0075FF", bg: "#eff6ff", border: "#bfdbfe",
       items: form.people.filter(p => p.firstName || p.lastName).map((p, i) => ({
         text: `${p.firstName} ${p.lastName}`.trim() || `Person ${i + 1}`,
-        detail: "Valid passport only — national ID cards are NOT accepted for non-EU citizens",
+        detail: "Valid passport only — national ID cards are NOT accepted. If you hold multiple citizenships, bring all passports.",
       })),
     });
   }
