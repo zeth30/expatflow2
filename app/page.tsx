@@ -1545,9 +1545,15 @@ export default function BerlinButler() {
       }
     } catch {}
 
-    // Check if user already completed — land on done page
+    // Check if user already completed — land on done page and restore form for re-downloads
     try {
       if (localStorage.getItem("simplyexpat-done-v1") === "1") {
+        // Restore form data first so re-downloads on done page have real data
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const saved = JSON.parse(raw);
+          if (saved.form) setForm(() => ({ ...EMPTY, ...saved.form }));
+        }
         setPhase("done");
         return;
       }
@@ -1584,6 +1590,19 @@ export default function BerlinButler() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ form })); } catch {}
   }, [form]);
 
+  // ── Guard: if done flag is set, always redirect to done page ─────
+  // Prevents getting stuck in wizard after pressing back from done page.
+  // Uses replaceState (not pushState) so it doesn't add a new history entry
+  // that could itself be back-buttoned into, causing an infinite redirect loop.
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("simplyexpat-done-v1") === "1" && phase !== "done") {
+        setPhase("done");
+        window.history.replaceState({ ph: "done" }, "", window.location.pathname);
+      }
+    } catch {}
+  }, [phase]);
+
   // ── If somehow still on payment page when done — redirect ────────
   useEffect(() => {
     if (allDone && phase === "payment") {
@@ -1614,6 +1633,17 @@ export default function BerlinButler() {
   // ── Browser back / forward button support ───────────────────────
   useEffect(() => {
     const onPop = (e: PopStateEvent) => {
+      // If user has completed generation, back button always returns to done page.
+      // Never allow navigating back to payment or wizard after completion.
+      try {
+        if (localStorage.getItem("simplyexpat-done-v1") === "1") {
+          // Push done state forward again — traps the back button on done page
+          window.history.pushState({ ph: "done" }, "", window.location.pathname);
+          setPhase("done");
+          return;
+        }
+      } catch {}
+
       const state = e.state as { ph?: AppPhase; st?: WizardStep } | null;
       if (state?.ph) {
         applyHash(state.ph, state.st ?? "origin");
@@ -1720,8 +1750,10 @@ export default function BerlinButler() {
       }
 
       try {
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.setItem("simplyexpat-done-v1", "1"); // returning users land here
+        // Keep form data in localStorage so returning users can re-download filled PDFs.
+        // The done flag prevents re-entry into the wizard.
+        // Data is only wiped when user explicitly clicks "Clear & restart".
+        localStorage.setItem("simplyexpat-done-v1", "1"); // returning users land on done page
       } catch {}
     } catch (e: any) {
       setGenStatus("");
@@ -3714,16 +3746,37 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   const hasForeignMarriage = isMarried && form.marriageCountry &&
     !["germany","deutschland"].includes(form.marriageCountry.toLowerCase());
 
+  // Guard: restore form from localStorage if state is empty (returning user after tab close)
+  const getForm = (): FormData => {
+    if (form.people[0]?.firstName || form.newStreet) return form;
+    try {
+      const raw = localStorage.getItem("simplyexpat-v1");
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved.form?.people?.[0]?.firstName) return { ...EMPTY, ...saved.form };
+      }
+    } catch {}
+    return form;
+  };
+
   const dlAnmeldung = async () => {
     setDlA(true);
     try {
+      // Always prefer cached bytes from this session (instant)
+      // Fall back to regenerating from form (slightly slower but always correct)
       if (generatedPDFs.anmeldung.length > 0) {
         for (const { bytes, name } of generatedPDFs.anmeldung) {
           savePDF(bytes, name);
           await new Promise(r => setTimeout(r, 250));
         }
       } else {
-        const pdfs = await buildAllAnmeldungPDFs(form);
+        const f = getForm();
+        if (!f.people[0]?.firstName && !f.newStreet) {
+          alert("Your session data has expired. Please clear and start again.");
+          setDlA(false);
+          return;
+        }
+        const pdfs = await buildAllAnmeldungPDFs(f);
         for (const { bytes, name } of pdfs) {
           savePDF(bytes, name);
           await new Promise(r => setTimeout(r, 250));
@@ -3739,7 +3792,13 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       if (generatedPDFs.guide) {
         savePDF(generatedPDFs.guide, `Checklist_Guide_${p1.lastName || "Berlin"}.pdf`);
       } else {
-        savePDF(await buildGuidePDF(form), `Checklist_Guide_${p1.lastName || "Berlin"}.pdf`);
+        const f = getForm();
+        if (!f.people[0]?.firstName && !f.newStreet) {
+          alert("Your session data has expired. Please clear and start again.");
+          setDlG(false);
+          return;
+        }
+        savePDF(await buildGuidePDF(f), `Checklist_Guide_${f.people[0]?.lastName || "Berlin"}.pdf`);
       }
     } catch (e) { console.error(e); }
     setDlG(false);
@@ -3747,7 +3806,10 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
 
   const dlWG = async () => {
     setDlW(true);
-    try { savePDF(await buildWGPDF(form), `Wohnungsgeberbestaetigung_${p1.lastName || "Template"}.pdf`); }
+    try {
+      const f = getForm();
+      savePDF(await buildWGPDF(f), `Wohnungsgeberbestaetigung_${f.people[0]?.lastName || "Template"}.pdf`);
+    }
     catch (e) { console.error(e); }
     setDlW(false);
   };
