@@ -315,7 +315,8 @@ function ageFromDOB(dob: string): number {
 function pdfMaritalStatus(formStatus: string, person: Person): string {
   if (ageFromDOB(person.birthDate) < 18)
     return MARITAL_DE["ledig"];
-  return MARITAL_DE[formStatus] ?? formStatus;
+  // Fallback to "ledig" if formStatus is blank or unmapped — prevents empty FAMILIENSTAND field
+  return MARITAL_DE[formStatus] ?? (formStatus?.trim() ? formStatus : MARITAL_DE["ledig"]);
 }
 
 // All countries for searchable dropdowns (sorted)
@@ -1193,17 +1194,21 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   for (const p of d.people) {
     if (p.firstName || p.lastName) {
-      if (isEU) {
+      // Per-person EU check — handles mixed households (e.g. non-EU parent, EU child)
+      const personIsEU = p.citizenship
+        ? p.citizenship.split(",").map((s: string) => s.trim()).some((c: string) => (CITIZENSHIP_TO_COUNTRY[c] ?? {isEU: false}).isEU)
+        : isEU;
+      if (personIsEU) {
         items.push({
           text: `Passport or national ID card: ${safe(p.firstName)} ${safe(p.lastName)}`.trim(),
           tag: "required",
-          note: "EU/EEA citizens: passport or national ID card accepted. If you hold multiple citizenships, bring proof of all of them — the Buergeramt registers all nationalities.",
+          note: "EU/EEA citizen — passport or national ID card accepted. If you hold multiple citizenships, bring proof of all of them. The Buergeramt registers all nationalities.",
         });
       } else {
         items.push({
           text: `Passport (original, valid): ${safe(p.firstName)} ${safe(p.lastName)}`.trim(),
           tag: "required",
-          note: "Non-EU citizens: passport only — national ID cards are not accepted. If you hold multiple citizenships, bring all passports. The Buergeramt registers all nationalities.",
+          note: "Non-EU citizen — passport only, national ID cards are not accepted. If you hold multiple citizenships, bring all passports. The Buergeramt registers all nationalities.",
         });
       }
     }
@@ -3753,25 +3758,24 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
 
   // EU/EEA: passport OR national ID accepted
   // Non-EU: passport ONLY — national ID card not valid for Anmeldung
-  if (form.isEU) {
-    cards.push({
-      title: "Passport or National ID Card",
-      color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
-      items: form.people.filter(p => p.firstName || p.lastName).map((p, i) => ({
+  // Per-person EU check — a non-EU parent may have an EU child
+  const isPersonEU = (p: Person): boolean => {
+    if (!p.citizenship) return form.isEU; // fallback to household EU status
+    return p.citizenship.split(",").map(s => s.trim()).some(c => (CITIZENSHIP_TO_COUNTRY[c] ?? {isEU: false}).isEU);
+  };
+  cards.push({
+    title: "Identity Documents",
+    color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
+    items: form.people.filter(p => p.firstName || p.lastName).map((p, i) => {
+      const eu = isPersonEU(p);
+      return {
         text: `${p.firstName} ${p.lastName}`.trim() || `Person ${i + 1}`,
-        detail: "Valid original — passport or national ID card accepted. If you hold multiple citizenships, bring proof of all of them.",
-      })),
-    });
-  } else {
-    cards.push({
-      title: "Passport — Original, Valid",
-      color: "#0075FF", bg: "#eff6ff", border: "#bfdbfe",
-      items: form.people.filter(p => p.firstName || p.lastName).map((p, i) => ({
-        text: `${p.firstName} ${p.lastName}`.trim() || `Person ${i + 1}`,
-        detail: "Valid passport only — national ID cards are NOT accepted. If you hold multiple citizenships, bring all passports.",
-      })),
-    });
-  }
+        detail: eu
+          ? "Passport or National ID card — either accepted for EU/EEA citizens. Bring proof of all citizenships."
+          : "Passport only — National ID cards are NOT accepted for non-EU citizens. Bring all passports if dual nationality.",
+      };
+    }),
+  });
 
   cards.push({
     title: "Wohnungsgeberbestätigung — signed by your landlord",
