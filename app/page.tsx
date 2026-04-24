@@ -1269,6 +1269,17 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     }
   }
 
+  // Birth certificates — foreign born only
+  for (const p of d.people) {
+    if ((p.firstName || p.lastName) && p.birthCountry && !["germany","deutschland"].includes(p.birthCountry.toLowerCase())) {
+      items.push({
+        text: `Birth certificate: ${safe(p.firstName)} ${safe(p.lastName)}`.trim(),
+        tag: "required",
+        note: `Born in ${p.birthCountry}. Original required. CERTIFIED TRANSLATION REQUIRED — beglaubigte Uebersetzung by a sworn translator (approx. EUR 50-150). Some districts also require an Apostille.`,
+      });
+    }
+  }
+
   items.push({ text: "Appointment confirmation — email printout or screenshot", tag: "required" });
 
   if (!isEU) {
@@ -1306,14 +1317,6 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     });
   }
 
-  if (hasForeignBirth) {
-    items.push({
-      text: "Birth certificates for persons born outside Germany",
-      tag: "required",
-      warn: "TRANSLATION REQUIRED: Foreign birth certificates need a certified German translation (beglaubigte Uebersetzung). Some districts also require an Apostille on the original document.",
-    });
-  }
-
   items.push({
     text: "Rental contract (Mietvertrag) — a copy, not original",
     tag: "recommended",
@@ -1328,10 +1331,25 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   // ── Section header ────────────────────────────────────────────────────────
   cur1 = secBlock(p1pg, "Documents to bring to the Buergeramt", cur1);
 
-  // ── Draw items ────────────────────────────────────────────────────────────
+  // ── Draw items — add new page if overflow ────────────────────────
+  let curPage1 = p1pg;
   for (const item of items) {
-    cur1 = checkItem(p1pg, item.text, cur1, item.tag, item.note, item.warn);
-    if (cur1 > PH - FOOTER_H - 30) break; // stop before footer
+    // If item won't fit, add a continuation page
+    if (cur1 > PH - FOOTER_H - 60) {
+      // Draw footer on current page
+      curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
+      curPage1.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  continued", {
+        x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
+      });
+      // New page
+      curPage1 = doc.addPage([PW, PH] as [number, number]);
+      curPage1.drawRectangle({ x: 0, y: PH - 38, width: PW, height: 38, color: NAVY });
+      curPage1.drawText("Your Personalised Anmeldung Checklist (continued)", {
+        x: ML, y: PH - 25, size: 13, font: HB, color: WHITE,
+      });
+      cur1 = 52;
+    }
+    cur1 = checkItem(curPage1, item.text, cur1, item.tag, item.note, item.warn);
   }
 
   // ── Print warning box ─────────────────────────────────────────────────────
@@ -1345,12 +1363,12 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     const warnBoxH = warnLines.length * 13 + 18;
     if (cur1 + warnBoxH < PH - FOOTER_H) {
       const boxY = PH - cur1 - warnBoxH;
-      p1pg.drawRectangle({ x: ML, y: boxY, width: CW, height: warnBoxH, color: REDL, borderRadius: 6 });
-      p1pg.drawRectangle({ x: ML, y: boxY, width: 4, height: warnBoxH, color: RED, borderRadius: 6 });
-      p1pg.drawText("! Print Warning", { x: ML + 12, y: boxY + warnBoxH - 14, size: 9, font: HB, color: RED });
+      curPage1.drawRectangle({ x: ML, y: boxY, width: CW, height: warnBoxH, color: REDL, borderRadius: 6 });
+      curPage1.drawRectangle({ x: ML, y: boxY, width: 4, height: warnBoxH, color: RED, borderRadius: 6 });
+      curPage1.drawText("! Print Warning", { x: ML + 12, y: boxY + warnBoxH - 14, size: 9, font: HB, color: RED });
       let wy = cur1 + 18;
       for (let i = 1; i < warnLines.length; i++) {
-        p1pg.drawText(safe(warnLines[i]), { x: ML + 12, y: PH - wy - 9, size: 9, font: i === 0 ? HB : HV, color: RED });
+        curPage1.drawText(safe(warnLines[i]), { x: ML + 12, y: PH - wy - 9, size: 9, font: i === 0 ? HB : HV, color: RED });
         wy += 13;
       }
       cur1 += warnBoxH + 6;
@@ -1362,18 +1380,18 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     cur1 += 6;
     const noteH = 48;
     const noteBoxY = PH - cur1 - noteH;
-    p1pg.drawRectangle({ x: ML, y: noteBoxY, width: CW, height: noteH, color: BGROW, borderRadius: 5 });
-    p1pg.drawText("Appointment date & location:", { x: ML + 10, y: noteBoxY + noteH - 13, size: 8.5, font: HB, color: NAVY });
-    p1pg.drawLine({ start:{x:ML+10,y:noteBoxY+20}, end:{x:ML+CW-10,y:noteBoxY+20}, thickness:0.4, color:LNCLR });
-    p1pg.drawLine({ start:{x:ML+10,y:noteBoxY+8 }, end:{x:ML+CW-10,y:noteBoxY+8 }, thickness:0.4, color:LNCLR });
+    curPage1.drawRectangle({ x: ML, y: noteBoxY, width: CW, height: noteH, color: BGROW, borderRadius: 5 });
+    curPage1.drawText("Appointment date & location:", { x: ML + 10, y: noteBoxY + noteH - 13, size: 8.5, font: HB, color: NAVY });
+    curPage1.drawLine({ start:{x:ML+10,y:noteBoxY+20}, end:{x:ML+CW-10,y:noteBoxY+20}, thickness:0.4, color:LNCLR });
+    curPage1.drawLine({ start:{x:ML+10,y:noteBoxY+8 }, end:{x:ML+CW-10,y:noteBoxY+8 }, thickness:0.4, color:LNCLR });
   }
 
   // ── Footer ────────────────────────────────────────────────────────────────
-  p1pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  p1pg.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  Page 1 of 2", {
+  curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
+  curPage1.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  Page 1 of 2", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
-  p1pg.drawText("service.berlin.de/dienstleistung/120686", {
+  curPage1.drawText("service.berlin.de/dienstleistung/120686", {
     x: ML + CW - 200, y: 14, size: 7.5, font: HV, color: BLUE,
   });
 
@@ -3884,64 +3902,49 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   type Card = { title: string; items: { text: string; detail?: string; warn?: string }[]; color: string; bg: string; border: string };
   const cards: Card[] = [];
 
-  // EU/EEA: passport OR national ID accepted
-  // Non-EU: passport ONLY — national ID card not valid for Anmeldung
-  // Per-person EU check — a non-EU parent may have an EU child
   const isPersonEU = (p: Person): boolean => {
-    if (!p.citizenship) return form.isEU; // fallback to household EU status
+    if (!p.citizenship) return form.isEU;
     return p.citizenship.split(",").map(s => s.trim()).some(c => (CITIZENSHIP_TO_COUNTRY[c] ?? {isEU: false}).isEU);
   };
+
+  // 1. Anmeldung forms
   cards.push({
-    title: "Identity Documents",
+    title: sheets > 1 ? `${sheets} Anmeldung Forms — print ALL, bring ALL` : "Anmeldung Form — printed on paper",
     color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
-    items: form.people.filter(p => p.firstName || p.lastName).map((p, i) => {
+    items: sheets > 1
+      ? Array.from({ length: sheets }, (_, i) => {
+          const pa = form.people[i * 2]; const pb = form.people[i * 2 + 1];
+          return { text: `Form ${i + 1}: ${[pa && `${pa.firstName} ${pa.lastName}`.trim(), pb && `${pb.firstName} ${pb.lastName}`.trim()].filter(Boolean).join(" + ")}`, detail: "Print double-sided if possible. Sign at the bottom after printing." };
+        })
+      : [{ text: "Your filled Anmeldung PDF — printed on paper", detail: "The Bürgeramt does NOT accept phone screens. Print at DM/Rossmann (~€0.10/page). Sign at the bottom after printing." }],
+  });
+
+  // 2. Wohnungsgeberbestätigung
+  cards.push({
+    title: "Wohnungsgeberbestätigung — signed by your landlord",
+    color: "#d97706", bg: "#fffbeb", border: "#fde68a",
+    items: [{
+      text: "Original signed confirmation from your landlord",
+      detail: "Check your move-in documents and email first — many landlords include it automatically. If missing: download our template below and send to your landlord. Under §19 BMG they are legally required to provide it (refusal = fine up to €1,000).",
+    }],
+  });
+
+  // 3. Identity documents per person
+  cards.push({
+    title: "Identity Documents — one per person",
+    color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
+    items: form.people.filter(p => p.firstName || p.lastName).map(p => {
       const eu = isPersonEU(p);
       return {
-        text: `${p.firstName} ${p.lastName}`.trim() || `Person ${i + 1}`,
+        text: `${p.firstName} ${p.lastName}`.trim(),
         detail: eu
-          ? "Passport or National ID card — either accepted for EU/EEA citizens. Bring proof of all citizenships."
-          : "Passport only — National ID cards are NOT accepted for non-EU citizens. Bring all passports if dual nationality.",
+          ? "Passport or National ID card (both valid for EU/EEA). Bring proof of ALL citizenships."
+          : "Passport only — National ID cards NOT accepted for non-EU. Bring all passports if dual nationality.",
       };
     }),
   });
 
-  cards.push({
-    title: "Wohnungsgeberbestätigung — signed by your landlord",
-    color: "#d97706", bg: "#fffbeb", border: "#fde68a",
-    items: [
-      {
-        text: "Signed original from your landlord or property owner",
-        detail: "A one-page form confirming you live at the address you are registering. The Bürgeramt cannot process your Anmeldung without it.",
-      },
-      {
-        text: "Don't have it yet? Download our template (below) and send it to your landlord.",
-        detail: "Under § 19 BMG your landlord is legally required to sign and return it. Refusal is an administrative offence — fine up to €1,000 for the landlord.",
-      },
-      {
-        text: "Already provided by your landlord?",
-        detail: "Many landlords include it in move-in documents. It is a single signed page with your name and address on it — check your emails or paperwork.",
-      },
-    ],
-  });
-
-
-
-  if (isMarried) {
-    cards.push({
-      title: "Marriage or Civil Partnership Certificate",
-      color: "#5b21b6", bg: "#f5f3ff", border: "#ddd6fe",
-      items: [{
-        text: "Marriage or civil partnership certificate — original document",
-        detail: "Must be the original, not a photocopy.",
-        warn: hasForeignMarriage ? "CERTIFIED TRANSLATION REQUIRED: Your certificate is not German. You must bring a certified German translation (beglaubigte Übersetzung) by a sworn translator. Approx. €50–150. Some districts also require an Apostille." : undefined,
-      }],
-    });
-  }
-
-  // Divorce decree NOT required for Anmeldung — marital status is self-declared
-
-  // Death certificate NOT required for Anmeldung — marital status is self-declared
-
+  // 4. Birth certificates — foreign born only
   if (hasForeignBirth) {
     const foreignPeople = form.people.filter(p =>
       p.birthCountry && !["germany","deutschland"].includes(p.birthCountry.toLowerCase()));
@@ -3951,29 +3954,53 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       items: [
         ...foreignPeople.map(p => ({
           text: `Birth certificate: ${p.firstName} ${p.lastName}`.trim(),
-          detail: "Original required",
+          detail: `Born in ${p.birthCountry} — original required`,
+          warn: "CERTIFIED TRANSLATION REQUIRED: Foreign birth certificates must have a beglaubigte Übersetzung (certified German translation). Some districts also require an Apostille.",
         })),
-        {
-          text: "Certified German translation for each foreign certificate",
-          warn: "CERTIFIED TRANSLATION REQUIRED: Foreign birth certificates must be accompanied by a beglaubigte Übersetzung (certified German translation). Some districts also require an Apostille on the original.",
-        },
       ],
     });
   }
 
-  if (sheets > 1) {
+  // 5. Appointment confirmation
+  cards.push({
+    title: "Appointment Confirmation",
+    color: "#374151", bg: "#f9fafb", border: "#e5e7eb",
+    items: [{ text: "Bürgeramt appointment confirmation", detail: "Email printout or screenshot on your phone. You will need this at the entrance." }],
+  });
+
+  // 6. Marriage certificate if married
+  if (isMarried) {
     cards.push({
-      title: `${sheets} Anmeldung Forms — Hand ALL in Together`,
-      color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
-      items: Array.from({ length: sheets }, (_, i) => {
-        const pa = form.people[i * 2]; const pb = form.people[i * 2 + 1];
-        return {
-          text: `Form ${i + 1}`,
-          detail: [pa && `${pa.firstName} ${pa.lastName}`.trim(), pb && `${pb.firstName} ${pb.lastName}`.trim()].filter(Boolean).join(" + "),
-        };
-      }),
+      title: "Marriage or Civil Partnership Certificate",
+      color: "#5b21b6", bg: "#f5f3ff", border: "#ddd6fe",
+      items: [{
+        text: "Original marriage or civil partnership certificate",
+        detail: "Must be the original — no photocopies.",
+        warn: hasForeignMarriage ? "CERTIFIED TRANSLATION REQUIRED: Your certificate is not German. Bring a beglaubigte Übersetzung by a sworn translator (approx. €50–150). Some districts also require an Apostille." : undefined,
+      }],
     });
   }
+
+  // 7. Visa/residence permit if non-EU
+  if (!form.isEU) {
+    cards.push({
+      title: "Visa or Residence Permit (if you have one)",
+      color: "#dc2626", bg: "#fef2f2", border: "#fecaca",
+      items: [{
+        text: "Aufenthaltstitel or entry visa — original + copy",
+        detail: "Only if you already have one. You do NOT need to wait for a visa before registering. If you have none yet, go without — register first.",
+        warn: "Do NOT delay your Anmeldung waiting for a visa. Register first — the Bürgeramt will process you.",
+      }],
+    });
+  }
+
+  // 8. Mietvertrag (recommended)
+  cards.push({
+    title: "Rental Contract (recommended, not required)",
+    color: "#374151", bg: "#f9fafb", border: "#e5e7eb",
+    items: [{ text: "Copy of your Mietvertrag (rental contract)", detail: "Not mandatory but useful if the clerk has questions about your address. A copy is fine." }],
+  });
+
 
   // Berlin stock photos for DM/Rossmann hack (Unsplash — free to use)
   const berlinPhotos = [
