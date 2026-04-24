@@ -809,19 +809,34 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
   const p1 = d.people[0] ?? EMPTY_PERSON;
   const sheets = sheetsNeeded(d.people);
 
+  // ── Multi-page checklist engine ──────────────────────────────────
+  // Pages are added on demand when content overflows.
+  let curPage = page;
+  const FOOTER_Y = 52; // space reserved at bottom for footer
+  const TOP_MARGIN = 92; // first page: below header
+  const TOP_MARGIN_CONT = 52; // continuation pages: top margin
+
+  const drawFooter = (pg: any) => {
+    pg.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.8, 0.84, 0.92) });
+    pg.drawText("SimplyExpat Berlin  \u00b7  service.berlin.de  \u00b7  Ohne Gew\u00e4hr", { x: M, y: 20, size: 7, font: hv, color: rgb(0.65, 0.68, 0.76) });
+  };
+
+  const addNewPage = () => {
+    drawFooter(curPage);
+    curPage = doc.addPage(PageSizes.A4);
+    // Continuation header
+    curPage.drawRectangle({ x: 0, y: height - 36, width, height: 36, color: navy });
+    curPage.drawText("B\u00fcrgeramt Checkliste (Fortsetzung)", { x: M, y: height - 24, size: 11, font: hb, color: rgb(1,1,1) });
+    return height - TOP_MARGIN_CONT;
+  };
+
   page.drawRectangle({ x: 0, y: height - 72, width, height: 72, color: navy });
   page.drawText("B\u00fcrgeramt Checkliste", { x: M, y: height - 31, size: 20, font: hb, color: rgb(1,1,1) });
   page.drawText(safe(`${p1.firstName} ${p1.lastName}  \u00b7  ${d.people.length} Person(en)  \u00b7  ${sheets} Formular(e)  \u00b7  ${new Date().toLocaleDateString("de-DE")}`), {
     x: M, y: height - 53, size: 9, font: hv, color: rgb(0.7, 0.82, 1),
   });
 
-  let y = height - 92;
-
-  const secHdr = (t: string) => {
-    page.drawRectangle({ x: M, y: y - 2, width: W, height: 22, color: rgb(0.93, 0.96, 1) });
-    page.drawText(safe(t), { x: M + 8, y: y + 5, size: 8.5, font: hb, color: navy });
-    y -= 30;
-  };
+  let y = height - TOP_MARGIN;
 
   const wrap = (text: string, max: number): string[] => {
     const words = text.split(" ");
@@ -835,10 +850,16 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
     return lines;
   };
 
+  const secHdr = (t: string) => {
+    if (y < FOOTER_Y + 40) y = addNewPage();
+    curPage.drawRectangle({ x: M, y: y - 2, width: W, height: 22, color: rgb(0.93, 0.96, 1) });
+    curPage.drawText(safe(t), { x: M + 8, y: y + 5, size: 8.5, font: hb, color: navy });
+    y -= 30;
+  };
+
   type Item = { text: string; note?: string; urgent?: boolean };
   const items: Item[] = [];
 
-  // Dynamic: mention how many forms
   if (sheets === 1) {
     items.push({ text: "Anmeldeformular (1 Formular, ausgedruckt oder digital)", urgent: true });
   } else {
@@ -848,10 +869,18 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
   items.push({ text: "Wohnungsgeberbest\u00e4tigung vom Vermieter (Original, unterschrieben)", urgent: true,
     note: "\u00a7 19 BMG: Vermieter ist zur Ausstellung gesetzlich verpflichtet." });
 
-  // One line per person's document
   d.people.forEach((p, i) => {
     if (p.lastName || p.firstName) {
-      items.push({ text: safe(`Reisepass / Ausweis: ${p.firstName} ${p.lastName} (Person ${i + 1})`), urgent: true });
+      const personIsEU = p.citizenship
+        ? p.citizenship.split(",").map((s: string) => s.trim()).some((c: string) => (CITIZENSHIP_TO_COUNTRY[c] ?? {isEU: false}).isEU)
+        : d.isEU;
+      items.push({
+        text: safe(`${personIsEU ? "Reisepass oder Ausweis" : "Reisepass (kein Ausweis)"}: ${p.firstName} ${p.lastName} (Person ${i + 1})`),
+        urgent: true,
+        note: personIsEU
+          ? "EU/EWR: Reisepass oder Personalausweis. Alle Staatsangehoerigkeiten mitbringen."
+          : "Nicht-EU: Nur Reisepass gueltig. Alle Paesse bei mehreren Staatsangehoerigkeiten mitbringen.",
+      });
     }
   });
   items.push({ text: "Terminbest\u00e4tigung des B\u00fcrgeramts (digital oder Ausdruck)" });
@@ -859,47 +888,52 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
     note: "Als Drittstaatsangeh\u00f6riger zwingend. Ohne dieses Dokument wird die Anmeldung verweigert." });
   if (d.maritalStatus === "verheiratet" || d.maritalStatus === "partnerschaft")
     items.push({ text: "Heiratsurkunde (Original)", urgent: true,
-      note: "Ausl\u00e4ndische Urkunden: Vereidigte deutsche \u00dcbersetzung + ggf. Apostille." });
+      note: "Ausl\u00e4ndische Urkunden: Vereidigte deutsche \u00dcbersetzung + ggf. Apostille erforderlich." });
   if (d.maritalStatus === "geschieden")
     items.push({ text: "Scheidungsurteil (Original + beglaubigte Kopie)" });
   items.push({ text: "Mietvertrag (Kopie \u2013 empfohlen, nicht vorgeschrieben)" });
 
   secHdr("Mitzubringende Dokumente / Required Documents");
+
+  // Draw each item — add new page if needed
   items.forEach(item => {
-    if (y < 80) return;
-    page.drawRectangle({ x: M, y: y - 1, width: 11, height: 11,
+    const textLines = wrap(safe(item.text), 77);
+    const noteLines = item.note ? wrap(safe("Hinweis: " + item.note), 82) : [];
+    const itemHeight = 13 * textLines.length + (noteLines.length > 0 ? 11 * noteLines.length + 4 : 0) + 10;
+
+    if (y - itemHeight < FOOTER_Y) y = addNewPage();
+
+    curPage.drawRectangle({ x: M, y: y - 1, width: 11, height: 11,
       borderColor: item.urgent ? navy : rgb(0.6, 0.65, 0.75),
       borderWidth: item.urgent ? 1.5 : 1, color: rgb(1,1,1) });
-    const lines = wrap(safe(item.text), 77);
-    lines.forEach((l, i) => {
-      page.drawText(l, { x: M + 18, y: y + (i === 0 ? 6 : 6 - i * 11),
+    textLines.forEach((l, i) => {
+      curPage.drawText(l, { x: M + 18, y: y + (i === 0 ? 6 : 6 - i * 11),
         size: 9.5, font: item.urgent && i === 0 ? hb : hv, color: item.urgent ? dark : muted });
     });
-    y -= 13 * lines.length;
-    if (item.note) {
-      const nl = wrap(safe("Hinweis: " + item.note), 82);
-      nl.forEach(l => { page.drawText(l, { x: M + 18, y, size: 7.8, font: hv, color: rgb(0.38, 0.44, 0.66) }); y -= 11; });
-    }
+    y -= 13 * textLines.length;
+    noteLines.forEach(l => {
+      curPage.drawText(l, { x: M + 18, y, size: 7.8, font: hv, color: rgb(0.38, 0.44, 0.66) });
+      y -= 11;
+    });
     y -= 10;
   });
 
-  if (y > 130) {
-    y -= 6;
-    secHdr("Tipps: So bekommen Sie schneller einen Termin");
-    const tips: [string,string][] = [
-      ["Dienstags 7:55-8:00 Uhr:", "Neue Slots auf service.berlin.de erscheinen \u2013 Browser sofort refreshen."],
-      ["Rufnummer 115 um 7:00 Uhr:", "Stornierungspl\u00e4tze telefonisch anfragen \u2013 morgens am besten."],
-      ["Walk-in:", "B\u00fcrger\u00e4mter Tempelhof, Mitte \u2013 30 Min. vor \u00d6ffnungszeit erscheinen."],
-    ];
-    tips.forEach(([b, r]) => {
-      if (y < 80) return;
-      page.drawText(safe(b), { x: M, y, size: 8.5, font: hb, color: dark }); y -= 12;
-      page.drawText(safe("  " + r), { x: M, y, size: 8.5, font: hv, color: muted }); y -= 14;
-    });
-  }
+  // Tips section — only if space remains, otherwise new page
+  if (y < FOOTER_Y + 80) y = addNewPage();
+  y -= 6;
+  secHdr("Tipps: So bekommen Sie schneller einen Termin");
+  const tips: [string,string][] = [
+    ["Dienstags 7:55-8:00 Uhr:", "Neue Slots auf service.berlin.de erscheinen \u2013 Browser sofort refreshen."],
+    ["Rufnummer 115 um 7:00 Uhr:", "Stornierungspl\u00e4tze telefonisch anfragen \u2013 morgens am besten."],
+    ["Walk-in:", "B\u00fcrger\u00e4mter Tempelhof, Mitte \u2013 30 Min. vor \u00d6ffnungszeit erscheinen."],
+  ];
+  tips.forEach(([b, r]) => {
+    if (y - 30 < FOOTER_Y) y = addNewPage();
+    curPage.drawText(safe(b), { x: M, y, size: 8.5, font: hb, color: dark }); y -= 12;
+    curPage.drawText(safe("  " + r), { x: M, y, size: 8.5, font: hv, color: muted }); y -= 14;
+  });
 
-  page.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.8, 0.84, 0.92) });
-  page.drawText("SimplyExpat Berlin  \u00b7  service.berlin.de  \u00b7  Ohne Gew\u00e4hr", { x: M, y: 20, size: 7, font: hv, color: rgb(0.65, 0.68, 0.76) });
+  drawFooter(curPage);
   return doc.save();
 }
 
