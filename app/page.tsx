@@ -307,15 +307,13 @@ function ageFromDOB(dob: string): number {
   return (Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 3600 * 1000);
 }
 
-// Marital status for PDF:
-// - Children under 18 → always ledig regardless of form status
-// - Adults → use whatever marital status was entered
-// Note: FAMILIENSTAND on the PDF represents the whole household (Person 1 POV)
-// so we only apply the ledig override if Person 1 themselves is a minor
+// Marital status for PDF — based on relationship of the sheet's Person 1:
+// - relationship === "child" → always ledig (children-only sheet, clerk expects this)
+// - relationship === "primary" or "spouse" → use household marital status as entered
+// Fallback to "ledig" if status is blank to prevent empty FAMILIENSTAND field.
 function pdfMaritalStatus(formStatus: string, person: Person): string {
-  if (ageFromDOB(person.birthDate) < 18)
+  if (person.relationship === "child")
     return MARITAL_DE["ledig"];
-  // Fallback to "ledig" if formStatus is blank or unmapped — prevents empty FAMILIENSTAND field
   return MARITAL_DE[formStatus] ?? (formStatus?.trim() ? formStatus : MARITAL_DE["ledig"]);
 }
 
@@ -423,8 +421,18 @@ async function fillAnmeldungSheet(
     if (!v?.trim()) return;
     try { form.getTextField(n).setText(truncField(n, v)); } catch {}
   };
-  const chk = (n: string, on: boolean) => {
-    try { on ? form.getCheckBox(n).check() : form.getCheckBox(n).uncheck(); } catch {}
+  // This PDF uses "On" (not "Yes") as the checked appearance state.
+  // pdf-lib's default check() uses "Yes" so we set AS and V manually using PDFName.
+  const { PDFName } = await loadPdfLib();
+  const chk = (n: string, checked: boolean) => {
+    try {
+      const fields = form.getFields();
+      const field = fields.find((f: any) => { try { return f.getName() === n; } catch { return false; } });
+      if (!field) return;
+      const acro = (field as any).acroField;
+      acro.dict.set(PDFName.of("AS"), PDFName.of(checked ? "On" : "Off"));
+      acro.dict.set(PDFName.of("V"),  PDFName.of(checked ? "On" : "Off"));
+    } catch {}
   };
 
   // ── Shared address data ──────────────────────────────────────
@@ -436,7 +444,12 @@ async function fillAnmeldungSheet(
   chk(F.NEUE_NEBEN,    d.newResType === "Neben");
 
   txt(F.BIS_AUSZUG,    fmtDate(d.moveOutDate));
-  txt(F.BIS_PLZ,       [d.prevPostalCode, d.prevCity, d.prevCountry ? toGermanCountry(d.prevCountry) : ""].filter(Boolean).join(" "));
+  // BIS_PLZ: for German previous address include postal/city/country
+  // For foreign previous address: leave BIS_PLZ empty — country goes to AUSLAND_STAAT only
+  const prevIsGerman = d.prevCountry && ["germany","deutschland"].includes(d.prevCountry.toLowerCase());
+  txt(F.BIS_PLZ, prevIsGerman
+    ? [d.prevPostalCode, d.prevCity, toGermanCountry(d.prevCountry)].filter(Boolean).join(" ")
+    : [d.prevPostalCode, d.prevCity].filter(Boolean).join(" "));
   txt(F.BIS_STRASSE,   `${d.prevStreet} ${d.prevNumber}`.trim());
   chk(F.BIS_ALLEINIG,  d.prevResType === "alleinige");
   chk(F.BIS_HAUPT,     d.prevResType === "Haupt");
@@ -451,39 +464,32 @@ async function fillAnmeldungSheet(
 
   // ── Familienstand + Ehe ─────────────────────────────────────────
   // Marital status source of truth for this sheet:
-  //   - Sheet 1 (primary ± spouse): actual maritalStatus from form
-  //   - Sheet 2+ (children only):   "ledig" — forced by buildAllAnmeldungPDFs
-  // For any person under 18 on any sheet, pdfMaritalStatus() returns "ledig"
-  // regardless of what the user selected. The FAMILIENSTAND field represents
-  // the household on this sheet — if P1 of this sheet is a minor, ledig is correct.
+  //   - Sheet 1 (primary): actual maritalStatus + EHE_ANGABEN from form
+  //   - Sheet 2+ (children only): ledig, no EHE_ANGABEN — clerk expects this
+  const sheetP1IsChild = p1.relationship === "child";
   const sheetP1Status = pdfMaritalStatus(d.maritalStatus, p1);
   txt(F.FAMILIENSTAND, sheetP1Status);
-  if (d.marriageDate || d.marriagePlace || d.marriageCountry) {
-    // EHE_ANGABEN has two child widgets side by side:
-    //   Left (SP 99, wider):  Datum, Ort, Land — our data goes here
-    //   Right (SP 100, small): AZ (Aktenzeichen/case number) — leave blank
-    // Setting the parent field propagates to BOTH children causing duplicate text.
-    // Fix: set only the first child widget's value directly via acroField Kids.
+  if (!sheetP1IsChild && (d.marriageDate || d.marriagePlace || d.marriageCountry)) {
+    // EHE_ANGABEN has two anonymous child widgets (no /T names):
+    //   Kids[0] = left box (wider)  — Datum, Ort, Land
+    //   Kids[1] = right box (small) — AZ (Aktenzeichen, always blank)
+    // Strategy: write to parent (fills both), then blank out the right child.
     const eheValue = [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)].filter(Boolean).join(", ");
     try {
-      const parentAcroField = (form as any).acroForm.getFields().find(
-        (f: any) => f.getPartialName() === F.EHE_ANGABEN
-      );
-      if (parentAcroField) {
-        const kids = parentAcroField.Kids();
-        if (kids && kids.size() >= 1) {
-          // Access just the first (left) child and set its value
-          const leftChild = kids.get(0);
-          const { PDFString } = await loadPdfLib();
-          leftChild.Value = PDFString.of(truncField(F.EHE_ANGABEN, eheValue));
-        } else {
-          txt(F.EHE_ANGABEN, eheValue);
-        }
+      const { PDFString } = await loadPdfLib();
+      const parentField = form.getTextField(F.EHE_ANGABEN);
+      const kids = (parentField.acroField as any).Kids();
+      if (kids && kids.size() >= 2) {
+        // Set left child only, blank right child
+        kids.get(0).dict.set(PDFName.of("V"), PDFString.of(eheValue));
+        kids.get(0).dict.set(PDFName.of("DV"), PDFString.of(eheValue));
+        kids.get(1).dict.set(PDFName.of("V"), PDFString.of(""));
+        kids.get(1).dict.set(PDFName.of("DV"), PDFString.of(""));
       } else {
+        // Single field or no kids — write normally
         txt(F.EHE_ANGABEN, eheValue);
       }
     } catch {
-      // Fallback: write to parent (will duplicate but better than nothing)
       txt(F.EHE_ANGABEN, eheValue);
     }
   }
@@ -3603,39 +3609,50 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
       <div style={{ maxWidth: 560, margin: "-60px auto 0", padding: "0 20px 80px", position: "relative", zIndex: 1 }}>
 
         {/* What you get */}
-        <div style={{ background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.3)", marginBottom: 14 }}>
-          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "22px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div>
-              <div style={{ color: "rgba(147,197,253,0.7)", fontSize: 10.5, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>One-time · No subscription</div>
-              <span style={{ color: "white", fontSize: 48, fontWeight: 900, lineHeight: 1, letterSpacing: "-0.03em" }}>€15</span>
+        <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.12)", border: "1px solid #e2e8f0", marginBottom: 12 }}>
+
+          {/* Price row — clean, minimal */}
+          <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #f1f5f9" }}>
+            <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>One-time payment · No subscription</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+              <span style={{ fontSize: 52, fontWeight: 900, color: "#0f172a", lineHeight: 1, letterSpacing: "-0.04em" }}>€15</span>
+              <span style={{ color: "#94a3b8", fontSize: 13 }}>one time</span>
             </div>
-            <div style={{ textAlign: "right" }}>
-              {["Instant download","No account needed","Zero data stored"].map(t => (
-                <div key={t} style={{ color: "#86efac", fontSize: 12, fontWeight: 700, marginBottom: 3 }}>✓ {t}</div>
+            <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
+              {["Instant download", "No account", "Zero data stored"].map(t => (
+                <div key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#f0fdf4", border: "1.5px solid #86efac", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <Check size={8} color="#16a34a" strokeWidth={3} />
+                  </div>
+                  <span style={{ fontSize: 12, color: "#475569", fontWeight: 600 }}>{t}</span>
+                </div>
               ))}
             </div>
           </div>
-          <div style={{ padding: "18px 22px 14px" }}>
+
+          {/* What's included */}
+          <div style={{ padding: "16px 24px" }}>
             {[
-              { icon: "📄", label: sheets > 1 ? `${sheets} Official Anmeldung Forms` : "Official Anmeldung Form", desc: "All 54 fields in perfect German. Accepted at all 44 Berlin Bürgerämter." },
-              { icon: "✅", label: "Personalised Document Checklist", desc: "Exactly what you need based on your situation — nothing more, nothing less." },
-              { icon: "🗡️", label: "Berlin Appointment Hacks Guide", desc: "Tuesday 8 AM slots, walk-in locations, phone tricks. Get seen fast." },
-            ].map(({ icon, label, desc }) => (
-              <div key={label} style={{ display: "flex", gap: 12, marginBottom: 14, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 18, flexShrink: 0, marginTop: 1 }}>{icon}</span>
+              { label: sheets > 1 ? `${sheets} Official Anmeldung Forms` : "Official Anmeldung Form", desc: "All 54 fields · Perfect German · All 44 Berlin Bürgerämter" },
+              { label: "Personalised Document Checklist", desc: "Based on your nationality and situation" },
+              { label: "Berlin Appointment Guide", desc: "Tuesday 8 AM slots, walk-ins, phone tricks" },
+            ].map(({ label, desc }, i) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: 14, paddingBottom: i < 2 ? 12 : 0, borderBottom: i < 2 ? "1px solid #f8fafc" : "none", marginBottom: i < 2 ? 12 : 0 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <FileText size={14} color="#0075FF" />
+                </div>
                 <div>
-                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5 }}>{label}</div>
-                  <div style={{ color: "#64748b", fontSize: 12.5, marginTop: 2, lineHeight: 1.5 }}>{desc}</div>
+                  <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13.5 }}>{label}</div>
+                  <div style={{ color: "#94a3b8", fontSize: 12, marginTop: 1 }}>{desc}</div>
                 </div>
               </div>
             ))}
           </div>
-          <div style={{ margin: "0 16px 16px", padding: "12px 14px", borderRadius: 12, background: "#f0fdf4", border: "1px solid #86efac", display: "flex", gap: 9 }}>
-            <Shield size={14} color="#16a34a" style={{ flexShrink: 0, marginTop: 1 }} />
-            <div>
-              <div style={{ fontWeight: 700, color: "#15803d", fontSize: 12.5, marginBottom: 3 }}>What we do — and don't do</div>
-              <p style={{ color: "#166534", fontSize: 12, lineHeight: 1.65 }}>We prepare your documents perfectly. We do not register you — that requires your personal appearance at the Bürgeramt. We cannot book appointments for you, but our Guide shows you how to get one fast.</p>
-            </div>
+
+          {/* Disclaimer */}
+          <div style={{ margin: "0 16px 16px", padding: "11px 14px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", gap: 9 }}>
+            <Shield size={13} color="#94a3b8" style={{ flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6 }}>We prepare your documents perfectly. We do not register you — that requires your personal appearance at the Bürgeramt. We cannot book appointments for you, but our Guide shows you how to get one fast.</p>
           </div>
         </div>
 
