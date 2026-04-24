@@ -470,26 +470,39 @@ async function fillAnmeldungSheet(
   const sheetP1Status = pdfMaritalStatus(d.maritalStatus, p1);
   txt(F.FAMILIENSTAND, sheetP1Status);
   if (!sheetP1IsChild && (d.marriageDate || d.marriagePlace || d.marriageCountry)) {
-    // EHE_ANGABEN has two anonymous child widgets (no /T names):
-    //   Kids[0] = left box (wider)  — Datum, Ort, Land
-    //   Kids[1] = right box (small) — AZ (Aktenzeichen, always blank)
-    // Strategy: write to parent (fills both), then blank out the right child.
+    // EHE_ANGABEN: two child widgets share one parent. setText() on parent
+    // propagates to BOTH children, causing duplicate text in the right AZ box.
+    // Fix: manipulate the Kids array directly — splice out right child, call
+    // setText (now only reaches left), then splice right child back in blank.
     const eheValue = [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)].filter(Boolean).join(", ");
     try {
-      const { PDFString } = await loadPdfLib();
+      const { PDFString, PDFName: PN } = await loadPdfLib();
       const parentField = form.getTextField(F.EHE_ANGABEN);
-      const kids = (parentField.acroField as any).Kids();
-      if (kids && kids.size() >= 2) {
-        // Set left child only, blank right child
-        kids.get(0).dict.set(PDFName.of("V"), PDFString.of(eheValue));
-        kids.get(0).dict.set(PDFName.of("DV"), PDFString.of(eheValue));
-        kids.get(1).dict.set(PDFName.of("V"), PDFString.of(""));
-        kids.get(1).dict.set(PDFName.of("DV"), PDFString.of(""));
+      const parentAcro  = (parentField as any).acroField;
+      const kidsArray   = parentAcro.dict.get(PN.of("Kids")); // PDFArray
+
+      if (kidsArray && kidsArray.array && kidsArray.array.length >= 2) {
+        // Splice right child out so setText only reaches left child
+        const rightRef = kidsArray.array.splice(1, 1)[0];
+
+        // setText now only propagates to Kids[0] (left box)
+        parentField.setText(eheValue);
+
+        // Restore right child to array
+        kidsArray.array.push(rightRef);
+
+        // Blank right child value via document context lookup
+        const rightObj = doc.context.lookup(rightRef);
+        if (rightObj && (rightObj as any).dict) {
+          (rightObj as any).dict.set(PN.of("V"),  PDFString.of(""));
+          (rightObj as any).dict.set(PN.of("DV"), PDFString.of(""));
+        }
       } else {
-        // Single field or no kids — write normally
-        txt(F.EHE_ANGABEN, eheValue);
+        // Single child or no kids — write directly
+        parentField.setText(eheValue);
       }
     } catch {
+      // Last resort — will duplicate but better than blank
       txt(F.EHE_ANGABEN, eheValue);
     }
   }
@@ -567,7 +580,7 @@ async function buildAllAnmeldungPDFs(d: FormData): Promise<{ bytes: Uint8Array; 
     // This covers: married to someone on the form, married to someone outside the form,
     // and children-only sheets (where we clear marriage data).
     const isFirstSheet = sheet === 0;
-    const sheetHasSpouse = (p2 && p2.relationship === "spouse");
+    const sheetHasSpouse = (p2 && p2.relationship === "spouse") || p1.relationship === "spouse";
     const primaryIsMarried = isFirstSheet && (
       d.maritalStatus === "verheiratet" ||
       d.maritalStatus === "partnerschaft"
@@ -579,7 +592,9 @@ async function buildAllAnmeldungPDFs(d: FormData): Promise<{ bytes: Uint8Array; 
       // Sheet 0 with married primary: always show marital status + marriage details
       // Sheet 0 without marriage: show status but no marriage details
       // Sheet 1+: force ledig, clear marriage data (children-only sheets)
-      maritalStatus: isFirstSheet ? d.maritalStatus : "ledig",
+      // Ledig only if the sheet's Person 1 is a child.
+      // Spouse on sheet 2+ correctly inherits household marital status.
+      maritalStatus: (p1.relationship === "child") ? "ledig" : d.maritalStatus,
       marriageDate:    includeMarriage ? d.marriageDate : "",
       marriagePlace:   includeMarriage ? d.marriagePlace : "",
       marriageCountry: includeMarriage ? d.marriageCountry : "",
@@ -3955,10 +3970,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         {/* ── Desktop sidebar ── */}
         <div className="done-sidebar">
           <div className="done-sidebar-sticky">
-            {/* Berlin image */}
-            <div style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
-              <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=640&q=80" alt="Berlin" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.7 }} />
-            </div>
+
             <div style={{ padding: "24px 20px", flex: 1 }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: "#475569", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>Your registration summary</div>
               {[
