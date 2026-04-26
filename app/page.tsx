@@ -2610,6 +2610,45 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
 
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      {/* ── Modals — rendered at top level so position:fixed escapes sticky sidebar stacking context (Safari bug) ── */}
+      {confirmRestart && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ maxWidth: 360, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
+            <div style={{ fontSize: 32, marginBottom: 12 }}>🗑️</div>
+            <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Clear all data and restart?</h3>
+            <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+              This will permanently delete everything you've entered. You'll start from the beginning. This cannot be undone.
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={() => setConfirmRestart(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>
+                Keep my data
+              </button>
+              <button onClick={() => { setConfirmRestart(false); onRestart(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#dc2626", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
+                Clear & restart
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {confirmHome && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ maxWidth: 380, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
+            <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
+            <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Leave the registration?</h3>
+            <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+              Your progress is saved automatically. You can return at any time and continue where you left off.
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={() => setConfirmHome(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>
+                Keep going
+              </button>
+              <button onClick={() => { setConfirmHome(false); onGoHome(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#111111", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
+                Go to homepage
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* ── Desktop: slim deadline reminder ── */}
       <div className="mob-hide" style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "7px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
         <span style={{ fontSize: 12, color: "#64748b" }}>⏱ <strong style={{ color: "#0f172a" }}>14-day registration deadline</strong> — §17 BMG · Fines up to €1,000 for late registration</span>
@@ -2671,47 +2710,6 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
       {/* Sidebar — hidden on mobile */}
       <aside className="wizard-aside" style={{ background: "white", borderRight: "1px solid #e8ecf4", display: "flex", flexDirection: "column", position: "sticky", top: 3, height: "calc(100vh - 3px)", overflowY: "auto" }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
-          {confirmRestart && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-              <div style={{ maxWidth: 360, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>🗑️</div>
-                <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Clear all data and restart?</h3>
-                <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
-                  This will permanently delete everything you've entered. You'll start from the beginning. This cannot be undone.
-                </p>
-                <div style={{ display: "flex", gap: 10 }}>
-                  <button onClick={() => setConfirmRestart(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>
-                    Keep my data
-                  </button>
-                  <button onClick={() => {
-                    setConfirmRestart(false);
-                    onRestart();
-                  }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#dc2626", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
-                    Clear & restart
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {confirmHome && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
-              <div style={{ maxWidth: 380, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
-                <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Leave the registration?</h3>
-                <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
-                  Your progress is saved automatically. You can return at any time and continue where you left off.
-                </p>
-                <div style={{ display: "flex", gap: 10 }}>
-                  <button onClick={() => setConfirmHome(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>
-                    Keep going
-                  </button>
-                  <button onClick={() => { setConfirmHome(false); onGoHome(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#111111", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
-                    Go to homepage
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
             <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#0075FF,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
