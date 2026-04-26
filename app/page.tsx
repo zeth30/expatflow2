@@ -638,39 +638,34 @@ async function fillAnmeldungSheet(
   const sheetP1Status = pdfMaritalStatus(d.maritalStatus, p1);
   txt(F.FAMILIENSTAND, sheetP1Status);
   if (!sheetP1IsChild && (d.marriageDate || d.marriagePlace || d.marriageCountry)) {
-    // EHE_ANGABEN: two child widgets share one parent. setText() on parent
-    // propagates to BOTH children, causing duplicate text in the right AZ box.
-    // Fix: manipulate the Kids array directly — splice out right child, call
-    // setText (now only reaches left), then splice right child back in blank.
+    // EHE_ANGABEN has two child widgets sharing one parent — setText() writes to both.
+    // All approaches to manipulate the AcroForm have failed.
+    // Solution: bypass the form field entirely and draw text directly on the page
+    // at the exact pixel coordinates of the LEFT child widget (SP 99):
+    // Rect[140.28, 267.0, 467.28, 280.2] — in PDF coords (bottom-left origin)
+    // pdf-lib page coords: y = PH - rect_top = 841.92 - 280.2 = 561.72
     const eheValue = [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)].filter(Boolean).join(", ");
     try {
-      const { PDFString, PDFName: PN } = await loadPdfLib();
-      const parentField = form.getTextField(F.EHE_ANGABEN);
-      const parentAcro  = (parentField as any).acroField;
-      const kidsArray   = parentAcro.dict.get(PN.of("Kids")); // PDFArray
-
-      if (kidsArray && kidsArray.array && kidsArray.array.length >= 2) {
-        // Splice right child out so setText only reaches left child
-        const rightRef = kidsArray.array.splice(1, 1)[0];
-
-        // setText now only propagates to Kids[0] (left box)
-        parentField.setText(eheValue);
-
-        // Restore right child to array
-        kidsArray.array.push(rightRef);
-
-        // Blank right child value via document context lookup
-        const rightObj = doc.context.lookup(rightRef);
-        if (rightObj && (rightObj as any).dict) {
-          (rightObj as any).dict.set(PN.of("V"),  PDFString.of(""));
-          (rightObj as any).dict.set(PN.of("DV"), PDFString.of(""));
-        }
-      } else {
-        // Single child or no kids — write directly
-        parentField.setText(eheValue);
-      }
+      const { StandardFonts, rgb } = await loadPdfLib();
+      const helvetica = await doc.embedFont(StandardFonts.Helvetica);
+      const page = doc.getPages()[0];
+      // Draw white rectangle to cover whatever the AcroForm rendered in the field
+      page.drawRectangle({ x: 140, y: 561, width: 328, height: 14, color: rgb(1, 1, 1) });
+      // Draw our text in the left box only — truncate to fit
+      const maxChars = 52;
+      const displayValue = eheValue.length > maxChars ? eheValue.substring(0, maxChars) : eheValue;
+      page.drawText(displayValue, { x: 142, y: 564, size: 9, font: helvetica, color: rgb(0, 0, 0) });
+      // Also set the form field value for PDF readers that read AcroForm data
+      // but DON'T update appearances (so it doesn't overwrite our drawing)
+      try {
+        const parentField = form.getTextField(F.EHE_ANGABEN);
+        (parentField.acroField as any).dict.set(
+          (await loadPdfLib()).PDFName.of("V"),
+          (await loadPdfLib()).PDFString.of(eheValue)
+        );
+      } catch {}
     } catch {
-      // Last resort — will duplicate but better than blank
+      // Absolute fallback
       txt(F.EHE_ANGABEN, eheValue);
     }
   }
@@ -2110,7 +2105,7 @@ export default function BerlinButler() {
       ) : null}
       <CookieBanner />
 
-      {isWizard             && <WizardLayout form={form} step={step} setStep={setStep} upd={upd} set_={set_} updPerson={updPerson} addPerson={addPerson} removePerson={removePerson} err={err} setErr={setErr} anxiety={anxiety} sheets={sheets} pushNav={pushNav} onGoHome={() => { setPhase("landing"); pushNav("landing"); }} onComplete={() => { setPhase("payment"); pushNav("payment"); }} />}
+      {isWizard             && <WizardLayout form={form} step={step} setStep={setStep} upd={upd} set_={set_} updPerson={updPerson} addPerson={addPerson} removePerson={removePerson} err={err} setErr={setErr} anxiety={anxiety} sheets={sheets} pushNav={pushNav} onGoHome={() => { setPhase("landing"); pushNav("landing"); }} onComplete={() => { setPhase("payment"); pushNav("payment"); }} onRestart={() => { try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem("simplyexpat-done-v1"); } catch {} setForm(EMPTY); setPhase("landing"); pushNav("landing"); }} />}
       {phase === "payment"  && <PaymentPage paid={paid} genStatus={genStatus} onGenerate={doGenerate} allDone={allDone} sheets={sheets} form={form} downloadWG={downloadWG} userEmail={userEmail} setUserEmail={setUserEmail} emailSent={emailSent} />}
       {phase === "generating" && (
         <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }}>
@@ -2563,7 +2558,7 @@ const STEP_LABELS: Record<WizardStep, string> = {
   review: "Review All",
 };
 
-function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, removePerson, err, setErr, anxiety, sheets, pushNav, onComplete, onGoHome }: {
+function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, removePerson, err, setErr, anxiety, sheets, pushNav, onComplete, onGoHome, onRestart }: {
   form: FormData; step: WizardStep; setStep: (s: WizardStep) => void;
   upd: any; set_: any; updPerson: (i: number, k: keyof Person, v: string) => void;
   addPerson: () => void; removePerson: (i: number) => void;
@@ -2572,11 +2567,13 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
   pushNav: (ph: AppPhase, st?: WizardStep) => void;
   onComplete: () => void;
   onGoHome: () => void;
+  onRestart: () => void;
 }) {
   const steps = buildStepList();
   const idx = steps.indexOf(step);
   const hacks = HACKS[step] || [];
   const [confirmHome, setConfirmHome] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false);
   // Has the user entered meaningful data?
   const hasData = !!(form.people[0]?.firstName || form.people[0]?.lastName || form.newStreet || form.originCountry);
 
@@ -2671,7 +2668,28 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
       {/* Sidebar — hidden on mobile */}
       <aside className="wizard-aside" style={{ background: "white", borderRight: "1px solid #e8ecf4", display: "flex", flexDirection: "column", position: "sticky", top: 3, height: "calc(100vh - 3px)", overflowY: "auto" }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
-          {confirmHome && (
+          {confirmRestart && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+              <div style={{ maxWidth: 360, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>🗑️</div>
+                <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Clear all data and restart?</h3>
+                <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+                  This will permanently delete everything you've entered. You'll start from the beginning. This cannot be undone.
+                </p>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button onClick={() => setConfirmRestart(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>
+                    Keep my data
+                  </button>
+                  <button onClick={() => {
+                    setConfirmRestart(false);
+                    onRestart();
+                  }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#dc2626", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
+                    Clear & restart
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
             <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
               <div style={{ maxWidth: 380, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
                 <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
@@ -2820,7 +2838,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
         {/* Restart button in sidebar */}
         <div style={{ padding: "10px 14px", borderTop: "1px solid #f1f5f9", marginTop: "auto" }}>
           <button
-            onClick={() => { setShowWipe(true); setWipeChecked(false); }}
+            onClick={() => { setConfirmRestart(true); }}
             style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "10px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "white", color: "#94a3b8", fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#fca5a5"; (e.currentTarget as HTMLButtonElement).style.color = "#ef4444"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.color = "#94a3b8"; }}>
@@ -4003,6 +4021,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   const [dlW, setDlW] = useState(false);
   const [showWipe, setShowWipe] = useState(false);
   const [wipeChecked, setWipeChecked] = useState(false);
+  const [sessionError, setSessionError] = useState(false);
 
   const isMarried = form.maritalStatus === "verheiratet" || form.maritalStatus === "partnerschaft";
   const isDivorced = form.maritalStatus === "geschieden";
@@ -4013,7 +4032,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
     !["germany","deutschland"].includes(form.marriageCountry.toLowerCase());
 
   // Guard: restore form from localStorage if state is empty (returning user after tab close)
-  const getForm = (): FormData => {
+  const getForm = (): FormData | null => {
     if (form.people[0]?.firstName || form.newStreet) return form;
     try {
       const raw = localStorage.getItem("simplyexpat-v1");
@@ -4022,7 +4041,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         if (saved.form?.people?.[0]?.firstName) return { ...EMPTY, ...saved.form };
       }
     } catch {}
-    return form;
+    return null; // session data gone
   };
 
   const dlAnmeldung = async () => {
@@ -4037,11 +4056,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         }
       } else {
         const f = getForm();
-        if (!f.people[0]?.firstName && !f.newStreet) {
-          alert("Your session data has expired. Please clear and start again.");
-          setDlA(false);
-          return;
-        }
+        if (!f) { setSessionError(true); setDlA(false); return; }
         const pdfs = await buildAllAnmeldungPDFs(f);
         for (const { bytes, name } of pdfs) {
           savePDF(bytes, name);
@@ -4059,11 +4074,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         savePDF(generatedPDFs.guide, `Checklist_Guide_${p1.lastName || "Berlin"}.pdf`);
       } else {
         const f = getForm();
-        if (!f.people[0]?.firstName && !f.newStreet) {
-          alert("Your session data has expired. Please clear and start again.");
-          setDlG(false);
-          return;
-        }
+        if (!f) { setSessionError(true); setDlG(false); return; }
         savePDF(await buildGuidePDF(f), `Checklist_Guide_${f.people[0]?.lastName || "Berlin"}.pdf`);
       }
     } catch (e) { console.error(e); }
@@ -4074,6 +4085,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
     setDlW(true);
     try {
       const f = getForm();
+      if (!f) { setSessionError(true); setDlW(false); return; }
       savePDF(await buildWGPDF(f), `Wohnungsgeberbestaetigung_${f.people[0]?.lastName || "Template"}.pdf`);
     }
     catch (e) { console.error(e); }
@@ -4283,6 +4295,17 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
 
         {/* ── 2. DOWNLOADS — front and centre ── */}
         <div style={{ marginBottom: 32 }}>
+          {sessionError && (
+            <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 12, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <AlertCircle size={15} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
+              <div>
+                <div style={{ fontWeight: 800, color: "#991b1b", fontSize: 13, marginBottom: 3 }}>Session data not found</div>
+                <p style={{ color: "#b91c1c", fontSize: 12.5, lineHeight: 1.6 }}>
+                  Your form data is no longer in this browser — it may have been cleared. Use the "Clear data & start over" button below to begin again. If you completed payment, contact us at info@simplyexpat.de with your payment confirmation.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Anmeldung */}
           <button onClick={dlAnmeldung} disabled={dlA}
