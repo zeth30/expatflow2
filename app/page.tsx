@@ -1803,6 +1803,7 @@ export default function BerlinButler() {
 
     // Check if returning from Stripe payment — ?paid=verified in URL
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("devtest") === "1") sessionStorage.setItem("devtest", "1");
     if (urlParams.get("paid") === "verified") {
       window.history.replaceState({}, "", window.location.pathname);
       stripeReturnRef.current = true; // mark — will trigger after form restores
@@ -3806,7 +3807,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
   const [dlW, setDlW] = React.useState(false);
   const [isDevTest, setIsDevTest] = React.useState(false);
   React.useEffect(() => {
-    setIsDevTest(new URLSearchParams(window.location.search).get("devtest") === "1");
+    setIsDevTest(sessionStorage.getItem("devtest") === "1");
   }, []);
   const p1 = form.people[0] ?? EMPTY_PERSON;
 
