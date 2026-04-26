@@ -3994,6 +3994,14 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
             <p style={{ textAlign: "center", color: "rgba(147,197,253,0.6)", fontSize: 11.5 }}>
               🔒 Powered by Stripe · Secure · No card stored
             </p>
+            {process.env.NODE_ENV === "development" && (
+              <button
+                onClick={onGenerate}
+                style={{ width: "100%", marginTop: 8, padding: "12px", borderRadius: 11, border: "2px dashed #f87171", background: "transparent", color: "#f87171", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}
+              >
+                [DEV] Skip payment &amp; generate PDFs
+              </button>
+            )}
           </div>
         ) : !allDone ? (
           <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 14, padding: "22px", textAlign: "center" }}>
