@@ -3804,6 +3804,10 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
   const [dlA, setDlA] = React.useState(false);
   const [dlG, setDlG] = React.useState(false);
   const [dlW, setDlW] = React.useState(false);
+  const [isLocal, setIsLocal] = React.useState(false);
+  React.useEffect(() => {
+    setIsLocal(window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  }, []);
   const p1 = form.people[0] ?? EMPTY_PERSON;
 
   const redownloadAnmeldung = async () => {
@@ -3994,7 +3998,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
             <p style={{ textAlign: "center", color: "rgba(147,197,253,0.6)", fontSize: 11.5 }}>
               🔒 Powered by Stripe · Secure · No card stored
             </p>
-            {process.env.NODE_ENV === "development" && (
+            {isLocal && (
               <button
                 onClick={onGenerate}
                 style={{ width: "100%", marginTop: 8, padding: "12px", borderRadius: 11, border: "2px dashed #f87171", background: "transparent", color: "#f87171", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}
