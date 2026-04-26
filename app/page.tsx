@@ -641,20 +641,20 @@ async function fillAnmeldungSheet(
     // EHE_ANGABEN has two child widgets sharing one parent — setText() writes to both.
     // All approaches to manipulate the AcroForm have failed.
     // Solution: bypass the form field entirely and draw text directly on the page
-    // at the exact pixel coordinates of the LEFT child widget (SP 99):
-    // Rect[140.28, 267.0, 467.28, 280.2] — in PDF coords (bottom-left origin)
-    // pdf-lib page coords: y = PH - rect_top = 841.92 - 280.2 = 561.72
+    // at the exact pixel coordinates of the LEFT child widget:
+    // Widget 0 rect (pdf-lib bottom-left coords): x=140.28 y=267.00 w=327.00 h=13.20
+    // Widget 1 (right box) starts at x=468.60 — our text never reaches it
     const eheValue = [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)].filter(Boolean).join(", ");
     try {
       const { StandardFonts, rgb } = await loadPdfLib();
       const helvetica = await doc.embedFont(StandardFonts.Helvetica);
       const page = doc.getPages()[0];
-      // Draw white rectangle to cover whatever the AcroForm rendered in the field
-      page.drawRectangle({ x: 140, y: 561, width: 328, height: 14, color: rgb(1, 1, 1) });
+      // Draw white rectangle to cover whatever the AcroForm rendered in the left widget
+      page.drawRectangle({ x: 140, y: 267, width: 327, height: 14, color: rgb(1, 1, 1) });
       // Draw our text in the left box only — truncate to fit
       const maxChars = 52;
       const displayValue = eheValue.length > maxChars ? eheValue.substring(0, maxChars) : eheValue;
-      page.drawText(displayValue, { x: 142, y: 564, size: 9, font: helvetica, color: rgb(0, 0, 0) });
+      page.drawText(displayValue, { x: 142, y: 270, size: 9, font: helvetica, color: rgb(0, 0, 0) });
       // Also set the form field value for PDF readers that read AcroForm data
       // but DON'T update appearances (so it doesn't overwrite our drawing)
       try {
@@ -1496,23 +1496,26 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Draw items — add new page if overflow ────────────────────────
   let curPage1 = p1pg;
+  const overflowToNextPage = () => {
+    curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
+    curPage1.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  continued", {
+      x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
+    });
+    curPage1 = doc.addPage([PW, PH] as [number, number]);
+    curPage1.drawRectangle({ x: 0, y: PH - 38, width: PW, height: 38, color: NAVY });
+    curPage1.drawText("Your Personalised Anmeldung Checklist (continued)", {
+      x: ML, y: PH - 25, size: 13, font: HB, color: WHITE,
+    });
+    cur1 = 52;
+  };
   for (const item of items) {
-    // If item won't fit, add a continuation page
-    if (cur1 > PH - FOOTER_H - 60) {
-      // Draw footer on current page
-      curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-      curPage1.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  continued", {
-        x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
-      });
-      // New page
-      curPage1 = doc.addPage([PW, PH] as [number, number]);
-      curPage1.drawRectangle({ x: 0, y: PH - 38, width: PW, height: 38, color: NAVY });
-      curPage1.drawText("Your Personalised Anmeldung Checklist (continued)", {
-        x: ML, y: PH - 25, size: 13, font: HB, color: WHITE,
-      });
-      cur1 = 52;
-    }
+    const prevCur = cur1;
     cur1 = checkItem(curPage1, item.text, cur1, item.tag, item.note, item.warn);
+    if (cur1 === prevCur) {
+      // checkItem skipped this item because it didn't fit — overflow and retry
+      overflowToNextPage();
+      cur1 = checkItem(curPage1, item.text, cur1, item.tag, item.note, item.warn);
+    }
   }
 
   // ── Print warning box ─────────────────────────────────────────────────────
@@ -1633,7 +1636,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   p2pg.drawText(safe("Good luck, " + (p1.firstName || "expat") + ". Bring a pen. Arrive calm. The form does the talking."), {
     x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE,
   });
-  p2pg.drawText("The hardest part was getting the appointment. You have already done that.", {
+  p2pg.drawText("Next step: book your Buergeramt slot at service.berlin.de  (Tuesdays 8:00 AM, gone in 60 s).", {
     x: ML + 14, y: tipY + tipH - 29, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00),
   });
 
