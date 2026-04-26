@@ -14,7 +14,7 @@ import {
   ArrowRight, ArrowLeft, Check, ChevronRight, Plus, Trash2,
   Download, FileText, Shield, MapPin, User, Users, Home,
   Building2, Info, ExternalLink, Zap, Globe,
-  CreditCard, CheckCircle2, Church, Package,
+  CreditCard, CheckCircle2, Church, Package, RotateCcw,
   AlertCircle, Sparkles, Layers,
 } from "lucide-react";
 
@@ -1725,6 +1725,9 @@ export default function BerlinButler() {
           if (saved.form) setForm(() => ({ ...EMPTY, ...saved.form }));
         }
         setPhase("done");
+        // Push two history entries so back button has nowhere to go
+        window.history.pushState({ ph: "done" }, "", window.location.pathname);
+        window.history.pushState({ ph: "done" }, "", window.location.pathname);
         return;
       }
     } catch {}
@@ -2741,6 +2744,17 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Restart button in sidebar */}
+        <div style={{ padding: "10px 14px", borderTop: "1px solid #f1f5f9", marginTop: "auto" }}>
+          <button
+            onClick={() => { setConfirmHome(true); }}
+            style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "10px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "white", color: "#94a3b8", fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#fca5a5"; (e.currentTarget as HTMLButtonElement).style.color = "#ef4444"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.color = "#94a3b8"; }}>
+            <RotateCcw size={12} /> Restart & clear data
+          </button>
         </div>
       </aside>
 
@@ -4377,8 +4391,8 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         {/* ── 7. WIPE ── */}
         <div style={{ textAlign: "center", marginTop: 8 }}>
           <button onClick={() => { setShowWipe(true); setWipeChecked(false); }}
-            style={{ background: "none", border: "none", color: "#94a3b8", fontSize: 12, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0 }}>
-            Clear browser data &amp; restart process
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 22px", borderRadius: 11, border: "1.5px solid #e2e8f0", background: "white", color: "#64748b", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
+            <RotateCcw size={13} /> Clear data &amp; start over
           </button>
         </div>
 
