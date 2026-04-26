@@ -2690,6 +2690,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
               </div>
             </div>
           )}
+          {confirmHome && (
             <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", backdropFilter: "blur(6px)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
               <div style={{ maxWidth: 380, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
                 <div style={{ fontSize: 32, marginBottom: 12 }}>🏠</div>
