@@ -404,6 +404,20 @@ Both the done page cards and the PDF checklist show:
 **Known remaining issue:**
 - German translations in COUNTRY_DE and CITIZENSHIP_DE need comprehensive audit and expansion — user reported countries missing from dropdowns
 
+---
+
+## 16. CHANGELOG
+
+### 2026-04-27
+- **EHE_ANGABEN y-coordinates** — fixed `y:561/564` → `y:267/270`. Old values were calculated as `PH - rect_top` but pdf-lib already uses bottom-left origin. Unverified in prod — needs test with married person.
+- **Checklist overflow (birth certificates missing)** — replaced pre-check threshold with detect-and-retry: draw item, if `checkItem` returns same cursor it was skipped → `overflowToNextPage()` + retry.
+- **Guide PDF closing text** — "You have already done that [the appointment]" was wrong (users haven't booked yet). Changed to actionable next-step line.
+- **WizardLayout restart modal** — restart button was referencing DonePage state. Fixed: `WizardLayout` has own `confirmRestart` state + `onRestart` prop from main app.
+- **Safari sidebar modal bug** — `position:fixed` inside `position:sticky` clips overlay to sidebar in Safari. Moved both modals to top level of `WizardLayout` return, outside `<aside>`. Also removed `backdropFilter:blur` from `confirmHome`.
+- **Dev skip payment button** — `[DEV] Skip payment & generate PDFs` on PaymentPage, gated by `?devtest=1` URL param on first load. Flag stored in `sessionStorage` at top of main `useEffect` (before early returns) so it survives wizard navigation.
+- **Country dropdown duplicates** — alias keys (`UK`, `USA`, `UAE`, `Bosnia`) removed from `COUNTRY_DE` (were showing twice in `ALL_COUNTRIES`). Moved to `COUNTRY_ALIASES` table; `toGermanCountry()` checks both.
+- **UK post-Brexit** — removed "United Kingdom" from `EU_OPTS`/`EU_OPTS2`, moved to `NON_EU_OPTS`. Deleted dead `EU_SET` constant (unused and had UK incorrectly as EU).
+- **Marriage country translation** — changed from plain `<Inp>` to `SearchableSelect` with `ALL_COUNTRIES` so `toGermanCountry()` always gets a canonical name to translate into the EHE_ANGABEN field.
 
 ---
 
