@@ -206,7 +206,6 @@ const EMPTY: FormData = {
 const STORAGE_KEY = "simplyexpat-v1";
 const MAX_PEOPLE = 6;
 
-const EU_SET = new Set(["Austria","Belgium","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Ireland","Italy","Latvia","Lithuania","Luxembourg","Malta","Netherlands","Poland","Portugal","Romania","Slovakia","Slovenia","Spain","Sweden","Iceland","Liechtenstein","Norway","Switzerland","United Kingdom"]);
 const GENDER_DE: Record<string,string> = { m:"m\u00e4nnlich", f:"weiblich", d:"divers", x:"ohne Angabe" };
 const RELIGION_DE: Record<string,string> = { none:"ohne Konfession", rk:"r\u00f6m.-kath.", ev:"ev.", jd:"j\u00fcdisch", is:"islamisch", or:"orthodox", bu:"buddhistisch", so:"sonstige" };
 const MARITAL_DE: Record<string,string> = {
@@ -220,7 +219,7 @@ const COUNTRY_DE: Record<string,string> = {
   "Angola":"Angola","Argentina":"Argentinien","Armenia":"Armenien",
   "Australia":"Australien","Austria":"Österreich","Azerbaijan":"Aserbaidschan",
   "Bahrain":"Bahrain","Bangladesh":"Bangladesch","Belarus":"Weißrussland",
-  "Belgium":"Belgien","Bolivia":"Bolivien","Bosnia":"Bosnien und Herzegowina",
+  "Belgium":"Belgien","Bolivia":"Bolivien",
   "Bosnia and Herzegovina":"Bosnien und Herzegowina","Brazil":"Brasilien",
   "Bulgaria":"Bulgarien","Cambodia":"Kambodscha","Cameroon":"Kamerun",
   "Canada":"Kanada","Chile":"Chile","China":"China","Colombia":"Kolumbien",
@@ -258,9 +257,9 @@ const COUNTRY_DE: Record<string,string> = {
   "Taiwan":"Taiwan","Tajikistan":"Tadschikistan","Tanzania":"Tansania",
   "Thailand":"Thailand","Togo":"Togo","Tunisia":"Tunesien",
   "Turkey":"Türkei","Türkiye":"Türkei","Uganda":"Uganda","Ukraine":"Ukraine",
-  "United Arab Emirates":"Vereinigte Arabische Emirate","UAE":"Vereinigte Arabische Emirate",
-  "United Kingdom":"Vereinigtes Königreich","UK":"Vereinigtes Königreich",
-  "United States":"Vereinigte Staaten von Amerika","USA":"Vereinigte Staaten von Amerika",
+  "United Arab Emirates":"Vereinigte Arabische Emirate",
+  "United Kingdom":"Vereinigtes Königreich",
+  "United States":"Vereinigte Staaten von Amerika",
   "Uruguay":"Uruguay","Uzbekistan":"Usbekistan","Venezuela":"Venezuela",
   "Vietnam":"Vietnam","Yemen":"Jemen","Zambia":"Sambia","Zimbabwe":"Simbabwe",
   "Other":"Sonstiges",
@@ -368,7 +367,23 @@ function toGermanCitizenship(raw: string): string {
 function toGermanCountry(raw: string): string {
   if (!raw?.trim()) return raw;
   const t = raw.trim();
-  return COUNTRY_DE[t] ?? t;
+  // CITIZENSHIP_DE has aliases (UK, USA, UAE, Bosnia) that were removed from COUNTRY_DE to avoid dropdown duplicates
+  if (COUNTRY_DE[t]) return COUNTRY_DE[t];
+  const fromCitizenship = CITIZENSHIP_DE[t];
+  if (fromCitizenship) {
+    // CITIZENSHIP_DE values are adjectives (e.g. "britisch") not country names — look up the country name instead
+    for (const [country, de] of Object.entries(COUNTRY_DE)) {
+      if (de === fromCitizenship || country.toLowerCase() === t.toLowerCase()) return de;
+    }
+  }
+  // Direct alias lookup for short forms (UK → Vereinigtes Königreich etc.)
+  const aliases: Record<string,string> = {
+    "UK":"Vereinigtes Königreich","United Kingdom":"Vereinigtes Königreich",
+    "USA":"Vereinigte Staaten von Amerika","US":"Vereinigte Staaten von Amerika",
+    "UAE":"Vereinigte Arabische Emirate",
+    "Bosnia":"Bosnien und Herzegowina",
+  };
+  return aliases[t] ?? t;
 }
 
 // Age in years from an ISO date string
@@ -2143,8 +2158,8 @@ export default function BerlinButler() {
 // ═══════════════════════════════════════════════════════════════════
 //  LANDING PAGE
 // ═══════════════════════════════════════════════════════════════════
-const EU_OPTS = ["Austria","Belgium","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Ireland","Italy","Latvia","Lithuania","Luxembourg","Malta","Netherlands","Poland","Portugal","Romania","Slovakia","Slovenia","Spain","Sweden","Iceland","Liechtenstein","Norway","Switzerland","United Kingdom"];
-const NON_EU_OPTS = ["United States","Canada","Australia","India","China","Japan","South Korea","Brazil","Mexico","Turkey","Ukraine","Vietnam","Philippines","Indonesia","Egypt","Nigeria","South Africa","Pakistan","Bangladesh","Russia","Saudi Arabia","Singapore","Thailand","Other"];
+const EU_OPTS = ["Austria","Belgium","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Ireland","Italy","Latvia","Lithuania","Luxembourg","Malta","Netherlands","Poland","Portugal","Romania","Slovakia","Slovenia","Spain","Sweden","Iceland","Liechtenstein","Norway","Switzerland"];
+const NON_EU_OPTS = ["United Kingdom","United States","Canada","Australia","India","China","Japan","South Korea","Brazil","Mexico","Turkey","Ukraine","Vietnam","Philippines","Indonesia","Egypt","Nigeria","South Africa","Pakistan","Bangladesh","Russia","Saudi Arabia","Singapore","Thailand","Other"];
 
 // ─── 14-Day Urgency Bar — shared across landing + wizard ─────────
 function UrgencyBar() {
@@ -3208,8 +3223,8 @@ function PersonForm({ person, idx, onChange, showDocuments = false }: {
 }
 
 // ─── Step: Origin ─────────────────────────────────────────────────
-const EU_OPTS2 = ["Austria","Belgium","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Ireland","Italy","Latvia","Lithuania","Luxembourg","Malta","Netherlands","Poland","Portugal","Romania","Slovakia","Slovenia","Spain","Sweden","Iceland","Liechtenstein","Norway","Switzerland","United Kingdom"];
-const NON_EU_OPTS2 = ["United States","Canada","Australia","India","China","Japan","South Korea","Brazil","Mexico","Turkey","Ukraine","Vietnam","Philippines","Indonesia","Egypt","Nigeria","South Africa","Pakistan","Bangladesh","Russia","Saudi Arabia","Singapore","Thailand","Other"];
+const EU_OPTS2 = ["Austria","Belgium","Bulgaria","Croatia","Cyprus","Czech Republic","Denmark","Estonia","Finland","France","Germany","Greece","Hungary","Ireland","Italy","Latvia","Lithuania","Luxembourg","Malta","Netherlands","Poland","Portugal","Romania","Slovakia","Slovenia","Spain","Sweden","Iceland","Liechtenstein","Norway","Switzerland"];
+const NON_EU_OPTS2 = ["United Kingdom","United States","Canada","Australia","India","China","Japan","South Korea","Brazil","Mexico","Turkey","Ukraine","Vietnam","Philippines","Indonesia","Egypt","Nigeria","South Africa","Pakistan","Bangladesh","Russia","Saudi Arabia","Singapore","Thailand","Other"];
 
 // ── Coming Soon overlay for non-Berlin users ──────────────────────
 function ComingSoonOverlay({ onBack }: { onBack: () => void }) {
