@@ -3694,7 +3694,7 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <R2 a={<Inp opt label="Date of Marriage" type="date" value={form.marriageDate} onChange={upd("marriageDate")} />}
                 b={<Inp opt label="Place / City" value={form.marriagePlace} onChange={upd("marriagePlace")} placeholder="Lisbon" />} />
-            <Inp opt label="Country" value={form.marriageCountry} onChange={upd("marriageCountry")} placeholder="Portugal" />
+            <SearchableSelect opt label="Country" value={form.marriageCountry} onChange={upd("marriageCountry")} options={ALL_COUNTRIES} allowCustom placeholder="Search country..." />
           </div>
         </div>
       )}
