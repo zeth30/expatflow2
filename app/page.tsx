@@ -1778,7 +1778,9 @@ export default function BerlinButler() {
   // ── Restore form data from localStorage (data only, never phase) ─
   useEffect(() => {
     // Capture devtest flag first — before any early returns — so it survives all navigation paths
-    if (new URLSearchParams(window.location.search).get("devtest") === "1") sessionStorage.setItem("devtest", "1");
+    // Token is set via NEXT_PUBLIC_DEV_TOKEN env var (Vercel) — never hardcoded in source
+    const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
+    if (devToken && new URLSearchParams(window.location.search).get("devtest") === devToken) sessionStorage.setItem("devtest", devToken);
 
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -3810,7 +3812,8 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
   const [dlW, setDlW] = React.useState(false);
   const [isDevTest, setIsDevTest] = React.useState(false);
   React.useEffect(() => {
-    setIsDevTest(sessionStorage.getItem("devtest") === "1");
+    const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
+    setIsDevTest(!!devToken && sessionStorage.getItem("devtest") === devToken);
   }, []);
   const p1 = form.people[0] ?? EMPTY_PERSON;
 
