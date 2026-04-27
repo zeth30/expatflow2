@@ -1776,6 +1776,9 @@ export default function BerlinButler() {
 
   // ── Restore form data from localStorage (data only, never phase) ─
   useEffect(() => {
+    // Capture devtest flag first — before any early returns — so it survives all navigation paths
+    if (new URLSearchParams(window.location.search).get("devtest") === "1") sessionStorage.setItem("devtest", "1");
+
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -1803,7 +1806,6 @@ export default function BerlinButler() {
 
     // Check if returning from Stripe payment — ?paid=verified in URL
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get("devtest") === "1") sessionStorage.setItem("devtest", "1");
     if (urlParams.get("paid") === "verified") {
       window.history.replaceState({}, "", window.location.pathname);
       stripeReturnRef.current = true; // mark — will trigger after form restores
