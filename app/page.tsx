@@ -1491,11 +1491,6 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     tag: "recommended",
     note: "Not mandatory, but useful if the clerk has questions about your address.",
   });
-  items.push({
-    text: "Your own ballpoint pen (black or blue ink)",
-    tag: "recommended",
-    note: "Many Buergeramt offices no longer provide pens. You may need to sign documents.",
-  });
 
   // ── Section header ────────────────────────────────────────────────────────
   cur1 = secBlock(p1pg, "Documents to bring to the Buergeramt", cur1);
@@ -3694,7 +3689,7 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <R2 a={<Inp opt label="Date of Marriage" type="date" value={form.marriageDate} onChange={upd("marriageDate")} />}
                 b={<Inp opt label="Place / City" value={form.marriagePlace} onChange={upd("marriagePlace")} placeholder="Lisbon" />} />
-            <SearchableSelect opt label="Country" value={form.marriageCountry} onChange={upd("marriageCountry")} options={ALL_COUNTRIES} allowCustom placeholder="Search country..." />
+            <SearchableSelect opt label="Country" value={form.marriageCountry} onChange={v => set_("marriageCountry", v)} options={ALL_COUNTRIES} allowCustom placeholder="Search country..." />
           </div>
         </div>
       )}
