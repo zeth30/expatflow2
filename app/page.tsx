@@ -364,26 +364,17 @@ function toGermanCitizenship(raw: string): string {
 }
 
 // Translate a country name to German.
+// Short-form aliases removed from COUNTRY_DE to avoid duplicates in dropdowns
+const COUNTRY_ALIASES: Record<string,string> = {
+  "UK":"Vereinigtes Königreich",
+  "USA":"Vereinigte Staaten von Amerika","US":"Vereinigte Staaten von Amerika",
+  "UAE":"Vereinigte Arabische Emirate",
+  "Bosnia":"Bosnien und Herzegowina",
+};
 function toGermanCountry(raw: string): string {
   if (!raw?.trim()) return raw;
   const t = raw.trim();
-  // CITIZENSHIP_DE has aliases (UK, USA, UAE, Bosnia) that were removed from COUNTRY_DE to avoid dropdown duplicates
-  if (COUNTRY_DE[t]) return COUNTRY_DE[t];
-  const fromCitizenship = CITIZENSHIP_DE[t];
-  if (fromCitizenship) {
-    // CITIZENSHIP_DE values are adjectives (e.g. "britisch") not country names — look up the country name instead
-    for (const [country, de] of Object.entries(COUNTRY_DE)) {
-      if (de === fromCitizenship || country.toLowerCase() === t.toLowerCase()) return de;
-    }
-  }
-  // Direct alias lookup for short forms (UK → Vereinigtes Königreich etc.)
-  const aliases: Record<string,string> = {
-    "UK":"Vereinigtes Königreich","United Kingdom":"Vereinigtes Königreich",
-    "USA":"Vereinigte Staaten von Amerika","US":"Vereinigte Staaten von Amerika",
-    "UAE":"Vereinigte Arabische Emirate",
-    "Bosnia":"Bosnien und Herzegowina",
-  };
-  return aliases[t] ?? t;
+  return COUNTRY_DE[t] ?? COUNTRY_ALIASES[t] ?? t;
 }
 
 // Age in years from an ISO date string
