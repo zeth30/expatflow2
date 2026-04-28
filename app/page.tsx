@@ -2326,10 +2326,13 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                       </svg>
                     </button>
                   </div>
-                  <button onClick={onStart}
-                    style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
-                    Prepare My Anmeldung <ArrowRight size={13} />
-                  </button>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <a href="/faq" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
+                    <button onClick={onStart}
+                      style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
+                      Prepare My Anmeldung <ArrowRight size={13} />
+                    </button>
+                  </div>
                 </div>
               </nav>
             </div>
@@ -2502,6 +2505,36 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
             ))}
           </div>
 
+        </div>
+      </div>
+
+      {/* ══ FAQ TEASER ══ */}
+      <div style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "64px 20px" }}>
+        <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>Common Questions</div>
+            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>
+              Everything you need to know about the Anmeldung
+            </h2>
+            <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.7 }}>Plain-English answers to the questions expats ask most.</p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
+            {[
+              { q: "How long do I have to register after moving to Germany?", a: "You have 14 days from your move-in date under §17 BMG — fines up to €1,000. In Berlin, most offices are booked 3–4 weeks out, so book the earliest slot you can find and keep a screenshot as evidence." },
+              { q: "What documents do I need for Anmeldung?", a: "Your passport or national ID, the Wohnungsgeberbestätigung (landlord confirmation), and your completed Anmeldung form. Non-EU nationals should also bring their visa or residence permit." },
+              { q: "Can I do the Anmeldung online?", a: "Only if you are an EU/EEA citizen with a German eID chip, already registered in Germany, and moving within Germany. The vast majority of expats — including all non-EU nationals — must register in person." },
+            ].map(({ q, a }) => (
+              <div key={q} style={{ padding: "18px 22px", borderRadius: 12, border: "1.5px solid #e8ecf4", background: "white" }}>
+                <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 14.5, marginBottom: 7 }}>{q}</div>
+                <div style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.7 }}>{a}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <a href="/faq" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 26px", borderRadius: 10, border: "2px solid #e8ecf4", background: "white", color: "#0f172a", fontWeight: 700, fontSize: 13.5, textDecoration: "none", letterSpacing: "-0.01em" }}>
+              See all 20 questions <ArrowRight size={13} />
+            </a>
+          </div>
         </div>
       </div>
 
