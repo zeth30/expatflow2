@@ -4,7 +4,7 @@ import "./globals.css";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "SimplyExpat | Berlin Registration PDF in 2 Minutes",
+  title: "SimplyExpat | Berlin Registration PDF in 5 Minutes",
   description:
     "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
   keywords: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "SimplyExpat | Berlin Registration PDF in 2 Minutes",
+    title: "SimplyExpat | Berlin Registration PDF in 5 Minutes",
     description:
       "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
     url: DOMAIN,
@@ -121,7 +121,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             "name": "How long does the Berlin Anmeldung take with SimplyExpat?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Filling in the form takes about 3 minutes. SimplyExpat generates your official PDF and personalised checklist instantly.",
+              "text": "Filling in the form takes about 5 minutes. SimplyExpat generates your official PDF and personalised checklist instantly.",
             },
           },
         ],

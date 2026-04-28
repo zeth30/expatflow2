@@ -1367,6 +1367,12 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   const HDR_H = 82;
   p1pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
 
+  // Brand mark — top right
+  const LOGO_X = PW - ML - 22;
+  p1pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
+  p1pg.drawText("S", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
+  p1pg.drawText("simplyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
+
   // Title
   p1pg.drawText("Your Personalised Anmeldung Checklist", {
     x: ML, y: PH - 34, size: 20, font: HB, color: WHITE,
@@ -1542,6 +1548,15 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     }
   }
 
+  // ── Mailbox tip ──────────────────────────────────────────────────────────
+  if (cur1 < PH - FOOTER_H - 50) {
+    cur1 = calloutBlock(curPage1,
+      "Letterbox (Briefkasten): After moving in, add your surname to your letterbox immediately. " +
+      "Official German mail is NOT delivered to unlabelled mailboxes. " +
+      "Your Steuer-ID (tax ID) arrives by post 2-4 weeks after registration — you will miss it if your name is not on the box.",
+      cur1, GRNL, GRN);
+  }
+
   // ── Appointment notes lines ───────────────────────────────────────────────
   if (cur1 < PH - FOOTER_H - 50) {
     cur1 += 6;
@@ -1555,7 +1570,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  curPage1.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  Page 1 of 2", {
+  curPage1.drawText("simplyexpat.de  ·  Your personalised checklist  ·  Page 1 of 2", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
   curPage1.drawText("service.berlin.de/dienstleistung/120686", {
@@ -1569,6 +1584,12 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Header — personalised ─────────────────────────────────────────────────
   p2pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+
+  // Brand mark — top right
+  p2pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
+  p2pg.drawText("S", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
+  p2pg.drawText("simplyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
+
   p2pg.drawText("Your Berlin Anmeldung Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
   const nameStr = (p1.firstName + " " + p1.lastName).trim();
   const situStr = [
@@ -1620,6 +1641,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   cur2 = secBlock(p2pg, "After your appointment", cur2);
   cur2 = bulletBlock(p2pg, "Meldebestaetigung:", "You receive your registration confirmation the same day. Keep it — you need it for banks, employers, and government services.", cur2);
   cur2 = bulletBlock(p2pg, "Steuer-ID:", "Your German tax ID arrives by post within 4 weeks at your new address. Keep it permanently — you will use it for the rest of your life in Germany.", cur2);
+  cur2 = bulletBlock(p2pg, "Letterbox (Briefkasten):", "Put your surname on your letterbox immediately after moving in. Official German mail is NOT delivered to unlabelled mailboxes. This is how your Steuer-ID and all government letters reach you.", cur2, GRN);
   if (isMarried) {
     const kirchStr = d.people.some(p => ["rk","ev"].includes(p.religion))
       ? "You registered a church affiliation — approx. 8-9% Kirchensteuer (church tax) applies on your income tax. To leave (Kirchenaustritt), visit the Standesamt — approx. EUR 30-40 fee."
@@ -1643,7 +1665,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   p2pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  p2pg.drawText("SimplyExpat Berlin  ·  Expert Guide  ·  Page 2 of 2  ·  All information without guarantee", {
+  p2pg.drawText("simplyexpat.de  ·  Expert Guide  ·  Page 2 of 2  ·  Information without guarantee", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
   p2pg.drawText("service.berlin.de", {
@@ -2430,7 +2452,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
           {/* Headline — full width, dominant */}
           <h1 style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 40, letterSpacing: "-0.035em", maxWidth: 700 }}>
             Your Anmeldung form,<br />
-            <span style={{ color: "#0075FF" }}>filled in 3 minutes.</span>
+            <span style={{ color: "#0075FF" }}>filled in 5 minutes.</span>
           </h1>
 
           {/* Two columns below headline */}
@@ -2442,7 +2464,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
                 Anmeldung is the mandatory Berlin residence registration. The form is in German. Forget one document and the clerk sends you home.
               </p>
               <p style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", lineHeight: 1.65, marginBottom: 28 }}>
-                We auto-generate your official Anmeldung PDF — all 54 fields filled in perfect German — plus your personalised document checklist. In English. In 3 minutes.
+                We auto-generate your official Anmeldung PDF — all 54 fields filled in perfect German — plus your personalised document checklist. In English. In 5 minutes.
               </p>
 
               {/* Deliverables */}
@@ -2494,7 +2516,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
             {[
               { v: "54", l: "Fields filled in German" },
-              { v: "3 min", l: "Average completion" },
+              { v: "5 min", l: "Average completion" },
               { v: "44", l: "Berlin Bürgerämter" },
               { v: "0", l: "Bytes stored on any server" },
             ].map(({ v, l }) => (
@@ -2545,7 +2567,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
             Walk in better prepared than anyone else in that waiting room.
           </h2>
           <p style={{ color: "#475569", fontSize: 14, marginBottom: 28, lineHeight: 1.7 }}>
-            Perfect German form. Personalised checklist. Zero data stored. Ready in 3 minutes.
+            Perfect German form. Personalised checklist. Zero data stored. Ready in 5 minutes.
           </p>
           <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.4)" }}>
             Get started <ArrowRight size={15} />
@@ -2580,7 +2602,7 @@ function LandingLegalFooter() {
       <p style={{ color: "#94a3b8", fontSize: 11, marginTop: 20, marginBottom: 10, lineHeight: 1.7, maxWidth: 680, textAlign: "center" }}>
         SimplyExpat helps expats complete the Berlin Anmeldung form in English and generate an official PDF ready for the Bürgeramt — with zero data stored on any server.
         Whether you need Anmeldung Berlin English PDF support, expert relocation Berlin paperwork assistance, or simply want to fill your Bürgeramt form without storing your data anywhere,
-        SimplyExpat prepares everything in 3 minutes. Available for every nationality moving to Berlin.
+        SimplyExpat prepares everything in 5 minutes. Available for every nationality moving to Berlin.
       </p>
       <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
@@ -3520,6 +3542,7 @@ function StepNewAddress({ form, upd, set_ }: { form: FormData; upd: any; set_: a
         <TG value={form.newResType} onChange={v => set_("newResType", v)} options={[["alleinige","Sole residence (Alleinige Wohnung)"],["Haupt","Primary residence (Hauptwohnung)"],["Neben","Secondary residence (Nebenwohnung)"]]} />
       </div>
       <IBox type="warn">You have <strong>14 days</strong> from your Einzugsdatum to register (§17 BMG). Fines up to €1,000 for late registration.</IBox>
+      <IBox type="info"><strong>Mailbox tip:</strong> After moving in, add your surname to the letterbox (Briefkasten). This is mandatory in Germany — official mail will not be delivered to an unlabelled mailbox. Your <strong>Steuer-ID</strong> (tax ID) arrives by post 2–4 weeks after your Anmeldung: if your name isn't on the box, you won't receive it.</IBox>
     </div>
   );
 }
@@ -4509,6 +4532,19 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           </div>
         </div>
 
+        {/* Mailbox tip */}
+        <div style={{ background: "#f0fdf4", borderRadius: 14, border: "1.5px solid #86efac", padding: "14px 18px", marginBottom: 12, display: "flex", gap: 12, alignItems: "flex-start" }}>
+          <div style={{ width: 30, height: 30, borderRadius: 8, background: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+            <MapPin size={15} color="white" />
+          </div>
+          <div>
+            <div style={{ fontWeight: 800, color: "#14532d", fontSize: 13.5, marginBottom: 3 }}>Add your name to the letterbox (Briefkasten)</div>
+            <p style={{ color: "#166534", fontSize: 12.5, lineHeight: 1.6, margin: 0 }}>
+              This is mandatory in Germany — official mail is not delivered to unlabelled mailboxes. Your <strong>Steuer-ID</strong> (tax ID) arrives by post 2–4 weeks after your Anmeldung. If your surname is not on the box, you will miss it.
+            </p>
+          </div>
+        </div>
+
         {/* Print tip */}
         <div style={{ background: "#0f172a", borderRadius: 14, padding: "16px 18px", marginBottom: 20, display: "flex", gap: 12 }}>
           <AlertCircle size={16} color="#fbbf24" style={{ flexShrink: 0, marginTop: 2 }} />
@@ -4525,7 +4561,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
             <h3 style={{ fontSize: 17, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.25 }}>Saved your life?<br/>Send this to another expat.</h3>
             <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 13, lineHeight: 1.6, maxWidth: 340, margin: "0 auto 16px" }}>Every expat in Berlin needs this. One link saves them hours.</p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20in%20English%20in%203%20minutes%20%E2%80%94%20perfectly%20in%20German%2C%20no%20data%20stored%3A%20https%3A%2F%2Fsimplyexpat.de" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20in%20English%20in%205%20minutes%20%E2%80%94%20perfectly%20in%20German%2C%20no%20data%20stored%3A%20https%3A%2F%2Fsimplyexpat.de" target="_blank" rel="noopener noreferrer"
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 11, background: "#25D366", color: "white", fontWeight: 800, fontSize: 13, textDecoration: "none" }}>Share on WhatsApp</a>
               <button onClick={() => { navigator.clipboard.writeText("https://simplyexpat.de").then(() => { const btn = document.getElementById("copy-link-btn"); if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); } }); }} id="copy-link-btn"
                 style={{ padding: "11px 18px", borderRadius: 11, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.25)", color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>Copy link</button>
