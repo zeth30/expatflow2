@@ -2450,21 +2450,22 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
           </div>
 
           {/* Headline — full width, dominant */}
-          <h1 style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 40, letterSpacing: "-0.035em", maxWidth: 700 }}>
+          <h1 style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 12, letterSpacing: "-0.035em", maxWidth: 700 }}>
             Your Anmeldung form,<br />
             <span style={{ color: "#0075FF" }}>filled in 5 minutes.</span>
           </h1>
+          <p style={{ fontSize: 15, color: "#64748b", fontWeight: 600, marginBottom: 32, letterSpacing: "-0.005em" }}>
+            In English. No German required.
+          </p>
 
           {/* Two columns below headline */}
           <div className="hero-grid" style={{ alignItems: "start" }}>
 
             {/* ── Left: copy + CTA ── */}
             <div>
-              <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.75, marginBottom: 10 }}>
-                Anmeldung is the mandatory Berlin residence registration. The form is in German. Forget one document and the clerk sends you home.
-              </p>
-              <p style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", lineHeight: 1.65, marginBottom: 28 }}>
-                We auto-generate your official Anmeldung PDF — all 54 fields filled in perfect German — plus your personalised document checklist. In English. In 5 minutes.
+              <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.8, marginBottom: 28 }}>
+                Moving to Berlin is exciting. German paperwork isn't.<br />
+                Answer a few simple questions in English — we handle the rest. Your completed, print-ready Anmeldung PDF in 5 minutes. For anyone moving to Berlin, wherever you're from.
               </p>
 
               {/* Deliverables */}
@@ -2487,27 +2488,37 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
               {/* CTA */}
               <button onClick={onStart}
                 onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-                style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#0066ee" : "#0075FF", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 18 }}>
+                style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#0066ee" : "#0075FF", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>
                 Prepare My Anmeldung <ArrowRight size={18} />
               </button>
-
-              {/* 14-day rule */}
-              <div style={{ padding: "11px 16px", borderRadius: 10, background: "#fef2f2", border: "1px solid #fecaca", display: "inline-flex", alignItems: "center", gap: 12 }}>
-                <div style={{ fontWeight: 900, color: "#dc2626", fontSize: 24, lineHeight: 1, letterSpacing: "-0.02em", flexShrink: 0 }}>14</div>
-                <div>
-                  <div style={{ fontWeight: 700, color: "#7f1d1d", fontSize: 13 }}>days to register after moving in</div>
-                  <div style={{ color: "#b91c1c", fontSize: 12, marginTop: 1 }}>Bundesmeldegesetz §17 — fines up to €1,000</div>
-                </div>
-              </div>
+              <p style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500, margin: "0 0 14px", letterSpacing: "0.01em" }}>
+                €15 · One-time · No account needed
+              </p>
+              <p style={{ fontSize: 13, color: "#64748b", fontStyle: "italic", margin: 0, lineHeight: 1.5 }}>
+                "This saved me so much stress." — <span style={{ fontStyle: "normal", fontWeight: 700, color: "#0f172a" }}>Expat in Berlin</span>
+              </p>
             </div>
 
-            {/* ── Right: Berlin photo, full height ── */}
-            <div className="hero-berlin-img" style={{ borderRadius: 20, overflow: "hidden", border: "1px solid #e8ecf4", boxShadow: "0 12px 48px rgba(0,0,0,0.10)" }}>
-              <img
-                src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=900&q=85"
-                alt="Berlin"
-                style={{ width: "100%", height: "100%", minHeight: 460, objectFit: "cover", objectPosition: "center 40%", display: "block" }}
-              />
+            {/* ── Right: Anmeldung form preview ── */}
+            <div className="hero-berlin-img" style={{ borderRadius: 20, background: "linear-gradient(145deg,#eef3fb,#f0f4fa)", border: "1px solid #e8ecf4", boxShadow: "0 12px 48px rgba(0,0,0,0.10)", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 24px", minHeight: 460 }}>
+              <div style={{ position: "relative", width: "100%", maxWidth: 340 }}>
+                {/* Paper shadow layers */}
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(2deg) translateY(6px)", borderRadius: 4, background: "white", boxShadow: "0 4px 18px rgba(0,0,0,0.10)" }} />
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(-1deg) translateY(3px)", borderRadius: 4, background: "white", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }} />
+                {/* Main document */}
+                <div style={{ position: "relative", borderRadius: 4, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.16)", background: "white" }}>
+                  <img
+                    src="/anmeldung-form.png"
+                    alt="Official Berlin Anmeldung form filled in German"
+                    style={{ width: "100%", display: "block" }}
+                  />
+                </div>
+                {/* Floating badge */}
+                <div style={{ position: "absolute", bottom: -14, right: -14, background: "#0075FF", color: "white", borderRadius: 10, padding: "8px 13px", boxShadow: "0 6px 20px rgba(0,117,255,0.4)", display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>
+                  <CheckCircle2 size={13} color="white" />
+                  <span style={{ fontSize: 12, fontWeight: 800 }}>54 fields · Perfect German</span>
+                </div>
+              </div>
             </div>
 
           </div>

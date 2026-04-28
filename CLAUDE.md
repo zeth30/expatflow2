@@ -419,6 +419,15 @@ Both the done page cards and the PDF checklist show:
 - **UK post-Brexit** — removed "United Kingdom" from `EU_OPTS`/`EU_OPTS2`, moved to `NON_EU_OPTS`. Deleted dead `EU_SET` constant (unused and had UK incorrectly as EU).
 - **Marriage country translation** — changed from plain `<Inp>` to `SearchableSelect` with `ALL_COUNTRIES` so `toGermanCountry()` always gets a canonical name to translate into the EHE_ANGABEN field.
 
+### 2026-04-28
+- **FAQ page (`/faq`)** — new static Next.js App Router page with 20 questions across 5 color-coded sections. CSS-only accordion (`<details>/<summary>`), slide-down animation, per-section jump links, stats strip (20 questions / 5 sections / 14 days), and full FAQPage JSON-LD schema for GEO/AI citation. Grammar fixed in "How long do I have to register" answer ("However, in cities…", "keep a screenshot as evidence").
+- **Sitemap & robots** — `/faq` added to `app/sitemap.ts` (priority 0.8). `app/robots.ts` updated with explicit `Allow: /` entries for 9 AI crawlers: GPTBot, OAI-SearchBot, Google-Extended, PerplexityBot, ClaudeBot, anthropic-ai, Applebot-Extended, Bytespider, cohere-ai. API routes disallowed for all bots. No `next-sitemap` package needed — Next.js App Router has built-in generation.
+- **FAQ nav link** — "FAQ" link added to `StickyNav` between Services dropdown and CTA button. FAQ teaser section (3 Q&As + "See all 20 questions →") added to `LandingPage` between hero and bottom CTA.
+- **Time consistency** — standardised to "5 minutes" everywhere. Was "2 Minutes" in `layout.tsx` title/OG, "3 minutes" in hero/stats/CTA/SEO paragraph/WhatsApp share link, "5 minutes" in FAQ CTA.
+- **Mailbox tip — 4 locations** — "Add your surname to the letterbox (Briefkasten). Official mail is not delivered to unlabelled mailboxes. Your Steuer-ID arrives by post 2–4 weeks after Anmeldung." Added to: (1) `StepNewAddress` IBox at bottom of form, (2) DonePage green card before print tip, (3) Guide PDF Page 1 green callout box after print warning, (4) Guide PDF Page 2 green bullet in "After your appointment" section.
+- **PDF branding** — SimplyExpat "S" logo box (navy/blue, 22×22pt) + `simplyexpat.de` URL added to top-right corner of both Page 1 and Page 2 headers in `buildGuidePDF`. Footers updated from "SimplyExpat Berlin" to "simplyexpat.de".
+- **Landing page redesign (6 changes)** — (1) "In English. No German required." tagline added under H1. (2) Both old subheadline paragraphs replaced with new single paragraph ("Moving to Berlin is exciting. German paperwork isn't…"). (3) 14-day warning box removed from landing page only (kept in FAQ and wizard). (4) "€15 · One-time · No account needed" added below CTA button. (5) Testimonial added: `"This saved me so much stress." — Expat in Berlin`. (6) Brandenburg Gate Unsplash photo replaced with `/public/anmeldung-form.png` — styled as stacked-paper document preview with faint rotated shadow layers, light gradient background, and floating "✓ 54 fields · Perfect German" badge.
+
 ---
 
 *End of transfer package. Upload this file + latest page.tsx from GitHub to new chat.*
