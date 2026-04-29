@@ -2538,26 +2538,17 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
         </div>
       </div>
 
-      {/* ══ BERLIN MAP BAND ══ */}
-      <div style={{ background: "white", borderTop: "1px solid #e8ecf4", borderBottom: "1px solid #e8ecf4", overflow: "hidden" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, padding: "18px 24px 14px" }}>
-          <span style={{ fontSize: 10.5, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.16em", textTransform: "uppercase" }}>
-            52°31′N · 13°22′E · Berlin, Germany
+      {/* ══ BERLIN PHOTO BAND ══ */}
+      <div style={{ position: "relative", height: 380, backgroundImage: "url('/berlin-skyline.jpg')", backgroundSize: "cover", backgroundPosition: "center", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, padding: "0 24px" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: "0.22em", textTransform: "uppercase" }}>
+            52°31′N · 13°24′E · BERLIN
           </span>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 6px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 8px", justifyContent: "center", maxWidth: 680 }}>
             {["Mitte","Prenzlauer Berg","Kreuzberg","Charlottenburg","Neukölln","Friedrichshain","Tempelhof","Spandau","Steglitz","Treptow","Lichtenberg","Reinickendorf"].map(d => (
-              <span key={d} style={{ fontSize: 11, color: "#64748b", border: "1px solid #e2e8f0", borderRadius: 20, padding: "3px 10px", fontWeight: 600 }}>{d}</span>
+              <span key={d} style={{ fontSize: 11, color: "#64748b", border: "1px solid #e2e8f0", borderRadius: 20, padding: "3px 10px", fontWeight: 600, background: "white" }}>{d}</span>
             ))}
           </div>
-        </div>
-        <div style={{ position: "relative", height: 260 }}>
-          <iframe
-            src="https://www.openstreetmap.org/export/embed.html?bbox=13.088%2C52.338%2C13.761%2C52.675&layer=mapnik"
-            style={{ width: "100%", height: "100%", border: "none", display: "block", pointerEvents: "none" }}
-            title="Berlin district map"
-            loading="lazy"
-          />
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(to right, rgba(255,255,255,0.18) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.18) 100%)" }} />
         </div>
       </div>
 
