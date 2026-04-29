@@ -2573,7 +2573,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
             {[
-              { q: "How long do I have to register after moving to Germany?", a: "You have 14 days from your move-in date under §17 BMG — fines up to €1,000. In Berlin, most offices are booked 3–4 weeks out, so book the earliest slot you can find and keep a screenshot as evidence." },
+              { q: "When do you have to do Anmeldung?", a: "You have 14 days from your move-in date under §17 BMG. The law allows fines up to €1,000 for late registration — but in practice this is extremely rare. In Berlin, most offices are booked 3–4 weeks out, so book the earliest slot you can find and keep a screenshot as evidence." },
               { q: "What documents do I need for Anmeldung?", a: "Your passport or national ID, the Wohnungsgeberbestätigung (landlord confirmation), and your completed Anmeldung form. Non-EU nationals should also bring their visa or residence permit." },
               { q: "Can I do the Anmeldung online?", a: "Only if you are an EU/EEA citizen with a German eID chip, already registered in Germany, and moving within Germany. The vast majority of expats — including all non-EU nationals — must register in person." },
             ].map(({ q, a }) => (

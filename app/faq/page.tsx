@@ -46,8 +46,8 @@ const SECTIONS = [
         a: "Everyone who lives in Germany needs to register — EU citizens, non-EU nationals, students, employees, and long-term renters alike. Tourists and visitors staying less than 3 months are exempt. If you are renting an apartment, working, or studying in Germany, you need the Anmeldung.",
       },
       {
-        q: "How long do I have to register after moving to Germany?",
-        a: "You have 14 days from your move-in date (§17 BMG). However, in cities like Berlin, Bürgeramt appointments are often booked out 3–4 weeks in advance — so most people end up registering late through no fault of their own. Book the earliest available slot and keep a screenshot as evidence. Offices understand this.",
+        q: "When do you have to do Anmeldung?",
+        a: "You have 14 days from your move-in date (§17 BMG). The law allows fines up to €1,000 for late registration — but in practice this is extremely rare. In cities like Berlin, Bürgeramt appointments are often booked out 3–4 weeks in advance, so most people end up registering late through no fault of their own. Book the earliest available slot and keep a screenshot as evidence. Offices understand this.",
       },
       {
         q: "What documents do I need for Anmeldung?",
