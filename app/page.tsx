@@ -2538,75 +2538,27 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
         </div>
       </div>
 
-      {/* ══ BERLIN SKYLINE BAND ══ */}
-      <div style={{ background: "#0f172a", padding: "40px 0 0", overflow: "hidden" }}>
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <span style={{ fontSize: 10.5, fontWeight: 700, color: "#334155", letterSpacing: "0.18em", textTransform: "uppercase" }}>52°31′N · 13°22′E</span>
-          <span style={{ color: "#1e293b", margin: "0 10px", fontSize: 12 }}>·</span>
-          <span style={{ fontSize: 10.5, fontWeight: 700, color: "#334155", letterSpacing: "0.18em", textTransform: "uppercase" }}>Berlin, Germany</span>
+      {/* ══ BERLIN MAP BAND ══ */}
+      <div style={{ background: "white", borderTop: "1px solid #e8ecf4", borderBottom: "1px solid #e8ecf4", overflow: "hidden" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, padding: "18px 24px 14px" }}>
+          <span style={{ fontSize: 10.5, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.16em", textTransform: "uppercase" }}>
+            52°31′N · 13°22′E · Berlin, Germany
+          </span>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 6px" }}>
+            {["Mitte","Prenzlauer Berg","Kreuzberg","Charlottenburg","Neukölln","Friedrichshain","Tempelhof","Spandau","Steglitz","Treptow","Lichtenberg","Reinickendorf"].map(d => (
+              <span key={d} style={{ fontSize: 11, color: "#64748b", border: "1px solid #e2e8f0", borderRadius: 20, padding: "3px 10px", fontWeight: 600 }}>{d}</span>
+            ))}
+          </div>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "5px 7px", justifyContent: "center", padding: "0 20px", marginBottom: 30 }}>
-          {["Mitte","Prenzlauer Berg","Kreuzberg","Charlottenburg","Neukölln","Friedrichshain","Tempelhof","Spandau","Steglitz","Treptow","Lichtenberg","Reinickendorf"].map(d => (
-            <span key={d} style={{ fontSize: 11, color: "#475569", border: "1px solid #1e293b", borderRadius: 20, padding: "4px 11px", fontWeight: 600, letterSpacing: "0.01em" }}>{d}</span>
-          ))}
+        <div style={{ position: "relative", height: 260 }}>
+          <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=13.088%2C52.338%2C13.761%2C52.675&layer=mapnik"
+            style={{ width: "100%", height: "100%", border: "none", display: "block", pointerEvents: "none" }}
+            title="Berlin district map"
+            loading="lazy"
+          />
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "linear-gradient(to right, rgba(255,255,255,0.18) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.18) 100%)" }} />
         </div>
-        <svg viewBox="0 0 1000 130" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", display: "block" }}>
-          {/* Left cluster — ambient Gründerzeit blocks */}
-          <rect x="0"   y="92" width="34" height="38" fill="white" opacity="0.10"/>
-          <rect x="37"  y="76" width="26" height="54" fill="white" opacity="0.10"/>
-          <rect x="67"  y="88" width="20" height="42" fill="white" opacity="0.10"/>
-          <rect x="91"  y="70" width="28" height="60" fill="white" opacity="0.10"/>
-          <rect x="123" y="90" width="18" height="40" fill="white" opacity="0.10"/>
-          <rect x="145" y="78" width="24" height="52" fill="white" opacity="0.10"/>
-          <rect x="173" y="86" width="16" height="44" fill="white" opacity="0.10"/>
-          <rect x="193" y="94" width="20" height="36" fill="white" opacity="0.10"/>
-          <rect x="217" y="84" width="22" height="46" fill="white" opacity="0.10"/>
-
-          {/* Brandenburg Gate — center x≈290 */}
-          <path d="M260 44 L314 44 L310 38 L302 32 L295 27 L283 23 L271 27 L264 32 L256 38 Z" fill="white" opacity="0.42"/>
-          <rect x="252" y="44" width="68" height="18" fill="white" opacity="0.42"/>
-          <rect x="255" y="62" width="62" height="8"  fill="white" opacity="0.42"/>
-          <rect x="255" y="70" width="7"  height="60" fill="white" opacity="0.42"/>
-          <rect x="268" y="70" width="7"  height="60" fill="white" opacity="0.42"/>
-          <rect x="281" y="70" width="7"  height="60" fill="white" opacity="0.42"/>
-          <rect x="294" y="70" width="7"  height="60" fill="white" opacity="0.42"/>
-          <rect x="307" y="70" width="7"  height="60" fill="white" opacity="0.42"/>
-
-          {/* Mid buildings */}
-          <rect x="345" y="88" width="22" height="42" fill="white" opacity="0.10"/>
-          <rect x="371" y="78" width="16" height="52" fill="white" opacity="0.10"/>
-          <rect x="391" y="86" width="18" height="44" fill="white" opacity="0.10"/>
-          <rect x="413" y="93" width="14" height="37" fill="white" opacity="0.10"/>
-          <rect x="431" y="80" width="20" height="50" fill="white" opacity="0.10"/>
-          <rect x="455" y="90" width="16" height="40" fill="white" opacity="0.10"/>
-          <rect x="475" y="76" width="22" height="54" fill="white" opacity="0.10"/>
-          <rect x="501" y="88" width="14" height="42" fill="white" opacity="0.10"/>
-          <rect x="519" y="82" width="18" height="48" fill="white" opacity="0.10"/>
-          <rect x="541" y="92" width="16" height="38" fill="white" opacity="0.10"/>
-          <rect x="561" y="78" width="22" height="52" fill="white" opacity="0.10"/>
-
-          {/* Fernsehturm — center x=620, tallest element */}
-          <rect  x="618.5" y="22"  width="3"  height="108" fill="white" opacity="0.92"/>
-          <ellipse cx="620"  cy="68" rx="22" ry="19"        fill="white" opacity="0.92"/>
-          <rect  x="619.2" y="4"   width="1.6" height="20"  fill="white" opacity="0.92"/>
-
-          {/* Right cluster */}
-          <rect x="657" y="86" width="18" height="44" fill="white" opacity="0.10"/>
-          <rect x="679" y="74" width="24" height="56" fill="white" opacity="0.10"/>
-          <rect x="707" y="88" width="16" height="42" fill="white" opacity="0.10"/>
-          <rect x="727" y="78" width="20" height="52" fill="white" opacity="0.10"/>
-          <rect x="751" y="92" width="14" height="38" fill="white" opacity="0.10"/>
-          <rect x="769" y="80" width="22" height="50" fill="white" opacity="0.10"/>
-          <rect x="795" y="90" width="16" height="40" fill="white" opacity="0.10"/>
-          <rect x="815" y="72" width="26" height="58" fill="white" opacity="0.10"/>
-          <rect x="845" y="86" width="18" height="44" fill="white" opacity="0.10"/>
-          <rect x="867" y="78" width="14" height="52" fill="white" opacity="0.10"/>
-          <rect x="885" y="90" width="20" height="40" fill="white" opacity="0.10"/>
-          <rect x="909" y="76" width="16" height="54" fill="white" opacity="0.10"/>
-          <rect x="929" y="86" width="22" height="44" fill="white" opacity="0.10"/>
-          <rect x="955" y="94" width="14" height="36" fill="white" opacity="0.10"/>
-          <rect x="973" y="80" width="27" height="50" fill="white" opacity="0.10"/>
-        </svg>
       </div>
 
       {/* ══ FAQ TEASER ══ */}
