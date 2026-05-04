@@ -223,7 +223,7 @@ export default function FAQPage() {
               </span>
             </div>
             <a
-              href="/"
+              href="/#wizard/origin"
               className="faq-cta-btn"
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, textDecoration: "none", letterSpacing: "-0.01em" }}
             >
@@ -368,7 +368,7 @@ export default function FAQPage() {
                 Perfect German form. Personalised checklist. Zero data stored. €15, one time.
               </p>
               <a
-                href="/"
+                href="/#wizard/origin"
                 style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "15px 34px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.45)" }}
               >
                 Get started

@@ -2103,10 +2103,15 @@ export default function BerlinButler() {
           .mob-card-pad{padding:18px!important}
           .mob-btn-lg{padding:14px!important;font-size:15px!important}
         }
+        @media(max-width:768px){
+          .hero-berlin-img{min-height:auto!important;padding:20px 16px!important}
+          .stats-strip{grid-template-columns:1fr 1fr!important}
+        }
         @media(max-width:640px){
           .nav-flex-hide{display:none!important}
           .nav-brand-text{font-size:12px!important}
           .nav-cta-sm{padding:8px 14px!important;font-size:12px!important;white-space:nowrap!important}
+          .tg-grid{grid-template-columns:1fr 1fr!important}
         }
         @media(max-width:480px){
           .mob-sm-text h1{font-size:28px!important}.hero-berlin-img{display:none!important}
@@ -2529,7 +2534,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
           </div>
 
           {/* Stats strip — full width, centred, below both columns */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
+          <div className="stats-strip" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
             {[
               { v: "54", l: "Fields filled in German" },
               { v: "5 min", l: "Average completion" },
@@ -3064,7 +3069,7 @@ const SH = ({ icon: Icon, children }: { icon: any; children: React.ReactNode }) 
 );
 
 const TG = ({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: [string,string][] }) => (
-  <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(options.length, 3)},1fr)`, gap: 7, marginTop: 4 }}>
+  <div className="tg-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(options.length, 3)},1fr)`, gap: 7, marginTop: 4 }}>
     {options.map(([v, l]) => {
       const active = value === v;
       return (
