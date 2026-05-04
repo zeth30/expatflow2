@@ -173,7 +173,7 @@ export default function FAQPage() {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: 0, padding: 0, background: "white", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: 0, padding: 0, background: "white", minHeight: "100vh", overflowX: "hidden" }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -199,6 +199,9 @@ export default function FAQPage() {
           .faq-stats { gap: 20px !important; }
           .faq-hero-pad { padding: 40px 16px 36px !important; }
           .section-jumps { display: none !important; }
+          .faq-badge { display: none !important; }
+          .faq-brand-text { font-size: 12px !important; }
+          .faq-cta-btn { padding: 8px 12px !important; font-size: 12px !important; white-space: nowrap !important; gap: 4px !important; }
         }
       `}</style>
 
@@ -211,16 +214,17 @@ export default function FAQPage() {
                 <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
                 </div>
-                <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>
+                <span className="faq-brand-text" style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>
                   SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span>
                 </span>
               </a>
-              <span style={{ padding: "4px 11px", borderRadius: 7, background: "#eff6ff", border: "1.5px solid #bfdbfe", color: "#0075FF", fontWeight: 700, fontSize: 12 }}>
+              <span className="faq-badge" style={{ padding: "4px 11px", borderRadius: 7, background: "#eff6ff", border: "1.5px solid #bfdbfe", color: "#0075FF", fontWeight: 700, fontSize: 12 }}>
                 FAQ
               </span>
             </div>
             <a
               href="/"
+              className="faq-cta-btn"
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, textDecoration: "none", letterSpacing: "-0.01em" }}
             >
               Prepare My Anmeldung

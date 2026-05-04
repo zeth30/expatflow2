@@ -2080,6 +2080,7 @@ export default function BerlinButler() {
         .wizard-max{max-width:720px}
         .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:56px;align-items:center}
         .nav-pad{padding:0 40px}
+        .nav-flex-hide{display:flex}
         @media(max-width:768px){
           .mob-hide{display:none!important}
           .mob-show{display:block!important}
@@ -2102,6 +2103,11 @@ export default function BerlinButler() {
           .mob-card-pad{padding:18px!important}
           .mob-btn-lg{padding:14px!important;font-size:15px!important}
         }
+        @media(max-width:640px){
+          .nav-flex-hide{display:none!important}
+          .nav-brand-text{font-size:12px!important}
+          .nav-cta-sm{padding:8px 14px!important;font-size:12px!important;white-space:nowrap!important}
+        }
         @media(max-width:480px){
           .mob-sm-text h1{font-size:28px!important}.hero-berlin-img{display:none!important}
         }
@@ -2109,7 +2115,8 @@ export default function BerlinButler() {
         .mobile-bottom-nav{display:none}
         input:focus,select:focus{scroll-margin-bottom:140px}
         @media(max-width:768px){
-          .mobile-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e8ecf4;padding:12px 16px;gap:10px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
+          .mobile-bottom-nav{display:flex;flex-direction:column;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e8ecf4;padding:12px 16px;gap:8px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
+          .mobile-bottom-nav button{width:100%!important;flex:none!important;min-height:48px!important;font-size:16px!important;padding:12px 24px!important}
         }
       `}</style>
 
@@ -2336,10 +2343,11 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                       <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
                       </div>
-                      <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
+                      <span className="nav-brand-text" style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
                     </div>
                     {/* Services tab */}
                     <button
+                      className="nav-flex-hide"
                       onClick={() => setMenuOpen(o => !o)}
                       style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: menuOpen ? "#eff6ff" : "transparent", color: menuOpen ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
                       Services
@@ -2349,8 +2357,8 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                     </button>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <a href="/faq" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
-                    <button onClick={onStart}
+                    <a href="/faq" className="nav-flex-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
+                    <button onClick={onStart} className="nav-cta-sm"
                       style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
                       Prepare My Anmeldung <ArrowRight size={13} />
                     </button>
