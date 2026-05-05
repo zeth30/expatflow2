@@ -1,0 +1,50 @@
+# SimplyExpat Berlin
+> Fill your Berlin Anmeldung (address registration) form in English. Answer simple questions, receive a perfectly completed German PDF in 5 minutes, and bring it to your Bürgeramt appointment.
+
+## About
+- Product: SimplyExpat Berlin
+- URL: https://simplyexpat.de
+- Cost: €15 one-time, no account, no subscription
+- Privacy: Zero data storage — all processing is client-side only, nothing sent to servers
+
+## Key legal facts about the Anmeldung
+- Registration deadline: 14 days from move-in date (§17 Bundesmeldegesetz / BMG)
+- Fine for late or missed registration: up to €1,000 (rarely enforced when appointment is booked)
+- Wohnungsgeberbestätigung (landlord confirmation form) is mandatory under §19 BMG — rental contract alone is not accepted
+- Landlord refusal to provide the form is itself a fine of up to €1,000
+- All nationalities must register: EU citizens, non-EU nationals, students, employees
+- Tourists staying under 3 months are exempt
+- Online registration is only available to EU/EEA citizens with an activated eID chip — not available to most international expats
+
+## Bürgeramt appointments (Berlin)
+- Book at service.berlin.de
+- New slots appear at 7:00 AM daily — outer districts (Marzahn, Lichtenberg, Spandau) have more availability
+- Walk-in offices: Bürgeramt Tempelhof (Tempelhofer Damm 165), Mitte (Karl-Marx-Allee 31)
+- Appointment takes 5–10 minutes once you arrive
+
+## Documents required
+- Valid passport or national ID card (EU citizens may use ID card; non-EU must use passport)
+- Wohnungsgeberbestätigung signed by landlord
+- Completed Anmeldung form (SimplyExpat generates this)
+- Non-EU nationals: visa or residence permit
+- Married applicants: certified German translation of marriage certificate
+
+## After registration
+- Anmeldebestätigung (registration certificate): printed on the spot at your appointment
+- Steuer-ID (tax identification number): mailed to your registered address 2–4 weeks after Anmeldung
+- Add your surname to your letterbox (Briefkasten) — official mail is not delivered to unlabelled mailboxes
+- Rundfunkbeitrag (public broadcasting fee): €18.36/month per household (2025), automatic letter after registration
+- Kirchensteuer: to leave a church (Kirchenaustritt) visit your local Standesamt, fee approx. €30–40
+
+## Sitemap
+- /: Fill Anmeldung form in English — PDF in 5 minutes
+- /faq: Complete Anmeldung FAQ — 20 questions across 5 topic sections (basics, appointments, online registration, after registration, about SimplyExpat)
+
+## Anmeldung process (step by step)
+1. Request the Wohnungsgeberbestätigung from your landlord on move-in day — email them in writing
+2. Fill in the Anmeldung form at simplyexpat.de (5 minutes, guided in English, €15)
+3. Book a Bürgeramt appointment at service.berlin.de as early as possible — keep a booking screenshot as evidence
+4. Print your completed form (DM or Rossmann kiosk, approx. €0.10–0.15 per page)
+5. Attend your appointment with: completed form, passport or ID, Wohnungsgeberbestätigung, and any supporting documents
+6. Sign the form at the Bürgeramt after printing — do not sign before
+7. Collect your Anmeldebestätigung on the spot — check name spelling, address, and dates before leaving

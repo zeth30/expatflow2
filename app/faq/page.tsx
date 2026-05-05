@@ -25,6 +25,8 @@ export const metadata: Metadata = {
     siteName: "SimplyExpat Berlin",
     locale: "en_US",
     type: "article",
+    modifiedTime: "2026-05-05T00:00:00.000Z",
+    publishedTime: "2026-04-28T00:00:00.000Z",
   },
 };
 
@@ -159,12 +161,16 @@ const SECTIONS = [
 
 const TOTAL_QUESTIONS = SECTIONS.reduce((n, s) => n + s.faqs.length, 0);
 
+const LAST_UPDATED = "2026-05-05";
+const LAST_UPDATED_DISPLAY = "May 2026";
+
 export default function FAQPage() {
   const allFaqs = SECTIONS.flatMap((s) => s.faqs);
 
-  const jsonLd = {
+  const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    dateModified: LAST_UPDATED,
     mainEntity: allFaqs.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -172,11 +178,68 @@ export default function FAQPage() {
     })),
   };
 
+  const howToJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "How to complete the Anmeldung in Berlin (address registration)",
+    description: "Step-by-step guide to registering your address at a Berlin Bürgeramt. Required by law within 14 days of moving in (§17 BMG).",
+    totalTime: "P14D",
+    estimatedCost: { "@type": "MonetaryAmount", currency: "EUR", value: "15" },
+    supply: [
+      { "@type": "HowToSupply", name: "Valid passport or national ID card" },
+      { "@type": "HowToSupply", name: "Wohnungsgeberbestätigung (landlord confirmation form, signed)" },
+      { "@type": "HowToSupply", name: "Completed Anmeldung form" },
+      { "@type": "HowToSupply", name: "Visa or residence permit (non-EU nationals only)" },
+    ],
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "Get the Wohnungsgeberbestätigung from your landlord",
+        text: "Request the landlord confirmation form (Wohnungsgeberbestätigung) on your move-in day. Your landlord is legally required to provide it under §19 BMG. Email them in writing so you have a paper trail. Without this form the Bürgeramt cannot register you — your rental contract alone is not accepted.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "Fill in the Anmeldung form in English",
+        text: "Go to simplyexpat.de and answer the guided questions in plain English. SimplyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €15.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "Book a Bürgeramt appointment as early as possible",
+        text: "Book at service.berlin.de. New slots appear at 7:00 AM daily — outer districts like Marzahn and Lichtenberg have more availability. Keep a screenshot of your booking as evidence you tried within the 14-day window. Walk-in options exist at Bürgeramt Tempelhof (Tempelhofer Damm 165) and Mitte (Karl-Marx-Allee 31).",
+      },
+      {
+        "@type": "HowToStep",
+        position: 4,
+        name: "Print your completed form",
+        text: "Print the PDF on plain white paper. DM or Rossmann self-service kiosks charge approximately €0.10–0.15 per page. The Bürgeramt does not accept digital forms shown on a phone screen.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 5,
+        name: "Attend your Bürgeramt appointment",
+        text: "Bring your printed form, passport or ID, Wohnungsgeberbestätigung, and any additional documents. The appointment takes 5–10 minutes. Sign the form at the office after printing — do not sign before. Check your Anmeldebestätigung for errors before leaving.",
+      },
+      {
+        "@type": "HowToStep",
+        position: 6,
+        name: "Collect your Anmeldebestätigung and await your Steuer-ID",
+        text: "Your Anmeldebestätigung (registration certificate) is printed on the spot. Your Steuer-ID (tax identification number) arrives by post to your registered address within 2–4 weeks. Make sure your surname is on your letterbox — official mail is not delivered to unlabelled mailboxes in Germany.",
+      },
+    ],
+  };
+
   return (
     <div style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: 0, padding: 0, background: "white", minHeight: "100vh", overflowX: "hidden" }}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
       <style>{`
         details summary { list-style: none; cursor: pointer; user-select: none; }
@@ -251,7 +314,7 @@ export default function FAQPage() {
               <circle cx="5" cy="5" r="4.5" fill="#16a34a"/>
               <path d="M3 5l1.3 1.5L7 3.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            <span style={{ color: "#15803d", fontSize: 11.5, fontWeight: 700 }}>Last updated: April 2026</span>
+            <span style={{ color: "#15803d", fontSize: 11.5, fontWeight: 700 }}>Last updated: {LAST_UPDATED_DISPLAY}</span>
           </div>
 
           <h1

@@ -550,11 +550,15 @@ function citizenshipToOrigin(cit: string): { country: string; isEU: boolean } {
 
 const fmtDate = (iso: string): string => {
   if (!iso) return "";
-  const d = new Date(iso + "T12:00:00"); // noon avoids timezone shifts
+  const [yyyy, mm, dd] = iso.split("-");
+  return `${dd}.${mm}.${yyyy}`;
+};
+
+const fmtToday = (): string => {
+  const d = new Date();
   const dd = String(d.getDate()).padStart(2, "0");
   const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  return `${dd}.${mm}.${yyyy}`;
+  return `${dd}.${mm}.${d.getFullYear()}`;
 };
 const safe = (s: string) => (s || "").replace(/[^\u0000-\u00ff]/g, "");
 
@@ -958,7 +962,7 @@ async function buildWGPDFFallback(d: FormData): Promise<Uint8Array> {
   legal.forEach(l => { page.drawText(safe(l), { x: M + 8, y, size: 8, font: hv, color: rgb(0.55, 0.1, 0.08) }); y -= 13; });
 
   page.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.82, 0.86, 0.92) });
-  page.drawText("SimplyExpat Berlin  ·  " + new Date().toLocaleDateString("de-DE"), { x: M, y: 20, size: 7, font: hv, color: rgb(0.68, 0.72, 0.8) });
+  page.drawText("SimplyExpat Berlin  ·  " + fmtToday(), { x: M, y: 20, size: 7, font: hv, color: rgb(0.68, 0.72, 0.8) });
   return doc.save();
 }
 
@@ -1001,7 +1005,7 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
 
   page.drawRectangle({ x: 0, y: height - 72, width, height: 72, color: navy });
   page.drawText("B\u00fcrgeramt Checkliste", { x: M, y: height - 31, size: 20, font: hb, color: rgb(1,1,1) });
-  page.drawText(safe(`${p1.firstName} ${p1.lastName}  \u00b7  ${d.people.length} Person(en)  \u00b7  ${sheets} Formular(e)  \u00b7  ${new Date().toLocaleDateString("de-DE")}`), {
+  page.drawText(safe(`${p1.firstName} ${p1.lastName}  \u00b7  ${d.people.length} Person(en)  \u00b7  ${sheets} Formular(e)  \u00b7  ${fmtToday()}`), {
     x: M, y: height - 53, size: 9, font: hv, color: rgb(0.7, 0.82, 1),
   });
 
@@ -1378,7 +1382,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
     x: ML, y: PH - 34, size: 20, font: HB, color: WHITE,
   });
   // Subtitle
-  p1pg.drawText(safe("SimplyExpat Berlin  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + new Date().toLocaleDateString("en-GB")), {
+  p1pg.drawText(safe("SimplyExpat Berlin  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + fmtToday()), {
     x: ML, y: PH - 52, size: 9, font: HV, color: rgb(0.70, 0.82, 1.00),
   });
 
