@@ -78,7 +78,7 @@ const SECTIONS = [
       },
       {
         q: "What happens at the Anmeldung appointment?",
-        a: "You hand over your completed form and documents. The clerk checks everything — if you are missing your Wohnungsgeberbestätigung, passport, or required translations, you will be sent home to get them. Show up with everything in order and the appointment takes 5 to 10 minutes. Berlin clerks are not known for warmth, but a correctly filled form in proper German tends to move things along smoothly. You walk out with your Anmeldebestätigung printed on the spot. Check the name spelling, address, and dates before you leave.",
+        a: "You hand over your completed form and documents. The clerk checks everything — if you are missing your Wohnungsgeberbestätigung, passport, or required translations, they will turn you away on the spot. That means booking a new appointment and waiting another 3 weeks. Berlin clerks follow the rules strictly and will not make exceptions. Show up with every document on the checklist or do not go. A correctly filled form in proper German is your best defence — clerks process hundreds of cases a day and have no patience for errors. If everything is in order, the appointment itself takes 5 to 10 minutes. You walk out with your Anmeldebestätigung printed on the spot. Check the name spelling, address, and dates before you leave.",
       },
       {
         q: "What if there are no Bürgeramt appointments available before the 14-day deadline?",
