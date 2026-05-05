@@ -78,7 +78,7 @@ const SECTIONS = [
       },
       {
         q: "What happens at the Anmeldung appointment?",
-        a: "The appointment takes 5 to 10 minutes. You hand over your documents, the clerk asks basic questions (which floor do you live on, how many people at the address), enters your details, and prints your Anmeldebestätigung on the spot. Check it for errors before you leave — name spelling, address, and dates. No German required in most Berlin offices.",
+        a: "You hand over your completed form and documents. The clerk checks everything — if you are missing your Wohnungsgeberbestätigung, passport, or required translations, you will be sent home to get them. Show up with everything in order and the appointment takes 5 to 10 minutes. Berlin clerks are not known for warmth, but a correctly filled form in proper German tends to move things along smoothly. You walk out with your Anmeldebestätigung printed on the spot. Check the name spelling, address, and dates before you leave.",
       },
       {
         q: "What if there are no Bürgeramt appointments available before the 14-day deadline?",
