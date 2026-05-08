@@ -90,7 +90,7 @@ export default function AnmeldungDocuments() {
             {[
               { title: "Valid passport or national ID", body: "EU citizens may use their national identity card. Non-EU citizens must bring their passport — national IDs from outside the EU are not accepted at the Bürgeramt for Anmeldung purposes." },
               { title: "Wohnungsgeberbestätigung", body: "Your landlord's signed confirmation that you have moved into the address. This is a legally required separate form — your rental contract alone is not accepted. Without it, the appointment ends before it begins." },
-              { title: "Completed Anmeldeformular", body: "The official registration form, filled in German. All fields. Every date in DD.MM.YYYY format. Every field label is in German. The clerk will not help you fill it in at the counter." },
+              { title: "Completed Anmeldeformular", body: "The official registration form — all 54 fields completed in German, with every date in DD.MM.YYYY format and every entry correctly translated. You must print it and sign it before you arrive. The clerk will not help you complete it at the counter." },
             ].map(item => (
               <div key={item.title} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "18px 20px", borderRadius: 14, border: "1.5px solid #fecaca", background: "#fef2f2" }}>
                 <CheckIcon />
@@ -114,7 +114,7 @@ export default function AnmeldungDocuments() {
               { situation: "Non-EU citizens", title: "Current visa or residence permit (Aufenthaltstitel)", body: "Bring your passport plus your current visa or residence permit. If you do not yet have a residence permit, bring your entry visa. Register as early as possible — your Anmeldebestätigung is required for the residence permit application." },
               { situation: "Married", title: "Marriage certificate", body: "A certified German translation is ideal. In practice, Berlin Bürgerämter often accept English-language certificates — but this varies by office. Call your specific Bürgeramt to confirm before your appointment." },
               { situation: "Registering children", title: "Birth certificate for each child", body: "Original or certified copy. If the document is not in German, bring a certified translation." },
-              { situation: "Registering multiple people", title: "One Anmeldeformular per two people", body: "The form allows up to two people per sheet. If you are registering three or more people, you need multiple completed forms. Bring one form per pair." },
+              { situation: "Registering multiple people", title: "One Anmeldeformular per two people", body: "The form fits two people per sheet. For three or more people, you need multiple completed sheets — one per pair. Each sheet must be fully filled and signed separately." },
             ].map(item => (
               <div key={item.title} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "18px 20px", borderRadius: 14, border: "1.5px solid #fde68a", background: "#fffbeb" }}>
                 <CheckIcon />
@@ -141,12 +141,12 @@ export default function AnmeldungDocuments() {
 
         {/* Form notes */}
         <div style={{ marginBottom: 48 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>Critical form requirements</h2>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>Why the form is so easy to get wrong</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {[
-              { label: "Date format", body: "DD.MM.YYYY — not MM/DD/YYYY. Your move-in date, date of birth, and document dates must all use this format. US expats: this trips up almost everyone." },
-              { label: "Language", body: "Every field on the Anmeldeformular is in German. Every entry must be in German. The religion field (Religionsgesellschaft) should be left blank or written as \"OA\" (Ohne Angabe) unless you want to pay church tax — approximately 8–9% of your income tax." },
-              { label: "Signature", body: "Sign the form after printing. Not before. The signature goes at the bottom of the form (Datum, Unterschrift). Signing before printing and then printing on top of the signature is not accepted." },
+              { label: "Date format", body: "Every date must be in DD.MM.YYYY — not MM/DD/YYYY. Move-in date, date of birth, document expiry dates, all of them. One wrong format and the clerk flags the form on the spot. US expats get this wrong more than anyone." },
+              { label: "Language", body: "Every field label is in German and every entry must be in German — country names, titles, all of it. The religion field (Religionsgesellschaft) triggers Kirchensteuer (~8–9% of income tax) if you declare a denomination. Leave it blank or write 'OA' (Ohne Angabe) to opt out — no negative consequences for doing so." },
+              { label: "Signature", body: "Sign the form after printing — at the bottom field (Datum, Unterschrift) — with a pen. Do not sign before printing. The clerk will reject a pre-signed printed form." },
             ].map(item => (
               <div key={item.label} style={{ padding: "16px 20px", borderRadius: 12, border: "1.5px solid #e8ecf4", background: "#f8fafc" }}>
                 <div style={{ fontWeight: 800, color: "#0075FF", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 5 }}>{item.label}</div>
@@ -154,6 +154,13 @@ export default function AnmeldungDocuments() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Form service tip */}
+        <div style={{ marginBottom: 48, padding: "14px 18px", background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: 12 }}>
+          <p style={{ fontSize: 13.5, color: "#1e40af", lineHeight: 1.65, margin: 0 }}>
+            Many expats use an English-language form preparation service for the Anmeldeformular. You answer in English, the service generates a correctly formatted German PDF — every field, every date, every translation handled. It takes around 5 minutes and eliminates the most common reasons appointments fail.
+          </p>
         </div>
 
         {/* Letterbox tip */}

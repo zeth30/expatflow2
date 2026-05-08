@@ -124,7 +124,7 @@ export default function AnmeldungOnlineNonEU() {
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {[
               { n: "1", title: "Get your Wohnungsgeberbestätigung", body: "Your landlord or main tenant must sign this form confirming your move-in date and address. Request it in writing the moment you know your move-in date. Without it, the Bürgeramt will not register you — your rental contract is not a substitute." },
-              { n: "2", title: "Complete the Anmeldeformular", body: "The official registration form — all 54 fields, in German. This is where most expats run into trouble. One wrong field, one incorrectly formatted date, one missed entry means the clerk sends you home." },
+              { n: "2", title: "Complete the Anmeldeformular in German", body: "The official registration form has 54 fields, all in German. Wrong date formats, untranslated entries, missed fields — this is where most expats get turned away. English-language form preparation services exist specifically for this step: you answer in English and receive a print-ready German PDF." },
               { n: "3", title: "Book a Bürgeramt appointment", body: "Book at service.berlin.de. Appointments in central districts book out 3–6 weeks in advance. Search Berlin-wide for faster availability. Outer districts like Marzahn and Spandau consistently have more slots." },
               { n: "4", title: "Attend in person", body: "Bring your passport, your completed German-language form, and your Wohnungsgeberbestätigung. If non-EU, bring your visa or residence permit. The appointment takes 5–10 minutes when your documents are complete." },
             ].map(step => (
@@ -143,9 +143,9 @@ export default function AnmeldungOnlineNonEU() {
 
         {/* Warning */}
         <div style={{ marginBottom: 52, padding: "20px 24px", background: "#fef2f2", border: "2px solid #fca5a5", borderRadius: 16 }}>
-          <div style={{ fontWeight: 900, color: "#991b1b", fontSize: 16, marginBottom: 8 }}>The form is entirely in German. Every field.</div>
+          <div style={{ fontWeight: 900, color: "#991b1b", fontSize: 16, marginBottom: 8 }}>The form is entirely in German. Every field. One mistake and you go home.</div>
           <p style={{ fontSize: 14.5, color: "#7f1d1d", lineHeight: 1.7, margin: 0 }}>
-            One wrong field means the clerk turns you away on the spot. That means booking a new appointment and waiting another 3 weeks. Berlin clerks follow the rules strictly. They will not help you fill it in at the counter.
+            One wrong entry, one date in the wrong format, one field left blank — and the clerk turns you away on the spot. That means another 3-week wait for a new appointment. Berlin clerks follow the rules strictly. They will not help you complete the form at the counter.
           </p>
         </div>
 

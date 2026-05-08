@@ -136,11 +136,11 @@ export default function WhatIsAnmeldung() {
 
         {/* Religion field */}
         <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>The religion field — read this before you fill in the form</h2>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>The religion field — an 8% tax trap most expats do not know about</h2>
           <div style={{ padding: "20px 24px", background: "#fef2f2", border: "2px solid #fca5a5", borderRadius: 16 }}>
             <div style={{ fontWeight: 900, color: "#991b1b", fontSize: 15.5, marginBottom: 10 }}>Declaring a religion adds approximately 8–9% to your income tax bill.</div>
             <p style={{ fontSize: 14.5, color: "#7f1d1d", lineHeight: 1.7, margin: 0 }}>
-              The Religionsgesellschaft field on the Anmeldeformular triggers Kirchensteuer (church tax) if you declare a recognised denomination. Leave the field blank or write &quot;OA&quot; (Ohne Angabe — no statement) to avoid it. This has zero negative consequences. If you are already a member and want to leave, that requires a separate process at the Standesamt — it is not done on this form.
+              The Religionsgesellschaft field on the Anmeldeformular triggers Kirchensteuer (church tax) if you declare a recognised denomination. Leave it blank or write &quot;OA&quot; (Ohne Angabe — no statement) to opt out. This has zero negative consequences. If you are already a church member and want to leave, that requires a separate process at the Standesamt — it is not done on this form.
             </p>
           </div>
         </div>

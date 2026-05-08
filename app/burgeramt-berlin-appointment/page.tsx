@@ -172,7 +172,7 @@ export default function BurgeramtBerlinAppointment() {
         <div style={{ marginBottom: 52 }}>
           <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>At the appointment</h2>
           <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
-            Arrive on time. If you are late, your slot may be given to the next person. Arrive with every document in your checklist — the clerk will not extend any grace for missing paperwork.
+            Arrive on time. If you are late, your slot may be given to the next person. Arrive with everything: your ID, your Wohnungsgeberbestätigung, and your completed Anmeldeformular in German — prepared and printed before you leave home.
           </p>
           <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
             The appointment takes 5–10 minutes when your documents are complete. The clerk processes your form, confirms your address, and prints your Anmeldebestätigung.
@@ -189,14 +189,14 @@ export default function BurgeramtBerlinAppointment() {
           <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>What the clerk will not accept</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {[
-              "A form that is incomplete — any blank required field",
-              "A form filled in English instead of German",
-              "A phone screen instead of a printed form",
+              "An incomplete form — all 54 fields are required, no exceptions",
+              "A form with any entry in English — every field must be in German",
+              "A phone screen — the form must be printed on paper",
               "A missing or unsigned Wohnungsgeberbestätigung",
               "Arriving late for your appointment slot",
             ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "center", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #fecaca", background: "#fef2f2" }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #fecaca", background: "#fef2f2" }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
                   <circle cx="8" cy="8" r="7.5" stroke="#ef4444" strokeWidth="1.5"/>
                   <path d="M5 5l6 6M11 5l-6 6" stroke="#ef4444" strokeWidth="1.8" strokeLinecap="round"/>
                 </svg>
