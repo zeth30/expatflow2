@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GuideNav } from "../components/GuideNav";
+import { GuideCards } from "../components/GuideCards";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -167,6 +168,9 @@ Mit freundlichen Grüßen,
             Most short-term accommodation — Airbnb, hotels, hostels — will not provide the Wohnungsgeberbestätigung. Some long-term serviced apartments (28+ days) do, but it varies. If registration timing matters to you, confirm whether the form will be provided before you book.
           </p>
         </div>
+
+        {/* More guides */}
+        <GuideCards currentPage="wohnungsgeberbestaetigung" />
 
         {/* CTA */}
         <div className="guide-cta" style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 20, padding: "44px 40px", textAlign: "center", marginBottom: 32 }}>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GuideNav } from "../components/GuideNav";
+import { GuideCards } from "../components/GuideCards";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -156,6 +157,9 @@ export default function WhatIsAnmeldung() {
             ))}
           </div>
         </div>
+
+        {/* More guides */}
+        <GuideCards currentPage="what-is-anmeldung" />
 
         {/* CTA */}
         <div className="guide-cta" style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 20, padding: "44px 40px", textAlign: "center", marginBottom: 32 }}>

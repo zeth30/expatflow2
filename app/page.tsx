@@ -2339,34 +2339,54 @@ function BureaucracyBattleIllustration() {
   );
 }
 
-// ─── Sticky nav with services mega-menu ──────────────────────────
+// ─── Sticky nav with guides + services mega-menus ─────────────────
 function StickyNav({ onStart }: { onStart: () => void }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<"guides"|"services"|null>(null);
+
+  const chevron = (open: boolean) => (
+    <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
+      <path d="M2 4 L6 8 L10 4" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const GUIDE_ITEMS = [
+    { href: "/what-is-anmeldung", label: "What is the Anmeldung?", desc: "Legal basis, what you get, and what happens after." },
+    { href: "/anmeldung-online-non-eu", label: "Online Registration — Non-EU", desc: "Why you can't register online and what to do instead." },
+    { href: "/anmeldung-documents", label: "Documents Checklist", desc: "Every document you need, by situation." },
+    { href: "/wohnungsgeberbestaetigung", label: "Wohnungsgeberbestätigung", desc: "How to get your landlord to sign — and what if they refuse." },
+    { href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment", desc: "Finding a slot, outer districts, and what to bring." },
+  ];
+
   return (
           <div style={{ position: "sticky", top: 0, zIndex: 40 }}>
             <div style={{ background: "rgba(255,255,255,0.99)", borderBottom: "1px solid #e8ecf4", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
               <nav className="nav-pad">
                 <div style={{ maxWidth: 1100, margin: "0 auto", height: 52, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
                       </div>
                       <span className="nav-brand-text" style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
                     </div>
+                    {/* Guides tab — blue */}
+                    <button
+                      className="nav-flex-hide"
+                      onClick={() => setMenuOpen(o => o === "guides" ? null : "guides")}
+                      style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "guides" ? "1.5px solid #0075FF" : "1.5px solid transparent", background: menuOpen === "guides" ? "#eff6ff" : "transparent", color: menuOpen === "guides" ? "#0075FF" : "#0075FF", fontWeight: 700, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
+                      Guides
+                      {chevron(menuOpen === "guides")}
+                    </button>
                     {/* Services tab */}
                     <button
                       className="nav-flex-hide"
-                      onClick={() => setMenuOpen(o => !o)}
-                      style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: menuOpen ? "#eff6ff" : "transparent", color: menuOpen ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
+                      onClick={() => setMenuOpen(o => o === "services" ? null : "services")}
+                      style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "services" ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: menuOpen === "services" ? "#eff6ff" : "transparent", color: menuOpen === "services" ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
                       Services
-                      <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: menuOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
-                        <path d="M2 4 L6 8 L10 4" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                      {chevron(menuOpen === "services")}
                     </button>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <a href="/what-is-anmeldung" className="nav-flex-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>Guides</a>
                     <a href="/faq" className="nav-flex-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
                     <button onClick={onStart} className="nav-cta-sm"
                       style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
@@ -2377,73 +2397,71 @@ function StickyNav({ onStart }: { onStart: () => void }) {
               </nav>
             </div>
 
-            {/* Mega menu dropdown */}
-            {menuOpen && (
-              <>
-                {/* Backdrop */}
-                <div onClick={() => setMenuOpen(false)} style={{ position: "fixed", inset: 0, zIndex: -1 }} />
-                <div style={{
-                  position: "absolute", top: "100%", left: 0, right: 0,
-                  background: "white", borderBottom: "1px solid #e8ecf4",
-                  boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
-                  padding: "28px 40px 32px",
-                  animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)",
-                }}>
-                  <style>{`@keyframes menuSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}`}</style>
-                  <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
+            {/* Backdrop */}
+            {menuOpen && <div onClick={() => setMenuOpen(null)} style={{ position: "fixed", inset: 0, zIndex: -1 }} />}
 
-                      {/* Service 1 — Anmeldung (active) */}
-                      <button onClick={() => { setMenuOpen(false); onStart(); }}
-                        style={{ textAlign: "left", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                          <FileText size={20} color="white" />
+            {/* Guides mega-menu */}
+            {menuOpen === "guides" && (
+              <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
+                <style>{`@keyframes menuSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}`}</style>
+                <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Anmeldung Guides</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+                    {GUIDE_ITEMS.map(g => (
+                      <a key={g.href} href={g.href} onClick={() => setMenuOpen(null)}
+                        style={{ display: "block", padding: "16px 18px", borderRadius: 14, border: "1.5px solid #bfdbfe", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "box-shadow 0.15s" }}>
+                        <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5, marginBottom: 4 }}>{g.label}</div>
+                        <div style={{ fontSize: 12, color: "#1d4ed8", lineHeight: 1.5, marginBottom: 10 }}>{g.desc}</div>
+                        <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11.5, fontWeight: 700, color: "#0075FF" }}>
+                          Read guide <ArrowRight size={10} />
                         </div>
-                        <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
-                        <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
-                        <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
-                          Start now <ArrowRight size={11} />
-                        </div>
-                      </button>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
-                      {/* Service 2 — Steuerliche Erfassung (coming soon) */}
-                      <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
-                        <div style={{ position: "absolute", top: 12, right: 12, padding: "3px 9px", borderRadius: 999, background: "#f1f5f9", border: "1px solid #e2e8f0", fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>COMING SOON</div>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                          {/* Tax icon */}
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                            <polyline points="10 9 9 9 8 9"/>
-                          </svg>
-                        </div>
-                        <div style={{ fontWeight: 800, color: "#94a3b8", fontSize: 15, marginBottom: 4 }}>Steuerliche Erfassung</div>
-                        <div style={{ fontSize: 12.5, color: "#94a3b8", lineHeight: 1.5 }}>Freelancer tax registration (Fragebogen zur steuerlichen Erfassung) — simplified, in English.</div>
+            {/* Services mega-menu */}
+            {menuOpen === "services" && (
+              <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
+                <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
+                    <button onClick={() => { setMenuOpen(null); onStart(); }}
+                      style={{ textAlign: "left", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}>
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                        <FileText size={20} color="white" />
                       </div>
-
-                      {/* Service 3 — Elterngeld (coming soon) */}
-                      <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
-                        <div style={{ position: "absolute", top: 12, right: 12, padding: "3px 9px", borderRadius: 999, background: "#f1f5f9", border: "1px solid #e2e8f0", fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>COMING SOON</div>
-                        <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                          {/* Baby/family icon */}
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                          </svg>
-                        </div>
-                        <div style={{ fontWeight: 800, color: "#94a3b8", fontSize: 15, marginBottom: 4 }}>Elterngeld</div>
-                        <div style={{ fontSize: 12.5, color: "#94a3b8", lineHeight: 1.5 }}>Parental allowance application — guided in English, submitted correctly the first time.</div>
+                      <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
+                      <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
+                      <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                        Start now <ArrowRight size={11} />
                       </div>
-
+                    </button>
+                    <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
+                      <div style={{ position: "absolute", top: 12, right: 12, padding: "3px 9px", borderRadius: 999, background: "#f1f5f9", border: "1px solid #e2e8f0", fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>COMING SOON</div>
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                      </div>
+                      <div style={{ fontWeight: 800, color: "#94a3b8", fontSize: 15, marginBottom: 4 }}>Steuerliche Erfassung</div>
+                      <div style={{ fontSize: 12.5, color: "#94a3b8", lineHeight: 1.5 }}>Freelancer tax registration (Fragebogen zur steuerlichen Erfassung) — simplified, in English.</div>
+                    </div>
+                    <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
+                      <div style={{ position: "absolute", top: 12, right: 12, padding: "3px 9px", borderRadius: 999, background: "#f1f5f9", border: "1px solid #e2e8f0", fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.05em" }}>COMING SOON</div>
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                      </div>
+                      <div style={{ fontWeight: 800, color: "#94a3b8", fontSize: 15, marginBottom: 4 }}>Elterngeld</div>
+                      <div style={{ fontSize: 12.5, color: "#94a3b8", lineHeight: 1.5 }}>Parental allowance application — guided in English, submitted correctly the first time.</div>
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
   );
@@ -2596,6 +2614,37 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
             <a href="/faq" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 26px", borderRadius: 10, border: "2px solid #e8ecf4", background: "white", color: "#0f172a", fontWeight: 700, fontSize: 13.5, textDecoration: "none", letterSpacing: "-0.01em" }}>
               See all 20 questions <ArrowRight size={13} />
             </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ GUIDES SECTION ══ */}
+      <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "64px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: "#0075FF", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>Free Guides</div>
+            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>
+              Everything you need to know before your appointment
+            </h2>
+            <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.7 }}>Plain-English guides covering every part of the Anmeldung process.</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 14 }}>
+            {[
+              { href: "/what-is-anmeldung", label: "What is the Anmeldung?", desc: "Legal basis, deadlines, what you get, and what happens after." },
+              { href: "/anmeldung-online-non-eu", label: "Online Registration — Non-EU", desc: "Why non-EU citizens cannot register online and what to do instead." },
+              { href: "/anmeldung-documents", label: "Documents Checklist", desc: "Every document required at your appointment, by situation." },
+              { href: "/wohnungsgeberbestaetigung", label: "Wohnungsgeberbestätigung", desc: "How to get your landlord to sign — and what if they refuse." },
+              { href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment", desc: "Finding a slot, outer-district strategy, and what to do at the counter." },
+            ].map(g => (
+              <a key={g.href} href={g.href}
+                style={{ display: "flex", flexDirection: "column", gap: 10, padding: "20px", borderRadius: 16, border: "1.5px solid #bfdbfe", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none" }}>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, lineHeight: 1.3 }}>{g.label}</div>
+                <div style={{ fontSize: 13, color: "#1d4ed8", lineHeight: 1.55, flexGrow: 1 }}>{g.desc}</div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12.5, fontWeight: 700, color: "#0075FF" }}>
+                  Read guide <ArrowRight size={11} />
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </div>
