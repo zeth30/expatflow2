@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GuideNav } from "../components/GuideNav";
-import { GuideCards } from "../components/GuideCards";
+import { GuideSidebar } from "../components/GuideSidebar";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -37,10 +37,13 @@ export default function AnmeldungOnlineNonEU() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <style>{`
         .guide-h1 { font-size: 44px; }
-        .guide-content { padding: 56px 40px 80px; }
+        .guide-wrap { display: flex; gap: 40px; align-items: flex-start; max-width: 1060px; margin: 0 auto; padding: 56px 40px 80px; }
+        .guide-main { flex: 1; min-width: 0; }
+        .guide-sidebar-el { display: block; }
+        @media(max-width:860px){ .guide-sidebar-el { display: none !important; } }
         @media(max-width:640px){
           .guide-h1 { font-size: 28px !important; }
-          .guide-content { padding: 36px 18px 60px !important; }
+          .guide-wrap { padding: 36px 18px 60px !important; }
           .guide-hero-pad { padding: 48px 18px 44px !important; }
           .guide-cta { padding: 36px 22px !important; }
         }
@@ -64,7 +67,8 @@ export default function AnmeldungOnlineNonEU() {
       </div>
 
       {/* Content */}
-      <div className="guide-content" style={{ maxWidth: 760, margin: "0 auto" }}>
+      <div className="guide-wrap">
+      <div className="guide-main">
 
         {/* Section 1 */}
         <div style={{ marginBottom: 52 }}>
@@ -176,9 +180,6 @@ export default function AnmeldungOnlineNonEU() {
           </div>
         </div>
 
-        {/* More guides */}
-        <GuideCards currentPage="anmeldung-online-non-eu" />
-
         {/* CTA */}
         <div className="guide-cta" style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 20, padding: "44px 40px", textAlign: "center", marginBottom: 32 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(191,219,254,0.7)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 14 }}>For non-EU expats in Berlin</div>
@@ -199,6 +200,8 @@ export default function AnmeldungOnlineNonEU() {
         <p style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, textAlign: "center" }}>
           This page is for general information only. Registration requirements may change. Verify current requirements at berlin.de before your appointment.
         </p>
+      </div>
+      <GuideSidebar currentPage="anmeldung-online-non-eu" />
       </div>
     </div>
   );
