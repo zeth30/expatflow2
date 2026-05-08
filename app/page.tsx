@@ -2366,6 +2366,7 @@ function StickyNav({ onStart }: { onStart: () => void }) {
                     </button>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <a href="/what-is-anmeldung" className="nav-flex-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>Guides</a>
                     <a href="/faq" className="nav-flex-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
                     <button onClick={onStart} className="nav-cta-sm"
                       style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, border: "none", letterSpacing: "-0.01em" }}>
@@ -4304,12 +4305,6 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
     });
   }
 
-  // 8. Mietvertrag (recommended)
-  cards.push({
-    title: "Rental Contract (recommended, not required)",
-    color: "#374151", bg: "#f9fafb", border: "#e5e7eb",
-    items: [{ text: "Copy of your Mietvertrag (rental contract)", detail: "Not mandatory but useful if the clerk has questions about your address. A copy is fine." }],
-  });
 
 
   // Berlin stock photos for DM/Rossmann hack (Unsplash — free to use)

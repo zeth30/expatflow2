@@ -18,7 +18,7 @@
 
 ## Bürgeramt appointments (Berlin)
 - Book at service.berlin.de
-- New slots appear at 7:00 AM daily — outer districts (Marzahn, Lichtenberg, Spandau) have more availability
+- Check service.berlin.de early in the morning for new slots — outer districts (Marzahn, Lichtenberg, Spandau) have more availability than central offices
 - Walk-in offices: Bürgeramt Tempelhof (Tempelhofer Damm 165), Mitte (Karl-Marx-Allee 31)
 - Appointment takes 5–10 minutes once you arrive
 
@@ -39,6 +39,11 @@
 ## Sitemap
 - /: Fill Anmeldung form in English — PDF in 5 minutes
 - /faq: Complete Anmeldung FAQ — 20 questions across 5 topic sections (basics, appointments, online registration, after registration, about SimplyExpat)
+- /what-is-anmeldung: What is the Anmeldung — complete guide for expats (legal basis, why it matters, what you get, Ummeldung, Abmeldung)
+- /anmeldung-online-non-eu: Can non-EU citizens do the Anmeldung online — explains eID requirement and in-person process
+- /anmeldung-documents: Exact document checklist for Bürgeramt appointment — required and situation-specific documents
+- /wohnungsgeberbestaetigung: What the Wohnungsgeberbestätigung is, who signs it, how to request it, and what to do if landlord refuses
+- /burgeramt-berlin-appointment: How to book a Bürgeramt appointment in Berlin 2026 — strategies, 115 hotline, what to do when no slots exist
 
 ## Anmeldung process (step by step)
 1. Request the Wohnungsgeberbestätigung from your landlord on move-in day — email them in writing

@@ -1,5 +1,6 @@
 // Submit sitemap to bing.com/webmaster to enable ChatGPT Search indexing
 import type { Metadata } from "next";
+import { GuideNav } from "../components/GuideNav";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -74,7 +75,7 @@ const SECTIONS = [
     faqs: [
       {
         q: "How do I book a Bürgeramt appointment in Berlin?",
-        a: "Book at service.berlin.de. New slots appear at 7:00 AM — check then for the best availability. Outer districts like Marzahn, Lichtenberg, and Spandau typically have more slots than central offices in Mitte or Charlottenburg. Some people also call their local Bürgeramt first thing in the morning to ask about same-day cancellations.",
+        a: "Book at service.berlin.de. Check early in the morning for the best availability — new slots are released in batches and go quickly. Outer districts like Marzahn, Lichtenberg, and Spandau typically have more slots than central offices in Mitte or Charlottenburg. You can also call 115 during business hours to ask about cancellations.",
       },
       {
         q: "What happens at the Anmeldung appointment?",
@@ -208,7 +209,7 @@ export default function FAQPage() {
         "@type": "HowToStep",
         position: 3,
         name: "Book a Bürgeramt appointment as early as possible",
-        text: "Book at service.berlin.de. New slots appear at 7:00 AM daily — outer districts like Marzahn and Lichtenberg have more availability. Keep a screenshot of your booking as evidence you tried within the 14-day window. Walk-in options exist at Bürgeramt Tempelhof (Tempelhofer Damm 165) and Mitte (Karl-Marx-Allee 31).",
+        text: "Book at service.berlin.de. Check early in the morning for the best slot availability — new slots are released in batches and go quickly. Outer districts like Marzahn and Lichtenberg have more availability than central offices. Keep a screenshot of your booking as evidence you tried within the 14-day window.",
       },
       {
         "@type": "HowToStep",
@@ -269,35 +270,7 @@ export default function FAQPage() {
       `}</style>
 
       {/* ── Sticky Nav ─────────────────────────────────────────────── */}
-      <div style={{ position: "sticky", top: 0, zIndex: 40 }}>
-        <div style={{ background: "rgba(255,255,255,0.99)", borderBottom: "1px solid #e8ecf4", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
-          <div className="faq-nav-wrap" style={{ maxWidth: 1100, margin: "0 auto", height: 52, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 40px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-              <a href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-                <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
-                </div>
-                <span className="faq-brand-text" style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>
-                  SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span>
-                </span>
-              </a>
-              <span className="faq-badge" style={{ padding: "4px 11px", borderRadius: 7, background: "#eff6ff", border: "1.5px solid #bfdbfe", color: "#0075FF", fontWeight: 700, fontSize: 12 }}>
-                FAQ
-              </span>
-            </div>
-            <a
-              href="/#wizard/origin"
-              className="faq-cta-btn"
-              style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "9px 20px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 13, textDecoration: "none", letterSpacing: "-0.01em" }}
-            >
-              Prepare My Anmeldung
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
+      <GuideNav currentPage="faq" />
 
       {/* ── Hero ───────────────────────────────────────────────────── */}
       <div
