@@ -2,12 +2,12 @@
 import React from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { SharedNav } from "./SharedNav";
-import { LandingLegalFooter } from "./LegalModals";
 
 export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloadWG: () => void }) {
   const [hov, setHov] = React.useState(false);
   return (
     <div className="fu" style={{ background: "white" }}>
+      <style>{`@media(max-width:640px){.lp-h1{font-size:32px!important;line-height:1.1!important}.lp-sub{font-size:14px!important}}`}</style>
       <SharedNav onStart={onStart} />
 
       {/* ══ HERO ══ */}
@@ -23,7 +23,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           </div>
 
           {/* Headline */}
-          <h1 style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 12, letterSpacing: "-0.035em", maxWidth: 700 }}>
+          <h1 className="lp-h1" style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 12, letterSpacing: "-0.035em", maxWidth: 700 }}>
             Your Anmeldung form,<br />
             <span style={{ color: "#0075FF" }}>filled in 5 minutes.</span>
           </h1>
@@ -201,7 +201,6 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.4)" }}>
             Get started <ArrowRight size={15} />
           </button>
-          <LandingLegalFooter />
         </div>
       </div>
     </div>

@@ -19,7 +19,8 @@ import {
 } from "lucide-react";
 import { SharedNav } from "./components/SharedNav";
 import { LandingPage } from "./components/LandingPage";
-import { LandingLegalFooter, CookieBanner } from "./components/LegalModals";
+import { CookieBanner } from "./components/LegalModals";
+import { AppFooter } from "./components/AppFooter";
 
 // ─── PDF FIELD NAMES ─────────────────────────────────────────────
 const F = {
@@ -2147,7 +2148,10 @@ export default function BerlinButler() {
           </div>
         </div>
       ) : phase === "landing" ? (
-        <LandingPage onStart={() => { setPhase("wizard"); pushNav("wizard", "origin"); }} onDownloadWG={downloadWG} />
+        <>
+          <LandingPage onStart={() => { setPhase("wizard"); pushNav("wizard", "origin"); }} onDownloadWG={downloadWG} />
+          <AppFooter />
+        </>
       ) : null}
       <CookieBanner />
 
@@ -2463,10 +2467,10 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
             </div>
           </button>
 
-          {/* Confidence text — grows to fill */}
+          {/* Step name — grows to fill */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1 }}>Confidence</span>
-            <span style={{ fontSize: 12, fontWeight: 800, color: "#0f172a", lineHeight: 1.2, marginTop: 2 }}>{confLabel}</span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1 }}>Step {idx + 1} / {steps.length}</span>
+            <span style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", lineHeight: 1.2, marginTop: 2 }}>{STEP_LABELS[step]}</span>
           </div>
 
           {/* Ring — 38px */}
@@ -2498,10 +2502,9 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
         </div>
       </div>
 
-      <div style={{ display: "flex", flex: 1, paddingTop: 3 }}>
+      <div style={{ display: "flex", flex: 1 }}>
       {/* Sidebar — hidden on mobile */}
-      <div className="wizard-aside" style={{ background: "white", borderRight: "1px solid #e8ecf4", flexShrink: 0 }}>
-      <aside style={{ display: "flex", flexDirection: "column", position: "sticky", top: 3, height: "calc(100vh - 3px)", overflowY: "auto" }}>
+      <aside className="wizard-aside" style={{ display: "flex", flexDirection: "column", background: "white", borderRight: "1px solid #e8ecf4", flexShrink: 0 }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
@@ -2641,10 +2644,9 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           </button>
         </div>
       </aside>
-      </div>
 
       {/* Main content */}
-      <main className="wizard-main-pad" style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <main className="wizard-main-pad" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div className="wizard-max si" style={{ width: "100%" }}>
 
           {/* Auto-save + header */}
@@ -2707,13 +2709,10 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
             </button>
           </div>
 
-          {/* Legal footer — accessible from wizard without returning to landing page */}
-          <div style={{ marginTop: 48, paddingTop: 24, borderTop: "1px solid #f1f5f9", textAlign: "center" }}>
-            <LandingLegalFooter />
-          </div>
         </div>
       </main>
       </div>
+      <AppFooter />
     </div>
   );
 }
