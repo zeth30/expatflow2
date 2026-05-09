@@ -4,6 +4,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 > **Before editing any user-facing copy, read [`CONTENT_RULES.md`](./CONTENT_RULES.md).** It contains established facts about the product, legal details, and wording rules that must stay consistent across all pages.
 
+## Changelog
+
+### 2026-05-09
+- Guide icons added to nav dropdown + landing page guide cards
+- Wizard sidebar fix: background/border now extends full page height
+- Merged FAQ teaser + Guides into one landing page section (removed duplicate headers)
+- `CONTENT_RULES.md` added — content rules, product scope, legal facts
+
+### 2026-05-08
+- 5 static guide pages added: what-is-anmeldung, anmeldung-online-non-eu, anmeldung-documents, wohnungsgeberbestaetigung, burgeramt-berlin-appointment
+- `GuideNav` + `GuideSidebar` components — shared nav/sidebar for all guide pages
+- Wohnungsgeberbestätigung guide: email template replaced with downloadable blank PDF
+- Guide card label shortened to "Landlord Confirmation" (full German too long for UI)
+- Guides dropdown added to `StickyNav` on landing page
+- Duplicate FAQPage JSON-LD schema fixed (was on layout + faq page simultaneously)
+- `/success` page noindexed
+- `lang="en"` corrected (was `de-DE`, suppressing English search traffic)
+- `HowTo` schema added to `/faq`
+- `/public/llms.txt` added for AI crawlers
+
 ## Commands
 
 ```bash
