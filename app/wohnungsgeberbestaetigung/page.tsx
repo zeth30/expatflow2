@@ -115,26 +115,39 @@ export default function Wohnungsgeberbestaetigung() {
             </p>
           </div>
 
-          {/* Email template */}
-          <div style={{ borderRadius: 14, border: "1.5px solid #e8ecf4", overflow: "hidden" }}>
-            <div style={{ padding: "12px 20px", background: "#f8fafc", borderBottom: "1px solid #e8ecf4" }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b", letterSpacing: "0.06em", textTransform: "uppercase" }}>Template email — copy and send to your landlord</span>
+          {/* Download template */}
+          <div style={{ borderRadius: 14, border: "1.5px solid #fde68a", overflow: "hidden" }}>
+            <div style={{ padding: "12px 20px", background: "#fffbeb", borderBottom: "1px solid #fde68a" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#92400e", letterSpacing: "0.06em", textTransform: "uppercase" }}>Blank form — send this to your landlord to sign</span>
             </div>
-            <div className="email-template" style={{ padding: "22px 24px", background: "white", fontFamily: "monospace", fontSize: 14, color: "#374151", lineHeight: 1.8, whiteSpace: "pre-wrap" }}>{`Betreff: Wohnungsgeberbestätigung — [Ihre Adresse]
-
-Sehr geehrte Damen und Herren,
-
-hiermit bitte ich Sie, mir die Wohnungsgeberbestätigung gemäß § 19 Bundesmeldegesetz auszustellen.
-
-Mein Einzugsdatum: [DATUM]
-Adresse: [STRASSE, HAUSNUMMER, ETAGE, ORT]
-
-Ich benötige das Dokument für meine Anmeldung beim Bürgeramt.
-
-Bitte senden Sie das ausgefüllte und unterschriebene Formular an diese E-Mail-Adresse zurück.
-
-Mit freundlichen Grüßen,
-[IHR NAME]`}</div>
+            <div style={{ padding: "20px 22px", background: "white" }}>
+              <a href="/wg-template.pdf" download="Wohnungsgeberbestaetigung-Vorlage.pdf"
+                style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 16px", borderRadius: 10, background: "#fffbeb", border: "1.5px solid #fde68a", textDecoration: "none", cursor: "pointer" }}>
+                <div style={{ width: 34, height: 34, borderRadius: 8, background: "white", border: "1px solid #fde68a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", marginBottom: 2 }}>Download Wohnungsgeberbestätigung Template</div>
+                  <div style={{ fontSize: 12, color: "#92400e" }}>Blank PDF — print, send to landlord, ask them to sign and return</div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+              </a>
+              <div style={{ marginTop: 14, padding: "12px 16px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4" }}>
+                <p style={{ fontSize: 13, color: "#475569", lineHeight: 1.65, margin: "0 0 12px" }}>
+                  This is the blank template. If you would like a version with your name, address, and move-in date already filled in, SimplyExpat generates it as part of the Anmeldung preparation.
+                </p>
+                <a href="/#wizard/origin" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 18px", borderRadius: 9, background: "#0075FF", color: "white", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>
+                  Prepare my Anmeldung
+                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+                    <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
