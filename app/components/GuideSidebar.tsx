@@ -4,7 +4,7 @@ const GUIDES = [
   { slug: "what-is-anmeldung", href: "/what-is-anmeldung", label: "What is the Anmeldung?" },
   { slug: "anmeldung-online-non-eu", href: "/anmeldung-online-non-eu", label: "Online Registration — Non-EU" },
   { slug: "anmeldung-documents", href: "/anmeldung-documents", label: "Documents Checklist" },
-  { slug: "wohnungsgeberbestaetigung", href: "/wohnungsgeberbestaetigung", label: "Wohnungsgeberbestätigung" },
+  { slug: "wohnungsgeberbestaetigung", href: "/wohnungsgeberbestaetigung", label: "Landlord Confirmation" },
   { slug: "burgeramt-berlin-appointment", href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment Guide" },
 ];
 

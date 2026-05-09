@@ -2353,7 +2353,7 @@ function StickyNav({ onStart }: { onStart: () => void }) {
     { href: "/what-is-anmeldung", label: "What is the Anmeldung?", desc: "Legal basis, what you get, and what happens after." },
     { href: "/anmeldung-online-non-eu", label: "Online Registration — Non-EU", desc: "Why you can't register online and what to do instead." },
     { href: "/anmeldung-documents", label: "Documents Checklist", desc: "Every document you need, by situation." },
-    { href: "/wohnungsgeberbestaetigung", label: "Wohnungsgeberbestätigung", desc: "How to get your landlord to sign — and what if they refuse." },
+    { href: "/wohnungsgeberbestaetigung", label: "Landlord Confirmation", desc: "How to get your landlord to sign — and what if they refuse." },
     { href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment", desc: "Finding a slot, outer districts, and what to bring." },
   ];
 
@@ -2606,7 +2606,7 @@ function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; onDownloa
                 { href: "/what-is-anmeldung", label: "What is the Anmeldung?", desc: "Legal basis, deadlines, what you get, and what happens after." },
                 { href: "/anmeldung-online-non-eu", label: "Online Registration — Non-EU", desc: "Why non-EU citizens cannot register online and what to do instead." },
                 { href: "/anmeldung-documents", label: "Documents Checklist", desc: "Every document required at your appointment, by situation." },
-                { href: "/wohnungsgeberbestaetigung", label: "Wohnungsgeberbestätigung", desc: "How to get your landlord to sign — and what if they refuse." },
+                { href: "/wohnungsgeberbestaetigung", label: "Landlord Confirmation", desc: "How to get your landlord to sign — and what if they refuse." },
                 { href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment", desc: "Finding a slot, outer-district strategy, and what to do at the counter." },
               ].map(g => (
                 <a key={g.href} href={g.href}

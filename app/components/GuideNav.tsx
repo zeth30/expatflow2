@@ -6,7 +6,7 @@ const GUIDE_ITEMS = [
   { href: "/what-is-anmeldung", label: "What is the Anmeldung?", desc: "Legal basis, deadlines, what you get, and what happens after registration." },
   { href: "/anmeldung-online-non-eu", label: "Online Registration — Non-EU", desc: "Why non-EU citizens cannot register online and exactly what to do instead." },
   { href: "/anmeldung-documents", label: "Documents Checklist", desc: "Every document required at your Bürgeramt appointment, by situation." },
-  { href: "/wohnungsgeberbestaetigung", label: "Wohnungsgeberbestätigung", desc: "How to get your landlord to sign — and what to do if they refuse." },
+  { href: "/wohnungsgeberbestaetigung", label: "Landlord Confirmation", desc: "How to get your landlord to sign — and what to do if they refuse." },
   { href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment Guide", desc: "Finding a slot, outer-district strategy, and what to do at the counter." },
 ];
 

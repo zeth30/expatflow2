@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Before editing any user-facing copy, read [`CONTENT_RULES.md`](./CONTENT_RULES.md).** It contains established facts about the product, legal details, and wording rules that must stay consistent across all pages.
+
 ## Commands
 
 ```bash

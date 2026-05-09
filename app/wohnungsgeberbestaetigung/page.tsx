@@ -106,19 +106,17 @@ export default function Wohnungsgeberbestaetigung() {
         {/* When and how to request */}
         <div style={{ marginBottom: 52 }}>
           <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>When and how to request it</h2>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
-            Request it the moment you confirm your move-in date — ideally at the same time you sign your lease. The blank form is available to download from berlin.de. Email it to your landlord and ask them to sign and return it before your move-in date.
+          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 16 }}>
+            Most landlords include this form in your move-in documents automatically — check your email and paperwork before doing anything else. If it is there, signed, you are done with this step.
           </p>
-          <div style={{ padding: "16px 20px", background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 12, marginBottom: 20 }}>
-            <p style={{ fontSize: 14.5, color: "#92400e", lineHeight: 1.65, margin: 0 }}>
-              <strong>Always request in writing.</strong> Email your landlord — not a phone call, not WhatsApp. If they delay or later deny providing the form, your email is your proof that you asked. This matters if the situation escalates.
-            </p>
-          </div>
+          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
+            If your landlord has not provided it, email them the blank template below and ask them to sign and return it before your Bürgeramt appointment. Do this in writing — email, not a phone call or WhatsApp message. If they later delay or deny it, your email is your proof that you asked.
+          </p>
 
           {/* Download template */}
           <div style={{ borderRadius: 14, border: "1.5px solid #fde68a", overflow: "hidden" }}>
             <div style={{ padding: "12px 20px", background: "#fffbeb", borderBottom: "1px solid #fde68a" }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#92400e", letterSpacing: "0.06em", textTransform: "uppercase" }}>Blank form — send this to your landlord to sign</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#92400e", letterSpacing: "0.06em", textTransform: "uppercase" }}>Only if your landlord has not provided it — download and send to them</span>
             </div>
             <div style={{ padding: "20px 22px", background: "white" }}>
               <a href="/wg-template.pdf" download="Wohnungsgeberbestaetigung-Vorlage.pdf"
