@@ -1,6 +1,6 @@
 // Submit sitemap to bing.com/webmaster to enable ChatGPT Search indexing
 import type { Metadata } from "next";
-import { GuideNav } from "../components/GuideNav";
+import { SharedNav } from "../components/SharedNav";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -270,7 +270,7 @@ export default function FAQPage() {
       `}</style>
 
       {/* ── Sticky Nav ─────────────────────────────────────────────── */}
-      <GuideNav currentPage="faq" />
+      <SharedNav currentPage="faq" />
 
       {/* ── Hero ───────────────────────────────────────────────────── */}
       <div

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GuideNav } from "../components/GuideNav";
+import { SharedNav } from "../components/SharedNav";
 import { GuideSidebar } from "../components/GuideSidebar";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
@@ -49,7 +49,7 @@ export default function BurgeramtBerlinAppointment() {
         }
       `}</style>
 
-      <GuideNav currentPage="burgeramt-berlin-appointment" />
+      <SharedNav currentPage="burgeramt-berlin-appointment" />
 
       {/* Hero */}
       <div className="guide-hero-pad" style={{ background: "linear-gradient(140deg,#eef5ff 0%,#f8fafc 55%,#f0fdf4 100%)", borderBottom: "1px solid #e8ecf4", padding: "64px 40px 56px" }}>

@@ -35,7 +35,7 @@ const GUIDE_ITEMS = [
   },
 ];
 
-export function GuideNav({ currentPage }: { currentPage?: string }) {
+export function SharedNav({ onStart, currentPage }: { onStart?: () => void; currentPage?: string }) {
   const [menuOpen, setMenuOpen] = useState<"guides" | "services" | null>(null);
 
   const chevron = (open: boolean) => (
@@ -44,22 +44,24 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
     </svg>
   );
 
+  const ctaHref = "/#wizard/origin";
+
   return (
     <div style={{ position: "sticky", top: 0, zIndex: 40 }}>
       <style>{`
-        .gnav-pad{padding:0 40px}
-        .gnav-hide{display:flex}
-        .gnav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#0f172a;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit;border:none;cursor:pointer}
+        .snav-pad{padding:0 40px}
+        .snav-hide{display:flex}
+        .snav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#0f172a;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit;border:none;cursor:pointer}
         @keyframes menuSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
         @media(max-width:640px){
-          .gnav-pad{padding:0 16px}
-          .gnav-hide{display:none}
-          .gnav-cta{padding:8px 14px;font-size:12px}
+          .snav-pad{padding:0 16px}
+          .snav-hide{display:none}
+          .snav-cta{padding:8px 14px;font-size:12px}
         }
       `}</style>
 
       <div style={{ background: "rgba(255,255,255,0.99)", borderBottom: "1px solid #e8ecf4", boxShadow: "0 1px 8px rgba(0,0,0,0.06)" }}>
-        <nav className="gnav-pad" style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <nav className="snav-pad" style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ height: 52, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 
             {/* Left: logo + dropdowns */}
@@ -75,7 +77,7 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
 
               {/* Guides — blue */}
               <button
-                className="gnav-hide"
+                className="snav-hide"
                 onClick={() => setMenuOpen(o => o === "guides" ? null : "guides")}
                 style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "guides" ? "1.5px solid #0075FF" : "1.5px solid transparent", background: menuOpen === "guides" ? "#eff6ff" : "transparent", color: "#0075FF", fontWeight: 700, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
               >
@@ -84,7 +86,7 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
 
               {/* Services */}
               <button
-                className="gnav-hide"
+                className="snav-hide"
                 onClick={() => setMenuOpen(o => o === "services" ? null : "services")}
                 style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "services" ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: menuOpen === "services" ? "#eff6ff" : "transparent", color: menuOpen === "services" ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
               >
@@ -94,13 +96,22 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
 
             {/* Right: FAQ + CTA */}
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <a href="/faq" className="gnav-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
-              <a href="/#wizard/origin" className="gnav-cta">
-                Prepare My Anmeldung
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-                  <path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
+              <a href="/faq" className="snav-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
+              {onStart ? (
+                <button onClick={onStart} className="snav-cta">
+                  Prepare My Anmeldung
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              ) : (
+                <a href={ctaHref} className="snav-cta">
+                  Prepare My Anmeldung
+                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              )}
             </div>
           </div>
         </nav>
@@ -148,21 +159,38 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
 
-              {/* Anmeldung — active */}
-              <a href="/#wizard/origin" onClick={() => setMenuOpen(null)}
-                style={{ display: "block", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "all 0.15s" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
-                  </svg>
-                </div>
-                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
-                <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
-                <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
-                  Start now
-                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                </div>
-              </a>
+              {/* Anmeldung — active service */}
+              {onStart ? (
+                <button onClick={() => { setMenuOpen(null); onStart(); }}
+                  style={{ textAlign: "left", display: "block", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", width: "100%" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+                    </svg>
+                  </div>
+                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
+                  <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
+                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                    Start now
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </div>
+                </button>
+              ) : (
+                <a href={ctaHref} onClick={() => setMenuOpen(null)}
+                  style={{ display: "block", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "all 0.15s" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+                    </svg>
+                  </div>
+                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
+                  <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
+                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                    Start now
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </div>
+                </a>
+              )}
 
               {/* Steuerliche Erfassung — coming soon */}
               <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>
