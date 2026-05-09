@@ -2861,7 +2861,8 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
 
       <div style={{ display: "flex", flex: 1, paddingTop: 3 }}>
       {/* Sidebar — hidden on mobile */}
-      <aside className="wizard-aside" style={{ background: "white", borderRight: "1px solid #e8ecf4", display: "flex", flexDirection: "column", position: "sticky", top: 3, height: "calc(100vh - 3px)", overflowY: "auto" }}>
+      <div className="wizard-aside" style={{ background: "white", borderRight: "1px solid #e8ecf4", flexShrink: 0 }}>
+      <aside style={{ display: "flex", flexDirection: "column", position: "sticky", top: 3, height: "calc(100vh - 3px)", overflowY: "auto" }}>
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
@@ -3001,6 +3002,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           </button>
         </div>
       </aside>
+      </div>
 
       {/* Main content */}
       <main className="wizard-main-pad" style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
