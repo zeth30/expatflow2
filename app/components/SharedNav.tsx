@@ -37,6 +37,7 @@ const GUIDE_ITEMS = [
 
 export function SharedNav({ onStart, currentPage }: { onStart?: () => void; currentPage?: string }) {
   const [menuOpen, setMenuOpen] = useState<"guides" | "services" | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const chevron = (open: boolean) => (
     <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
@@ -52,11 +53,15 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
         .snav-pad{padding:0 40px}
         .snav-hide{display:flex}
         .snav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#0f172a;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit;border:none;cursor:pointer}
+        .snav-ham{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:1.5px solid #e8ecf4;background:white;cursor:pointer;padding:0;color:#374151;flex-shrink:0}
+        .snav-mob-drawer{display:none;border-top:1px solid #e8ecf4;background:white;padding:8px 16px 20px;max-height:80vh;overflow-y:auto}
         @keyframes menuSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
         @media(max-width:640px){
           .snav-pad{padding:0 16px}
           .snav-hide{display:none}
-          .snav-cta{padding:8px 14px;font-size:12px}
+          .snav-cta{display:none}
+          .snav-ham{display:flex}
+          .snav-mob-drawer{display:block}
         }
       `}</style>
 
@@ -94,7 +99,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
               </button>
             </div>
 
-            {/* Right: FAQ + CTA */}
+            {/* Right: FAQ + CTA + hamburger */}
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <a href="/faq" className="snav-hide" style={{ color: "#374151", fontWeight: 600, fontSize: 13, textDecoration: "none", padding: "6px 10px", borderRadius: 8 }}>FAQ</a>
               {onStart ? (
@@ -112,13 +117,50 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
                   </svg>
                 </a>
               )}
+              <button className="snav-ham" onClick={() => setMobileOpen(o => !o)} aria-label="Toggle menu">
+                {mobileOpen
+                  ? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2 2 14" stroke="#374151" strokeWidth="2" strokeLinecap="round"/></svg>
+                  : <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h12" stroke="#374151" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                }
+              </button>
             </div>
           </div>
         </nav>
       </div>
 
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="snav-mob-drawer">
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", padding: "8px 0 6px" }}>Guides</div>
+          {GUIDE_ITEMS.map(g => (
+            <a key={g.href} href={g.href} onClick={() => setMobileOpen(false)}
+              style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: "1px solid #f1f5f9", textDecoration: "none" }}>
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{g.icon}</div>
+              <span style={{ fontSize: 13.5, fontWeight: 600, color: "#0f172a" }}>{g.label}</span>
+            </a>
+          ))}
+          <a href="/faq" onClick={() => setMobileOpen(false)}
+            style={{ display: "block", padding: "12px 0", fontSize: 13.5, fontWeight: 600, color: "#0f172a", textDecoration: "none", borderBottom: "1px solid #f1f5f9" }}>
+            FAQ
+          </a>
+          <div style={{ paddingTop: 14 }}>
+            {onStart ? (
+              <button onClick={() => { setMobileOpen(false); onStart(); }}
+                style={{ width: "100%", padding: "13px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 14, border: "none", cursor: "pointer", fontFamily: "inherit" }}>
+                Prepare My Anmeldung →
+              </button>
+            ) : (
+              <a href={ctaHref} onClick={() => setMobileOpen(false)}
+                style={{ display: "block", padding: "13px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 14, textDecoration: "none", textAlign: "center" }}>
+                Prepare My Anmeldung →
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Backdrop */}
-      {menuOpen && <div onClick={() => setMenuOpen(null)} style={{ position: "fixed", inset: 0, zIndex: -1 }} />}
+      {(menuOpen || mobileOpen) && <div onClick={() => { setMenuOpen(null); setMobileOpen(false); }} style={{ position: "fixed", inset: 0, zIndex: -1 }} />}
 
       {/* Guides mega-menu */}
       {menuOpen === "guides" && (
