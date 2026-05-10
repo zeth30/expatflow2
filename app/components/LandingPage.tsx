@@ -7,7 +7,15 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
   const [hov, setHov] = React.useState(false);
   return (
     <div className="fu" style={{ background: "white" }}>
-      <style>{`@media(max-width:640px){.lp-h1{font-size:32px!important;line-height:1.1!important}.lp-sub{font-size:14px!important}}`}</style>
+      <style>{`
+        @media(max-width:640px){
+          .lp-h1{font-size:32px!important;line-height:1.1!important}
+          .lp-sub{font-size:14px!important}
+          .lp-guides-sect{padding:32px 20px!important}
+          .lp-guide-gap{margin-bottom:32px!important}
+          .lp-cta-btn{width:100%!important;justify-content:center!important}
+        }
+      `}</style>
       <SharedNav onStart={onStart} />
 
       {/* ══ HERO ══ */}
@@ -59,7 +67,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
               </div>
 
               {/* CTA */}
-              <button onClick={onStart}
+              <button onClick={onStart} className="lp-cta-btn"
                 onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
                 style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#0066ee" : "#0075FF", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>
                 Prepare My Anmeldung <ArrowRight size={18} />
@@ -123,11 +131,11 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
       </div>
 
       {/* ══ GUIDES + FAQ ══ */}
-      <div style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "72px 20px" }}>
+      <div className="lp-guides-sect" style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "72px 20px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
           {/* Guide cards */}
-          <div style={{ marginBottom: 64 }}>
+          <div className="lp-guide-gap" style={{ marginBottom: 64 }}>
             <div style={{ textAlign: "center", marginBottom: 36 }}>
               <div style={{ fontSize: 10.5, fontWeight: 800, color: "#0075FF", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>Free Guides</div>
               <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>

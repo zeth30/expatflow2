@@ -4,22 +4,29 @@ import { Impressum, TermsOfService, CancellationPolicy, PrivacyPolicy } from "./
 
 export function AppFooter() {
   const [modal, setModal] = useState<"tos" | "cancel" | "privacy" | "impressum" | null>(null);
-  const link: React.CSSProperties = {
-    background: "none", border: "none", color: "#94a3b8", fontSize: 11.5,
-    cursor: "pointer", fontFamily: "inherit", textDecoration: "underline", padding: 0,
-  };
   return (
-    <footer style={{ borderTop: "1px solid #e8ecf4", background: "#f8fafc", padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", flexShrink: 0 }}>
-      {modal === "tos"       && <TermsOfService     onClose={() => setModal(null)} />}
-      {modal === "cancel"    && <CancellationPolicy onClose={() => setModal(null)} />}
-      {modal === "privacy"   && <PrivacyPolicy      onClose={() => setModal(null)} />}
-      {modal === "impressum" && <Impressum          onClose={() => setModal(null)} />}
-      <span style={{ color: "#94a3b8", fontSize: 11.5 }}>© 2026 SimplyExpat · Not a legal service (§2 RDG)</span>
-      <span style={{ color: "#cbd5e1" }}>·</span>
-      <button style={link} onClick={() => setModal("tos")}>Terms</button>
-      <button style={link} onClick={() => setModal("cancel")}>Cancellation</button>
-      <button style={link} onClick={() => setModal("privacy")}>Privacy</button>
-      <button style={link} onClick={() => setModal("impressum")}>Impressum</button>
-    </footer>
+    <>
+      <style>{`
+        .af-link{background:none;border:none;color:#94a3b8;font-size:11.5px;cursor:pointer;font-family:inherit;text-decoration:underline;padding:0}
+        .af-copy{color:#94a3b8;font-size:11.5px}
+        @media(max-width:640px){
+          .af-root{padding:14px 16px!important;gap:10px!important}
+          .af-link{font-size:13px!important;padding:8px 4px!important}
+          .af-copy{font-size:12px!important;text-align:center}
+        }
+      `}</style>
+      <footer className="af-root" style={{ borderTop: "1px solid #e8ecf4", background: "#f8fafc", padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", flexShrink: 0 }}>
+        {modal === "tos"       && <TermsOfService     onClose={() => setModal(null)} />}
+        {modal === "cancel"    && <CancellationPolicy onClose={() => setModal(null)} />}
+        {modal === "privacy"   && <PrivacyPolicy      onClose={() => setModal(null)} />}
+        {modal === "impressum" && <Impressum          onClose={() => setModal(null)} />}
+        <span className="af-copy">© 2026 SimplyExpat · Not a legal service (§2 RDG)</span>
+        <span style={{ color: "#cbd5e1" }} className="mob-hide">·</span>
+        <button className="af-link" onClick={() => setModal("tos")}>Terms</button>
+        <button className="af-link" onClick={() => setModal("cancel")}>Cancellation</button>
+        <button className="af-link" onClick={() => setModal("privacy")}>Privacy</button>
+        <button className="af-link" onClick={() => setModal("impressum")}>Impressum</button>
+      </footer>
+    </>
   );
 }

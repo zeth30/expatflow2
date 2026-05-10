@@ -55,13 +55,17 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
         .snav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#0f172a;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit;border:none;cursor:pointer}
         .snav-ham{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:1.5px solid #e8ecf4;background:white;cursor:pointer;padding:0;color:#374151;flex-shrink:0}
         .snav-mob-drawer{display:none;border-top:1px solid #e8ecf4;background:white;padding:8px 16px 20px;max-height:80vh;overflow-y:auto}
+        .snav-dropdown{display:block}
+        .snav-megagrid{display:grid}
         @keyframes menuSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        @media(max-width:900px){.snav-megagrid{grid-template-columns:repeat(2,1fr)!important}}
         @media(max-width:640px){
           .snav-pad{padding:0 16px}
-          .snav-hide{display:none}
+          .snav-hide{display:none!important}
           .snav-cta{display:none}
           .snav-ham{display:flex}
           .snav-mob-drawer{display:block}
+          .snav-dropdown{display:none!important}
         }
       `}</style>
 
@@ -160,14 +164,14 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
       )}
 
       {/* Backdrop */}
-      {(menuOpen || mobileOpen) && <div onClick={() => { setMenuOpen(null); setMobileOpen(false); }} style={{ position: "fixed", inset: 0, zIndex: -1 }} />}
+      {(menuOpen || mobileOpen) && <div onClick={() => { setMenuOpen(null); setMobileOpen(false); }} style={{ position: "fixed", inset: 0, zIndex: 39 }} />}
 
       {/* Guides mega-menu */}
       {menuOpen === "guides" && (
-        <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
+        <div className="snav-dropdown" style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Anmeldung Guides</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
+            <div className="snav-megagrid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
               {GUIDE_ITEMS.map(g => {
                 const isCurrent = currentPage === g.href.slice(1);
                 return (
@@ -196,10 +200,10 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
 
       {/* Services mega-menu */}
       {menuOpen === "services" && (
-        <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
+        <div className="snav-dropdown" style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
+            <div className="snav-megagrid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
 
               {/* Anmeldung — active service */}
               {onStart ? (
