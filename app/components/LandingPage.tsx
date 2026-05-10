@@ -26,7 +26,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 14px" }}>
               <CheckCircle2 size={11} color="#16a34a" />
-              <span style={{ color: "#15803d", fontSize: 12, fontWeight: 700 }}>Trusted by expats in Berlin</span>
+              <span style={{ color: "#15803d", fontSize: 12, fontWeight: 700 }}>Trusted by 100+ expats in Berlin</span>
             </div>
           </div>
 
