@@ -168,7 +168,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
 
       {/* Guides mega-menu */}
       {menuOpen === "guides" && (
-        <div className="snav-dropdown" style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
+        <div className="snav-dropdown" style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Anmeldung Guides</div>
             <div className="snav-megagrid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
@@ -200,7 +200,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
 
       {/* Services mega-menu */}
       {menuOpen === "services" && (
-        <div className="snav-dropdown" style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
+        <div className="snav-dropdown" style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 50, background: "white", borderBottom: "1px solid #e8ecf4", boxShadow: "0 16px 48px rgba(0,0,0,0.12)", padding: "28px 40px 32px", animation: "menuSlide 0.18s cubic-bezier(0.22,1,0.36,1)" }}>
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
             <div className="snav-megagrid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
