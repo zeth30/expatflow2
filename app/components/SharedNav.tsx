@@ -134,7 +134,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="snav-mob-drawer">
+        <div className="snav-mob-drawer" style={{ position: "relative", zIndex: 50 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", padding: "8px 0 6px" }}>Guides</div>
           {GUIDE_ITEMS.map(g => (
             <a key={g.href} href={g.href} onClick={() => setMobileOpen(false)}
