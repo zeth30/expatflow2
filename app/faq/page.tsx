@@ -1,6 +1,7 @@
 // Submit sitemap to bing.com/webmaster to enable ChatGPT Search indexing
 import type { Metadata } from "next";
 import { SharedNav } from "../components/SharedNav";
+import { AppFooter } from "../components/AppFooter";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -417,21 +418,7 @@ export default function FAQPage() {
         </div>
       </main>
 
-      {/* ── Footer ────────────────────────────────────────────────── */}
-      <div style={{ borderTop: "1px solid #e8ecf4", padding: "24px 20px", textAlign: "center", background: "#fafafa" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap", marginBottom: 10 }}>
-          <a href="/" style={{ color: "#64748b", fontSize: 12, textDecoration: "underline" }}>Home</a>
-          <span style={{ color: "#cbd5e1", fontSize: 12 }}>·</span>
-          <a href="/" style={{ color: "#64748b", fontSize: 12, textDecoration: "underline" }}>Terms of Service</a>
-          <span style={{ color: "#cbd5e1", fontSize: 12 }}>·</span>
-          <a href="/" style={{ color: "#64748b", fontSize: 12, textDecoration: "underline" }}>Privacy Policy</a>
-          <span style={{ color: "#cbd5e1", fontSize: 12 }}>·</span>
-          <a href="/" style={{ color: "#64748b", fontSize: 12, textDecoration: "underline" }}>Impressum</a>
-        </div>
-        <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, margin: 0 }}>
-          © 2026 SimplyExpat GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)
-        </p>
-      </div>
+      <AppFooter />
     </div>
   );
 }

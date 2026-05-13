@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SharedNav } from "../components/SharedNav";
 import { GuideSidebar } from "../components/GuideSidebar";
+import { AppFooter } from "../components/AppFooter";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -203,6 +204,7 @@ export default function AnmeldungOnlineNonEU() {
       </div>
       <GuideSidebar currentPage="anmeldung-online-non-eu" />
       </div>
+      <AppFooter />
     </div>
   );
 }
