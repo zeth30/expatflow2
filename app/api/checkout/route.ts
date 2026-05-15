@@ -48,6 +48,8 @@ export async function POST(req: NextRequest) {
         service: "anmeldung-preparation",
         version: "1.0",
       },
+      // Enables "Add promo code" field on Stripe-hosted checkout
+      allow_promotion_codes: true,
       // No customer creation — we don't store anything
       customer_creation: "if_required",
       // Consent for digital services (§356 BGB / EU Directive 2011/83)
