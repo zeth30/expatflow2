@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Changelog
 
+### 2026-05-16
+- **Fact-check: walk-in locations removed (#12/#13)** — Section 03 of `burgeramt-berlin-appointment/page.tsx` previously listed Bürgeramt Tempelhof and Mitte as accepting walk-ins for Anmeldung. This is incorrect: service.berlin.de states "Ohne Termin erfolgt keine Bearbeitung" (no appointment = no service). Section rewritten as "Walk-in — last resort": explains the official position, warns against relying on walk-ins, and directs users to call 115 for genuine deadline emergencies. JSON-LD FAQ answer updated to match.
+- **Fact-check: Steuer-ID timing caveat added (#10)** — `what-is-anmeldung/page.tsx` section 05 Steuer-ID card previously said "2–4 weeks" without qualification. Added caveat: "up to 6–8 weeks during the peak September relocation season."
+- **New guide design (branch: new-guide-design-two)** — All 5 static guide pages rewritten with new shared design system: `app/guides.css`, `GuideReveal`, `GuideSidebar`, `GuidePageNav`. Article + FAQPage JSON-LD added to all pages. Visible FAQ sections added. Aggressive internal linking between guides. "2026" added to all guide titles.
+- **Contradiction fixes** — Removed "rental contract is not a substitute" callout from wohnungsgeberbestaetigung (contradicted the emergency exception in section 06). eID callout in anmeldung-online-non-eu updated to clarify chip activation requirement. Cross-page eID language standardised.
+
 ### 2026-05-09
 - Guide icons added to nav dropdown + landing page guide cards
 - Wizard sidebar fix: background/border now extends full page height

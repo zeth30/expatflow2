@@ -134,8 +134,8 @@ export default function WhatIsAnmeldung() {
                 { title: "Steuer-ID · Tax number", body: "Arrives by post 2–4 weeks after registration. Without it, employer taxes you at Steuerklasse 6.", tag: "11 digits · BMF · auto-issued", tc: " warn", color: "amber", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> },
                 { title: "Health insurance", body: "Public (TK, AOK, Barmer) and most private insurers require your registration address.", tag: "Krankenversicherung", tc: " ok", color: "green", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg> },
               ].map((c) => (
-                <div key={c.title} style={{ background: "white", border: "1px solid var(--line)", borderRadius: 20, padding: 24, position: "relative", display: "flex", flexDirection: "column", gap: 14 }}>
-                  <div style={{ position: "absolute", right: 20, top: 20, width: 30, height: 30, borderRadius: 9, background: "var(--rose-tint)", color: "var(--rose)", display: "grid", placeItems: "center" }}>
+                <div key={c.title} className="wi-card" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 20, padding: 24, position: "relative", display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div className="wi-lock" style={{ position: "absolute", right: 20, top: 20, width: 30, height: 30, borderRadius: 9, background: "var(--rose-tint)", color: "var(--rose)", display: "grid", placeItems: "center" }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
                   </div>
                   <div className={`ib iconbox ${c.color}`}>{c.icon}</div>
@@ -147,7 +147,7 @@ export default function WhatIsAnmeldung() {
             </div>
 
             {/* Wide: residence + employment */}
-            <div className="reveal" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 20, padding: 24, display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 32, alignItems: "center", marginBottom: 16 }}>
+            <div className="reveal wi-card" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 20, padding: 24, display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 32, alignItems: "center", marginBottom: 16 }}>
               <div>
                 <div className="ib iconbox ink" style={{ marginBottom: 14 }}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="9" r="3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 17a5 5 0 0 1 10 0"/></svg></div>
                 <h4 style={{ fontSize: 20, fontWeight: 800, margin: "0 0 8px" }}>Residence permit · Aufenthaltstitel</h4>
