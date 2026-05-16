@@ -1,7 +1,7 @@
-// Submit sitemap to bing.com/webmaster to enable ChatGPT Search indexing
 import type { Metadata } from "next";
-import { SharedNav } from "../components/SharedNav";
-import { AppFooter } from "../components/AppFooter";
+import Link from "next/link";
+import { GuideSidebar } from "../components/guides/GuideSidebar";
+import { GuideReveal } from "../components/guides/GuideReveal";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     "Anmeldung online Germany",
   ].join(", "),
   alternates: { canonical: `${DOMAIN}/faq` },
+  robots: { index: true, follow: true },
   openGraph: {
     title: "Anmeldung FAQ — Complete Germany Registration Guide",
     description:
@@ -32,14 +33,18 @@ export const metadata: Metadata = {
   },
 };
 
-// ─── FAQ Data ──────────────────────────────────────────────────────────────────
+// ─── Content ───────────────────────────────────────────────────────────────────
+
+const LAST_UPDATED_DISPLAY = "May 2026";
+
 const SECTIONS = [
   {
-    id: "basics",
+    id: "sec-basics",
+    num: "01",
     title: "The Basics",
-    color: "#0075FF",
-    bg: "#eff6ff",
-    border: "#bfdbfe",
+    headline: "What the Anmeldung",
+    accent: "actually is.",
+    color: "var(--blue)",
     faqs: [
       {
         q: "What is the Anmeldung in Germany?",
@@ -68,11 +73,12 @@ const SECTIONS = [
     ],
   },
   {
-    id: "appointment",
+    id: "sec-appointment",
+    num: "02",
     title: "Booking Your Appointment",
-    color: "#16a34a",
-    bg: "#f0fdf4",
-    border: "#86efac",
+    headline: "Getting your",
+    accent: "Bürgeramt slot.",
+    color: "var(--green)",
     faqs: [
       {
         q: "How do I book a Bürgeramt appointment in Berlin?",
@@ -80,7 +86,7 @@ const SECTIONS = [
       },
       {
         q: "What happens at the Anmeldung appointment?",
-        a: "You hand over your completed form and documents. The clerk checks everything — if you are missing your Wohnungsgeberbestätigung, passport, or required translations, they will turn you away on the spot. That means booking a new appointment and waiting another 3 weeks. Berlin clerks follow the rules strictly and will not make exceptions. Show up with every document on the checklist or do not go. A correctly filled form in proper German is your best defence — clerks process hundreds of cases a day and have no patience for errors. If everything is in order, the appointment itself takes 5 to 10 minutes. You walk out with your Anmeldebestätigung printed on the spot. Check the name spelling, address, and dates before you leave.",
+        a: "You hand over your completed form and documents. The clerk checks everything — if you are missing your Wohnungsgeberbestätigung, passport, or required translations, they will turn you away on the spot. That means booking a new appointment and waiting another 3 weeks. Berlin clerks follow the rules strictly and will not make exceptions. Show up with every document on the checklist or do not go. A correctly filled form in proper German is your best defence — clerks process hundreds of cases a day and have no patience for errors. If everything is in order, the appointment itself takes 5 to 10 minutes. You walk out with your Anmeldebestätigung/Meldebestätigung printed on the spot. Check the name spelling, address, and dates before you leave.",
       },
       {
         q: "What if there are no Bürgeramt appointments available before the 14-day deadline?",
@@ -89,11 +95,12 @@ const SECTIONS = [
     ],
   },
   {
-    id: "online",
+    id: "sec-online",
+    num: "03",
     title: "Online Registration",
-    color: "#d97706",
-    bg: "#fffbeb",
-    border: "#fde68a",
+    headline: "Can you register",
+    accent: "online?",
+    color: "var(--amber)",
     faqs: [
       {
         q: "Can I do the Anmeldung online?",
@@ -106,19 +113,20 @@ const SECTIONS = [
     ],
   },
   {
-    id: "after",
+    id: "sec-after",
+    num: "04",
     title: "After Registration",
-    color: "#7c3aed",
-    bg: "#f5f3ff",
-    border: "#ddd6fe",
+    headline: "What comes",
+    accent: "next.",
+    color: "var(--purple)",
     faqs: [
       {
         q: "What do I get after the Anmeldung?",
-        a: "You receive the Anmeldebestätigung (also called Meldebescheinigung) — your official registration certificate — printed on the spot at your appointment. Keep multiple copies. You need it to open a German bank account, enroll in health insurance, start employment, and for most other official processes in Germany.",
+        a: "You receive the Anmeldebestätigung/Meldebestätigung — your official registration certificate — printed on the spot at your appointment. Keep multiple copies. You need it to open a German bank account, enroll in health insurance, start employment, and for most other official processes in Germany.",
       },
       {
         q: "What is the Steuer-ID and when does it arrive?",
-        a: "Your Steuer-Identifikationsnummer (tax ID) is a permanent 11-digit number assigned by the Bundeszentralamt für Steuern. It is mailed to your registered address 2–4 weeks after a successful Anmeldung. Make sure your name is on your mailbox — mail is not delivered to unmarked letterboxes in Germany.",
+        a: "Your Steuer-Identifikationsnummer (tax ID) is a permanent 11-digit number assigned by the Bundeszentralamt für Steuern. It is mailed to your registered address 2–4 weeks after a successful Anmeldung (up to 6–8 weeks during the peak September season). Make sure your name is on your mailbox — mail is not delivered to unmarked letterboxes in Germany.",
       },
       {
         q: "What is the Rundfunkbeitrag letter I received?",
@@ -131,11 +139,12 @@ const SECTIONS = [
     ],
   },
   {
-    id: "simplyexpat",
+    id: "sec-simplyexpat",
+    num: "05",
     title: "About SimplyExpat",
-    color: "#0f172a",
-    bg: "#f8fafc",
-    border: "#e2e8f0",
+    headline: "About",
+    accent: "SimplyExpat.",
+    color: "var(--ink)",
     faqs: [
       {
         q: "Why would I pay €15 to fill out a form?",
@@ -163,8 +172,7 @@ const SECTIONS = [
 
 const TOTAL_QUESTIONS = SECTIONS.reduce((n, s) => n + s.faqs.length, 0);
 
-const LAST_UPDATED = "2026-05-05";
-const LAST_UPDATED_DISPLAY = "May 2026";
+// ─── JSON-LD ───────────────────────────────────────────────────────────────────
 
 export default function FAQPage() {
   const allFaqs = SECTIONS.flatMap((s) => s.faqs);
@@ -172,7 +180,7 @@ export default function FAQPage() {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    dateModified: LAST_UPDATED,
+    dateModified: "2026-05-05",
     mainEntity: allFaqs.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -194,231 +202,113 @@ export default function FAQPage() {
       { "@type": "HowToSupply", name: "Visa or residence permit (non-EU nationals only)" },
     ],
     step: [
-      {
-        "@type": "HowToStep",
-        position: 1,
-        name: "Get the Wohnungsgeberbestätigung from your landlord",
-        text: "Request the landlord confirmation form (Wohnungsgeberbestätigung) on your move-in day. Your landlord is legally required to provide it under §19 BMG. Email them in writing so you have a paper trail. Without this form the Bürgeramt cannot register you — your rental contract alone is not accepted.",
-      },
-      {
-        "@type": "HowToStep",
-        position: 2,
-        name: "Fill in the Anmeldung form in English",
-        text: "Go to simplyexpat.de and answer the guided questions in plain English. SimplyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €15.",
-      },
-      {
-        "@type": "HowToStep",
-        position: 3,
-        name: "Book a Bürgeramt appointment as early as possible",
-        text: "Book at service.berlin.de. Check early in the morning for the best slot availability — new slots are released in batches and go quickly. Outer districts like Marzahn and Lichtenberg have more availability than central offices. Keep a screenshot of your booking as evidence you tried within the 14-day window.",
-      },
-      {
-        "@type": "HowToStep",
-        position: 4,
-        name: "Print your completed form",
-        text: "Print the PDF on plain white paper. DM or Rossmann self-service kiosks charge approximately €0.10–0.15 per page. The Bürgeramt does not accept digital forms shown on a phone screen.",
-      },
-      {
-        "@type": "HowToStep",
-        position: 5,
-        name: "Attend your Bürgeramt appointment",
-        text: "Bring your printed form, passport or ID, Wohnungsgeberbestätigung, and any additional documents. The appointment takes 5–10 minutes. Sign the form at the office after printing — do not sign before. Check your Anmeldebestätigung for errors before leaving.",
-      },
-      {
-        "@type": "HowToStep",
-        position: 6,
-        name: "Collect your Anmeldebestätigung and await your Steuer-ID",
-        text: "Your Anmeldebestätigung (registration certificate) is printed on the spot. Your Steuer-ID (tax identification number) arrives by post to your registered address within 2–4 weeks. Make sure your surname is on your letterbox — official mail is not delivered to unlabelled mailboxes in Germany.",
-      },
+      { "@type": "HowToStep", position: 1, name: "Get the Wohnungsgeberbestätigung from your landlord", text: "Request the landlord confirmation form (Wohnungsgeberbestätigung) on your move-in day. Your landlord is legally required to provide it under §19 BMG. Email them in writing so you have a paper trail. Without this form the Bürgeramt cannot register you — your rental contract alone is not accepted." },
+      { "@type": "HowToStep", position: 2, name: "Fill in the Anmeldung form in English", text: "Go to simplyexpat.de and answer the guided questions in plain English. SimplyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €15." },
+      { "@type": "HowToStep", position: 3, name: "Book a Bürgeramt appointment as early as possible", text: "Book at service.berlin.de. Check early in the morning for the best slot availability — new slots are released in batches and go quickly. Outer districts like Marzahn and Lichtenberg have more availability than central offices. Keep a screenshot of your booking as evidence you tried within the 14-day window." },
+      { "@type": "HowToStep", position: 4, name: "Print your completed form", text: "Print the PDF on plain white paper. DM or Rossmann self-service kiosks charge approximately €0.10–0.15 per page. The Bürgeramt does not accept digital forms shown on a phone screen." },
+      { "@type": "HowToStep", position: 5, name: "Attend your Bürgeramt appointment", text: "Bring your printed form, passport or ID, Wohnungsgeberbestätigung, and any additional documents. The appointment takes 5–10 minutes. Sign the form at the office after printing — do not sign before. Check your Anmeldebestätigung/Meldebestätigung for errors before leaving." },
+      { "@type": "HowToStep", position: 6, name: "Collect your Anmeldebestätigung/Meldebestätigung and await your Steuer-ID", text: "Your Anmeldebestätigung/Meldebestätigung (registration certificate) is printed on the spot. Your Steuer-ID (tax identification number) arrives by post to your registered address within 2–4 weeks. Make sure your surname is on your letterbox — official mail is not delivered to unlabelled mailboxes in Germany." },
     ],
   };
 
+  // Section color chip styles
+  const chipStyle: Record<string, { bg: string; bd: string; color: string }> = {
+    "var(--blue)":   { bg: "var(--blue-soft)",    bd: "#d8e1ff",          color: "var(--blue)" },
+    "var(--green)":  { bg: "var(--green-tint)",    bd: "var(--green-bd)",  color: "var(--green)" },
+    "var(--amber)":  { bg: "var(--amber-tint)",    bd: "#fde4a8",          color: "var(--amber)" },
+    "var(--purple)": { bg: "var(--purple-tint)",   bd: "#d8b4fe",          color: "var(--purple)" },
+    "var(--ink)":    { bg: "#f1f3f9",              bd: "var(--line)",      color: "var(--ink)" },
+  };
+
   return (
-    <div style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: 0, padding: 0, background: "white", minHeight: "100vh", overflowX: "hidden" }}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
-      />
-      <style>{`
-        details summary { list-style: none; cursor: pointer; user-select: none; }
-        details summary::-webkit-details-marker { display: none; }
-        details summary::marker { display: none; }
-        .faq-chevron { transition: transform 0.22s ease; flex-shrink: 0; color: #94a3b8; }
-        details[open] .faq-chevron { transform: rotate(180deg); color: #0075FF; }
-        details[open] { background: #fafcff !important; }
-        details[open] > summary { color: #0075FF !important; }
-        details > div { animation: faqSlide 0.18s ease; }
-        @keyframes faqSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-        .faq-item { transition: border-color 0.15s, box-shadow 0.15s; }
-        .faq-item:hover { border-color: #bfdbfe !important; box-shadow: 0 2px 12px rgba(0,117,255,0.07); }
-        .section-jump:hover { background: #eff6ff !important; color: #0075FF !important; }
-        @media (max-width: 640px) {
-          .faq-h1 { font-size: 30px !important; }
-          .faq-nav-wrap { padding: 0 16px !important; }
-          .faq-content { padding: 32px 16px 64px !important; }
-          .faq-cta { padding: 36px 22px !important; }
-          .faq-stats { gap: 20px !important; }
-          .faq-hero-pad { padding: 40px 16px 36px !important; }
-          .section-jumps { display: none !important; }
-          .faq-badge { display: none !important; }
-          .faq-brand-text { font-size: 12px !important; }
-          .faq-cta-btn { padding: 8px 12px !important; font-size: 12px !important; white-space: nowrap !important; gap: 4px !important; }
-        }
-      `}</style>
+    <div className="shell">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
+      <GuideReveal />
+      <GuideSidebar activeId="" />
 
-      {/* ── Sticky Nav ─────────────────────────────────────────────── */}
-      <SharedNav currentPage="faq" />
+      <main className="main">
 
-      {/* ── Hero ───────────────────────────────────────────────────── */}
-      <div
-        className="faq-hero-pad"
-        style={{ background: "linear-gradient(140deg,#eef5ff 0%,#f8fafc 55%,#f0fdf4 100%)", borderBottom: "1px solid #e8ecf4", padding: "60px 20px 52px", position: "relative", overflow: "hidden" }}
-      >
-        {/* Decorative background number */}
-        <div style={{ position: "absolute", right: -20, top: -30, fontSize: 260, fontWeight: 900, color: "rgba(0,117,255,0.04)", lineHeight: 1, pointerEvents: "none", userSelect: "none" }}>?</div>
+        {/* ── Hero ── */}
+        <section className="hero" style={{ backgroundImage: "url('/berlin-skyline.jpg')" }}>
+          <div className="wrap">
+            <div className="crumbs">
+              <a href="/what-is-anmeldung">Guides</a>
+              <span className="sep">→</span>
+              <span className="here">FAQ</span>
+            </div>
+            <span className="pill"><span className="dot" />Last updated: {LAST_UPDATED_DISPLAY}</span>
+            <h1 className="hero-title">
+              Anmeldung in Germany:
+              <span className="accent">Complete FAQ.</span>
+            </h1>
+            <p className="lede">Germany&apos;s Anmeldung in plain English — deadlines, documents, appointments, and what happens after.</p>
 
-        <div style={{ maxWidth: 840, margin: "0 auto", position: "relative" }}>
-          {/* Updated badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "4px 13px", marginBottom: 22 }}>
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <circle cx="5" cy="5" r="4.5" fill="#16a34a"/>
-              <path d="M3 5l1.3 1.5L7 3.5" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <span style={{ color: "#15803d", fontSize: 11.5, fontWeight: 700 }}>Last updated: {LAST_UPDATED_DISPLAY}</span>
+            {/* Section jump links */}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 24, borderTop: "1px solid var(--line)", paddingTop: 20 }}>
+              {SECTIONS.map((s) => (
+                <a key={s.id} href={`#${s.id}`} className="sec-jump">
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: s.color, flexShrink: 0 }} />
+                  {s.title}
+                </a>
+              ))}
+            </div>
           </div>
+        </section>
 
-          <h1
-            className="faq-h1"
-            style={{ fontSize: 46, fontWeight: 900, color: "#0f172a", lineHeight: 1.07, marginBottom: 16, letterSpacing: "-0.035em" }}
-          >
-            Anmeldung in Germany:<br />
-            <span style={{ color: "#0075FF" }}>Complete FAQ</span>
-          </h1>
-          <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.75, maxWidth: 580, marginBottom: 36 }}>
-            Every question expats ask about Germany's mandatory address registration — answered in plain English, with specific facts and deadlines.
-          </p>
-
-          {/* Stats strip */}
-          <div className="faq-stats" style={{ display: "flex", gap: 36, marginBottom: 32 }}>
-            {[
-              { v: String(TOTAL_QUESTIONS), l: "questions answered" },
-              { v: "5", l: "topic sections" },
-              { v: "14", l: "days to register" },
-            ].map(({ v, l }) => (
-              <div key={l}>
-                <div style={{ fontSize: 26, fontWeight: 900, color: "#0075FF", letterSpacing: "-0.04em", lineHeight: 1 }}>{v}</div>
-                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 4, fontWeight: 500 }}>{l}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Section jump links */}
-          <div className="section-jumps" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {SECTIONS.map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className="section-jump"
-                style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "6px 13px", borderRadius: 8, border: "1.5px solid #e8ecf4", background: "white", color: "#374151", fontSize: 12.5, fontWeight: 600, textDecoration: "none", transition: "all 0.15s" }}
-              >
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.color, flexShrink: 0 }} />
-                {s.title}
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Main Content ───────────────────────────────────────────── */}
-      <main>
-        <div className="faq-content" style={{ maxWidth: 840, margin: "0 auto", padding: "52px 20px 80px" }}>
-
-          {/* Legal disclaimer */}
-          <div style={{ padding: "14px 18px", borderRadius: 12, background: "#eff6ff", border: "1px solid #bfdbfe", marginBottom: 56, display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
-              <circle cx="8" cy="8" r="7" stroke="#0075FF" strokeWidth="1.5"/>
-              <path d="M8 7v4M8 5.5v.5" stroke="#0075FF" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-            <p style={{ color: "#1e40af", fontSize: 13, lineHeight: 1.65, fontWeight: 500, margin: 0 }}>
-              <strong>Legal notice:</strong> This information is for general guidance only and does not constitute legal advice. German registration rules change frequently — always verify current requirements with official German authorities or a qualified legal professional.
-            </p>
-          </div>
-
-          {/* FAQ Sections */}
-          {SECTIONS.map((section) => (
-            <div key={section.id} id={section.id} style={{ marginBottom: 60 }}>
-
-              {/* Section header */}
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22, paddingBottom: 18, borderBottom: `2px solid ${section.border}` }}>
-                <div style={{ width: 4, height: 28, borderRadius: 99, background: section.color, flexShrink: 0 }} />
-                <div style={{ flex: 1, display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-                  <h2 style={{ fontSize: 18, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.02em", margin: 0, lineHeight: 1 }}>
-                    {section.title}
+        {/* ── FAQ Sections ── */}
+        {SECTIONS.map((section, si) => {
+          const c = chipStyle[section.color];
+          return (
+            <section
+              key={section.id}
+              id={section.id}
+              className="section"
+              style={{ paddingTop: si === 0 ? 0 : 0 }}
+            >
+              <div className="wrap">
+                <div className="section-head reveal">
+                  <div className="eyebrow" style={{ color: section.color }}>{section.num} · {section.title}</div>
+                  <h2 className="h2">
+                    {section.headline} <span className="accent">{section.accent}</span>
                   </h2>
-                  <span style={{ fontSize: 11.5, fontWeight: 700, color: section.color, background: section.bg, border: `1px solid ${section.border}`, padding: "2px 9px", borderRadius: 999 }}>
+                  {/* question count chip */}
+                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 11px", borderRadius: 999, background: c.bg, border: `1px solid ${c.bd}`, color: c.color, fontSize: 12, fontWeight: 700, fontFamily: "'JetBrains Mono',monospace" }}>
                     {section.faqs.length} {section.faqs.length === 1 ? "question" : "questions"}
-                  </span>
+                  </div>
+                </div>
+
+                <div className="faq reveal">
+                  {section.faqs.map((faq, i) => (
+                    <details key={i}>
+                      <summary>{faq.q}</summary>
+                      <div className="ans">{faq.a}</div>
+                    </details>
+                  ))}
                 </div>
               </div>
+            </section>
+          );
+        })}
 
-              {/* Accordion items */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                {section.faqs.map((faq, i) => (
-                  <details
-                    key={i}
-                    className="faq-item"
-                    style={{ borderRadius: 13, border: "1.5px solid #e2e8f0", overflow: "hidden", background: "white" }}
-                  >
-                    <summary style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 22px", fontWeight: 700, color: "#0f172a", fontSize: 15, lineHeight: 1.45, gap: 16 }}>
-                      <span>{faq.q}</span>
-                      <svg className="faq-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <path d="M4.5 6.75l4.5 4.5 4.5-4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </summary>
-                    <div style={{ padding: "0 22px 20px", borderTop: `1px solid ${section.border}` }}>
-                      <p style={{ fontSize: 14.5, color: "#475569", lineHeight: 1.8, margin: "16px 0 0" }}>
-                        {faq.a}
-                      </p>
-                    </div>
-                  </details>
-                ))}
-              </div>
+        {/* ── CTA ── */}
+        <section className="final-cta">
+          <div className="wrap">
+            <div className="cta-box reveal">
+              <div className="eye">Form ready in 5 minutes</div>
+              <h2>Fill your Anmeldung in English. <span className="b">We handle the German.</span></h2>
+              <p>Answer in English. We generate your completed Anmeldeformular — all 54 fields in correct German — ready to print and bring to your appointment. €15, one time.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">No payment until the PDF is ready · cancel anytime</div>
             </div>
-          ))}
-
-          {/* CTA */}
-          <div className="faq-cta" style={{ background: "#0f172a", borderRadius: 22, padding: "56px 48px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-            {/* Decorative blue glow */}
-            <div style={{ position: "absolute", bottom: -60, left: "50%", transform: "translateX(-50%)", width: 320, height: 120, background: "radial-gradient(ellipse,rgba(0,117,255,0.35) 0%,transparent 70%)", pointerEvents: "none" }} />
-            <div style={{ position: "relative" }}>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 999, padding: "5px 14px", marginBottom: 20 }}>
-                <span style={{ color: "#94a3b8", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>Form ready in 5 minutes</span>
-              </div>
-              <h2 style={{ fontSize: 28, fontWeight: 900, color: "white", marginBottom: 12, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
-                Ready to fill your form in 5 minutes?
-              </h2>
-              <p style={{ color: "#94a3b8", fontSize: 14, marginBottom: 30, lineHeight: 1.7 }}>
-                Perfect German form. Personalised checklist. Zero data stored. €15, one time.
-              </p>
-              <a
-                href="/#wizard/origin"
-                style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "15px 34px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.45)" }}
-              >
-                Get started
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                  <path d="M2 7.5h11M8 3l4.5 4.5L8 12" stroke="white" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-            </div>
+            <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>
-        </div>
-      </main>
+        </section>
 
-      <AppFooter />
+      </main>
     </div>
   );
 }
