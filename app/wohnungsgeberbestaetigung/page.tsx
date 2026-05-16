@@ -56,6 +56,14 @@ export default function Wohnungsgeberbestaetigung() {
           { "@type": "Question", name: "Will Airbnb or my hotel provide a Wohnungsgeberbestätigung?", acceptedAnswer: { "@type": "Answer", text: "No. Short-term accommodation — Airbnb, hotels, hostels — will not provide the Wohnungsgeberbestätigung. Some long-term serviced apartments (28+ days) do, but you must confirm explicitly before booking. You cannot register at the Bürgeramt from a short-term address." } },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
+          { "@type": "ListItem", position: 3, name: "Wohnungsgeberbestätigung", item: `${DOMAIN}/wohnungsgeberbestaetigung` },
+        ],
+      },
     ],
   };
 

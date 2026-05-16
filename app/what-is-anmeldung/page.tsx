@@ -48,6 +48,14 @@ export default function WhatIsAnmeldung() {
           { "@type": "Question", name: "What documents do I need for the Anmeldung?", acceptedAnswer: { "@type": "Answer", text: "Three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens also need a current visa or residence permit." } },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
+          { "@type": "ListItem", position: 3, name: "What is the Anmeldung?", item: `${DOMAIN}/what-is-anmeldung` },
+        ],
+      },
     ],
   };
 

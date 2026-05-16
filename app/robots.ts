@@ -6,6 +6,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 const AI_BOTS = [
   "GPTBot",          // ChatGPT / OpenAI Search
   "OAI-SearchBot",   // ChatGPT browse-the-web plugin
+  "ChatGPT-User",    // ChatGPT real-time browsing
   "Google-Extended", // Gemini / Google AI Overviews
   "PerplexityBot",   // Perplexity AI
   "ClaudeBot",       // Anthropic Claude
@@ -13,6 +14,7 @@ const AI_BOTS = [
   "Applebot-Extended", // Apple AI features
   "Bytespider",      // ByteDance / TikTok AI
   "cohere-ai",       // Cohere
+  "CCBot",           // Common Crawl (trains many LLMs)
 ];
 
 export default function robots(): MetadataRoute.Robots {

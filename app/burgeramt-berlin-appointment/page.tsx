@@ -56,6 +56,14 @@ export default function BurgeramtBerlinAppointment() {
           { "@type": "Question", name: "Can I do Anmeldung online as an Indian, American, or British citizen?", acceptedAnswer: { "@type": "Answer", text: "No. Online Anmeldung requires an EU/EEA eID card with the Online-Ausweis chip activated. Indian, American, British, and all other non-EU passport holders cannot obtain this card. Registration is always in person at the Bürgeramt." } },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
+          { "@type": "ListItem", position: 3, name: "How to Book a Bürgeramt Appointment in Berlin", item: `${DOMAIN}/burgeramt-berlin-appointment` },
+        ],
+      },
     ],
   };
 

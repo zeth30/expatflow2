@@ -33,11 +33,14 @@
 .shell a { color: inherit; }
 
 /* —— Page shell with sidebar —— */
-.shell { display: block; min-height: 100vh; }
+/* padding-top: 52px compensates for the fixed guide nav bar */
+.shell { display: block; min-height: 100vh; padding-top: 52px; }
 .sidebar { position: fixed; top: 52px; left: 0; width: var(--sb-w); height: calc(100vh - 52px); overflow-y: auto; border-right: 1px solid var(--line); background: white; padding: 26px 22px; display: flex; flex-direction: column; gap: 20px; z-index: 10; }
 .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; font-size: 17px; letter-spacing: -0.01em; text-decoration: none; color: var(--ink); }
 .brand-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #0f172a, #0040ff); color: white; display: grid; place-items: center; font-weight: 800; font-size: 17px; box-shadow: 0 4px 10px rgba(0,64,255,.25); }
 .brand .b-blue { color: var(--blue); }
+/* Hide duplicate brand from sidebar on desktop — SharedNav always shows it */
+@media (min-width: 981px) { .brand { display: none; } }
 
 .sb-eyebrow { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; padding: 0 4px; margin-top: 4px; }
 .sb-list { display: flex; flex-direction: column; gap: 4px; }
@@ -97,21 +100,22 @@
   z-index: 0;
   pointer-events: none;
 }
-/* Germany outline — right side, above the gradient so it blends with the photo */
+/* Germany outline — watermark on the white left side behind the text */
 .hero::after {
   content: "";
   position: absolute;
-  right: -20px;
-  top: -10px;
-  width: 300px;
-  height: 400px;
+  left: -60px;
+  top: -40px;
+  width: 520px;
+  height: 680px;
   background-image: url('/germany-outline.svg');
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: top right;
-  opacity: 0.10;
+  background-position: top left;
+  opacity: 0.055;
+  filter: brightness(0);
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 /* Content above everything */
 .hero .wrap { position: relative; z-index: 2; }

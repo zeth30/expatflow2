@@ -58,6 +58,14 @@ export default function AnmeldungDocuments() {
           { "@type": "ListItem", position: 6, name: "Birth certificate for each child (if registering children)" },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
+          { "@type": "ListItem", position: 3, name: "Anmeldung Document Checklist", item: `${DOMAIN}/anmeldung-documents` },
+        ],
+      },
     ],
   };
 

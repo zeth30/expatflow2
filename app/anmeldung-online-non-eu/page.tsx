@@ -44,6 +44,14 @@ export default function OnlineNonEU() {
           { "@type": "Question", name: "Can I change my German address online?", acceptedAnswer: { "@type": "Answer", text: "Only if you hold a compatible eID card (German Personalausweis or a compatible EU/EEA national eID) with the Online-Ausweis chip activated. Non-EU citizens cannot obtain this card. EU citizens may have a compatible card from their home country, but the chip must be specifically activated — most EU expats arriving fresh will not have this set up." } },
         ],
       },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
+          { "@type": "ListItem", position: 3, name: "Online Anmeldung for Non-EU Citizens", item: `${DOMAIN}/anmeldung-online-non-eu` },
+        ],
+      },
     ],
   };
 
