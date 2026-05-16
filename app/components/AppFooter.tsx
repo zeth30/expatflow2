@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import { Impressum, TermsOfService, CancellationPolicy, PrivacyPolicy } from "./LegalModals";
+import { JoinUsModal } from "./JoinUsModal";
 
 export function AppFooter() {
-  const [modal, setModal] = useState<"tos" | "cancel" | "privacy" | "impressum" | null>(null);
+  const [modal, setModal] = useState<"tos" | "cancel" | "privacy" | "impressum" | "joinus" | null>(null);
   return (
     <>
       <style>{`
@@ -20,12 +21,21 @@ export function AppFooter() {
         {modal === "cancel"    && <CancellationPolicy onClose={() => setModal(null)} />}
         {modal === "privacy"   && <PrivacyPolicy      onClose={() => setModal(null)} />}
         {modal === "impressum" && <Impressum          onClose={() => setModal(null)} />}
+        {modal === "joinus"   && <JoinUsModal         onClose={() => setModal(null)} />}
         <span className="af-copy">© 2026 SimplyExpat · Not a legal service (§2 RDG)</span>
         <span style={{ color: "#cbd5e1" }} className="mob-hide">·</span>
         <button className="af-link" onClick={() => setModal("tos")}>Terms</button>
         <button className="af-link" onClick={() => setModal("cancel")}>Cancellation</button>
         <button className="af-link" onClick={() => setModal("privacy")}>Privacy</button>
         <button className="af-link" onClick={() => setModal("impressum")}>Impressum</button>
+        <span style={{ color: "#cbd5e1" }} className="mob-hide">·</span>
+        <button
+          className="af-link"
+          onClick={() => setModal("joinus")}
+          style={{ color: "#0040ff", fontWeight: 700 }}
+        >
+          Join us
+        </button>
       </footer>
     </>
   );
