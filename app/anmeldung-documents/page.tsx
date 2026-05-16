@@ -1,206 +1,225 @@
 import type { Metadata } from "next";
-import { SharedNav } from "../components/SharedNav";
-import { GuideSidebar } from "../components/GuideSidebar";
-import { AppFooter } from "../components/AppFooter";
+import Link from "next/link";
+import { GuideSidebar } from "../components/guides/GuideSidebar";
+import { GuidePageNav } from "../components/guides/GuidePageNav";
+import { GuideReveal } from "../components/guides/GuideReveal";
+import { ChecklistClient } from "./ChecklistClient";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Documents Checklist — What to Bring to Your Bürgeramt | SimplyExpat",
-  description: "Missing one document means your Bürgeramt appointment fails and you wait weeks for a new one. Here is the exact checklist of what to bring to your Anmeldung.",
+  title: "Anmeldung Document Checklist — What to Bring to the Bürgeramt (2026) · SimplyExpat Berlin",
+  description:
+    "The complete document checklist for your Anmeldung in Germany. Passport, Wohnungsgeberbestätigung, and the German-language form are all required — missing one means a failed appointment.",
   alternates: { canonical: `${DOMAIN}/anmeldung-documents` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Anmeldung Documents Checklist — What to Bring to Your Bürgeramt | SimplyExpat",
-    description: "Missing one document means your Bürgeramt appointment fails and you wait weeks for a new one. Here is the exact checklist of what to bring to your Anmeldung.",
+    title: "Anmeldung Document Checklist — What to Bring to the Bürgeramt",
+    description: "Personalised document checklist for your Anmeldung appointment in Germany. Don't get turned away.",
     url: `${DOMAIN}/anmeldung-documents`,
     siteName: "SimplyExpat Berlin",
-    locale: "en_US",
     type: "article",
   },
 };
 
-function CheckIcon() {
-  return (
-    <div style={{ width: 24, height: 24, borderRadius: 7, background: "#f0fdf4", border: "1.5px solid #86efac", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M2 6l2.8 2.8 5.2-5.2" stroke="#16a34a" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    </div>
-  );
-}
-
 export default function AnmeldungDocuments() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "Anmeldung Documents Checklist — What to Bring to Your Bürgeramt",
-    description: "Missing one document means your Bürgeramt appointment fails and you wait weeks for a new one.",
-    url: `${DOMAIN}/anmeldung-documents`,
-    publisher: { "@type": "Organization", name: "SimplyExpat Berlin", url: DOMAIN },
-    inLanguage: "en",
-    datePublished: "2026-05-08",
-    dateModified: "2026-05-08",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: "Anmeldung Document Checklist — What to Bring to the Bürgeramt",
+        description: "The complete document checklist for the Anmeldung in Germany, with situation-specific additions for non-EU citizens, married couples, and families.",
+        author: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        datePublished: "2026-05-01",
+        dateModified: "2026-05-14",
+        mainEntityOfPage: `${DOMAIN}/anmeldung-documents`,
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          { "@type": "Question", name: "What documents do I need for the Anmeldung in Germany?", acceptedAnswer: { "@type": "Answer", text: "Three documents are always required: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens must also bring a current visa or residence permit. Married couples need a marriage certificate; families registering children need a birth certificate for each child." } },
+          { "@type": "Question", name: "Does the Anmeldung form need to be in German?", acceptedAnswer: { "@type": "Answer", text: "Yes. All 54 fields of the Anmeldeformular must be completed in German. Country names, occupations, and titles must be translated. The clerk will not translate for you at the counter — any English entries are grounds for rejection." } },
+          { "@type": "Question", name: "Can I submit the Anmeldeformular digitally or on my phone?", acceptedAnswer: { "@type": "Answer", text: "No. The Anmeldeformular must be printed on paper and signed by hand (wet ink) after printing. Showing the form on a phone screen is not accepted. Sign the form as the last step before you leave home — signing before printing is also rejected." } },
+          { "@type": "Question", name: "What happens if I bring the wrong documents to my Bürgeramt appointment?", acceptedAnswer: { "@type": "Answer", text: "The clerk will turn you away on the spot. You lose your appointment slot and must re-book — which in most German cities means waiting weeks. There are no exceptions and no coming back in an hour. Check your documents the night before and again in the morning." } },
+          { "@type": "Question", name: "Is the Wohnungsgeberbestätigung the same as my rental contract?", acceptedAnswer: { "@type": "Answer", text: "No. The Wohnungsgeberbestätigung is a separate one-page form that your landlord or main tenant must sign, confirming your move-in date. In normal circumstances, a rental contract alone is not accepted as a substitute. Your landlord is legally required to provide it under §19 Bundesmeldegesetz." } },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        name: "Documents required for the Anmeldung in Germany",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Valid passport or EU national ID" },
+          { "@type": "ListItem", position: 2, name: "Wohnungsgeberbestätigung (landlord confirmation form)" },
+          { "@type": "ListItem", position: 3, name: "Completed Anmeldeformular in German" },
+          { "@type": "ListItem", position: 4, name: "Current visa or residence permit (non-EU only)" },
+          { "@type": "ListItem", position: 5, name: "Marriage certificate (if married)" },
+          { "@type": "ListItem", position: 6, name: "Birth certificate for each child (if registering children)" },
+        ],
+      },
+    ],
   };
 
   return (
-    <div style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: 0, padding: 0, background: "white", minHeight: "100vh", overflowX: "hidden" }}>
+    <div className="shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <style>{`
-        .guide-h1 { font-size: 44px; }
-        .guide-wrap { display: flex; gap: 40px; align-items: flex-start; max-width: 1060px; margin: 0 auto; padding: 56px 40px 80px; }
-        .guide-main { flex: 1; min-width: 0; }
-        .guide-sidebar-el { display: block; }
-        @media(max-width:860px){ .guide-sidebar-el { display: none !important; } }
-        @media(max-width:640px){
-          .guide-h1 { font-size: 28px !important; }
-          .guide-wrap { padding: 36px 18px 60px !important; }
-          .guide-hero-pad { padding: 48px 18px 44px !important; }
-          .guide-cta { padding: 36px 22px !important; }
-        }
-      `}</style>
+      <GuideReveal />
+      <GuideSidebar activeId="checklist" />
 
-      <SharedNav currentPage="anmeldung-documents" />
-
-      {/* Hero */}
-      <div className="guide-hero-pad" style={{ background: "linear-gradient(140deg,#f0fdf4 0%,#f8fafc 55%,#eef5ff 100%)", borderBottom: "1px solid #e8ecf4", padding: "64px 40px 56px" }}>
-        <div style={{ maxWidth: 760, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 999, padding: "4px 13px", marginBottom: 22 }}>
-            <span style={{ color: "#dc2626", fontSize: 11.5, fontWeight: 700 }}>Do Not Miss a Single Item</span>
+      <main className="main">
+        {/* Hero */}
+        <section className="hero" style={{ backgroundImage: "url('/hero-documents.jpg')" }}>
+          <div className="wrap">
+            <div className="crumbs">
+              <a href="/what-is-anmeldung">Guides</a>
+              <span className="sep">→</span>
+              <span className="here">Document Checklist</span>
+            </div>
+            <span className="pill warn"><span className="dot" />Guide 03 · Document Checklist</span>
+            <h1 className="hero-title">
+              Show up missing one document and they send you home.
+              <span className="accent">Here is the exact list.</span>
+            </h1>
+            <p className="lede">The complete checklist of what to bring to your <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>Bürgeramt appointment</a>. Tick them off as you prepare. New to this? Start with <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>guide 01 — What is Anmeldung</a>.</p>
           </div>
-          <h1 className="guide-h1" style={{ fontWeight: 900, color: "#0f172a", lineHeight: 1.1, marginBottom: 18, letterSpacing: "-0.03em" }}>
-            Show up missing one<br />document and they send<br />you home.
-          </h1>
-          <p style={{ fontSize: 17, color: "#475569", lineHeight: 1.7, maxWidth: 620, margin: 0 }}>
-            Here is the exact checklist of what to bring to your Bürgeramt appointment — and what happens if you arrive without it.
-          </p>
-        </div>
-      </div>
+        </section>
 
-      {/* Content */}
-      <div className="guide-wrap">
-      <div className="guide-main">
-
-        {/* Required for everyone */}
-        <div style={{ marginBottom: 48 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "4px 12px", marginBottom: 16 }}>
-            <span style={{ color: "#dc2626", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>Required — Everyone</span>
+        {/* 01 · Personalised checklist */}
+        <section className="section" style={{ paddingTop: 24 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · Personalised checklist</div>
+              <h2 className="h2">Tell us your <span className="accent">situation.</span></h2>
+              <p className="section-sub">Select every chip that applies and the checklist updates instantly. Tick each item as you prepare.</p>
+            </div>
+            <div className="reveal">
+              <ChecklistClient />
+            </div>
           </div>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 18, letterSpacing: "-0.02em" }}>Documents every person must bring</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {[
-              { title: "Valid passport or national ID", body: "EU citizens may use their national identity card. Non-EU citizens must bring their passport — national IDs from outside the EU are not accepted at the Bürgeramt for Anmeldung purposes." },
-              { title: "Wohnungsgeberbestätigung", body: "Your landlord's signed confirmation that you have moved into the address. This is a legally required separate form — your rental contract alone is not accepted. Without it, the appointment ends before it begins." },
-              { title: "Completed Anmeldeformular", body: "The official registration form — all 54 fields completed in German, with every date in DD.MM.YYYY format and every entry correctly translated. You must print it and sign it before you arrive. The clerk will not help you complete it at the counter." },
-            ].map(item => (
-              <div key={item.title} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "18px 20px", borderRadius: 14, border: "1.5px solid #fecaca", background: "#fef2f2" }}>
-                <CheckIcon />
-                <div>
-                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>{item.title}</div>
-                  <p style={{ fontSize: 13.5, color: "#374151", lineHeight: 1.65, margin: 0 }}>{item.body}</p>
+        </section>
+
+        {/* Dark warning */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="darkbox reveal">
+              <div className="eyebrow">No exceptions</div>
+              <h3>If you are missing any document, the clerk will <span className="b">turn you away.</span></h3>
+              <p>No exceptions. No coming back in an hour. You lose your appointment and you start the booking process again — which in most German cities means waiting <strong>weeks</strong> for a new slot. Check your checklist the night before. Check it again in the morning.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 02 · Form pitfalls */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">02 · Why the form is so easy to get wrong</div>
+              <h2 className="h2">The three things that fail <span className="accent">99% of attempts.</span></h2>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 32 }} className="reveal">
+              {[
+                {
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>,
+                  label: "PITFALL 01", title: "Date format",
+                  bad:  { lbl: "✗ US-STYLE — REJECTED",  val: "03/14/1992", note: "MM/DD/YYYY is rejected on the spot. US expats get this wrong more than any other group." },
+                  good: { lbl: "✓ GERMAN — ACCEPTED",    val: "14.03.1992", note: "DD.MM.YYYY with periods. Move-in date, date of birth, document expiries — all of them." },
+                },
+                {
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>,
+                  label: "PITFALL 02", title: "Language — every entry in German",
+                  bad:  { lbl: "✗ ENGLISH — REJECTED",   val: "United States",      note: "Country names, titles, occupations — all must be in German. The clerk will not translate for you." },
+                  good: { lbl: "✓ GERMAN — ACCEPTED",    val: "Vereinigte Staaten", note: "USA · Vereinigte Staaten · Vereinigtes Königreich · Indien · Brasilien · Australien · Kanada" },
+                },
+                {
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 21l3-9 11-11 4 4-11 11z"/></svg>,
+                  label: "PITFALL 03", title: "Signature timing",
+                  bad:  { lbl: "✗ PRE-SIGNED PRINT — REJECTED", val: "Sign → print → bring", note: "Do not sign on screen, then print. The clerk will reject any pre-signed printed form. They want a wet ink signature on paper." },
+                  good: { lbl: "✓ PRINT FIRST — ACCEPTED",       val: "Print → sign → bring", note: "Print the form, then sign with a pen at the Datum / Unterschrift field. Wet ink, last step before you leave the house." },
+                },
+              ].map((p) => (
+                <div key={p.label}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 14 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 10, background: "var(--rose-tint)", color: "var(--rose)", display: "grid", placeItems: "center" }}>{p.icon}</div>
+                    <div>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "var(--rose)", letterSpacing: ".14em" }}>{p.label}</div>
+                      <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.015em" }}>{p.title}</div>
+                    </div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                    <div style={{ padding: 22, borderRadius: 16, border: "1.5px solid #fecdd3", background: "var(--rose-tint)" }}>
+                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 800, color: "var(--rose)", letterSpacing: ".14em" }}>{p.bad.lbl}</div>
+                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 22, fontWeight: 700, marginTop: 8, color: "var(--ink)" }}>{p.bad.val}</div>
+                      <div style={{ color: "var(--ink-2)", fontSize: 13.5, marginTop: 10, lineHeight: 1.5 }}>{p.bad.note}</div>
+                    </div>
+                    <div style={{ padding: 22, borderRadius: 16, border: "1.5px solid var(--green-bd)", background: "var(--green-tint)" }}>
+                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 800, color: "var(--green)", letterSpacing: ".14em" }}>{p.good.lbl}</div>
+                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 22, fontWeight: 700, marginTop: 8, color: "var(--ink)" }}>{p.good.val}</div>
+                      <div style={{ color: "var(--ink-2)", fontSize: 13.5, marginTop: 10, lineHeight: 1.5 }}>{p.good.note}</div>
+                    </div>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Callouts */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div className="callout warn reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+              <div>
+                <div className="h">The religion field — Religionsgesellschaft</div>
+                <div className="p">Triggers Kirchensteuer (~8–9% of income tax) if you declare a recognised denomination. Leave it blank or write <strong>OA</strong> (Ohne Angabe) to opt out — no negative consequences. <a href="/what-is-anmeldung#sec-religion" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Full explainer in guide 01 →</a> Non-EU citizens: also see <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 02</a> for why online Anmeldung is not available to you and what to do instead.</div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Situation-specific */}
-        <div style={{ marginBottom: 48 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 8, padding: "4px 12px", marginBottom: 16 }}>
-            <span style={{ color: "#92400e", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>Required — Situation Dependent</span>
-          </div>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 18, letterSpacing: "-0.02em" }}>Additional documents by situation</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {[
-              { situation: "Non-EU citizens", title: "Current visa or residence permit (Aufenthaltstitel)", body: "Bring your passport plus your current visa or residence permit. If you do not yet have a residence permit, bring your entry visa. Register as early as possible — your Anmeldebestätigung is required for the residence permit application." },
-              { situation: "Married", title: "Marriage certificate", body: "A certified German translation is ideal. In practice, Berlin Bürgerämter often accept English-language certificates — but this varies by office. Call your specific Bürgeramt to confirm before your appointment." },
-              { situation: "Registering children", title: "Birth certificate for each child", body: "Original or certified copy. If the document is not in German, bring a certified translation." },
-              { situation: "Registering multiple people", title: "One Anmeldeformular per two people", body: "The form fits two people per sheet. For three or more people, you need multiple completed sheets — one per pair. Each sheet must be fully filled and signed separately." },
-            ].map(item => (
-              <div key={item.title} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "18px 20px", borderRadius: 14, border: "1.5px solid #fde68a", background: "#fffbeb" }}>
-                <CheckIcon />
-                <div>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#92400e", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 4 }}>{item.situation}</div>
-                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>{item.title}</div>
-                  <p style={{ fontSize: 13.5, color: "#374151", lineHeight: 1.65, margin: 0 }}>{item.body}</p>
-                </div>
+            </div>
+            <div className="callout info reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M9 16h2"/></svg></div>
+              <div>
+                <div className="h">Before your appointment: label your letterbox</div>
+                <div className="p">Add your surname to your <strong>Briefkasten</strong> (letterbox) before your appointment. Your Steuer-ID and all official mail will be sent to your registered address — in Germany, mail is not delivered to unlabelled letterboxes.</div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Warning */}
-        <div style={{ marginBottom: 48, padding: "22px 26px", background: "#fef2f2", border: "2px solid #ef4444", borderRadius: 18 }}>
-          <div style={{ fontWeight: 900, color: "#b91c1c", fontSize: 17, marginBottom: 10 }}>If you are missing any document, the clerk will turn you away.</div>
-          <p style={{ fontSize: 14.5, color: "#7f1d1d", lineHeight: 1.7, margin: "0 0 10px" }}>
-            No exceptions. No coming back in an hour. You lose your appointment and you start the booking process again — which in Berlin means waiting another 3 to 4 weeks for a new slot.
-          </p>
-          <p style={{ fontSize: 14.5, color: "#7f1d1d", lineHeight: 1.7, margin: 0 }}>
-            Check your checklist the night before. Check it again in the morning.
-          </p>
-        </div>
-
-        {/* Form notes */}
-        <div style={{ marginBottom: 48 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>Why the form is so easy to get wrong</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {[
-              { label: "Date format", body: "Every date must be in DD.MM.YYYY — not MM/DD/YYYY. Move-in date, date of birth, document expiry dates, all of them. One wrong format and the clerk flags the form on the spot. US expats get this wrong more than anyone." },
-              { label: "Language", body: "Every field label is in German and every entry must be in German — country names, titles, all of it. The religion field (Religionsgesellschaft) triggers Kirchensteuer (~8–9% of income tax) if you declare a denomination. Leave it blank or write 'OA' (Ohne Angabe) to opt out — no negative consequences for doing so." },
-              { label: "Signature", body: "Sign the form after printing — at the bottom field (Datum, Unterschrift) — with a pen. Do not sign before printing. The clerk will reject a pre-signed printed form." },
-            ].map(item => (
-              <div key={item.label} style={{ padding: "16px 20px", borderRadius: 12, border: "1.5px solid #e8ecf4", background: "#f8fafc" }}>
-                <div style={{ fontWeight: 800, color: "#0075FF", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 5 }}>{item.label}</div>
-                <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.65, margin: 0 }}>{item.body}</p>
-              </div>
-            ))}
+        {/* FAQ */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">03 · Common questions</div>
+              <h2 className="h2">Quick answers.</h2>
+            </div>
+            <div className="faq reveal">
+              <details><summary>What documents do I need for the Anmeldung in Germany?</summary><div className="ans">Three documents are always required: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a> signed by your landlord. Non-EU citizens must also bring a current visa or residence permit. Married couples need a marriage certificate; families registering children need a birth certificate per child. Use the checklist above to personalise this for your situation.</div></details>
+              <details><summary>Does the Anmeldung form need to be in German?</summary><div className="ans">Yes. All 54 fields of the Anmeldeformular must be completed in German. Country names, occupations, and titles must all be translated. The clerk will not translate for you at the counter — any English entries are grounds for rejection on the spot.</div></details>
+              <details><summary>Can I show the form on my phone at the Bürgeramt?</summary><div className="ans">No. The Anmeldeformular must be printed on paper and signed by hand (wet ink) after printing. Showing the form on a phone screen is not accepted. Sign the form as the last step before you leave home — signing before printing is also rejected by the clerk.</div></details>
+              <details><summary>What happens if I bring the wrong documents?</summary><div className="ans">The clerk turns you away on the spot. You lose your appointment slot and must re-book — which in most German cities means waiting weeks. There are no exceptions and no coming back later. Check the night before. Check again in the morning. See <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 05</a> for how to re-book efficiently.</div></details>
+              <details><summary>Is the Wohnungsgeberbestätigung the same as my rental contract?</summary><div className="ans">No. The Wohnungsgeberbestätigung is a separate one-page form your landlord must sign confirming your move-in date. In normal circumstances, a rental contract alone is not accepted. Your landlord is legally required to provide it under §19 Bundesmeldegesetz. <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Guide 04</a> explains what to do if your landlord is slow or refuses.</div></details>
+            </div>
           </div>
-        </div>
-
-        {/* Form service tip */}
-        <div style={{ marginBottom: 48, padding: "14px 18px", background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: 12 }}>
-          <p style={{ fontSize: 13.5, color: "#1e40af", lineHeight: 1.65, margin: 0 }}>
-            Many expats use an English-language form preparation service for the Anmeldeformular. You answer in English, the service generates a correctly formatted German PDF — every field, every date, every translation handled. It takes around 5 minutes and eliminates the most common reasons appointments fail.
-          </p>
-        </div>
-
-        {/* Letterbox tip */}
-        <div style={{ marginBottom: 48, padding: "18px 22px", background: "#f0fdf4", border: "1.5px solid #86efac", borderRadius: 16, display: "flex", gap: 14, alignItems: "flex-start" }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9, background: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <div>
-            <div style={{ fontWeight: 800, color: "#14532d", fontSize: 14.5, marginBottom: 5 }}>Before your appointment: check your letterbox</div>
-            <p style={{ fontSize: 13.5, color: "#166534", lineHeight: 1.65, margin: 0 }}>
-              Add your surname to your Briefkasten (letterbox) if it is not already there. Your Steuer-ID and all official mail will be sent to your registered address. In Germany, mail is not delivered to unlabelled letterboxes.
-            </p>
-          </div>
-        </div>
+        </section>
 
         {/* CTA */}
-        <div className="guide-cta" style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 20, padding: "44px 40px", textAlign: "center", marginBottom: 32 }}>
-          <h3 style={{ fontSize: 26, fontWeight: 900, color: "white", letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.2 }}>One wrong field means a failed appointment.</h3>
-          <p style={{ fontSize: 15, color: "rgba(191,219,254,0.85)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>
-            SimplyExpat fills every field correctly in German — dates, translations, format. You answer in English. We handle the rest.
-          </p>
-          <p style={{ fontSize: 13.5, color: "rgba(148,163,184,0.9)", marginBottom: 24, fontStyle: "italic" }}>That anxiety? With SimplyExpat, it disappears.</p>
-          <a href="/#wizard/origin" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, textDecoration: "none", letterSpacing: "-0.01em" }}>
-            Prepare My Anmeldung
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-        </div>
-
-        <p style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, textAlign: "center" }}>
-          This page is for general information only. Document requirements may vary by Bürgeramt location. Verify current requirements at berlin.de before your appointment.
-        </p>
-      </div>
-      <GuideSidebar currentPage="anmeldung-documents" />
-      </div>
-      <AppFooter />
+        <section className="final-cta">
+          <div className="wrap">
+            <div className="cta-box reveal">
+              <div className="eye">One wrong field means a failed appointment</div>
+              <h2>SimplyExpat fills every field correctly <span className="b">in German.</span></h2>
+              <p>Dates, translations, format — handled. You answer in English. We generate the print-ready PDF in 5 minutes.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">No payment until the PDF is ready · cancel anytime</div>
+            </div>
+            <GuidePageNav activeId="checklist" />
+            <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

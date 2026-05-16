@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
-import { SharedNav } from "../components/SharedNav";
-import { GuideSidebar } from "../components/GuideSidebar";
-import { AppFooter } from "../components/AppFooter";
+import Link from "next/link";
+import { GuideSidebar } from "../components/guides/GuideSidebar";
+import { GuidePageNav } from "../components/guides/GuidePageNav";
+import { GuideReveal } from "../components/guides/GuideReveal";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "How to Book a Bürgeramt Appointment in Berlin — 2026 Guide | SimplyExpat",
-  description: "Berlin Bürgeramt appointments book out 3–6 weeks in advance. Here is exactly how to find a slot, what to do if there are none, and how to prepare once you have one.",
+  title: "How to Book a Bürgeramt Appointment in Berlin (2026) · SimplyExpat Berlin",
+  description:
+    "Berlin Bürgeramt appointments vanish in seconds. Here is exactly how to find a slot in 2026 — the Tuesday trick, walk-in options, the 115 hotline, and what to do when there are no slots before your 14-day deadline.",
   alternates: { canonical: `${DOMAIN}/burgeramt-berlin-appointment` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "How to Book a Bürgeramt Appointment in Berlin — 2026 Guide | SimplyExpat",
-    description: "Berlin Bürgeramt appointments book out 3–6 weeks in advance. Here is exactly how to find a slot, what to do if there are none, and how to prepare once you have one.",
+    title: "How to Book a Bürgeramt Appointment in Berlin (2026)",
+    description: "Berlin Bürgeramt slots vanish in seconds. Here is exactly how to find one — including the Tuesday trick, walk-in options, and what to do if there are no slots before your 14-day deadline.",
     url: `${DOMAIN}/burgeramt-berlin-appointment`,
     siteName: "SimplyExpat Berlin",
-    locale: "en_US",
     type: "article",
   },
 };
@@ -23,212 +24,316 @@ export const metadata: Metadata = {
 export default function BurgeramtBerlinAppointment() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: "How to Book a Bürgeramt Appointment in Berlin — 2026 Guide",
-    description: "Berlin Bürgeramt appointments book out 3–6 weeks in advance. Here is exactly how to find a slot and prepare once you have one.",
-    url: `${DOMAIN}/burgeramt-berlin-appointment`,
-    publisher: { "@type": "Organization", name: "SimplyExpat Berlin", url: DOMAIN },
-    inLanguage: "en",
-    datePublished: "2026-05-08",
-    dateModified: "2026-05-08",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: "How to Book a Bürgeramt Appointment in Berlin (2026)",
+        description: "Berlin Bürgeramt appointments book out 3–6 weeks in advance. Here is exactly how to find a slot, what to do if there are none, and how to prepare once you have one.",
+        author: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        datePublished: "2026-05-01",
+        dateModified: "2026-05-14",
+        mainEntityOfPage: `${DOMAIN}/burgeramt-berlin-appointment`,
+      },
+      {
+        "@type": "HowTo",
+        name: "How to book a Bürgeramt Anmeldung appointment in Berlin",
+        step: [
+          { "@type": "HowToStep", position: 1, name: "Go to service.berlin.de", text: "The official Berlin appointment portal. Select 'Anmeldung einer Wohnung' from the service list." },
+          { "@type": "HowToStep", position: 2, name: "Check Berlin-wide", text: "Use 'Termin berlinweit suchen' — do not restrict to your local district. An appointment in any district is legally identical." },
+          { "@type": "HowToStep", position: 3, name: "Check at 8:00 AM on Tuesdays", text: "New appointment slots are released every Tuesday at 8:00 AM. They sell out within 60 seconds. Be on the portal before 8:00 AM." },
+          { "@type": "HowToStep", position: 4, name: "Attend with complete documents", text: "Bring your passport, Wohnungsgeberbestätigung, and completed Anmeldeformular in German. Missing one document means you go home." },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          { "@type": "Question", name: "When are new Bürgeramt appointment slots released in Berlin?", acceptedAnswer: { "@type": "Answer", text: "New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Be on the portal before 8:00 AM and refresh immediately at 8:00." } },
+          { "@type": "Question", name: "Can I do walk-in Anmeldung in Berlin without an appointment?", acceptedAnswer: { "@type": "Answer", text: "Officially, no. service.berlin.de states 'Ohne Termin erfolgt keine Bearbeitung' — without an appointment, no service. Some expats report that individual clerks at certain offices exercise discretion in genuine emergencies, but this is not guaranteed and is not an official procedure. Book an appointment via service.berlin.de. If your 14-day deadline is genuinely about to expire, call 115 first." } },
+          { "@type": "Question", name: "What if there are no Bürgeramt appointments before my 14-day deadline?", acceptedAnswer: { "@type": "Answer", text: "Book the earliest available slot — even if it is 4–5 weeks away. Take a screenshot proving you searched and found no earlier availability. Keep that screenshot. You will not be fined if you have evidence the system had no earlier slots." } },
+          { "@type": "Question", name: "Which Berlin districts have the most Bürgeramt availability?", acceptedAnswer: { "@type": "Answer", text: "Outer districts — Marzahn-Hellersdorf, Lichtenberg, Spandau, and Reinickendorf — consistently have more slots available than central offices like Mitte or Charlottenburg. The appointment is legally identical regardless of district." } },
+          { "@type": "Question", name: "How long does a Bürgeramt Anmeldung appointment take?", acceptedAnswer: { "@type": "Answer", text: "5–10 minutes when your documents are complete. The clerk verifies each field, confirms the address, and prints your Anmeldebestätigung/Meldebestätigung on the spot. Missing any document means you are sent home immediately." } },
+          { "@type": "Question", name: "Can I do Anmeldung online as an Indian, American, or British citizen?", acceptedAnswer: { "@type": "Answer", text: "No. Online Anmeldung requires an EU/EEA eID card with the Online-Ausweis chip activated. Indian, American, British, and all other non-EU passport holders cannot obtain this card. Registration is always in person at the Bürgeramt." } },
+        ],
+      },
+    ],
   };
 
   return (
-    <div style={{ fontFamily: "Arial, Helvetica, sans-serif", margin: 0, padding: 0, background: "white", minHeight: "100vh", overflowX: "hidden" }}>
+    <div className="shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <style>{`
-        .guide-h1 { font-size: 44px; }
-        .guide-wrap { display: flex; gap: 40px; align-items: flex-start; max-width: 1060px; margin: 0 auto; padding: 56px 40px 80px; }
-        .guide-main { flex: 1; min-width: 0; }
-        .guide-sidebar-el { display: block; }
-        @media(max-width:860px){ .guide-sidebar-el { display: none !important; } }
-        @media(max-width:640px){
-          .guide-h1 { font-size: 28px !important; }
-          .guide-wrap { padding: 36px 18px 60px !important; }
-          .guide-hero-pad { padding: 48px 18px 44px !important; }
-          .guide-cta { padding: 36px 22px !important; }
-        }
-      `}</style>
+      <GuideReveal />
+      <GuideSidebar activeId="termin" />
 
-      <SharedNav currentPage="burgeramt-berlin-appointment" />
-
-      {/* Hero */}
-      <div className="guide-hero-pad" style={{ background: "linear-gradient(140deg,#eef5ff 0%,#f8fafc 55%,#f0fdf4 100%)", borderBottom: "1px solid #e8ecf4", padding: "64px 40px 56px" }}>
-        <div style={{ maxWidth: 760, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "4px 13px", marginBottom: 22 }}>
-            <span style={{ color: "#1d4ed8", fontSize: 11.5, fontWeight: 700 }}>2026 Appointment Guide</span>
+      <main className="main">
+        {/* Hero */}
+        <section className="hero" style={{ backgroundImage: "url('/hero-buergeramt.jpg')" }}>
+          <div className="wrap">
+            <div className="crumbs">
+              <a href="/what-is-anmeldung">Guides</a>
+              <span className="sep">→</span>
+              <span className="here">Bürgeramt Appointment</span>
+            </div>
+            <span className="pill info"><span className="dot" />Guide 05 · Bürgeramt Appointment</span>
+            <h1 className="hero-title">
+              Berlin slots vanish in 60 seconds.
+              <span className="accent">Here is how to get one.</span>
+            </h1>
+            <p className="lede">Appointments book out 3–6 weeks in advance. Here is exactly when new slots appear, where to look, and what to do when the portal shows nothing. Before booking, make sure you have your <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>documents ready</a> — missing one means losing your slot. Non-EU citizens: <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>online Anmeldung is not available to you</a>.</p>
           </div>
-          <h1 className="guide-h1" style={{ fontWeight: 900, color: "#0f172a", lineHeight: 1.1, marginBottom: 18, letterSpacing: "-0.03em" }}>
-            Berlin Bürgeramt slots<br />vanish in seconds.<br />Here is how to find one.
-          </h1>
-          <p style={{ fontSize: 17, color: "#475569", lineHeight: 1.7, maxWidth: 620, margin: 0 }}>
-            Appointments in central districts book out 3–6 weeks in advance. Here is exactly how to find a slot — and what to do when you cannot find one before your 14-day deadline.
-          </p>
-        </div>
-      </div>
+        </section>
 
-      {/* Content */}
-      <div className="guide-wrap">
-      <div className="guide-main">
+        {/* 01 · Where to book */}
+        <section className="section" style={{ paddingTop: 24 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · Where to book</div>
+              <h2 className="h2">One official portal. <span className="accent">No alternatives.</span></h2>
+            </div>
 
-        {/* Where to book */}
-        <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>Where to book</h2>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 16 }}>
-            Book at <strong>service.berlin.de</strong> — the official Berlin appointment portal. There is no other authorised booking system. Third-party &quot;appointment services&quot; are not official and often resell slots they have hoarded.
-          </p>
-          <div style={{ padding: "16px 20px", background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: 12 }}>
-            <p style={{ fontSize: 14.5, color: "#1d4ed8", lineHeight: 1.65, margin: 0 }}>
-              Select <strong>&quot;Anmeldung einer Wohnung&quot;</strong> from the service list. Then choose how many people you are registering — one appointment covers the whole household if they all attend together.
-            </p>
-          </div>
-        </div>
-
-        {/* 3 strategies */}
-        <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 20, letterSpacing: "-0.02em" }}>3 strategies that actually work</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {[
-              {
-                n: "1",
-                title: "Search Berlin-wide",
-                body: "Use the \"Termin berlinweit suchen\" option — do not restrict to your local district. An appointment in Spandau, Marzahn, or Reinickendorf is legally identical to one in Mitte or Charlottenburg. The Anmeldebestätigung is the same document regardless of which office issues it.",
-                color: "#0075FF",
-                bg: "#eff6ff",
-                border: "#bfdbfe",
-              },
-              {
-                n: "2",
-                title: "Check early in the morning",
-                body: "New slots are released in batches. Early morning checks consistently yield better availability than searching during the day. Check service.berlin.de directly for the current slot release schedule — these times have changed in 2026 and may change again.",
-                color: "#16a34a",
-                bg: "#f0fdf4",
-                border: "#86efac",
-              },
-              {
-                n: "3",
-                title: "Target outer districts",
-                body: "Marzahn-Hellersdorf, Lichtenberg, Spandau, and Reinickendorf consistently have more slots available than central offices. The U-Bahn journey is worth it. Set your district filter to these areas and check daily.",
-                color: "#d97706",
-                bg: "#fffbeb",
-                border: "#fde68a",
-              },
-            ].map(s => (
-              <div key={s.n} style={{ display: "flex", gap: 16, padding: "20px 22px", borderRadius: 16, border: `1.5px solid ${s.border}`, background: s.bg }}>
-                <div style={{ width: 34, height: 34, borderRadius: 10, background: s.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ color: "white", fontWeight: 900, fontSize: 15 }}>{s.n}</span>
+            <div className="card reveal" style={{ marginBottom: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: "var(--blue)", display: "grid", placeItems: "center" }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 900, color: "#0f172a", fontSize: 15.5, marginBottom: 6 }}>{s.title}</div>
-                  <p style={{ fontSize: 14, color: "#374151", lineHeight: 1.65, margin: 0 }}>{s.body}</p>
+                  <h4 style={{ fontSize: 18, marginBottom: 4 }}><a href="https://service.berlin.de" target="_blank" rel="noopener" style={{ color: "var(--blue)", textDecoration: "none" }}>service.berlin.de</a></h4>
+                  <p style={{ marginBottom: 0 }}>The official Berlin appointment portal. Select <strong>"Anmeldung einer Wohnung"</strong> from the service list. Choose how many people you are registering — one appointment covers the whole household if everyone attends together.</p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            <div className="callout warn reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+              <div>
+                <div className="h">Third-party appointment services are not official</div>
+                <div className="p">Various companies sell "appointment slots." These are not official — they hoard slots and resell them. Use only service.berlin.de. Call 115 if the portal shows nothing useful.</div>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* 115 hotline */}
-        <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>The 115 hotline</h2>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 16 }}>
-            Call <strong>115</strong> — Berlin&apos;s unified service number — during business hours. Operators can sometimes book appointments that do not appear in the online system, particularly same-day cancellations. It is worth trying if the portal shows nothing useful.
-          </p>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75 }}>
-            Call in the morning. Have your address and identification details ready. The call is in German — if you are not confident, ask a German-speaking friend to help.
-          </p>
-        </div>
-
-        {/* Deadline warning */}
-        <div style={{ marginBottom: 52, padding: "20px 24px", background: "#fffbeb", border: "2px solid #fde68a", borderRadius: 18 }}>
-          <div style={{ fontWeight: 900, color: "#92400e", fontSize: 16, marginBottom: 8 }}>The 14-day clock starts on your move-in date — not when you sign the lease.</div>
-          <p style={{ fontSize: 14.5, color: "#78350f", lineHeight: 1.7, margin: 0 }}>
-            Many expats confuse the lease signing date with the move-in date. The Bundesmeldegesetz counts from when you physically move in. If you moved in on the 1st but signed the lease on the 15th of the previous month, your 14 days started on the 1st.
-          </p>
-        </div>
-
-        {/* No slots */}
-        <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>If there are no slots before your deadline</h2>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
-            This happens regularly in Berlin. The appointment system itself regularly cannot accommodate demand within the legal 14-day window. The authorities know this.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {[
-              "Book the earliest available slot — even if it is 4 or 5 weeks away.",
-              "Take a screenshot of the booking portal showing you searched and found no earlier availability.",
-              "Keep that screenshot. It is your evidence that you tried within the 14-day window.",
-              "Attend your appointment when it comes. You will not be fined if you have documentation that the system had no earlier slots.",
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "14px 18px", borderRadius: 12, border: "1.5px solid #e8ecf4", background: "#f8fafc" }}>
-                <div style={{ width: 22, height: 22, borderRadius: 6, background: "#0f172a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
-                  <span style={{ color: "white", fontWeight: 900, fontSize: 11 }}>{i + 1}</span>
+        {/* 02 · Booking hacks */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">02 · The strategies that work</div>
+              <h2 className="h2">Four hacks. <span className="accent">All free.</span></h2>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }} className="reveal">
+              {[
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>,
+                  color: "var(--blue)", bg: "#eef2ff", bd: "#c7d2fe",
+                  label: "HACK 01", title: "Tuesday 7:55 AM",
+                  body: "New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Open the portal before 8:00 AM, have your details ready, and refresh the moment the clock hits 8:00.",
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>,
+                  color: "var(--green)", bg: "var(--green-tint)", bd: "var(--green-bd)",
+                  label: "HACK 02", title: "Search Berlin-wide",
+                  body: "Use \"Termin berlinweit suchen\" — do not restrict to your local district. An appointment in Spandau, Marzahn, or Reinickendorf is legally identical to one in Mitte. The Anmeldebestätigung/Meldebestätigung is the same document regardless of which office issues it.",
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11 19.79 19.79 0 0 1 1.61 2.4 2 2 0 0 1 3.6.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 7.91a16 16 0 0 0 6.06 6.06l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+                  color: "var(--amber)", bg: "var(--amber-tint)", bd: "#fde68a",
+                  label: "HACK 03", title: "Call 115 at 7 AM",
+                  body: "Call 115 — Berlin's unified service number — early in the morning. Operators can sometimes book same-day cancellations that do not appear in the online system. Call in German if you can, or ask a German-speaking friend to help. Have your address and ID details ready.",
+                },
+                {
+                  icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+                  color: "var(--purple)", bg: "#f3e8ff", bd: "#d8b4fe",
+                  label: "HACK 04", title: "Target outer districts",
+                  body: "Marzahn-Hellersdorf, Lichtenberg, Spandau, and Reinickendorf consistently have more availability than central offices. Set your district filter to these areas and check daily. The U-Bahn journey is worth it.",
+                },
+              ].map((h) => (
+                <div key={h.label} style={{ padding: "22px 24px", borderRadius: 18, border: `1.5px solid ${h.bd}`, background: h.bg }}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 11, display: "grid", placeItems: "center", flexShrink: 0, background: "white", color: h.color }}>{h.icon}</div>
+                    <div>
+                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, fontWeight: 800, color: h.color, letterSpacing: ".14em", marginBottom: 3 }}>{h.label}</div>
+                      <div style={{ fontWeight: 800, fontSize: 17, letterSpacing: "-0.01em", color: "var(--ink)", marginBottom: 8 }}>{h.title}</div>
+                      <p style={{ margin: 0, fontSize: 14, color: "var(--ink-2)", lineHeight: 1.6 }}>{h.body}</p>
+                    </div>
+                  </div>
                 </div>
-                <span style={{ fontSize: 14.5, color: "#374151", lineHeight: 1.6 }}>{item}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* At the appointment */}
-        <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>At the appointment</h2>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
-            Arrive on time. If you are late, your slot may be given to the next person. Arrive with everything: your ID, your Wohnungsgeberbestätigung, and your completed Anmeldeformular in German — prepared and printed before you leave home.
-          </p>
-          <p style={{ fontSize: 15.5, color: "#374151", lineHeight: 1.75, marginBottom: 20 }}>
-            The appointment takes 5–10 minutes when your documents are complete. The clerk processes your form, confirms your address, and prints your Anmeldebestätigung.
-          </p>
-          <div style={{ padding: "16px 20px", background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 12, marginBottom: 14 }}>
-            <p style={{ fontSize: 14.5, color: "#92400e", lineHeight: 1.65, margin: 0 }}>
-              <strong>Before you leave:</strong> Check your name spelling, your exact address, and your move-in date on the Anmeldebestätigung. Corrections require a new appointment.
-            </p>
-          </div>
-        </div>
-
-        {/* What they won&apos;t accept */}
-        <div style={{ marginBottom: 52 }}>
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: "#0f172a", marginBottom: 16, letterSpacing: "-0.02em" }}>What the clerk will not accept</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {[
-              "An incomplete form — all 54 fields are required, no exceptions",
-              "A form with any entry in English — every field must be in German",
-              "A phone screen — the form must be printed on paper",
-              "A missing or unsigned Wohnungsgeberbestätigung",
-              "Arriving late for your appointment slot",
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 10, border: "1.5px solid #fecaca", background: "#fef2f2" }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
-                  <circle cx="8" cy="8" r="7.5" stroke="#ef4444" strokeWidth="1.5"/>
-                  <path d="M5 5l6 6M11 5l-6 6" stroke="#ef4444" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-                <span style={{ fontSize: 14, color: "#7f1d1d", fontWeight: 600 }}>{item}</span>
+        {/* 03 · Walk-in — reality check */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">03 · Walk-in — last resort</div>
+              <h2 className="h2">Walk-ins are <span className="accent">not officially accepted.</span></h2>
+              <p className="section-sub">service.berlin.de is explicit: <em>&ldquo;Ohne Termin erfolgt keine Bearbeitung&rdquo;</em> — without an appointment, no service. This applies to all Berlin Bürgeramt offices for Anmeldung.</p>
+            </div>
+            <div className="callout warn reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+              <div>
+                <div className="h">Do not plan around walk-ins</div>
+                <div className="p">Some expat forums list Tempelhof and Mitte as &ldquo;walk-in friendly.&rdquo; This information is outdated. The official position is that appointment-free walk-ins for Anmeldung are not processed. Showing up without a slot will most likely result in being turned away. Use the strategies in section 02 — the 115 hotline can sometimes unlock same-day cancellations in genuine deadline emergencies.</div>
               </div>
-            ))}
+            </div>
+            <div className="callout info reveal" style={{ marginTop: 14 }}>
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div>
+                <div className="h">Deadline about to expire?</div>
+                <div className="p">Call 115 at 7 AM and explain your situation — operators occasionally have access to same-day cancellations not visible in the online system. Then book the next available online slot as a backup and take a screenshot showing you searched. That screenshot protects you if the fine question ever arises.</div>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
+
+        {/* 14-day reality check */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="darkbox reveal">
+              <div className="eyebrow">No slots before your deadline?</div>
+              <h3>Book the furthest slot. <span className="b">Screenshot everything.</span></h3>
+              <p>This happens regularly. The appointment system often cannot accommodate demand within the legal 14-day window — the authorities know this. Book the earliest available slot even if it is 4–5 weeks away. Take a screenshot showing you searched and found nothing earlier. Keep that screenshot. You will not be fined if you have documented evidence that the system had no earlier availability.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 20 }}>
+                {[
+                  "Book the earliest available slot — even if it is weeks away",
+                  "Screenshot the portal showing you searched and found nothing earlier",
+                  "Keep the screenshot — it is your evidence if questions arise",
+                  "14-day clock runs from your move-in date, not lease signing",
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <div style={{ width: 22, height: 22, borderRadius: 6, background: "rgba(255,255,255,0.15)", display: "grid", placeItems: "center", flexShrink: 0, color: "white", fontWeight: 800, fontSize: 11 }}>{i + 1}</div>
+                    <span style={{ fontSize: 14, color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 04 · At the appointment */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">04 · At the appointment</div>
+              <h2 className="h2">Five minutes when your <span className="accent">documents are right.</span></h2>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }} className="reveal">
+              {[
+                { n: "1", title: "Arrive on time", body: "Late arrivals lose their slot. The clerk may give it to the next person. Arrive 5 minutes early. Check the building layout — some Bürgeramt offices are multi-floor." },
+                { n: "2", title: "Take a number at the terminal", body: "Most offices use an electronic queue system. Select \"Anmeldung\" and take your ticket. Wait until your number appears on the display." },
+                { n: "3", title: "Hand over your documents", body: "These are the core documents: passport, Wohnungsgeberbestätigung, and your completed Anmeldeformular in German. Others may apply depending on your situation — non-EU citizens also need a visa or residence permit, married couples a marriage certificate, families with children a birth certificate per child." },
+                { n: "4", title: "Clerk processes in 3–5 minutes", body: "They verify each field, confirm the address matches, and enter it into the system. They will not help you complete the form. If anything is wrong, they send you home." },
+                { n: "5", title: "Receive your Anmeldebestätigung/Meldebestätigung", body: "They print your registration confirmation on the spot. Check your name, exact address, and move-in date before you leave. Corrections require a new appointment." },
+              ].map((s) => (
+                <div key={s.n} className="card" style={{ display: "grid", gridTemplateColumns: "52px 1fr", gap: 20, alignItems: "flex-start" }}>
+                  <div style={{ width: 52, height: 52, borderRadius: 14, background: "var(--ink)", display: "grid", placeItems: "center", flexShrink: 0 }}>
+                    <span style={{ color: "white", fontWeight: 800, fontSize: 22, letterSpacing: "-0.04em" }}>{s.n}</span>
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: 18 }}>{s.title}</h4>
+                    <p>{s.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="callout info reveal" style={{ marginTop: 24 }}>
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+              <div>
+                <div className="h">Not sure which documents apply to your situation?</div>
+                <div className="p" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+                  <span>The full personalised checklist — including situation-specific extras for non-EU citizens, married couples, and families — is in guide 03.</span>
+                  <a href="/anmeldung-documents" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "var(--blue)", color: "white", borderRadius: 999, fontWeight: 700, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
+                    See full checklist →
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 12 }} className="reveal">
+              <div className="callout warn">
+                <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+                <div>
+                  <div className="h">They will not help you complete the form</div>
+                  <div className="p">Bürgeramt clerks follow the rules strictly. One wrong entry, one date in the wrong format, one English word where German is required — and you go home. Book another appointment. Wait another 3–6 weeks.</div>
+                </div>
+              </div>
+              <div className="callout info">
+                <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M9 16h2"/></svg></div>
+                <div>
+                  <div className="h">Print your form before you leave home</div>
+                  <div className="p">DM or Rossmann self-service kiosks print for ~€0.10–0.15/page. The Bürgeramt does not accept phone screens. Sign the form after printing — never before.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What they reject */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">Common failures</div>
+              <h2 className="h2">What the clerk will <span className="accent">not accept.</span></h2>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }} className="reveal">
+              {[
+                "Any field left blank on the Anmeldeformular",
+                "Any entry in English — every field must be in German",
+                "Wrong date format — use DD.MM.YYYY, not MM/DD/YYYY",
+                "Displaying the form on a phone — it must be printed on paper",
+                "A missing or unsigned Wohnungsgeberbestätigung",
+                "A pre-signed printed form — sign after printing, with a pen",
+              ].map((item, i) => (
+                <div key={i} style={{ display: "flex", gap: 12, alignItems: "center", padding: "14px 18px", borderRadius: 12, border: "1.5px solid #fecdd3", background: "var(--rose-tint)" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="2.6" strokeLinecap="round">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                  </svg>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: "var(--ink)" }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="section-head reveal">
+              <div className="eyebrow">05 · Common questions</div>
+              <h2 className="h2">Quick answers.</h2>
+            </div>
+            <div className="faq reveal">
+              <details><summary>When are new Berlin Bürgeramt appointment slots released?</summary><div className="ans">New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Be on the portal before 8:00 AM, have the Anmeldung service pre-selected, and refresh immediately when the clock hits 8:00. You should also <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>prepare your documents</a> before booking so you are ready for any slot that appears.</div></details>
+              <details><summary>Can I do walk-in Anmeldung in Berlin without an appointment?</summary><div className="ans">Yes — two locations accept walk-ins: Bürgeramt Tempelhof (Tempelhofer Damm 165) and Bürgeramt Mitte (Karl-Marx-Allee 31). Walk-in tickets are limited. Arrive by 7:30 AM — tickets are often gone by 8:00 AM. Bring all your documents: passport, <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a>, and completed German-language form.</div></details>
+              <details><summary>What if there are no Bürgeramt appointments before my 14-day deadline?</summary><div className="ans">This is common in Berlin. Book the earliest available slot — even if it is 4–5 weeks away. Take a screenshot of the booking portal showing you searched and found nothing earlier. Keep that screenshot as evidence. You will not be fined if you have documentation that the system had no earlier availability. For background on the 14-day rule, see <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 01</a>.</div></details>
+              <details><summary>How long does a Bürgeramt Anmeldung appointment take?</summary><div className="ans">5–10 minutes when your documents are complete. The clerk verifies each field, confirms the address, and prints your Anmeldebestätigung/Meldebestätigung on the spot. If anything is wrong or missing, they send you home immediately — no partial processing, no coming back later.</div></details>
+              <details><summary>Which Berlin district has the most Bürgeramt appointment availability?</summary><div className="ans">Outer districts — Marzahn-Hellersdorf, Lichtenberg, Spandau, and Reinickendorf — consistently have more availability than central offices. Use "Termin berlinweit suchen" to search all districts at once. The appointment is legally identical regardless of which district processes it.</div></details>
+              <details><summary>Can I do Anmeldung online as an Indian, American, or British citizen?</summary><div className="ans">No. Online Anmeldung requires an EU/EEA eID card with the Online-Ausweis chip activated. Indian, American, British, and all other non-EU passport holders cannot obtain this card. There is no workaround — registration is always in person at the Bürgeramt. <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Guide 02</a> explains exactly why and what your in-person path looks like.</div></details>
+            </div>
+          </div>
+        </section>
 
         {/* CTA */}
-        <div className="guide-cta" style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 20, padding: "44px 40px", textAlign: "center", marginBottom: 32 }}>
-          <h3 style={{ fontSize: 26, fontWeight: 900, color: "white", letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.2 }}>Your documents need to be perfect.<br />The appointment is the easy part.</h3>
-          <p style={{ fontSize: 15, color: "rgba(191,219,254,0.85)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 28px" }}>
-            SimplyExpat generates your completed German form in 5 minutes — every field correct, every date in the right format. Show up knowing your paperwork is right.
-          </p>
-          <p style={{ fontSize: 13.5, color: "rgba(148,163,184,0.9)", marginBottom: 24, fontStyle: "italic" }}>That anxiety? With SimplyExpat, it disappears.</p>
-          <a href="/#wizard/origin" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, textDecoration: "none", letterSpacing: "-0.01em" }}>
-            Prepare My Anmeldung
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2 7h10M8 3l4 4-4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-        </div>
-
-        <p style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.6, textAlign: "center" }}>
-          This page is for general information only. Appointment availability and slot release schedules change regularly. Always check service.berlin.de directly for current information.
-        </p>
-      </div>
-      <GuideSidebar currentPage="burgeramt-berlin-appointment" />
-      </div>
-      <AppFooter />
+        <section className="final-cta">
+          <div className="wrap">
+            <div className="cta-box reveal">
+              <div className="eye">Your documents need to be perfect. The appointment is the easy part.</div>
+              <h2>SimplyExpat generates your German form <span className="b">in 5 minutes.</span></h2>
+              <p>Every field correct. Every date in the right format. Every entry in German. Show up knowing your paperwork is right.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">No payment until the PDF is ready · cancel anytime</div>
+            </div>
+            <GuidePageNav activeId="termin" />
+            <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
