@@ -87,7 +87,7 @@ export default function BurgeramtBerlinAppointment() {
               Berlin slots vanish in 60 seconds.
               <span className="accent">Here is how to get one.</span>
             </h1>
-            <p className="lede">Appointments book out 3–6 weeks in advance. Here is exactly when new slots appear, where to look, and what to do when the portal shows nothing. Before booking, make sure you have your <a href="/anmeldung-documents" style={{ color: "var(--red)", fontWeight: 700, textDecoration: "none" }}>documents ready</a> — missing one means losing your slot. Non-EU citizens: <a href="/anmeldung-online-non-eu" style={{ color: "var(--red)", fontWeight: 700, textDecoration: "none" }}>online Anmeldung is not available to you</a>.</p>
+            <p className="lede">Appointments book out 3–6 weeks in advance. Here is exactly when new slots appear, where to look, and what to do when the portal shows nothing. Before booking, make sure you have your <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>documents ready</a> — missing one means losing your slot. Non-EU citizens: <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>online Anmeldung is not available to you</a>.</p>
           </div>
         </section>
 
@@ -101,11 +101,11 @@ export default function BurgeramtBerlinAppointment() {
 
             <div className="card reveal" style={{ marginBottom: 16 }}>
               <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 20, alignItems: "center" }}>
-                <div style={{ width: 52, height: 52, borderRadius: 14, background: "var(--red)", display: "grid", placeItems: "center" }}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: "var(--blue)", display: "grid", placeItems: "center" }}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
                 </div>
                 <div>
-                  <h4 style={{ fontSize: 18, marginBottom: 4 }}><a href="https://service.berlin.de" target="_blank" rel="noopener" style={{ color: "var(--red)", textDecoration: "none" }}>service.berlin.de</a></h4>
+                  <h4 style={{ fontSize: 18, marginBottom: 4 }}><a href="https://service.berlin.de" target="_blank" rel="noopener" style={{ color: "var(--blue)", textDecoration: "none" }}>service.berlin.de</a></h4>
                   <p style={{ marginBottom: 0 }}>The official Berlin appointment portal. Select <strong>"Anmeldung einer Wohnung"</strong> from the service list. Choose how many people you are registering — one appointment covers the whole household if everyone attends together.</p>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export default function BurgeramtBerlinAppointment() {
               {[
                 {
                   icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>,
-                  color: "var(--red)", bg: "#fef2f2", bd: "#fecaca",
+                  color: "var(--blue)", bg: "#eef2ff", bd: "#bfdbfe",
                   label: "HACK 01", title: "Tuesday 7:55 AM",
                   body: "New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Open the portal before 8:00 AM, have your details ready, and refresh the moment the clock hits 8:00.",
                 },
@@ -253,7 +253,7 @@ export default function BurgeramtBerlinAppointment() {
                 <div className="h">Not sure which documents apply to your situation?</div>
                 <div className="p" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
                   <span>The full personalised checklist — including situation-specific extras for non-EU citizens, married couples, and families — is in guide 03.</span>
-                  <a href="/anmeldung-documents" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "var(--red)", color: "white", borderRadius: 999, fontWeight: 700, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
+                  <a href="/anmeldung-documents" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", background: "var(--blue)", color: "white", borderRadius: 999, fontWeight: 700, fontSize: 13, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
                     See full checklist →
                   </a>
                 </div>
@@ -314,12 +314,12 @@ export default function BurgeramtBerlinAppointment() {
               <h2 className="h2">Quick answers.</h2>
             </div>
             <div className="faq reveal">
-              <details><summary>When are new Berlin Bürgeramt appointment slots released?</summary><div className="ans">New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Be on the portal before 8:00 AM, have the Anmeldung service pre-selected, and refresh immediately when the clock hits 8:00. You should also <a href="/anmeldung-documents" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>prepare your documents</a> before booking so you are ready for any slot that appears.</div></details>
-              <details><summary>Can I do walk-in Anmeldung in Berlin without an appointment?</summary><div className="ans">Yes — two locations accept walk-ins: Bürgeramt Tempelhof (Tempelhofer Damm 165) and Bürgeramt Mitte (Karl-Marx-Allee 31). Walk-in tickets are limited. Arrive by 7:30 AM — tickets are often gone by 8:00 AM. Bring all your documents: passport, <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a>, and completed German-language form.</div></details>
-              <details><summary>What if there are no Bürgeramt appointments before my 14-day deadline?</summary><div className="ans">This is common in Berlin. Book the earliest available slot — even if it is 4–5 weeks away. Take a screenshot of the booking portal showing you searched and found nothing earlier. Keep that screenshot as evidence. You will not be fined if you have documentation that the system had no earlier availability. For background on the 14-day rule, see <a href="/what-is-anmeldung" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>guide 01</a>.</div></details>
+              <details><summary>When are new Berlin Bürgeramt appointment slots released?</summary><div className="ans">New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Be on the portal before 8:00 AM, have the Anmeldung service pre-selected, and refresh immediately when the clock hits 8:00. You should also <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>prepare your documents</a> before booking so you are ready for any slot that appears.</div></details>
+              <details><summary>Can I do walk-in Anmeldung in Berlin without an appointment?</summary><div className="ans">Yes — two locations accept walk-ins: Bürgeramt Tempelhof (Tempelhofer Damm 165) and Bürgeramt Mitte (Karl-Marx-Allee 31). Walk-in tickets are limited. Arrive by 7:30 AM — tickets are often gone by 8:00 AM. Bring all your documents: passport, <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a>, and completed German-language form.</div></details>
+              <details><summary>What if there are no Bürgeramt appointments before my 14-day deadline?</summary><div className="ans">This is common in Berlin. Book the earliest available slot — even if it is 4–5 weeks away. Take a screenshot of the booking portal showing you searched and found nothing earlier. Keep that screenshot as evidence. You will not be fined if you have documentation that the system had no earlier availability. For background on the 14-day rule, see <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 01</a>.</div></details>
               <details><summary>How long does a Bürgeramt Anmeldung appointment take?</summary><div className="ans">5–10 minutes when your documents are complete. The clerk verifies each field, confirms the address, and prints your Anmeldebestätigung/Meldebestätigung on the spot. If anything is wrong or missing, they send you home immediately — no partial processing, no coming back later.</div></details>
               <details><summary>Which Berlin district has the most Bürgeramt appointment availability?</summary><div className="ans">Outer districts — Marzahn-Hellersdorf, Lichtenberg, Spandau, and Reinickendorf — consistently have more availability than central offices. Use "Termin berlinweit suchen" to search all districts at once. The appointment is legally identical regardless of which district processes it.</div></details>
-              <details><summary>Can I do Anmeldung online as an Indian, American, or British citizen?</summary><div className="ans">No. Online Anmeldung requires an EU/EEA eID card with the Online-Ausweis chip activated. Indian, American, British, and all other non-EU passport holders cannot obtain this card. There is no workaround — registration is always in person at the Bürgeramt. <a href="/anmeldung-online-non-eu" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Guide 02</a> explains exactly why and what your in-person path looks like.</div></details>
+              <details><summary>Can I do Anmeldung online as an Indian, American, or British citizen?</summary><div className="ans">No. Online Anmeldung requires an EU/EEA eID card with the Online-Ausweis chip activated. Indian, American, British, and all other non-EU passport holders cannot obtain this card. There is no workaround — registration is always in person at the Bürgeramt. <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Guide 02</a> explains exactly why and what your in-person path looks like.</div></details>
             </div>
           </div>
         </section>

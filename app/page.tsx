@@ -2060,7 +2060,7 @@ export default function BerlinButler() {
         @keyframes POP{0%{transform:scale(0.94);opacity:0}100%{transform:scale(1);opacity:1}}
         .pop{animation:POP 0.22s cubic-bezier(0.34,1.56,0.64,1)}
         input,select,textarea{font-family:inherit;outline:none;transition:border-color 0.15s,box-shadow 0.15s;-webkit-appearance:none;appearance:none;font-size:16px}
-        input:focus,select:focus{border-color:#dc2626!important;box-shadow:0 0 0 3px rgba(37,99,235,0.12)!important}
+        input:focus,select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,0.12)!important}
         input::placeholder{color:#cbd5e1}
         ::-webkit-scrollbar{width:4px}
         ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:2px}
@@ -2082,7 +2082,7 @@ export default function BerlinButler() {
         .wizard-main-pad{padding:44px 56px 80px}
         .done-layout{display:flex;gap:0;min-height:100vh}
         .done-main{flex:1;min-width:0;padding:28px 32px 100px}
-        .done-sidebar{width:320px;flex-shrink:0;background:#1a0505;padding:0;display:flex;flex-direction:column}
+        .done-sidebar{width:320px;flex-shrink:0;background:#0f172a;padding:0;display:flex;flex-direction:column}
         .done-sidebar-sticky{position:sticky;top:0;height:100vh;overflow-y:auto}
         .wizard-max{max-width:720px}
         .landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}.hero-grid{display:grid;grid-template-columns:1fr 420px;gap:56px;align-items:center}
@@ -2131,18 +2131,18 @@ export default function BerlinButler() {
       {/* Thin progress bar */}
       {isWizard && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, background: "#e8ecf4", zIndex: 50 }}>
-          <div style={{ height: "100%", background: anxiety < 31 ? "#f59e0b" : anxiety < 91 ? "#DD0000" : "#22c55e", transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)", width: `${anxiety}%`, boxShadow: "0 0 8px rgba(221,0,0,0.35)" }} />
+          <div style={{ height: "100%", background: anxiety < 31 ? "#f59e0b" : anxiety < 91 ? "#0075FF" : "#22c55e", transition: "width 0.6s cubic-bezier(0.34,1.56,0.64,1)", width: `${anxiety}%`, boxShadow: "0 0 8px rgba(0,117,255,0.35)" }} />
         </div>
       )}
 
       {!mounted ? (
         <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ textAlign: "center" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#1a0505,#DD0000)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
             </div>
             <div style={{ width: 80, height: 4, borderRadius: 99, background: "#e8ecf4", margin: "0 auto", overflow: "hidden", position: "relative" }}>
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#DD0000,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#0075FF,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
             </div>
           </div>
         </div>
@@ -2160,11 +2160,11 @@ export default function BerlinButler() {
         <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc" }}>
           <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           <div style={{ textAlign: "center", padding: "0 20px" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#1a0505,#DD0000)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>S</span>
             </div>
-            <div style={{ width: 24, height: 24, border: "3px solid #e8ecf4", borderTopColor: "#DD0000", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
-            <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 17, marginBottom: 6 }}>
+            <div style={{ width: 24, height: 24, border: "3px solid #e8ecf4", borderTopColor: "#0075FF", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
+            <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 17, marginBottom: 6 }}>
               {genStatus || "Generating your documents…"}
             </div>
             <p style={{ color: "#64748b", fontSize: 13 }}>Payment confirmed. Please keep this tab open.</p>
@@ -2223,11 +2223,11 @@ function BureaucracyBattleIllustration() {
       {/* ── Background glow ── */}
       <defs>
         <radialGradient id="bgGlow" cx="50%" cy="55%" r="50%">
-          <stop offset="0%" stopColor="#fff5f5" stopOpacity="0.8" />
+          <stop offset="0%" stopColor="#eff6ff" stopOpacity="0.8" />
           <stop offset="100%" stopColor="#f8fafc" stopOpacity="0" />
         </radialGradient>
         <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#DD0000" floodOpacity="0.12" />
+          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#0075FF" floodOpacity="0.12" />
         </filter>
       </defs>
       <ellipse cx="210" cy="340" rx="160" ry="22" fill="#e8ecf4" opacity="0.6" />
@@ -2235,36 +2235,36 @@ function BureaucracyBattleIllustration() {
 
       {/* ══ MONSTER (right side) — Bureaucracy Dragon ══ */}
       {/* Body */}
-      <ellipse cx="290" cy="210" rx="72" ry="85" fill="#dc2626" opacity="0.92" />
+      <ellipse cx="290" cy="210" rx="72" ry="85" fill="#2563eb" opacity="0.92" />
       {/* Belly */}
-      <ellipse cx="290" cy="225" rx="44" ry="55" fill="#fca5a5" opacity="0.7" />
+      <ellipse cx="290" cy="225" rx="44" ry="55" fill="#93c5fd" opacity="0.7" />
       {/* Head */}
-      <ellipse cx="290" cy="118" rx="52" ry="46" fill="#dc2626" />
+      <ellipse cx="290" cy="118" rx="52" ry="46" fill="#2563eb" />
       {/* Horns */}
-      <polygon points="265,80 258,52 275,78" fill="#b91c1c" />
-      <polygon points="315,80 322,52 305,78" fill="#b91c1c" />
+      <polygon points="265,80 258,52 275,78" fill="#1d4ed8" />
+      <polygon points="315,80 322,52 305,78" fill="#1d4ed8" />
       {/* Eyes — angry */}
       <ellipse cx="275" cy="112" rx="9" ry="10" fill="white" />
       <ellipse cx="305" cy="112" rx="9" ry="10" fill="white" />
       <ellipse cx="278" cy="114" rx="5" ry="6" fill="#111111" />
       <ellipse cx="308" cy="114" rx="5" ry="6" fill="#111111" />
       {/* Angry eyebrows */}
-      <line x1="266" y1="102" x2="284" y2="107" stroke="#7f1d1d" strokeWidth="3" strokeLinecap="round" />
-      <line x1="314" y1="102" x2="296" y2="107" stroke="#7f1d1d" strokeWidth="3" strokeLinecap="round" />
+      <line x1="266" y1="102" x2="284" y2="107" stroke="#1e3a8a" strokeWidth="3" strokeLinecap="round" />
+      <line x1="314" y1="102" x2="296" y2="107" stroke="#1e3a8a" strokeWidth="3" strokeLinecap="round" />
       {/* Mouth */}
-      <path d="M272 130 Q290 145 308 130" stroke="#7f1d1d" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M272 130 Q290 145 308 130" stroke="#1e3a8a" strokeWidth="3" fill="none" strokeLinecap="round" />
       {/* Teeth */}
       <polygon points="278,130 283,142 273,142" fill="white" />
       <polygon points="290,133 295,145 285,145" fill="white" />
       <polygon points="302,130 307,142 297,142" fill="white" />
       {/* Wings */}
-      <path d="M360,150 Q400,100 390,60 Q370,120 345,145 Z" fill="#fca5a5" opacity="0.8" />
-      <path d="M360,150 Q400,100 390,60" stroke="#dc2626" strokeWidth="2" fill="none" />
+      <path d="M360,150 Q400,100 390,60 Q370,120 345,145 Z" fill="#93c5fd" opacity="0.8" />
+      <path d="M360,150 Q400,100 390,60" stroke="#2563eb" strokeWidth="2" fill="none" />
       {/* Tail */}
-      <path d="M290,290 Q330,320 320,355 Q305,340 300,360 Q295,335 275,340 Q290,320 290,290" fill="#b91c1c" />
+      <path d="M290,290 Q330,320 320,355 Q305,340 300,360 Q295,335 275,340 Q290,320 290,290" fill="#1d4ed8" />
       {/* Claws */}
-      <path d="M250,280 Q235,295 228,310" stroke="#b91c1c" strokeWidth="4" strokeLinecap="round" fill="none" />
-      <path d="M240,288 Q222,298 218,315" stroke="#b91c1c" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <path d="M250,280 Q235,295 228,310" stroke="#1d4ed8" strokeWidth="4" strokeLinecap="round" fill="none" />
+      <path d="M240,288 Q222,298 218,315" stroke="#1d4ed8" strokeWidth="3" strokeLinecap="round" fill="none" />
 
       {/* ── FORMS floating around monster ── */}
       {/* Form 1 — tilted */}
@@ -2273,13 +2273,13 @@ function BureaucracyBattleIllustration() {
         <rect x="325" y="163" width="26" height="2.5" rx="1" fill="#94a3b8" />
         <rect x="325" y="169" width="20" height="2.5" rx="1" fill="#94a3b8" />
         <rect x="325" y="175" width="24" height="2.5" rx="1" fill="#94a3b8" />
-        <rect x="325" y="181" width="16" height="2.5" rx="1" fill="#dc2626" opacity="0.6" />
-        <text x="327" y="196" fontSize="7" fill="#dc2626" fontWeight="700">PFLICHT!</text>
+        <rect x="325" y="181" width="16" height="2.5" rx="1" fill="#2563eb" opacity="0.6" />
+        <text x="327" y="196" fontSize="7" fill="#2563eb" fontWeight="700">PFLICHT!</text>
       </g>
       {/* Stamp */}
       <g transform="rotate(12,350,240)">
-        <rect x="338" y="228" width="28" height="22" rx="3" fill="#fef2f2" stroke="#fca5a5" strokeWidth="1.5" />
-        <text x="342" y="243" fontSize="8" fill="#dc2626" fontWeight="900">ABGELEHNT</text>
+        <rect x="338" y="228" width="28" height="22" rx="3" fill="#eef2ff" stroke="#93c5fd" strokeWidth="1.5" />
+        <text x="342" y="243" fontSize="8" fill="#2563eb" fontWeight="900">ABGELEHNT</text>
       </g>
       {/* Form 2 — floating top right */}
       <g transform="rotate(8,375,90)">
@@ -2287,7 +2287,7 @@ function BureaucracyBattleIllustration() {
         <rect x="363" y="86" width="20" height="2" rx="1" fill="#94a3b8" />
         <rect x="363" y="91" width="16" height="2" rx="1" fill="#94a3b8" />
         <rect x="363" y="96" width="18" height="2" rx="1" fill="#94a3b8" />
-        <text x="362" y="111" fontSize="6" fill="#b91c1c" fontWeight="700">§17 BMG</text>
+        <text x="362" y="111" fontSize="6" fill="#1d4ed8" fontWeight="700">§17 BMG</text>
       </g>
 
       {/* ══ EXPAT (left side) ══ */}
@@ -2296,37 +2296,37 @@ function BureaucracyBattleIllustration() {
       {/* Sword blade — long, glowing blue */}
       <path d="M207,116 L252,68 L257,54 L243,60 L207,116" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1.5" />
       {/* Blade edge glow */}
-      <path d="M210,113 L254,66 L257,54" stroke="#DD0000" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
+      <path d="M210,113 L254,66 L257,54" stroke="#0075FF" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
       {/* Sword guard */}
       <rect x="200" y="110" width="16" height="10" rx="3" fill="#d97706" transform="rotate(-50,208,115)" />
       {/* Sword handle */}
       <rect x="190" y="116" width="22" height="9" rx="4" fill="#78350f" transform="rotate(-50,201,120)" />
       {/* Sword tip glow */}
-      <ellipse cx="252" cy="62" rx="7" ry="7" fill="#DD0000" opacity="0.6" />
+      <ellipse cx="252" cy="62" rx="7" ry="7" fill="#0075FF" opacity="0.6" />
       <ellipse cx="252" cy="62" rx="4" ry="4" fill="white" opacity="0.5" />
 
       {/* Body */}
-      <ellipse cx="120" cy="260" rx="35" ry="50" fill="#1a0505" />
+      <ellipse cx="120" cy="260" rx="35" ry="50" fill="#0f172a" />
       {/* Legs */}
-      <rect x="100" y="295" width="16" height="42" rx="8" fill="#7f1d1d" />
-      <rect x="122" y="295" width="16" height="42" rx="8" fill="#7f1d1d" />
+      <rect x="100" y="295" width="16" height="42" rx="8" fill="#1e3a8a" />
+      <rect x="122" y="295" width="16" height="42" rx="8" fill="#1e3a8a" />
       {/* Shoes */}
       <ellipse cx="108" cy="337" rx="12" ry="6" fill="#111111" />
       <ellipse cx="130" cy="337" rx="12" ry="6" fill="#111111" />
       {/* Head */}
       <circle cx="120" cy="195" r="28" fill="#fbbf24" />
       {/* Face — determined */}
-      <ellipse cx="112" cy="192" rx="4" ry="5" fill="#1a0505" />
-      <ellipse cx="128" cy="192" rx="4" ry="5" fill="#1a0505" />
+      <ellipse cx="112" cy="192" rx="4" ry="5" fill="#0f172a" />
+      <ellipse cx="128" cy="192" rx="4" ry="5" fill="#0f172a" />
       {/* Determined brow */}
-      <line x1="108" y1="185" x2="116" y2="188" stroke="#1a0505" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="132" y1="185" x2="124" y2="188" stroke="#1a0505" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="108" y1="185" x2="116" y2="188" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="132" y1="185" x2="124" y2="188" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" />
       {/* Smile — confident */}
-      <path d="M110 203 Q120 212 130 203" stroke="#1a0505" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      <path d="M110 203 Q120 212 130 203" stroke="#0f172a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
       {/* Hair */}
-      <path d="M95,190 Q95,165 120,163 Q145,165 145,190" fill="#1a0505" />
+      <path d="M95,190 Q95,165 120,163 Q145,165 145,190" fill="#0f172a" />
       {/* Cape / jacket */}
-      <path d="M90,225 Q75,250 80,290 L100,295 Q95,260 120,245 Q145,260 140,295 L160,290 Q165,250 150,225 Z" fill="#7f1d1d" />
+      <path d="M90,225 Q75,250 80,290 L100,295 Q95,260 120,245 Q145,260 140,295 L160,290 Q165,250 150,225 Z" fill="#1e3a8a" />
 
       {/* ── BATTLE FLASH between them ── */}
       <polygon points="195,165 210,145 215,165 230,150 220,170 240,168 220,180 228,198 210,185 205,205 198,185 180,195 192,178 175,172"
@@ -2390,7 +2390,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
 
   // ── Confidence Score (= form completion 0–100) ───────────────────
   const score = anxiety; // alias — same calc, new framing
-  const ringColor = score < 31 ? "#f59e0b" : score < 91 ? "#DD0000" : "#22c55e";
+  const ringColor = score < 31 ? "#f59e0b" : score < 91 ? "#0075FF" : "#22c55e";
   const confText =
     score < 31 ? "The bureaucracy monster is strong. But you've picked up your weapon — keep going." :
     score < 61 ? "You're cutting through the German paperwork monster. Keep going." :
@@ -2418,7 +2418,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
               <button onClick={() => setConfirmRestart(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>
                 Keep my data
               </button>
-              <button onClick={() => { setConfirmRestart(false); onRestart(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#dc2626", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
+              <button onClick={() => { setConfirmRestart(false); onRestart(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#2563eb", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>
                 Clear & restart
               </button>
             </div>
@@ -2446,7 +2446,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
       )}
       {/* ── Desktop: slim deadline reminder ── */}
       <div className="mob-hide" style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "7px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-        <span style={{ fontSize: 12, color: "#64748b" }}>⏱ <strong style={{ color: "#1a0505" }}>14-day registration deadline</strong> — §17 BMG · Fines up to €1,000 for late registration</span>
+        <span style={{ fontSize: 12, color: "#64748b" }}>⏱ <strong style={{ color: "#0f172a" }}>14-day registration deadline</strong> — §17 BMG · Fines up to €1,000 for late registration</span>
       </div>
 
       {/* ── Mobile: sticky header — two rows, 64px total ── */}
@@ -2461,7 +2461,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           {/* Logo */}
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: 0, flexShrink: 0 }}>
-            <div style={{ width: 22, height: 22, borderRadius: 5, background: "linear-gradient(135deg,#1a0505,#DD0000)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 22, height: 22, borderRadius: 5, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ color: "white", fontSize: 10, fontWeight: 900 }}>S</span>
             </div>
           </button>
@@ -2469,7 +2469,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           {/* Step name — grows to fill */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <span style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1 }}>Step {idx + 1} / {steps.length}</span>
-            <span style={{ fontSize: 13, fontWeight: 800, color: "#1a0505", lineHeight: 1.2, marginTop: 2 }}>{STEP_LABELS[step]}</span>
+            <span style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", lineHeight: 1.2, marginTop: 2 }}>{STEP_LABELS[step]}</span>
           </div>
 
           {/* Ring — 38px */}
@@ -2507,10 +2507,10 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
-            <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#DD0000,#dc2626)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#0075FF,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ color: "white", fontSize: 12, fontWeight: 900 }}>S</span>
             </div>
-            <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>SimplyExpat <span style={{ color: "#DD0000" }}>Berlin</span></span>
+            <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
           </button>
         </div>
 
@@ -2533,7 +2533,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
               </div>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 12.5, lineHeight: 1.3, marginBottom: 4 }}>{confLabel}</div>
+              <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 12.5, lineHeight: 1.3, marginBottom: 4 }}>{confLabel}</div>
               <p style={{ fontSize: 11, color: "#64748b", lineHeight: 1.5 }}>{confText}</p>
             </div>
           </div>
@@ -2583,12 +2583,12 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
                   pushNav("wizard", s);
                 }}
                 disabled={!isDone && !isCur}
-                style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 9px", borderRadius: 9, border: "none", background: isCur ? "#fff5f5" : "transparent", marginBottom: 1, transition: "background 0.15s", textAlign: "left", cursor: (isDone || isCur) ? "pointer" : "default", opacity: (!isDone && !isCur) ? 0.4 : 1 }}>
-                <div style={{ width: 20, height: 20, borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: isCur ? "#dc2626" : isDone ? "#dcfce7" : "#f1f5f9" }}>
+                style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 9px", borderRadius: 9, border: "none", background: isCur ? "#eff6ff" : "transparent", marginBottom: 1, transition: "background 0.15s", textAlign: "left", cursor: (isDone || isCur) ? "pointer" : "default", opacity: (!isDone && !isCur) ? 0.4 : 1 }}>
+                <div style={{ width: 20, height: 20, borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: isCur ? "#2563eb" : isDone ? "#dcfce7" : "#f1f5f9" }}>
                   {isDone ? <Check size={10} color="#16a34a" /> : <span style={{ fontSize: 9, fontWeight: 800, color: isCur ? "white" : "#94a3b8" }}>{i + 1}</span>}
                 </div>
-                <span style={{ fontSize: 12, fontWeight: isCur ? 700 : 500, color: isCur ? "#991b1b" : isDone ? "#16a34a" : "#64748b" }}>{STEP_LABELS[s]}</span>
-                {isCur && <div style={{ marginLeft: "auto", width: 5, height: 5, borderRadius: "50%", background: "#dc2626" }} />}
+                <span style={{ fontSize: 12, fontWeight: isCur ? 700 : 500, color: isCur ? "#1e40af" : isDone ? "#16a34a" : "#64748b" }}>{STEP_LABELS[s]}</span>
+                {isCur && <div style={{ marginLeft: "auto", width: 5, height: 5, borderRadius: "50%", background: "#2563eb" }} />}
               </button>
             );
           })}
@@ -2602,7 +2602,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
               const colors = {
                 tip:  { bg: "#f0fdf4", bd: "#bbf7d0", dot: "#22c55e", tx: "#15803d", label: "TIP" },
                 warn: { bg: "#fffbeb", bd: "#fde68a", dot: "#f59e0b", tx: "#92400e", label: "!" },
-                info: { bg: "#fff5f5", bd: "#fecaca", dot: "#3b82f6", tx: "#b91c1c", label: "i" },
+                info: { bg: "#eff6ff", bd: "#bfdbfe", dot: "#3b82f6", tx: "#1d4ed8", label: "i" },
               }[h.tag];
               return (
                 <div key={i} style={{ marginBottom: 8, padding: "10px 12px", borderRadius: 10, background: colors.bg, border: `1px solid ${colors.bd}` }}>
@@ -2610,7 +2610,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
                     <div style={{ width: 14, height: 14, borderRadius: "50%", background: colors.dot, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                       <span style={{ color: "white", fontSize: 8, fontWeight: 900 }}>{colors.label}</span>
                     </div>
-                    <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 11.5 }}>{h.title}</div>
+                    <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 11.5 }}>{h.title}</div>
                   </div>
                   <p style={{ color: colors.tx, fontSize: 11, lineHeight: 1.55, paddingLeft: 20 }}>{h.tip}</p>
                 </div>
@@ -2637,7 +2637,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           <button
             onClick={() => { setConfirmRestart(true); }}
             style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "10px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "white", color: "#94a3b8", fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#fca5a5"; (e.currentTarget as HTMLButtonElement).style.color = "#ef4444"; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#93c5fd"; (e.currentTarget as HTMLButtonElement).style.color = "#ef4444"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#e2e8f0"; (e.currentTarget as HTMLButtonElement).style.color = "#94a3b8"; }}>
             <RotateCcw size={12} /> Restart & clear data
           </button>
@@ -2656,14 +2656,14 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
             </div>
             <div style={{ display: "flex", gap: 4 }}>
               {steps.map((s, i) => (
-                <div key={s} style={{ width: i === idx ? 20 : 6, height: 6, borderRadius: 99, background: i < idx ? "#22c55e" : i === idx ? "#dc2626" : "#e2e8f0", transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)" }} />
+                <div key={s} style={{ width: i === idx ? 20 : 6, height: 6, borderRadius: 99, background: i < idx ? "#22c55e" : i === idx ? "#2563eb" : "#e2e8f0", transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)" }} />
               ))}
             </div>
           </div>
 
           <div style={{ marginBottom: 24 }}>
             <div style={{ fontSize: 10.5, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 5 }}>Step {idx + 1} of {steps.length}</div>
-            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a0505", letterSpacing: "-0.02em" }}>{STEP_LABELS[step]}</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.02em" }}>{STEP_LABELS[step]}</h1>
           </div>
 
           <div className="mob-card-pad" style={{ background: "white", borderRadius: 20, border: "1px solid #e8ecf4", boxShadow: "0 4px 24px rgba(0,0,0,0.05)", padding: 28, marginBottom: 14 }}>
@@ -2676,9 +2676,9 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
             {step === "review"       && <StepReview      form={form} sheets={sheets} />}
 
             {err && (
-              <div style={{ marginTop: 16, display: "flex", gap: 9, background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 11, padding: "11px 15px" }}>
+              <div style={{ marginTop: 16, display: "flex", gap: 9, background: "#eef2ff", border: "1px solid #bfdbfe", borderRadius: 11, padding: "11px 15px" }}>
                 <AlertCircle size={14} color="#ef4444" style={{ flexShrink: 0, marginTop: 1 }} />
-                <p style={{ color: "#b91c1c", fontSize: 13 }}>{err}</p>
+                <p style={{ color: "#1d4ed8", fontSize: 13 }}>{err}</p>
               </div>
             )}
           </div>
@@ -2691,7 +2691,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
                 </button>
               : <div />}
             <button onClick={next}
-              style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 30px", borderRadius: 13, background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "white", fontWeight: 800, fontSize: 13.5, border: "none", boxShadow: "0 6px 20px rgba(37,99,235,0.35)", transition: "all 0.2s" }}>
+              style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 30px", borderRadius: 13, background: "linear-gradient(135deg,#1e3a8a,#2563eb)", color: "white", fontWeight: 800, fontSize: 13.5, border: "none", boxShadow: "0 6px 20px rgba(37,99,235,0.35)", transition: "all 0.2s" }}>
               {step === "review" ? "Continue to Payment" : "Continue"} <ChevronRight size={15} />
             </button>
           </div>
@@ -2703,7 +2703,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
                 </button>
               : <div />}
             <button onClick={next}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px", borderRadius: 13, background: "linear-gradient(135deg,#7f1d1d,#dc2626)", color: "white", fontWeight: 800, fontSize: 15, border: "none", boxShadow: "0 6px 20px rgba(37,99,235,0.35)", flex: 1 }}>
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px", borderRadius: 13, background: "linear-gradient(135deg,#1e3a8a,#2563eb)", color: "white", fontWeight: 800, fontSize: 15, border: "none", boxShadow: "0 6px 20px rgba(37,99,235,0.35)", flex: 1 }}>
               {step === "review" ? "Continue to Payment" : "Continue"} <ChevronRight size={16} />
             </button>
           </div>
@@ -2728,7 +2728,7 @@ const Lbl = ({ children, req, opt }: { children: React.ReactNode; req?: boolean;
 const Inp = ({ label, req, opt, info, ...p }: { label: string; req?: boolean; opt?: boolean; info?: string } & React.InputHTMLAttributes<HTMLInputElement>) => (
   <div>
     <Lbl req={req} opt={opt}>{label}</Lbl>
-    <input style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#1a0505", background: "white", fontFamily: "inherit" }} {...p} />
+    <input style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#0f172a", background: "white", fontFamily: "inherit" }} {...p} />
     {info && <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 4, lineHeight: 1.5 }}>{info}</p>}
   </div>
 );
@@ -2736,7 +2736,7 @@ const Inp = ({ label, req, opt, info, ...p }: { label: string; req?: boolean; op
 const Sel = ({ label, req, opts, info, ...p }: { label: string; req?: boolean; opts: [string,string][]; info?: string } & React.SelectHTMLAttributes<HTMLSelectElement>) => (
   <div>
     <Lbl req={req}>{label}</Lbl>
-    <select style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#1a0505", background: "white", fontFamily: "inherit", appearance: "none" }} {...p}>
+    <select style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#0f172a", background: "white", fontFamily: "inherit", appearance: "none" }} {...p}>
       <option value="">— Select —</option>
       {opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
     </select>
@@ -2751,7 +2751,7 @@ const R2 = ({ a, b }: { a: React.ReactNode; b: React.ReactNode }) => (
 const IBox = ({ children, type = "info" }: { children: React.ReactNode; type?: "info"|"warn" }) => {
   const c = type === "warn"
     ? { bg: "#fffbeb", bd: "#fde68a", tx: "#78350f", ic: "#d97706" }
-    : { bg: "#fff5f5", bd: "#fecaca", tx: "#b91c1c", ic: "#3b82f6" };
+    : { bg: "#eff6ff", bd: "#bfdbfe", tx: "#1d4ed8", ic: "#3b82f6" };
   return (
     <div style={{ display: "flex", gap: 9, background: c.bg, border: `1px solid ${c.bd}`, borderRadius: 10, padding: "10px 13px", marginTop: 12 }}>
       <Info size={12} color={c.ic} style={{ flexShrink: 0, marginTop: 1 }} />
@@ -2762,10 +2762,10 @@ const IBox = ({ children, type = "info" }: { children: React.ReactNode; type?: "
 
 const SH = ({ icon: Icon, children }: { icon: any; children: React.ReactNode }) => (
   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
-    <div style={{ width: 28, height: 28, borderRadius: 7, background: "#fff5f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <Icon size={13} color="#dc2626" />
+    <div style={{ width: 28, height: 28, borderRadius: 7, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Icon size={13} color="#2563eb" />
     </div>
-    <h3 style={{ fontWeight: 800, color: "#1a0505", fontSize: 15.5 }}>{children}</h3>
+    <h3 style={{ fontWeight: 800, color: "#0f172a", fontSize: 15.5 }}>{children}</h3>
   </div>
 );
 
@@ -2775,8 +2775,8 @@ const TG = ({ value, onChange, options }: { value: string; onChange: (v: string)
       const active = value === v;
       return (
         <button key={v} onClick={() => onChange(v)}
-          style={{ padding: "10px 6px", borderRadius: 9, border: `2px solid ${active ? "#dc2626" : "#e8ecf4"}`, background: active ? "#fff5f5" : "white", fontWeight: active ? 700 : 500, fontSize: 13, color: active ? "#b91c1c" : "#64748b", transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, minHeight: 42 }}>
-          {active && <Check size={11} color="#dc2626" strokeWidth={3} />}
+          style={{ padding: "10px 6px", borderRadius: 9, border: `2px solid ${active ? "#2563eb" : "#e8ecf4"}`, background: active ? "#eff6ff" : "white", fontWeight: active ? 700 : 500, fontSize: 13, color: active ? "#1d4ed8" : "#64748b", transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center", gap: 4, minHeight: 42 }}>
+          {active && <Check size={11} color="#2563eb" strokeWidth={3} />}
           {l}
         </button>
       );
@@ -2811,7 +2811,7 @@ function SearchableSelect({ label, value, onChange, options, placeholder, req, i
           onFocus={() => { setOpen(true); setQuery(""); }}
           onChange={e => { setQuery(e.target.value); if (allowCustom) onChange(e.target.value); }}
           placeholder={placeholder ?? "Search or type..."}
-          style={{ width: "100%", border: `2px solid ${open ? "#DD0000" : "#e8ecf4"}`, borderRadius: 10, padding: "10px 36px 10px 14px", fontSize: 16, color: displayVal ? "#111111" : "#94a3b8", background: "white", fontFamily: "inherit", outline: "none", boxShadow: open ? "0 0 0 3px rgba(221,0,0,0.1)" : "none", transition: "all 0.15s" }}
+          style={{ width: "100%", border: `2px solid ${open ? "#0075FF" : "#e8ecf4"}`, borderRadius: 10, padding: "10px 36px 10px 14px", fontSize: 16, color: displayVal ? "#111111" : "#94a3b8", background: "white", fontFamily: "inherit", outline: "none", boxShadow: open ? "0 0 0 3px rgba(0,117,255,0.1)" : "none", transition: "all 0.15s" }}
         />
         <div style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#94a3b8", fontSize: 10 }}>▼</div>
       </div>
@@ -2822,9 +2822,9 @@ function SearchableSelect({ label, value, onChange, options, placeholder, req, i
           )}
           {filtered.map(opt => (
             <button key={opt} onClick={() => { onChange(opt); setOpen(false); setQuery(""); }}
-              style={{ width: "100%", textAlign: "left", padding: "10px 14px", background: opt === value ? "#f0f7ff" : "white", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13.5, color: opt === value ? "#DD0000" : "#111111", fontWeight: opt === value ? 700 : 400, borderBottom: "1px solid #f1f5f9" }}>
+              style={{ width: "100%", textAlign: "left", padding: "10px 14px", background: opt === value ? "#f0f7ff" : "white", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13.5, color: opt === value ? "#0075FF" : "#111111", fontWeight: opt === value ? 700 : 400, borderBottom: "1px solid #f1f5f9" }}>
               {opt}
-              {opt === value && <Check size={12} color="#DD0000" style={{ float: "right", marginTop: 2 }} />}
+              {opt === value && <Check size={12} color="#0075FF" style={{ float: "right", marginTop: 2 }} />}
             </button>
           ))}
         </div>
@@ -2837,7 +2837,7 @@ function SearchableSelect({ label, value, onChange, options, placeholder, req, i
 // ─── Privacy Toggle component ─────────────────────────────────────
 function HandwrittenToggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div style={{ padding: "12px 14px", borderRadius: 12, background: value ? "#f0f7ff" : "#f8fafc", border: `1.5px solid ${value ? "#DD0000" : "#e8ecf4"}`, transition: "all 0.2s" }}>
+    <div style={{ padding: "12px 14px", borderRadius: 12, background: value ? "#f0f7ff" : "#f8fafc", border: `1.5px solid ${value ? "#0075FF" : "#e8ecf4"}`, transition: "all 0.2s" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 700, color: "#111111", fontSize: 13, marginBottom: 2 }}>
@@ -2848,13 +2848,13 @@ function HandwrittenToggle({ value, onChange }: { value: boolean; onChange: (v: 
           </p>
         </div>
         {/* Toggle pill */}
-        <button onClick={() => onChange(!value)} style={{ flexShrink: 0, width: 44, height: 24, borderRadius: 999, background: value ? "#DD0000" : "#e2e8f0", border: "none", cursor: "pointer", position: "relative", transition: "background 0.2s" }}>
+        <button onClick={() => onChange(!value)} style={{ flexShrink: 0, width: 44, height: 24, borderRadius: 999, background: value ? "#0075FF" : "#e2e8f0", border: "none", cursor: "pointer", position: "relative", transition: "background 0.2s" }}>
           <div style={{ position: "absolute", top: 3, left: value ? 23 : 3, width: 18, height: 18, borderRadius: "50%", background: "white", boxShadow: "0 1px 4px rgba(0,0,0,0.2)", transition: "left 0.2s" }} />
         </button>
       </div>
       {value && (
-        <div style={{ marginTop: 10, padding: "8px 10px", borderRadius: 8, background: "rgba(221,0,0,0.07)", border: "1px solid rgba(221,0,0,0.2)" }}>
-          <p style={{ fontSize: 12, color: "#DD0000", fontWeight: 600 }}>
+        <div style={{ marginTop: 10, padding: "8px 10px", borderRadius: 8, background: "rgba(0,117,255,0.07)", border: "1px solid rgba(0,117,255,0.2)" }}>
+          <p style={{ fontSize: 12, color: "#0075FF", fontWeight: 600 }}>
             Serial number and issue date fields will be left blank — fill them in with a pen after printing.
           </p>
         </div>
@@ -2927,7 +2927,7 @@ function CitizenshipField({ value, onChange, isPrefilled }: {
             </div>
             {i > 0 && (
               <button onClick={() => commitSlots(slots.filter((_, j) => j !== i))}
-                style={{ marginTop: 4, padding: "10px 12px", borderRadius: 9, border: "1.5px solid #fecaca", background: "white", color: "#dc2626", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
+                style={{ marginTop: 4, padding: "10px 12px", borderRadius: 9, border: "1.5px solid #bfdbfe", background: "white", color: "#2563eb", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", flexShrink: 0 }}>
                 ✕
               </button>
             )}
@@ -2935,7 +2935,7 @@ function CitizenshipField({ value, onChange, isPrefilled }: {
         ))}
         {slots.length < 3 && (
           <button onClick={() => setSlots([...slots, ""])}
-            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 14px", borderRadius: 9, border: "1.5px dashed #fecaca", background: "#f8faff", color: "#DD0000", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", alignSelf: "flex-start" }}>
+            style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 14px", borderRadius: 9, border: "1.5px dashed #bfdbfe", background: "#f8faff", color: "#0075FF", fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", alignSelf: "flex-start" }}>
             <Plus size={13} /> Add citizenship
           </button>
         )}
@@ -2981,8 +2981,8 @@ function PersonForm({ person, idx, onChange, showDocuments = false }: {
 
       {showDocuments && (
         <div style={{ background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 12, padding: 16, marginTop: 4 }}>
-          <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 13, marginBottom: 12, display: "flex", alignItems: "center", gap: 7 }}>
-            <FileText size={13} color="#dc2626" /> Identity Document
+          <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 12, display: "flex", alignItems: "center", gap: 7 }}>
+            <FileText size={13} color="#2563eb" /> Identity Document
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
             <R2
@@ -3079,8 +3079,8 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             const isYes = v === "true";
             return (
               <button key={v} onClick={() => { set_("isBerlin", isYes); if (isYes) set_("newCity", "Berlin"); }}
-                style={{ flex: 1, padding: "14px 10px", borderRadius: 12, border: `2px solid ${active ? (isYes ? "#DD0000" : "#94a3b8") : "#e8ecf4"}`, background: active ? (isYes ? "#fff5f5" : "#f8fafc") : "white", fontWeight: active ? 700 : 500, fontSize: 13.5, color: active ? (isYes ? "#DD0000" : "#374151") : "#64748b", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, transition: "all 0.15s" }}>
-                {active && isYes && <Check size={13} color="#DD0000" strokeWidth={3} />}
+                style={{ flex: 1, padding: "14px 10px", borderRadius: 12, border: `2px solid ${active ? (isYes ? "#0075FF" : "#94a3b8") : "#e8ecf4"}`, background: active ? (isYes ? "#eff6ff" : "#f8fafc") : "white", fontWeight: active ? 700 : 500, fontSize: 13.5, color: active ? (isYes ? "#0075FF" : "#374151") : "#64748b", cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, transition: "all 0.15s" }}>
+                {active && isYes && <Check size={13} color="#0075FF" strokeWidth={3} />}
                 {l}
               </button>
             );
@@ -3119,30 +3119,30 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
 
           {/* EU/EEA — positive, accurate, no mention of appointments */}
           {hasOrigin && form.isEU && (
-            <div style={{ marginTop: 10, borderRadius: 13, border: "1px solid #fecaca", overflow: "hidden", boxShadow: "0 2px 12px rgba(221,0,0,0.08)" }}>
-              <div style={{ padding: "14px 16px", background: "#fff5f5", display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <CheckCircle2 size={16} color="#DD0000" style={{ flexShrink: 0, marginTop: 2 }} />
+            <div style={{ marginTop: 10, borderRadius: 13, border: "1px solid #bfdbfe", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,117,255,0.08)" }}>
+              <div style={{ padding: "14px 16px", background: "#eff6ff", display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <CheckCircle2 size={16} color="#0075FF" style={{ flexShrink: 0, marginTop: 2 }} />
                 <div>
-                  <div style={{ fontWeight: 800, color: "#991b1b", fontSize: 13.5, marginBottom: 4 }}>You are in the right place.</div>
-                  <p style={{ color: "#b91c1c", fontSize: 12.5, lineHeight: 1.6 }}>
+                  <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13.5, marginBottom: 4 }}>You are in the right place.</div>
+                  <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6 }}>
                     As an EU/EEA citizen you can actually use Berlin's official online Anmeldung — but it requires a German eID account, which most expats don't have. If that sounds complicated, just book an in-person appointment and we prepare everything: your form filled in German, your personalised document checklist, and your appointment guide.
                   </p>
                 </div>
               </div>
-              <div style={{ padding: "12px 16px", background: "#fee2e2", borderTop: "1px solid #fecaca" }}>
-                <div style={{ fontWeight: 700, color: "#991b1b", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>What we prepare for you:</div>
+              <div style={{ padding: "12px 16px", background: "#dbeafe", borderTop: "1px solid #bfdbfe" }}>
+                <div style={{ fontWeight: 700, color: "#1e40af", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>What we prepare for you:</div>
                 {[
                   { label: "Your Anmeldung, filled in German", note: "All 54 official fields — zero errors, accepted at all 44 Berlin Bürgerämter" },
                   { label: "A personalised checklist", note: "Every document you need based on your exact situation — nothing more, nothing less" },
                   { label: "An expert appointment guide", note: "Step-by-step tips so you walk in confident and walk out registered" },
                 ].map(({ label, note }) => (
                   <div key={label} style={{ display: "flex", gap: 10, marginBottom: 8, alignItems: "flex-start" }}>
-                    <div style={{ width: 18, height: 18, borderRadius: 5, background: "#DD0000", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                    <div style={{ width: 18, height: 18, borderRadius: 5, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
                       <Check size={10} color="white" strokeWidth={3} />
                     </div>
                     <div>
-                      <span style={{ fontWeight: 700, color: "#7f1d1d", fontSize: 12.5 }}>{label}</span>
-                      <span style={{ color: "#b91c1c", fontSize: 12 }}> — {note}</span>
+                      <span style={{ fontWeight: 700, color: "#1e3a8a", fontSize: 12.5 }}>{label}</span>
+                      <span style={{ color: "#1d4ed8", fontSize: 12 }}> — {note}</span>
                     </div>
                   </div>
                 ))}
@@ -3200,18 +3200,18 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             onClick={() => set_("furtherAddresses", form.furtherAddresses === "ja" ? "nein" : "ja")}
             style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 13px", background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 9, cursor: "pointer", userSelect: "none" }}>
             {/* Custom checkbox */}
-            <div style={{ width: 18, height: 18, borderRadius: 5, border: `2px solid ${form.furtherAddresses === "ja" ? "#DD0000" : "#cbd5e1"}`, background: form.furtherAddresses === "ja" ? "#DD0000" : "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.15s" }}>
+            <div style={{ width: 18, height: 18, borderRadius: 5, border: `2px solid ${form.furtherAddresses === "ja" ? "#0075FF" : "#cbd5e1"}`, background: form.furtherAddresses === "ja" ? "#0075FF" : "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.15s" }}>
               {form.furtherAddresses === "ja" && <Check size={11} color="white" strokeWidth={3} />}
             </div>
             <span style={{ fontSize: 12.5, color: "#374151", fontWeight: 600 }}>I have additional residences in Germany (Beiblatt required)</span>
           </div>
         </div>
         {form.furtherAddresses === "ja" && (
-          <div style={{ padding: "13px 15px", borderRadius: 11, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 9, alignItems: "flex-start" }}>
-            <AlertCircle size={15} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
+          <div style={{ padding: "13px 15px", borderRadius: 11, background: "#eef2ff", border: "1px solid #bfdbfe", display: "flex", gap: 9, alignItems: "flex-start" }}>
+            <AlertCircle size={15} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
             <div>
-              <div style={{ fontWeight: 700, color: "#991b1b", fontSize: 13, marginBottom: 3 }}>Beiblatt not supported yet</div>
-              <p style={{ color: "#7f1d1d", fontSize: 12.5, lineHeight: 1.6 }}>
+              <div style={{ fontWeight: 700, color: "#1e40af", fontSize: 13, marginBottom: 3 }}>Beiblatt not supported yet</div>
+              <p style={{ color: "#1e3a8a", fontSize: 12.5, lineHeight: 1.6 }}>
                 We currently cannot generate the Beiblatt (supplementary sheet for multiple residences). You will need to fill that form manually. You can still use SimplyExpat for the main Anmeldung — uncheck this box to continue.
               </p>
             </div>
@@ -3233,13 +3233,13 @@ function ZusaetzeField({ value, onChange }: { value: string; onChange: (e: any) 
           Zusätze <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: "0.88em" }}>(optional)</span>
         </label>
         <button onClick={() => setShowInfo(s => !s)}
-          style={{ width: 16, height: 16, borderRadius: "50%", border: "1.5px solid #94a3b8", background: showInfo ? "#DD0000" : "white", color: showInfo ? "white" : "#94a3b8", fontSize: 10, fontWeight: 900, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0 }}>
+          style={{ width: 16, height: 16, borderRadius: "50%", border: "1.5px solid #94a3b8", background: showInfo ? "#0075FF" : "white", color: showInfo ? "white" : "#94a3b8", fontSize: 10, fontWeight: 900, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, flexShrink: 0 }}>
           i
         </button>
       </div>
       {showInfo && (
-        <div style={{ marginBottom: 8, padding: "10px 13px", borderRadius: 10, background: "#fff5f5", border: "1px solid #fecaca" }}>
-          <p style={{ color: "#b91c1c", fontSize: 12.5, lineHeight: 1.6 }}>
+        <div style={{ marginBottom: 8, padding: "10px 13px", borderRadius: 10, background: "#eff6ff", border: "1px solid #bfdbfe" }}>
+          <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6 }}>
             <strong>Zusätze</strong> (additions) are extra address details the Bürgeramt may ask for — for example:<br/>
             <strong>Stockwerk</strong> (floor): e.g. "2. OG" (2nd floor)<br/>
             <strong>Vorderhaus / Hinterhaus</strong>: front or rear building (common in Berlin Altbauten)<br/>
@@ -3252,7 +3252,7 @@ function ZusaetzeField({ value, onChange }: { value: string; onChange: (e: any) 
         value={value}
         onChange={onChange}
         placeholder="e.g. 2. OG, Hinterhaus"
-        style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#1a0505", background: "white", fontFamily: "inherit" }}
+        style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#0f172a", background: "white", fontFamily: "inherit" }}
       />
     </div>
   );
@@ -3350,16 +3350,16 @@ function StepPeople({ form, updPerson, addPerson, removePerson }: {
 
       {/* Sheet allocation preview */}
       {form.people.length > 1 && (
-        <div style={{ padding: "12px 16px", borderRadius: 12, background: "linear-gradient(135deg,#f0f9ff,#fff5f5)", border: "1px solid #fecaca" }}>
-          <div style={{ fontWeight: 700, color: "#991b1b", fontSize: 12.5, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-            <Layers size={13} color="#dc2626" /> {sheets} Anmeldung {sheets === 1 ? "sheet" : "sheets"} will be generated
+        <div style={{ padding: "12px 16px", borderRadius: 12, background: "linear-gradient(135deg,#f0f9ff,#eff6ff)", border: "1px solid #bfdbfe" }}>
+          <div style={{ fontWeight: 700, color: "#1e40af", fontSize: 12.5, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+            <Layers size={13} color="#2563eb" /> {sheets} Anmeldung {sheets === 1 ? "sheet" : "sheets"} will be generated
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {Array.from({ length: sheets }, (_, i) => {
               const p1 = form.people[i * 2];
               const p2 = form.people[i * 2 + 1];
               return (
-                <div key={i} style={{ padding: "4px 10px", borderRadius: 7, background: "white", border: "1px solid #fecaca", fontSize: 11.5, color: "#b91c1c", fontWeight: 600 }}>
+                <div key={i} style={{ padding: "4px 10px", borderRadius: 7, background: "white", border: "1px solid #bfdbfe", fontSize: 11.5, color: "#1d4ed8", fontWeight: 600 }}>
                   Sheet {i + 1}: {[p1?.firstName || "Person " + (i*2+1), p2?.firstName || (p2 !== undefined ? "Person " + (i*2+2) : null)].filter(Boolean).join(" + ")}
                 </div>
               );
@@ -3372,13 +3372,13 @@ function StepPeople({ form, updPerson, addPerson, removePerson }: {
       {form.people.map((person, idx) => (
         <div key={idx} className="person-in" style={{ border: "2px solid #e8ecf4", borderRadius: 16, overflow: "hidden" }}>
           {/* Card header */}
-          <div style={{ padding: "14px 18px", background: idx === 0 ? "linear-gradient(135deg,#991b1b,#dc2626)" : "#f8fafc", borderBottom: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ padding: "14px 18px", background: idx === 0 ? "linear-gradient(135deg,#1e40af,#2563eb)" : "#f8fafc", borderBottom: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <div style={{ width: 26, height: 26, borderRadius: 7, background: idx === 0 ? "rgba(255,255,255,0.25)" : "#fff5f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <User size={13} color={idx === 0 ? "white" : "#dc2626"} />
+              <div style={{ width: 26, height: 26, borderRadius: 7, background: idx === 0 ? "rgba(255,255,255,0.25)" : "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <User size={13} color={idx === 0 ? "white" : "#2563eb"} />
               </div>
               <div>
-                <div style={{ fontWeight: 800, color: idx === 0 ? "white" : "#1a0505", fontSize: 13.5 }}>
+                <div style={{ fontWeight: 800, color: idx === 0 ? "white" : "#0f172a", fontSize: 13.5 }}>
                   {idx === 0 ? "You (Person 1)" : `Person ${idx + 1}`}
                   {idx > 0 && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 600, color: "#64748b", background: "#f1f5f9", padding: "2px 7px", borderRadius: 999 }}>
                     Sheet {Math.floor(idx / 2) + 1}, Slot {idx % 2 === 0 ? 1 : 2}
@@ -3389,7 +3389,7 @@ function StepPeople({ form, updPerson, addPerson, removePerson }: {
             </div>
             {idx > 0 && (
               <button onClick={() => removePerson(idx)}
-                style={{ display: "flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 7, border: "1.5px solid #fecaca", background: "transparent", color: "#dc2626", fontSize: 12, fontWeight: 600 }}>
+                style={{ display: "flex", alignItems: "center", gap: 5, padding: "5px 10px", borderRadius: 7, border: "1.5px solid #bfdbfe", background: "transparent", color: "#2563eb", fontSize: 12, fontWeight: 600 }}>
                 <Trash2 size={11} /> Remove
               </button>
             )}
@@ -3403,7 +3403,7 @@ function StepPeople({ form, updPerson, addPerson, removePerson }: {
               <div style={{ display: "flex", gap: 7 }}>
                 {([["spouse","Spouse / Partner"],["child","Child"]] as const).map(([v,l]) => (
                   <button key={v} onClick={() => updPerson(idx, "relationship", v)}
-                    style={{ flex: 1, padding: "8px 4px", borderRadius: 8, border: `2px solid ${person.relationship === v ? "#DD0000" : "#e8ecf4"}`, background: person.relationship === v ? "#fff5f5" : "white", fontWeight: person.relationship === v ? 700 : 500, fontSize: 12, color: person.relationship === v ? "#DD0000" : "#64748b", cursor: "pointer", fontFamily: "inherit" }}>
+                    style={{ flex: 1, padding: "8px 4px", borderRadius: 8, border: `2px solid ${person.relationship === v ? "#0075FF" : "#e8ecf4"}`, background: person.relationship === v ? "#eff6ff" : "white", fontWeight: person.relationship === v ? 700 : 500, fontSize: 12, color: person.relationship === v ? "#0075FF" : "#64748b", cursor: "pointer", fontFamily: "inherit" }}>
                     {l}
                   </button>
                 ))}
@@ -3423,9 +3423,9 @@ function StepPeople({ form, updPerson, addPerson, removePerson }: {
       {/* Add person button */}
       {form.people.length < MAX_PEOPLE ? (
         <button onClick={addPerson}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, padding: "15px 13px", borderRadius: 13, border: "2px dashed #fecaca", background: "#f8faff", color: "#dc2626", fontWeight: 700, fontSize: 14, transition: "all 0.15s", minHeight: 52 }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#fff5f5"; (e.currentTarget as HTMLElement).style.borderColor = "#fca5a5"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#f8faff"; (e.currentTarget as HTMLElement).style.borderColor = "#fecaca"; }}>
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, padding: "15px 13px", borderRadius: 13, border: "2px dashed #bfdbfe", background: "#f8faff", color: "#2563eb", fontWeight: 700, fontSize: 14, transition: "all 0.15s", minHeight: 52 }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#eff6ff"; (e.currentTarget as HTMLElement).style.borderColor = "#93c5fd"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "#f8faff"; (e.currentTarget as HTMLElement).style.borderColor = "#bfdbfe"; }}>
           <Plus size={16} /> Add another person
           <span style={{ fontSize: 11, color: "#94a3b8", fontWeight: 500 }}>({MAX_PEOPLE - form.people.length} remaining)</span>
         </button>
@@ -3455,12 +3455,12 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
         </p>
         {form.people.map((person, idx) => (
           <div key={idx} style={{ marginBottom: 10, padding: "12px 14px", background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 11 }}>
-            <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 12.5, marginBottom: 8 }}>
+            <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 12.5, marginBottom: 8 }}>
               {idx === 0 ? "You (Person 1)" : `Person ${idx + 1}`}
               {person.firstName && <span style={{ color: "#64748b", fontWeight: 400 }}> — {person.firstName} {person.lastName}</span>}
             </div>
             <select value={person.religion} onChange={e => updPerson(idx, "religion", e.target.value)}
-              style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 9, padding: "9px 34px 9px 12px", fontSize: 13, color: "#1a0505", background: "white", fontFamily: "inherit", appearance: "none" }}>
+              style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 9, padding: "9px 34px 9px 12px", fontSize: 13, color: "#0f172a", background: "white", fontFamily: "inherit", appearance: "none" }}>
               <option value="">— Select —</option>
               {[["none","None / non-religious"],["rk","Catholic (r\u00f6m.-kath.)"],["ev","Protestant (ev.)"],["jd","Jewish (j\u00fcdisch)"],["is","Muslim (islamisch)"],["or","Orthodox (orthodox)"],["bu","Buddhist (buddhistisch)"],["so","Other (sonstige)"]].map(([v, l]) => (
                 <option key={v} value={v}>{l}</option>
@@ -3479,7 +3479,7 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
 
       {isMarried && (
         <div style={{ background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 12, padding: 16 }}>
-          <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 13, marginBottom: 12 }}>Marriage / Partnership Details</div>
+          <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 12 }}>Marriage / Partnership Details</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <R2 a={<Inp opt label="Date of Marriage" type="date" value={form.marriageDate} onChange={upd("marriageDate")} />}
                 b={<Inp opt label="Place / City" value={form.marriagePlace} onChange={upd("marriagePlace")} placeholder="Lisbon" />} />
@@ -3499,8 +3499,8 @@ function StepDocuments({ form, updPerson }: { form: FormData; updPerson: (i: num
       <p style={{ color: "#64748b", fontSize: 13.5, marginTop: -8, lineHeight: 1.6 }}>Enter document details for every person. This fills the Dokument fields on each Anmeldung sheet.</p>
       {form.people.map((person, idx) => (
         <div key={idx} className="person-in" style={{ border: "1px solid #e8ecf4", borderRadius: 14, overflow: "hidden" }}>
-          <div style={{ padding: "12px 16px", background: idx === 0 ? "#fff5f5" : "#f8fafc", borderBottom: "1px solid #e8ecf4" }}>
-            <div style={{ fontWeight: 700, color: idx === 0 ? "#991b1b" : "#1a0505", fontSize: 13 }}>
+          <div style={{ padding: "12px 16px", background: idx === 0 ? "#eff6ff" : "#f8fafc", borderBottom: "1px solid #e8ecf4" }}>
+            <div style={{ fontWeight: 700, color: idx === 0 ? "#1e40af" : "#0f172a", fontSize: 13 }}>
               {idx === 0 ? "You (Person 1)" : `Person ${idx + 1}`}
               {person.firstName && <span style={{ color: "#64748b", fontWeight: 400 }}> — {person.firstName} {person.lastName}</span>}
               <span style={{ marginLeft: 8, fontSize: 10.5, color: "#64748b", fontWeight: 500 }}>Sheet {Math.floor(idx/2)+1}, Slot {idx%2===0?1:2}</span>
@@ -3511,14 +3511,14 @@ function StepDocuments({ form, updPerson }: { form: FormData; updPerson: (i: num
               <div>
                 <Lbl req>Document Type</Lbl>
                 <select value={person.docType} onChange={e => updPerson(idx, "docType", e.target.value)}
-                  style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#1a0505", background: "white", fontFamily: "inherit", appearance: "none" }}>
+                  style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 16, color: "#0f172a", background: "white", fontFamily: "inherit", appearance: "none" }}>
                   <option value="">— Select —</option>
                   <option value="RP">Reisepass (Passport)</option>
                   {form.isEU && <option value="PA">Personalausweis (National ID Card)</option>}
                   <option value="KP">Kinderreisepass (Child Passport)</option>
                 </select>
                 {!form.isEU && person.docType === "PA" && (
-                  <p style={{ color: "#dc2626", fontSize: 12, marginTop: 5, fontWeight: 600 }}>National ID cards are only accepted for EU/EEA citizens. Please select Reisepass.</p>
+                  <p style={{ color: "#2563eb", fontSize: 12, marginTop: 5, fontWeight: 600 }}>National ID cards are only accepted for EU/EEA citizens. Please select Reisepass.</p>
                 )}
                 {form.isEU && <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 4 }}>EU/EEA citizens may use either passport or national ID card.</p>}
               </div>
@@ -3539,11 +3539,11 @@ function StepDocuments({ form, updPerson }: { form: FormData; updPerson: (i: num
 function StepReview({ form, sheets }: { form: FormData; sheets: number }) {
   const Sec = ({ title, rows }: { title: string; rows: [string,string][] }) => (
     <div style={{ marginBottom: 16 }}>
-      <div style={{ fontWeight: 700, color: "#b91c1c", fontSize: 10.5, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 6, paddingBottom: 4, borderBottom: "1px solid #e8ecf4" }}>{title}</div>
+      <div style={{ fontWeight: 700, color: "#1d4ed8", fontSize: 10.5, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 6, paddingBottom: 4, borderBottom: "1px solid #e8ecf4" }}>{title}</div>
       {rows.filter(([, v]) => v).map(([k, v]) => (
         <div key={k} style={{ display: "flex", gap: 14, marginBottom: 4, fontSize: 13 }}>
           <span style={{ color: "#64748b", minWidth: 155, flexShrink: 0 }}>{k}</span>
-          <span style={{ color: "#1a0505", fontWeight: 600 }}>{v}</span>
+          <span style={{ color: "#0f172a", fontWeight: 600 }}>{v}</span>
         </div>
       ))}
     </div>
@@ -3647,29 +3647,29 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
     <div style={{ minHeight: "100vh", background: "#f8fafc" }} className="fu">
 
       {/* ── Header ── */}
-      <div style={{ background: "linear-gradient(135deg,#1a0505 0%,#7f1d1d 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(221,0,0,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 32 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 8, background: "#DD0000", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 30, height: 30, borderRadius: 8, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ color: "white", fontWeight: 900, fontSize: 15 }}>S</span>
             </div>
-            <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>SimplyExpat <span style={{ color: "#f87171" }}>Berlin</span></span>
+            <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>SimplyExpat <span style={{ color: "#60a5fa" }}>Berlin</span></span>
           </div>
           {(() => {
             const d = form.moveInDate ? Math.ceil((new Date().getTime() - new Date(form.moveInDate).getTime()) / 86400000) : null;
             const daysLeft = d !== null ? 14 - d : null;
             return (
               <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: daysLeft !== null && daysLeft <= 7 ? "rgba(239,68,68,0.15)" : "rgba(251,191,36,0.1)", border: `1px solid ${daysLeft !== null && daysLeft <= 7 ? "rgba(239,68,68,0.4)" : "rgba(251,191,36,0.3)"}`, borderRadius: 999, padding: "5px 14px", marginBottom: 20 }}>
-                <AlertCircle size={11} color={daysLeft !== null && daysLeft <= 7 ? "#f87171" : "#fbbf24"} />
-                <span style={{ color: daysLeft !== null && daysLeft <= 7 ? "#f87171" : "#fbbf24", fontSize: 11.5, fontWeight: 700 }}>
+                <AlertCircle size={11} color={daysLeft !== null && daysLeft <= 7 ? "#60a5fa" : "#fbbf24"} />
+                <span style={{ color: daysLeft !== null && daysLeft <= 7 ? "#60a5fa" : "#fbbf24", fontSize: 11.5, fontWeight: 700 }}>
                   {daysLeft !== null && d! > 0 ? `${daysLeft} day${daysLeft !== 1 ? "s" : ""} left to register` : "14-day deadline from your move-in date"}
                 </span>
               </div>
             );
           })()}
           <h1 style={{ fontSize: 32, fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 12 }}>
-            A few steps away from<br/><span style={{ color: "#f87171" }}>being registered.</span>
+            A few steps away from<br/><span style={{ color: "#60a5fa" }}>being registered.</span>
           </h1>
           <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 15, lineHeight: 1.65, maxWidth: 380, margin: "0 auto" }}>
             Your form is ready to generate. Get your documents and walk in to the Bürgeramt prepared.
@@ -3687,7 +3687,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
           <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #f1f5f9" }}>
             <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>One-time payment · No subscription</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-              <span style={{ fontSize: 52, fontWeight: 900, color: "#1a0505", lineHeight: 1, letterSpacing: "-0.04em" }}>€15</span>
+              <span style={{ fontSize: 52, fontWeight: 900, color: "#0f172a", lineHeight: 1, letterSpacing: "-0.04em" }}>€15</span>
               <span style={{ color: "#94a3b8", fontSize: 13 }}>one time</span>
             </div>
             <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
@@ -3711,10 +3711,10 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
             ].map(({ label, desc }, i) => (
               <div key={label} style={{ display: "flex", alignItems: "center", gap: 14, paddingBottom: i < 2 ? 12 : 0, borderBottom: i < 2 ? "1px solid #f8fafc" : "none", marginBottom: i < 2 ? 12 : 0 }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <FileText size={14} color="#DD0000" />
+                  <FileText size={14} color="#0075FF" />
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 13.5 }}>{label}</div>
+                  <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13.5 }}>{label}</div>
                   <div style={{ color: "#94a3b8", fontSize: 12, marginTop: 1 }}>{desc}</div>
                 </div>
               </div>
@@ -3731,11 +3731,11 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
         {/* Email capture */}
         {!paid && (
           <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 14, background: "white", border: "1px solid #e2e8f0", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-            <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 13, marginBottom: 6 }}>
+            <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 13, marginBottom: 6 }}>
               Get your next steps by email <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>(optional)</span>
             </div>
             <input type="email" value={userEmail} onChange={e => setUserEmail(e.target.value)} placeholder="your@email.com"
-              style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 15, color: "#1a0505", background: "#f8fafc", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
+              style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 10, padding: "10px 14px", fontSize: 15, color: "#0f172a", background: "#f8fafc", fontFamily: "inherit", outline: "none", boxSizing: "border-box" }} />
             <p style={{ color: "#64748b", fontSize: 11.5, marginTop: 6, lineHeight: 1.55 }}>
               Next steps + booking link sent to your inbox. <strong>No PDFs, no personal data.</strong> Art. 6(1)(a) DSGVO.
             </p>
@@ -3745,8 +3745,8 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
         {/* Data safety */}
         {!paid && (
           <div style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 12, background: "#f0f9ff", border: "1px solid #bae6fd", display: "flex", gap: 9 }}>
-            <Shield size={13} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
-            <p style={{ fontSize: 11.5, color: "#7f1d1d", lineHeight: 1.6 }}>
+            <Shield size={13} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 11.5, color: "#1e3a8a", lineHeight: 1.6 }}>
               <strong>Your data never reaches our servers.</strong> Everything stays in your browser — deleted after generation.
             </p>
           </div>
@@ -3768,9 +3768,9 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
         {!paid ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {form.isBerlin !== true && (
-              <div style={{ padding: "12px 14px", borderRadius: 11, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 9 }}>
-                <AlertCircle size={14} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
-                <p style={{ color: "#991b1b", fontSize: 13, lineHeight: 1.5 }}>
+              <div style={{ padding: "12px 14px", borderRadius: 11, background: "#eef2ff", border: "1px solid #bfdbfe", display: "flex", gap: 9 }}>
+                <AlertCircle size={14} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
+                <p style={{ color: "#1e40af", fontSize: 13, lineHeight: 1.5 }}>
                   <strong>Berlin only:</strong> SimplyExpat currently supports Berlin addresses only. Please go back and confirm your address is in Berlin.
                 </p>
               </div>
@@ -3790,7 +3790,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
               }}
               id="stripe-pay-btn"
               disabled={form.isBerlin !== true}
-              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: form.isBerlin === true ? "linear-gradient(135deg,#DD0000,#dc2626)" : "#334155", color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: form.isBerlin === true ? "0 8px 32px rgba(221,0,0,0.5)" : "none", cursor: form.isBerlin === true ? "pointer" : "not-allowed", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
+              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: form.isBerlin === true ? "linear-gradient(135deg,#0075FF,#2563eb)" : "#334155", color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: form.isBerlin === true ? "0 8px 32px rgba(0,117,255,0.5)" : "none", cursor: form.isBerlin === true ? "pointer" : "not-allowed", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
               <CreditCard size={18} /> Pay €15 — Secure Checkout
             </button>
             <script dangerouslySetInnerHTML={{ __html: `window.addEventListener('pageshow',function(){var b=document.getElementById('stripe-pay-btn');if(b){b.disabled=false;b.textContent='Pay €15 — Secure Checkout';}});` }} />
@@ -3800,7 +3800,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
             {isDevTest && (
               <button
                 onClick={onGenerate}
-                style={{ width: "100%", marginTop: 8, padding: "12px", borderRadius: 11, border: "2px dashed #f87171", background: "transparent", color: "#f87171", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}
+                style={{ width: "100%", marginTop: 8, padding: "12px", borderRadius: 11, border: "2px dashed #60a5fa", background: "transparent", color: "#60a5fa", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}
               >
                 [DEV] Skip payment &amp; generate PDFs
               </button>
@@ -3808,7 +3808,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
           </div>
         ) : !allDone ? (
           <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 14, padding: "22px", textAlign: "center" }}>
-            <div style={{ width: 22, height: 22, border: "2.5px solid rgba(255,255,255,0.2)", borderTopColor: "#DD0000", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
+            <div style={{ width: 22, height: 22, border: "2.5px solid rgba(255,255,255,0.2)", borderTopColor: "#0075FF", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 12px" }} />
             <div style={{ fontWeight: 700, color: "white", fontSize: 14 }}>{genStatus || "Generating your documents…"}</div>
             <div style={{ color: "rgba(191,219,254,0.6)", fontSize: 12, marginTop: 4 }}>Please keep this tab open</div>
           </div>
@@ -3917,7 +3917,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   // 1. Anmeldung forms
   cards.push({
     title: sheets > 1 ? `${sheets} Anmeldung Forms — print ALL, bring ALL` : "Anmeldung Form — printed on paper",
-    color: "#991b1b", bg: "#fff5f5", border: "#fecaca",
+    color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
     items: sheets > 1
       ? Array.from({ length: sheets }, (_, i) => {
           const pa = form.people[i * 2]; const pb = form.people[i * 2 + 1];
@@ -3939,7 +3939,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   // 3. Identity documents per person
   cards.push({
     title: "Identity Documents — one per person",
-    color: "#991b1b", bg: "#fff5f5", border: "#fecaca",
+    color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
     items: form.people.filter(p => p.firstName || p.lastName).map(p => {
       const eu = isPersonEU(p);
       return {
@@ -3992,7 +3992,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   if (!form.isEU) {
     cards.push({
       title: "Visa or Residence Permit (if you have one)",
-      color: "#dc2626", bg: "#fef2f2", border: "#fecaca",
+      color: "#2563eb", bg: "#eef2ff", border: "#bfdbfe",
       items: [{
         text: "Aufenthaltstitel or entry visa — original + copy",
         detail: "Only if you already have one. You do NOT need to wait for a visa before registering. If you have none yet, go without — register first.",
@@ -4017,10 +4017,10 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       {/* ── Header ── */}
       <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40, boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#1a0505,#DD0000)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <span style={{ color: "white", fontSize: 13, fontWeight: 900 }}>S</span>
           </div>
-          <span style={{ fontWeight: 800, fontSize: 14, color: "#1a0505" }}>SimplyExpat <span style={{ color: "#DD0000" }}>Berlin</span></span>
+          <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 12px" }}>
           <CheckCircle2 size={12} color="#16a34a" />
@@ -4048,8 +4048,8 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
                   <div style={{ fontSize: 13, fontWeight: 600, color: "white", marginTop: 2 }}>{v}</div>
                 </div>
               ))}
-              <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 12, background: "rgba(221,0,0,0.1)", border: "1px solid rgba(221,0,0,0.2)" }}>
-                <div style={{ fontWeight: 800, color: "#f87171", fontSize: 12.5, marginBottom: 6 }}>🗡️ Appointment hacks</div>
+              <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 12, background: "rgba(0,117,255,0.1)", border: "1px solid rgba(0,117,255,0.2)" }}>
+                <div style={{ fontWeight: 800, color: "#60a5fa", fontSize: 12.5, marginBottom: 6 }}>🗡️ Appointment hacks</div>
                 <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 12, lineHeight: 1.6 }}>
                   Tuesday 7:55 AM on service.berlin.de. Refresh from 7:55 — new slots appear at 8:00 AM sharp and vanish in seconds. Any of 44 locations. Full hacks in your Guide PDF.
                 </p>
@@ -4103,11 +4103,11 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         {/* ── 2. DOWNLOADS — front and centre ── */}
         <div style={{ marginBottom: 32 }}>
           {sessionError && (
-            <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 12, background: "#fef2f2", border: "1px solid #fecaca", display: "flex", gap: 10, alignItems: "flex-start" }}>
-              <AlertCircle size={15} color="#dc2626" style={{ flexShrink: 0, marginTop: 1 }} />
+            <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 12, background: "#eef2ff", border: "1px solid #bfdbfe", display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <AlertCircle size={15} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
-                <div style={{ fontWeight: 800, color: "#991b1b", fontSize: 13, marginBottom: 3 }}>Session data not found</div>
-                <p style={{ color: "#b91c1c", fontSize: 12.5, lineHeight: 1.6 }}>
+                <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13, marginBottom: 3 }}>Session data not found</div>
+                <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6 }}>
                   Your form data is no longer in this browser — it may have been cleared. Use the "Clear data & start over" button below to begin again. If you completed payment, contact us at info@simplyexpat.de with your payment confirmation.
                 </p>
               </div>
@@ -4116,7 +4116,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
 
           {/* Anmeldung */}
           <button onClick={dlAnmeldung} disabled={dlA}
-            style={{ width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "20px 22px", borderRadius: 18, background: dlA ? "#64748b" : "linear-gradient(135deg,#1a0505,#DD0000)", color: "white", border: "none", cursor: dlA ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 10, boxShadow: dlA ? "none" : "0 8px 32px rgba(221,0,0,0.35)", transition: "all 0.2s", textAlign: "left" }}>
+            style={{ width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "20px 22px", borderRadius: 18, background: dlA ? "#64748b" : "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", border: "none", cursor: dlA ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 10, boxShadow: dlA ? "none" : "0 8px 32px rgba(0,117,255,0.35)", transition: "all 0.2s", textAlign: "left" }}>
             <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <FileText size={24} color="white" />
             </div>
@@ -4159,7 +4159,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
                 <Home size={14} color="#d97706" />
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: 13, color: "#1a0505", marginBottom: 1 }}>{dlW ? "Generating..." : "Download Landlord Confirmation Template"}</div>
+                <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a", marginBottom: 1 }}>{dlW ? "Generating..." : "Download Landlord Confirmation Template"}</div>
                 <div style={{ fontSize: 11.5, color: "#92400e" }}>Only if your landlord hasn't provided it yet</div>
               </div>
               <Download size={14} color="#d97706" style={{ flexShrink: 0 }} />
@@ -4182,15 +4182,15 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
 
         {/* ── 3. NEXT STEP — book appointment ── */}
         <div style={{ background: "white", borderRadius: 20, border: "1.5px solid #e8ecf4", overflow: "hidden", marginBottom: 16, boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-          <div style={{ background: "linear-gradient(135deg,#1a0505,#7f1d1d)", padding: "20px 22px" }}>
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "20px 22px" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(147,197,253,0.8)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>Your next step</div>
             <h2 style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.2 }}>Book your Bürgeramt appointment</h2>
             <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 13.5, lineHeight: 1.65, marginBottom: 16 }}>
               You must appear in person — this is a legal requirement we cannot fulfil for you. Bring your printed form and the documents from your checklist.
             </p>
             <a href="https://service.berlin.de/dienstleistung/120686/" target="_blank" rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 22px", borderRadius: 12, background: "white", color: "#1a0505", fontWeight: 900, fontSize: 14, textDecoration: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }}>
-              <ExternalLink size={15} color="#DD0000" /> Book on service.berlin.de →
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "13px 22px", borderRadius: 12, background: "white", color: "#0f172a", fontWeight: 900, fontSize: 14, textDecoration: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }}>
+              <ExternalLink size={15} color="#0075FF" /> Book on service.berlin.de →
             </a>
             <p style={{ color: "rgba(147,197,253,0.6)", fontSize: 11.5, marginTop: 10 }}>Any of 44 locations · Free · Scroll to bottom to see all Bürgeramt locations</p>
           </div>
@@ -4216,12 +4216,12 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         {/* ── 5. BRING LIST ── */}
         {(hasForeignBirth || hasForeignMarriage) && (
           <div style={{ borderRadius: 14, overflow: "hidden", marginBottom: 12, border: "1px solid #bae6fd" }}>
-            <div style={{ background: "linear-gradient(135deg,#7f1d1d,#0e7490)", padding: "12px 16px", display: "flex", alignItems: "center", gap: 9 }}>
-              <AlertCircle size={15} color="#fca5a5" style={{ flexShrink: 0 }} />
+            <div style={{ background: "linear-gradient(135deg,#1e3a8a,#0e7490)", padding: "12px 16px", display: "flex", alignItems: "center", gap: 9 }}>
+              <AlertCircle size={15} color="#93c5fd" style={{ flexShrink: 0 }} />
               <div style={{ fontWeight: 800, color: "white", fontSize: 13 }}>Foreign documents — translations required</div>
             </div>
             <div style={{ background: "#f0f9ff", padding: "12px 16px" }}>
-              <p style={{ color: "#7f1d1d", fontSize: 13, lineHeight: 1.7 }}>Birth or marriage certificates from outside Germany need a <strong>certified German translation</strong> (beglaubigte Übersetzung). Some require an Apostille. Missing translations are the most common reason registrations fail.</p>
+              <p style={{ color: "#1e3a8a", fontSize: 13, lineHeight: 1.7 }}>Birth or marriage certificates from outside Germany need a <strong>certified German translation</strong> (beglaubigte Übersetzung). Some require an Apostille. Missing translations are the most common reason registrations fail.</p>
             </div>
           </div>
         )}
@@ -4234,7 +4234,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
                 <Check size={13} color="white" strokeWidth={3} />
               </div>
               <div style={{ fontWeight: 800, color: card.color, fontSize: 13, flex: 1 }}>{card.title}</div>
-              <span style={{ fontSize: 9.5, fontWeight: 700, color: "#dc2626", background: "#fee2e2", padding: "2px 8px", borderRadius: 999, flexShrink: 0 }}>REQUIRED</span>
+              <span style={{ fontSize: 9.5, fontWeight: 700, color: "#2563eb", background: "#dbeafe", padding: "2px 8px", borderRadius: 999, flexShrink: 0 }}>REQUIRED</span>
             </div>
             <div style={{ padding: "10px 16px", display: "flex", flexDirection: "column", gap: 8 }}>
               {card.items.map((item, i) => (
@@ -4243,7 +4243,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 700, color: "#111111", fontSize: 13, lineHeight: 1.4 }}>{item.text}</div>
                     {item.detail && <div style={{ color: "#64748b", fontSize: 12, marginTop: 2 }}>{item.detail}</div>}
-                    {item.warn && <div style={{ marginTop: 6, padding: "8px 12px", background: "#fef2f2", borderRadius: 8, border: "1px solid #fecaca" }}><p style={{ fontSize: 12, color: "#991b1b", lineHeight: 1.6, fontWeight: 600 }}>{item.warn}</p></div>}
+                    {item.warn && <div style={{ marginTop: 6, padding: "8px 12px", background: "#eef2ff", borderRadius: 8, border: "1px solid #bfdbfe" }}><p style={{ fontSize: 12, color: "#1e40af", lineHeight: 1.6, fontWeight: 600 }}>{item.warn}</p></div>}
                   </div>
                 </div>
               ))}
@@ -4255,7 +4255,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", background: "#f8fafc" }}>
             <div style={{ width: 28, height: 28, borderRadius: 8, background: "#94a3b8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Check size={13} color="white" strokeWidth={3} /></div>
             <div style={{ fontWeight: 700, color: "#475569", fontSize: 13, flex: 1 }}>Rental contract copy (Mietvertrag)</div>
-            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#DD0000", background: "#fff5f5", padding: "2px 8px", borderRadius: 999 }}>RECOMMENDED</span>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: "#0075FF", background: "#eff6ff", padding: "2px 8px", borderRadius: 999 }}>RECOMMENDED</span>
           </div>
           <div style={{ padding: "10px 16px" }}>
             <p style={{ color: "#64748b", fontSize: 12.5, lineHeight: 1.6 }}>Not mandatory but useful if the clerk has questions. A copy is fine — no original needed.</p>
@@ -4276,7 +4276,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
         </div>
 
         {/* Print tip */}
-        <div style={{ background: "#1a0505", borderRadius: 14, padding: "16px 18px", marginBottom: 20, display: "flex", gap: 12 }}>
+        <div style={{ background: "#0f172a", borderRadius: 14, padding: "16px 18px", marginBottom: 20, display: "flex", gap: 12 }}>
           <AlertCircle size={16} color="#fbbf24" style={{ flexShrink: 0, marginTop: 2 }} />
           <div>
             <div style={{ fontWeight: 900, color: "white", fontSize: 13.5, marginBottom: 3 }}>Print on paper — Germany requires it.</div>
@@ -4286,7 +4286,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
 
         {/* ── 6. REFERRAL ── */}
         <div style={{ borderRadius: 20, overflow: "hidden", border: "1.5px solid #e8ecf4", marginBottom: 20 }}>
-          <div style={{ background: "linear-gradient(135deg,#1a0505,#7f1d1d)", padding: "22px 24px", textAlign: "center" }}>
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", padding: "22px 24px", textAlign: "center" }}>
             <div style={{ fontSize: 26, marginBottom: 10 }}>🗡️</div>
             <h3 style={{ fontSize: 17, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.25 }}>Saved your life?<br/>Send this to another expat.</h3>
             <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 13, lineHeight: 1.6, maxWidth: 340, margin: "0 auto 16px" }}>Every expat in Berlin needs this. One link saves them hours.</p>
@@ -4316,7 +4316,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
           <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.7)", backdropFilter: "blur(8px)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px" }}>
             <div style={{ maxWidth: 420, width: "100%", background: "white", borderRadius: 20, overflow: "hidden", boxShadow: "0 32px 80px rgba(0,0,0,0.3)" }}>
               {/* Header */}
-              <div style={{ background: "#fef2f2", padding: "22px 24px 18px", borderBottom: "1px solid #fecaca" }}>
+              <div style={{ background: "#eef2ff", padding: "22px 24px 18px", borderBottom: "1px solid #bfdbfe" }}>
                 <div style={{ fontSize: 24, marginBottom: 8 }}>⚠️</div>
                 <h3 style={{ fontSize: 17, fontWeight: 900, color: "#111111", letterSpacing: "-0.02em", marginBottom: 6 }}>
                   Clear all data &amp; start over
@@ -4361,7 +4361,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
                 <button
                   onClick={() => { if (wipeChecked) onRestart(); }}
                   disabled={!wipeChecked}
-                  style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: wipeChecked ? "#dc2626" : "#e2e8f0", color: wipeChecked ? "white" : "#94a3b8", fontWeight: 800, fontSize: 13.5, cursor: wipeChecked ? "pointer" : "not-allowed", fontFamily: "inherit", transition: "all 0.2s" }}>
+                  style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: wipeChecked ? "#2563eb" : "#e2e8f0", color: wipeChecked ? "white" : "#94a3b8", fontWeight: 800, fontSize: 13.5, cursor: wipeChecked ? "pointer" : "not-allowed", fontFamily: "inherit", transition: "all 0.2s" }}>
                   Delete everything
                 </button>
               </div>

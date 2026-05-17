@@ -44,7 +44,7 @@ export function ReligionPicker() {
     <div className="card" style={{ padding: 32 }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 32, alignItems: "start" }}>
         {/* Mock form */}
-        <div style={{ background: "var(--red-soft)", border: "1px solid var(--line)", borderRadius: 18, padding: 22, fontFamily: "'JetBrains Mono', monospace" }}>
+        <div style={{ background: "var(--blue-soft)", border: "1px solid var(--line)", borderRadius: 18, padding: 22, fontFamily: "'JetBrains Mono', monospace" }}>
           <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 12, borderBottom: "2px solid var(--ink)", marginBottom: 6 }}>
             <span style={{ fontWeight: 800, color: "var(--ink)", fontSize: 13 }}>ANMELDEFORMULAR</span>
             <span style={{ color: "var(--muted)", fontSize: 10 }}>Field 14 of 54</span>
@@ -133,7 +133,7 @@ export function ReligionPicker() {
             </div>
           </div>
 
-          <div style={{ marginTop: 16, padding: "16px 18px", background: "var(--red-soft)", borderRadius: 12, fontSize: 13.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
+          <div style={{ marginTop: 16, padding: "16px 18px", background: "var(--blue-soft)", borderRadius: 12, fontSize: 13.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
             <strong style={{ color: "var(--ink)" }}>Already a church member and want to leave?</strong> That requires a separate process at the{" "}
             <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>Standesamt</span> — the <em>Kirchenaustritt</em>. Not done on this form.
           </div>

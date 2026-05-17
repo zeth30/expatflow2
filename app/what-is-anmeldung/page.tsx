@@ -99,18 +99,18 @@ export default function WhatIsAnmeldung() {
                 <div style={{ paddingTop: 6, borderLeft: "1px solid rgba(255,255,255,.1)", paddingLeft: 48 }}>
                   <div className="eyebrow" style={{ marginBottom: 14 }}>Who registers</div>
                   <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.015em", lineHeight: 1.2, color: "white", marginBottom: 20 }}>
-                    Anyone moving to <span style={{ color: "#f87171" }}>Germany</span> for <span style={{ color: "#f87171" }}>3+ months.</span>
+                    Anyone moving to <span style={{ color: "#60a5fa" }}>Germany</span> for <span style={{ color: "#60a5fa" }}>3+ months.</span>
                   </div>
 
                   {/* Who chips */}
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
                     {["EU citizens", "Non-EU nationals", "Employees", "Students", "Freelancers"].map((w) => (
-                      <span key={w} style={{ padding: "5px 12px", borderRadius: 999, background: "rgba(221,0,0,.18)", border: "1px solid rgba(221,0,0,.35)", color: "#c5cee5", fontSize: 13, fontWeight: 700 }}>{w}</span>
+                      <span key={w} style={{ padding: "5px 12px", borderRadius: 999, background: "rgba(0,117,255,.18)", border: "1px solid rgba(0,117,255,.35)", color: "#c5cee5", fontSize: 13, fontWeight: 700 }}>{w}</span>
                     ))}
                   </div>
 
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 14px", borderRadius: 12, background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.1)" }}>
-                    <svg style={{ flexShrink: 0, marginTop: 1 }} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <svg style={{ flexShrink: 0, marginTop: 1 }} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
                     <span style={{ color: "#8e9bbe", fontSize: 13.5, lineHeight: 1.55 }}>No exemptions based on nationality or visa type.</span>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export default function WhatIsAnmeldung() {
             <div className="section-head reveal">
               <div className="eyebrow">03 · At the Bürgeramt</div>
               <h2 className="h2">What you get at the <span className="accent">appointment.</span></h2>
-              <p className="section-sub">After the clerk processes your form, you receive the <strong>Anmeldebestätigung/Meldebestätigung</strong> — printed on the spot. You need to arrive with the right documents: your passport, a completed German-language form, and the <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a> signed by your landlord. <a href="/burgeramt-berlin-appointment" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Booking your Bürgeramt appointment</a> is a separate step covered in guide 05.</p>
+              <p className="section-sub">After the clerk processes your form, you receive the <strong>Anmeldebestätigung/Meldebestätigung</strong> — printed on the spot. You need to arrive with the right documents: your passport, a completed German-language form, and the <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a> signed by your landlord. <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Booking your Bürgeramt appointment</a> is a separate step covered in guide 05.</p>
             </div>
             <div className="timeline reveal">
               {[
@@ -221,7 +221,7 @@ export default function WhatIsAnmeldung() {
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
               <div>
                 <div className="h">Before you leave the counter:</div>
-                <div className="p">Verify your <strong>name spelling</strong>, your <strong>registered address</strong>, and your <strong>move-in date</strong> on the printed Anmeldebestätigung/Meldebestätigung. The clerk will fix it now. They will not fix it next week. See <a href="/anmeldung-documents" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>guide 03</a> for the full document checklist and the three form mistakes that get most expats turned away.</div>
+                <div className="p">Verify your <strong>name spelling</strong>, your <strong>registered address</strong>, and your <strong>move-in date</strong> on the printed Anmeldebestätigung/Meldebestätigung. The clerk will fix it now. They will not fix it next week. See <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 03</a> for the full document checklist and the three form mistakes that get most expats turned away.</div>
               </div>
             </div>
           </div>
@@ -248,8 +248,8 @@ export default function WhatIsAnmeldung() {
               <p className="section-sub">Two letters arrive by post. One is essential. The other is mandatory whether you want it or not.</p>
             </div>
             <div className="reveal mob-2col">
-              <div className="card" style={{ background: "linear-gradient(180deg,white,var(--red-soft))" }}>
-                <div className="iconbox red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div>
+              <div className="card" style={{ background: "linear-gradient(180deg,white,var(--blue-soft))" }}>
+                <div className="iconbox blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div>
                 <h4>Steuer-ID arrives by post</h4>
                 <p>Your tax identification number arrives within <strong>2–4 weeks</strong> (up to 6–8 weeks during the peak September relocation season). Add your surname to the letterbox (Briefkasten) — official mail is not delivered to unlabelled boxes.</p>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 12 }}><span className="tag">11-digit number</span><span className="tag">Bundeszentralamt für Steuern</span></div>
@@ -270,11 +270,11 @@ export default function WhatIsAnmeldung() {
             <div className="section-head reveal">
               <div className="eyebrow">06 · Special situations</div>
               <h2 className="h2">Tourists, <span className="accent">Ummeldung</span>, and <span className="accent">Abmeldung</span>.</h2>
-              <p className="section-sub">When you don&apos;t need to register at all, when you have to re-register, and when you have to deregister. Non-EU citizens wondering whether <a href="/anmeldung-online-non-eu" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>online Anmeldung is possible</a> — it is not, for reasons explained in guide 02.</p>
+              <p className="section-sub">When you don&apos;t need to register at all, when you have to re-register, and when you have to deregister. Non-EU citizens wondering whether <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>online Anmeldung is possible</a> — it is not, for reasons explained in guide 02.</p>
             </div>
             <div className="reveal mob-3col">
               {[
-                { r: "EXEMPT", rc: "ok", color: "var(--red-soft)", ic: "var(--red)", title: "Tourists", de: "stays under 3 months", body: "No registration required. Visit the museums, eat the döner, leave. The Anmeldung is for residents — not visitors.", dl: "— · none" },
+                { r: "EXEMPT", rc: "ok", color: "var(--blue-soft)", ic: "var(--blue)", title: "Tourists", de: "stays under 3 months", body: "No registration required. Visit the museums, eat the döner, leave. The Anmeldung is for residents — not visitors.", dl: "— · none" },
                 { r: "RE-REGISTER", rc: "warn", color: "#fff7ed", ic: "var(--amber)", title: "Ummeldung", de: "moving within Germany", body: "Every time you change address inside Germany you re-register. Same form, same Bürgeramt — even moving across the street.", dl: "14 days from move-in" },
                 { r: "DEREGISTER", rc: "alert", color: "#fff1f2", ic: "var(--rose)", title: "Abmeldung", de: "leaving Germany permanently", body: "Deregister within 2 weeks of departure. Skipping it can leave you on the books — affecting tax, mail, and any future return.", dl: "14 days before/after" },
               ].map((c) => (
@@ -307,11 +307,11 @@ export default function WhatIsAnmeldung() {
             </div>
             <div className="faq reveal">
               <details><summary>What is the Anmeldung in Germany?</summary><div className="ans">The Anmeldung is Germany's mandatory address registration system. Every person taking up residence in Germany must register their address at the local Bürgeramt within 14 days of moving in, as required by §17 Bundesmeldegesetz. You receive the Anmeldebestätigung/Meldebestätigung on the spot — a document required for your bank account, Steuer-ID, health insurance, and residence permit.</div></details>
-              <details><summary>What happens if I miss the 14-day Anmeldung deadline?</summary><div className="ans">Missing the deadline can result in a fine of up to €1,000. In practice, authorities are often lenient if you register as soon as possible — especially in cities like Berlin where appointment availability makes the 14-day window nearly impossible to meet. Book the earliest available appointment, take a screenshot showing you searched, and attend as soon as you can. See <a href="/burgeramt-berlin-appointment" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>guide 05</a> for the full strategy.</div></details>
-              <details><summary>Can I do the Anmeldung online?</summary><div className="ans">Only if you hold a compatible EU/EEA eID card with the Online-Ausweis chip activated — and only for Ummeldung (changing an existing German address). First-time registrations from abroad are always in person at the Bürgeramt. Non-EU citizens — including US, UK, Indian, and Brazilian passport holders — cannot use the online portal at all. <a href="/anmeldung-online-non-eu" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Guide 02 covers this in full.</a></div></details>
+              <details><summary>What happens if I miss the 14-day Anmeldung deadline?</summary><div className="ans">Missing the deadline can result in a fine of up to €1,000. In practice, authorities are often lenient if you register as soon as possible — especially in cities like Berlin where appointment availability makes the 14-day window nearly impossible to meet. Book the earliest available appointment, take a screenshot showing you searched, and attend as soon as you can. See <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 05</a> for the full strategy.</div></details>
+              <details><summary>Can I do the Anmeldung online?</summary><div className="ans">Only if you hold a compatible EU/EEA eID card with the Online-Ausweis chip activated — and only for Ummeldung (changing an existing German address). First-time registrations from abroad are always in person at the Bürgeramt. Non-EU citizens — including US, UK, Indian, and Brazilian passport holders — cannot use the online portal at all. <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Guide 02 covers this in full.</a></div></details>
               <details><summary>Do I need to register if I'm only working remotely from Germany?</summary><div className="ans">Yes, if you are staying for more than 3 months. The Anmeldung requirement is based on length of stay, not your employment type or contract location. Remote workers, freelancers, and digital nomads staying 3+ months must register. There are no exemptions based on having a foreign employer or working for a non-German company.</div></details>
               <details><summary>What is the Religionsgesellschaft field and do I have to fill it in?</summary><div className="ans">The Religionsgesellschaft field is the religion declaration on the Anmeldeformular. Declaring a recognised denomination — RK (Catholic) or EV (Protestant) — triggers Kirchensteuer, church tax of 8–9% of your income tax. Write OA (Ohne Angabe — no declaration) to opt out. There are no negative consequences for leaving it blank or writing OA.</div></details>
-              <details><summary>What documents do I need for the Anmeldung?</summary><div className="ans">You need three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens also need a current visa or residence permit. See the <a href="/anmeldung-documents" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>full personalised document checklist in guide 03.</a></div></details>
+              <details><summary>What documents do I need for the Anmeldung?</summary><div className="ans">You need three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens also need a current visa or residence permit. See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full personalised document checklist in guide 03.</a></div></details>
             </div>
           </div>
         </section>

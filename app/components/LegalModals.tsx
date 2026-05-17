@@ -31,8 +31,8 @@ const LUL = ({ items }: { items: string[] }) => (
   </ul>
 );
 const LHighlight = ({ children }: { children: React.ReactNode }) => (
-  <div style={{ padding: "12px 16px", borderRadius: 10, background: "#fff5f5", border: "1px solid #fecaca", marginBottom: 16 }}>
-    <p style={{ color: "#991b1b", fontSize: 13, lineHeight: 1.6, fontWeight: 500 }}>{children}</p>
+  <div style={{ padding: "12px 16px", borderRadius: 10, background: "#eff6ff", border: "1px solid #bfdbfe", marginBottom: 16 }}>
+    <p style={{ color: "#1e40af", fontSize: 13, lineHeight: 1.6, fontWeight: 500 }}>{children}</p>
   </div>
 );
 
@@ -233,7 +233,7 @@ export function CookieBanner() {
           <p style={{ color: "#94a3b8", fontSize: 12.5, lineHeight: 1.55 }}>
             <span style={{ color: "white", fontWeight: 600 }}>We do not store your information.</span>{" "}
             We use only essential cookies for secure payments and your registration progress — no tracking, no marketing, no third-party analytics.{" "}
-            <button onClick={() => setShowPrivacy(true)} style={{ background: "none", border: "none", color: "#DD0000", fontSize: 12.5, cursor: "pointer", padding: 0, fontFamily: "inherit", textDecoration: "underline" }}>
+            <button onClick={() => setShowPrivacy(true)} style={{ background: "none", border: "none", color: "#0075FF", fontSize: 12.5, cursor: "pointer", padding: 0, fontFamily: "inherit", textDecoration: "underline" }}>
               Privacy Policy
             </button>
           </p>

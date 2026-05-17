@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const BLUE = "#DD0000";
+const BLUE = "#0075FF";
 const MUTE = "#64748b";
 const LIGHT = "#f8fafc";
 const BORDER = "#e8ecf4";
@@ -60,7 +60,7 @@ function SuccessInner() {
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 40 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: `linear-gradient(135deg,#1a0505,${BLUE})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: `linear-gradient(135deg,#0f172a,${BLUE})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>S</span>
           </div>
           <span style={{ fontWeight: 800, fontSize: 15, color: INK }}>SimplyExpat <span style={{ color: BLUE }}>Berlin</span></span>
@@ -88,8 +88,8 @@ function SuccessInner() {
 
         {status === "error" && (
           <div>
-            <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#fef2f2", border: "3px solid #fecaca", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="3" strokeLinecap="round">
+            <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#eef2ff", border: "3px solid #bfdbfe", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="3" strokeLinecap="round">
                 <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
               </svg>
             </div>

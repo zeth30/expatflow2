@@ -121,7 +121,7 @@ export default function OnlineNonEU() {
                 { n: "4", title: "Attend in person", body: "Bring your passport, your completed German-language form, and your Wohnungsgeberbestätigung. Non-EU: also bring your visa or residence permit. Done in 5–10 minutes when documents are complete.", link: null, lt: null },
               ].map((s) => (
                 <div key={s.n} className="card" style={{ display: "grid", gridTemplateColumns: s.link ? "64px 1fr auto" : "64px 1fr", gap: 24, alignItems: "center" }}>
-                  <div style={{ fontSize: 42, fontWeight: 800, color: "var(--red)", letterSpacing: "-0.04em" }}>{s.n}</div>
+                  <div style={{ fontSize: 42, fontWeight: 800, color: "var(--blue)", letterSpacing: "-0.04em" }}>{s.n}</div>
                   <div>
                     <h4>{s.title}</h4>
                     <p>{s.body}</p>

@@ -44,7 +44,7 @@ const SECTIONS = [
     title: "The Basics",
     headline: "What the Anmeldung",
     accent: "actually is.",
-    color: "var(--red)",
+    color: "var(--blue)",
     faqs: [
       {
         q: "What is the Anmeldung in Germany?",
@@ -213,7 +213,7 @@ export default function FAQPage() {
 
   // Section color chip styles
   const chipStyle: Record<string, { bg: string; bd: string; color: string }> = {
-    "var(--red)":   { bg: "var(--red-soft)",    bd: "#fecaca",          color: "var(--red)" },
+    "var(--blue)":   { bg: "var(--blue-soft)",    bd: "#bfdbfe",          color: "var(--blue)" },
     "var(--green)":  { bg: "var(--green-tint)",    bd: "var(--green-bd)",  color: "var(--green)" },
     "var(--amber)":  { bg: "var(--amber-tint)",    bd: "#fde4a8",          color: "var(--amber)" },
     "var(--purple)": { bg: "var(--purple-tint)",   bd: "#d8b4fe",          color: "var(--purple)" },

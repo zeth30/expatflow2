@@ -18,7 +18,7 @@ export function GuideSidebar({ currentPage }: { currentPage: string }) {
         {GUIDES.map(g => {
           const isCurrent = g.slug === currentPage;
           return isCurrent ? (
-            <div key={g.slug} style={{ padding: "9px 12px", borderRadius: 9, background: "#fff5f5", border: "1.5px solid #fecaca", fontSize: 13, fontWeight: 700, color: "#DD0000", lineHeight: 1.4 }}>
+            <div key={g.slug} style={{ padding: "9px 12px", borderRadius: 9, background: "#eff6ff", border: "1.5px solid #bfdbfe", fontSize: 13, fontWeight: 700, color: "#0075FF", lineHeight: 1.4 }}>
               {g.label}
             </div>
           ) : (
@@ -31,10 +31,10 @@ export function GuideSidebar({ currentPage }: { currentPage: string }) {
           );
         })}
       </div>
-      <div style={{ marginTop: 24, padding: "14px 16px", borderRadius: 12, background: "#1a0505" }}>
+      <div style={{ marginTop: 24, padding: "14px 16px", borderRadius: 12, background: "#0f172a" }}>
         <div style={{ fontSize: 12.5, fontWeight: 800, color: "white", marginBottom: 6, lineHeight: 1.3 }}>Ready to generate your form?</div>
         <p style={{ fontSize: 11.5, color: "rgba(191,219,254,0.8)", lineHeight: 1.6, margin: "0 0 12px" }}>Answer in English. Perfect German PDF in 5 minutes.</p>
-        <a href="/#wizard/origin" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 14px", borderRadius: 9, background: "#DD0000", color: "white", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>
+        <a href="/#wizard/origin" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "9px 14px", borderRadius: 9, background: "#0075FF", color: "white", fontWeight: 700, fontSize: 12, textDecoration: "none" }}>
           Get started
           <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
             <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>

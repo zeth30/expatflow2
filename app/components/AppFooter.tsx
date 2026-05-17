@@ -32,7 +32,7 @@ export function AppFooter() {
         <button
           className="af-link"
           onClick={() => setModal("joinus")}
-          style={{ color: "#cc0000", fontWeight: 700 }}
+          style={{ color: "#0040ff", fontWeight: 700 }}
         >
           Join us
         </button>
