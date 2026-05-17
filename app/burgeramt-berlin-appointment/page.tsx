@@ -330,7 +330,7 @@ export default function BurgeramtBerlinAppointment() {
             <div className="cta-box reveal">
               <div className="eye">Your documents need to be perfect. The appointment is the easy part.</div>
               <h2>SimplyExpat generates your German form <span className="b">in 5 minutes.</span></h2>
-              <p>Every field correct. Every date in the right format. Every entry in German. Show up knowing your paperwork is right.</p>
+              <p>Every field correct. Every date in the right format. Every entry in German. Plus a personalised checklist of exactly what to bring for your situation. Show up knowing your paperwork is right.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
