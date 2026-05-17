@@ -133,7 +133,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
       </div>
 
       {/* ══ GUIDES + FAQ ══ */}
-      <div className="lp-guides-sect" style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "72px 20px" }}>
+      <div className="lp-guides-sect" style={{ background: "linear-gradient(to bottom, white 0px, #f8fafc 72px)", borderBottom: "1px solid #e8ecf4", padding: "72px 20px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
           {/* Guide cards */}
