@@ -104,6 +104,15 @@ export default function AnmeldungDocuments() {
             <div className="reveal">
               <ChecklistClient />
             </div>
+
+            {/* Prepare My Anmeldung inline CTA */}
+            <div className="reveal" style={{ marginTop: 24, padding: "16px 18px", borderRadius: 14, background: "var(--bg)", border: "1px solid var(--line)", fontSize: 13.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
+              <div style={{ marginBottom: 12 }}>This checklist is built into SimplyExpat. Answer your situation once, get your exact list — then we fill all 54 Anmeldung form fields in correct German. €15, one time.</div>
+              <Link href="/#wizard/origin" className="cta-btn" style={{ fontSize: 15, padding: "14px 22px", display: "inline-flex", boxShadow: "0 8px 20px rgba(0,64,255,.28)" }}>
+                Prepare My Anmeldung
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+            </div>
           </div>
         </section>
 

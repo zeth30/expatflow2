@@ -181,24 +181,6 @@ export default function Wohnungsgeberbestaetigung() {
             <div className="reveal">
               <EmailTemplateClient />
             </div>
-
-            {/* Personalised checklist CTA */}
-            <div className="callout info reveal" style={{ marginTop: 24 }}>
-              <div className="glyph">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                </svg>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div className="h">Want a personalised checklist just for you?</div>
-                <div className="p" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", marginTop: 6 }}>
-                  <span>SimplyExpat builds your complete document checklist based on your exact situation — non-EU, married, children, and more — and fills all 54 Anmeldung form fields in correct German. Done in 5 minutes.</span>
-                  <Link href="/#wizard/origin" style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 18px", background: "var(--blue)", color: "white", borderRadius: 999, fontWeight: 700, fontSize: 13.5, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0, boxShadow: "0 4px 14px rgba(0,64,255,.28)" }}>
-                    Prepare My Anmeldung →
-                  </Link>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
