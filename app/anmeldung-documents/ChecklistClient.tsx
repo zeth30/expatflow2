@@ -2,16 +2,16 @@
 import { useState } from "react";
 
 const BASE_DOCS = [
-  { id: "passport", label: "Valid passport or national ID",     sub: "EU citizens may use their national identity card. Non-EU citizens must bring their passport — IDs from outside the EU are not accepted.", required: true },
-  { id: "wgb",      label: "Wohnungsgeberbestätigung",          sub: "Your landlord's signed confirmation that you have moved in. Legally required — your rental contract alone is not accepted.", required: true, link: "/wohnungsgeberbestaetigung" },
-  { id: "form",     label: "Completed Anmeldeformular",         sub: "All 54 fields completed in German, every date in DD.MM.YYYY, every entry correctly translated. Print and sign before you arrive.", required: true },
-  { id: "birthself", label: "Your own birth certificate",       sub: "Required in most cases — especially if you were born outside Germany. If not in German, bring a certified translation from a sworn translator (vereidigter Übersetzer). Some Bürgerämter do not ask for this; many do.", required: false },
+  { id: "passport",  label: "Valid passport or national ID",          sub: "EU citizens may use their national identity card. Non-EU citizens must bring their passport — IDs from outside the EU are not accepted.", required: true },
+  { id: "wgb",       label: "Wohnungsgeberbestätigung",               sub: "Your landlord's signed confirmation that you have moved in. Legally required — your rental contract alone is not accepted.", required: true, link: "/wohnungsgeberbestaetigung" },
+  { id: "form",      label: "Completed Anmeldeformular",              sub: "All 54 fields completed in German, every date in DD.MM.YYYY, every entry correctly translated. Print and sign before you arrive.", required: true },
+  { id: "birthself", label: "Birth certificate (for each adult registering)", badge: "Hotline confirmed", sub: "Officially required for all adults — confirmed by the Berlin Bürgeramt hotline (115). In practice, most Bürgerämter will register you without it. Bring it if you have it; if not in German, bring a certified translation from a sworn translator (vereidigter Übersetzer).", required: false },
 ];
 
 const COND_DOCS = [
   { id: "visa",      flag: "noneu",     label: "Visa or residence permit (if you have one)",  sub: "Non-EU only — and only if you already hold one. If your residence permit (Aufenthaltstitel) is still being processed, bring your current visa label or entry stamp. If you have nothing yet, attend with your passport and explain your situation at the counter." },
   { id: "marriage",  flag: "married",   label: "Marriage certificate",                        sub: "Some Bürgerämter accept English-language certificates; others require certified German translations. A certified German translation is always the safest option." },
-  { id: "birth",     flag: "kids",      label: "Birth certificate for each child",             sub: "Original or certified copy. If the document is not in German, bring a certified translation from a sworn translator." },
+  { id: "birth",     flag: "kids",      label: "Birth certificate for each child",             sub: "In addition to your own. Original or certified copy. If not in German, bring a certified translation from a sworn translator." },
   { id: "consent",   flag: "separated", label: "Einverständniserklärung (parental consent)",  sub: "Required when both parents hold joint parental authority (gemeinsames Sorgerecht) but only one parent attends. The attending parent must bring a written declaration of consent signed by the other parent, agreeing to the child being registered at this address. Alternatively, both parents attend in person." },
   { id: "extraform", flag: "multi",     label: "Additional Anmeldeformular sheets",            sub: "The form fits two people per sheet. For 3+ people you need multiple completed sheets — one per pair. Each sheet fully filled and signed separately." },
 ];
@@ -86,7 +86,12 @@ export function ChecklistClient() {
                   {isDone && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
                 </div>
                 <div>
-                  <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: "-0.01em", textDecoration: isDone ? "line-through" : "none", opacity: isDone ? 0.6 : 1 }}>{doc.label}</div>
+                  <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: "-0.01em", textDecoration: isDone ? "line-through" : "none", opacity: isDone ? 0.6 : 1, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+                    {doc.label}
+                    {"badge" in doc && doc.badge && (
+                      <span style={{ fontSize: 11, fontWeight: 700, padding: "2px 8px", borderRadius: 999, background: "var(--amber-tint)", color: "var(--amber)", border: "1px solid #fde4a8", letterSpacing: "0.02em", flexShrink: 0 }}>{doc.badge}</span>
+                    )}
+                  </div>
                   <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 3, fontWeight: 500, lineHeight: 1.45 }}>
                     {doc.sub}
                     {"link" in doc && doc.link && !isDone && (
