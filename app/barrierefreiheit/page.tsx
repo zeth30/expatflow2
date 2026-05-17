@@ -69,7 +69,7 @@ export default function BarrierefreiheitPage() {
       <p style={s.p}>Diese Erklärung wurde am 17. Mai 2026 erstellt und wird regelmäßig aktualisiert.</p>
 
       <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 32 }}>
-        SimplyExpat · Karl Fasselt · Fürbringerstraße 25, 10961 Berlin · info@simplyexpat.de
+        SimplyExpat · Fürbringerstraße 25, 10961 Berlin · info@simplyexpat.de
       </p>
     </div>
   );

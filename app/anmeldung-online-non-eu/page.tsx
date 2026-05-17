@@ -63,7 +63,7 @@ export default function OnlineNonEU() {
 
       <main className="main">
         {/* Hero */}
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1575909812264-6902b55846ad?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80&auto=format')" }}>
           <div className="wrap">
             <div className="crumbs">
               <a href="/what-is-anmeldung">Guides</a>
