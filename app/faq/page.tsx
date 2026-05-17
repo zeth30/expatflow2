@@ -306,7 +306,7 @@ export default function FAQPage() {
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">No payment until the PDF is ready · cancel anytime</div>
+              <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>
