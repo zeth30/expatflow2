@@ -72,7 +72,7 @@ export function ChecklistClient() {
       </div>
 
       {/* Checklist + ring */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 28, marginTop: 28, alignItems: "start" }}>
+      <div className="checklist-grid" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 28, marginTop: 28, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {allDocs.map((doc) => {
             const isDone = checked.has(doc.id);
@@ -100,7 +100,7 @@ export function ChecklistClient() {
         </div>
 
         {/* Progress ring */}
-        <div style={{ background: "white", border: "1px solid var(--line)", borderRadius: 22, padding: 28, position: "sticky", top: 24 }}>
+        <div className="checklist-ring" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 22, padding: 28, position: "sticky", top: 24 }}>
           <div style={{ position: "relative", width: 140, height: 140, margin: "0 auto 18px" }}>
             <svg viewBox="0 0 120 120" style={{ width: "100%", height: "100%", transform: "rotate(-90deg)" }}>
               <circle cx="60" cy="60" r="50" fill="none" stroke="var(--line)" strokeWidth="10" />

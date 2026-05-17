@@ -41,8 +41,8 @@ export function ReligionPicker() {
   const cur = OPTIONS.find((o) => o.key === active)!;
 
   return (
-    <div className="card" style={{ padding: 32 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 32, alignItems: "start" }}>
+    <div className="card">
+      <div className="religion-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 32, alignItems: "start" }}>
         {/* Mock form */}
         <div style={{ background: "var(--blue-soft)", border: "1px solid var(--line)", borderRadius: 18, padding: 22, fontFamily: "'JetBrains Mono', monospace" }}>
           <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 12, borderBottom: "2px solid var(--ink)", marginBottom: 6 }}>

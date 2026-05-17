@@ -147,7 +147,7 @@ export default function WhatIsAnmeldung() {
             </div>
 
             {/* Wide: residence + employment */}
-            <div className="reveal wi-card mob-2col-feat" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 20, padding: 24, marginBottom: 16 }}>
+            <div className="reveal wi-card mob-2col-feat" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 20, padding: 24, marginBottom: 40 }}>
               <div>
                 <div className="ib iconbox ink" style={{ marginBottom: 14 }}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="9" r="3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 17a5 5 0 0 1 10 0"/></svg></div>
                 <h4 style={{ fontSize: 20, fontWeight: 800, margin: "0 0 8px" }}>Residence permit · Aufenthaltstitel</h4>
@@ -163,7 +163,7 @@ export default function WhatIsAnmeldung() {
             </div>
 
             {/* Steuerklasse bars */}
-            <div className="reveal" style={{ background: "linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)", border: "1px solid #fde4a8", borderRadius: 22, padding: 32 }}>
+            <div className="reveal explainer-box" style={{ background: "linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)", border: "1px solid #fde4a8", borderRadius: 22, padding: 32 }}>
               <div className="mob-2col-feat">
                 <div>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 700, color: "var(--amber)", fontSize: 12.5, letterSpacing: "0.08em", textTransform: "uppercase" }}>
@@ -178,7 +178,7 @@ export default function WhatIsAnmeldung() {
                     { label: "Steuerklasse 1", sub: "Once Steuer-ID arrives", w: "36%", fill: "linear-gradient(90deg,var(--green) 0%,#059669 100%)", amt: "≈ €3,030" },
                     { label: "Steuerklasse 6", sub: "Emergency rate", w: "65%", fill: "repeating-linear-gradient(45deg,var(--rose),var(--rose) 8px,#be123c 8px,#be123c 16px)", amt: "≈ €2,420" },
                   ].map((b) => (
-                    <div key={b.label} style={{ display: "grid", gridTemplateColumns: "110px 1fr 84px", alignItems: "center", gap: 14 }}>
+                    <div key={b.label} className="sk-bar-row" style={{ display: "grid", gridTemplateColumns: "110px 1fr 84px", alignItems: "center", gap: 14 }}>
                       <div style={{ fontWeight: 700, fontSize: 13.5 }}>{b.label}<small style={{ display: "block", color: "var(--muted)", fontSize: 11, fontWeight: 600 }}>{b.sub}</small></div>
                       <div style={{ height: 16, borderRadius: 5, background: "rgba(255,255,255,.7)", border: "1px solid rgba(0,0,0,.05)", overflow: "hidden" }}><div style={{ height: "100%", borderRadius: 5, background: b.fill, width: b.w }} /></div>
                       <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, textAlign: "right", fontSize: 13 }}>{b.amt}</div>
@@ -237,7 +237,7 @@ export default function WhatIsAnmeldung() {
             </div>
             <div className="reveal"><ReligionPicker /></div>
 
-            <div className="reveal" style={{ marginTop: 32, background: "linear-gradient(135deg,#faf5ff 0%,#ede9fe 100%)", border: "1px solid #c4b5fd", borderRadius: 24, padding: 36 }}>
+            <div className="reveal explainer-box" style={{ marginTop: 32, background: "linear-gradient(135deg,#faf5ff 0%,#ede9fe 100%)", border: "1px solid #c4b5fd", borderRadius: 24, padding: 36 }}>
               <div className="mob-2col-feat">
                 <div>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 700, color: "#7c3aed", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
@@ -293,7 +293,7 @@ export default function WhatIsAnmeldung() {
               </div>
             </div>
 
-            <div className="reveal" style={{ marginTop: 32, background: "linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)", border: "1px solid #fde4a8", borderRadius: 24, padding: 32 }}>
+            <div className="reveal explainer-box" style={{ marginTop: 32, background: "linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)", border: "1px solid #fde4a8", borderRadius: 24, padding: 32 }}>
               <div className="mob-2col-feat">
                 <div>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 700, color: "var(--amber)", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>

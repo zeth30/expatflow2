@@ -302,3 +302,22 @@ h2.h2 .accent { color: var(--blue); }
 @media (max-width: 720px) {
   .pagenav .next { text-align: left; }
 }
+
+/* Fix 6: explainer-box (Steuerklasse / Kirchensteuer / Rundfunk) — reduce padding on mobile */
+@media (max-width: 720px) {
+  .explainer-box { padding: 22px 18px !important; }
+}
+@media (max-width: 480px) {
+  .explainer-box { padding: 16px 14px !important; }
+}
+
+/* Fix 7: Steuerklasse bar rows — stack label + bar + amount vertically on narrow screens */
+@media (max-width: 520px) {
+  .sk-bar-row {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+  .sk-bar-row > div:last-child {
+    text-align: left !important;
+  }
+}
