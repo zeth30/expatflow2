@@ -142,7 +142,7 @@
 .pill.info .dot { background: var(--blue); }
 
 h1.hero-title { font-size: clamp(40px, 5.4vw, 72px); line-height: 0.96; letter-spacing: -0.035em; font-weight: 800; margin: 22px 0 0; color: var(--ink); }
-h1.hero-title .accent { color: var(--blue); display: block; }
+h1.hero-title .accent { color: inherit; display: block; }
 .lede { font-weight: 700; color: var(--ink-2); font-size: 20px; margin-top: 26px; max-width: 640px; line-height: 1.35; }
 .body-copy { color: var(--ink-2); font-size: 17px; line-height: 1.6; max-width: 620px; margin-top: 22px; }
 
