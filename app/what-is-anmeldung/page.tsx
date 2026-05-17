@@ -96,7 +96,7 @@ export default function WhatIsAnmeldung() {
                 </div>
 
                 {/* Right — who registers */}
-                <div style={{ paddingTop: 6, borderLeft: "1px solid rgba(255,255,255,.1)", paddingLeft: 48 }}>
+                <div className="mob-no-border-left" style={{ paddingTop: 6, borderLeft: "1px solid rgba(255,255,255,.1)", paddingLeft: 48 }}>
                   <div className="eyebrow" style={{ marginBottom: 14 }}>Who registers</div>
                   <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: "-0.015em", lineHeight: 1.2, color: "white", marginBottom: 20 }}>
                     Anyone moving to <span style={{ color: "#60a5fa" }}>Germany</span> for <span style={{ color: "#60a5fa" }}>3+ months.</span>
@@ -290,6 +290,37 @@ export default function WhatIsAnmeldung() {
                 <h4>Rundfunkbeitrag letter</h4>
                 <p>Germany&apos;s mandatory public broadcasting fee. <strong>€18.36/month per household</strong> — not optional, even if you don&apos;t own a TV. Flatmates split it.</p>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 12 }}><span className="tag warn">€220.32 / year</span><span className="tag">ARD · ZDF · DLR</span></div>
+              </div>
+            </div>
+
+            <div className="reveal" style={{ marginTop: 32, background: "linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)", border: "1px solid #fde4a8", borderRadius: 24, padding: 32 }}>
+              <div className="mob-2col-feat">
+                <div>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 700, color: "var(--amber)", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                    What is the Rundfunkbeitrag?
+                  </span>
+                  <h4 style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.02em", margin: "0 0 14px", lineHeight: 1.1, color: "var(--ink)" }}>A mandatory household fee for public radio and TV — whether you watch or not.</h4>
+                  <p style={{ color: "var(--ink-2)", fontSize: 15, lineHeight: 1.6 }}>
+                    The Rundfunkbeitrag is Germany&apos;s public broadcasting contribution, set by state law. Every household pays <strong>€18.36/month</strong> — it is not a subscription and not tied to owning a TV or radio. It funds ARD, ZDF, and Deutschlandfunk.
+                  </p>
+                  <p style={{ color: "var(--ink-2)", fontSize: 15, lineHeight: 1.6, marginTop: 10 }}>
+                    A letter from the <strong>ARD ZDF Deutschlandradio Beitragsservice</strong> (formerly GEZ) arrives a few weeks after your Anmeldung. You register online at <strong>rundfunkbeitrag.de</strong> and set up a direct debit. If you share a flat, only one person per household pays — split it among flatmates as you like.
+                  </p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  {[
+                    { label: "Amount", val: "€18.36 / month", note: "€220.32 per year. Set by interstate treaty (Rundfunkstaatsvertrag), not by the broadcaster." },
+                    { label: "Who pays", val: "One person per household", note: "One flat = one fee, regardless of how many people live there or how many devices you own." },
+                    { label: "Can I opt out?", val: "No — with rare exceptions", note: "Exemptions exist for recipients of certain social benefits (Bürgergeld, BAföG, etc.). Apply at rundfunkbeitrag.de." },
+                  ].map((r) => (
+                    <div key={r.label} style={{ background: "rgba(255,255,255,.7)", borderRadius: 14, padding: "14px 18px", border: "1px solid #fde4a8" }}>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "var(--amber)", letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 4 }}>{r.label}</div>
+                      <div style={{ fontWeight: 700, fontSize: 15, color: "var(--ink)", marginBottom: 4 }}>{r.val}</div>
+                      <div style={{ fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>{r.note}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
