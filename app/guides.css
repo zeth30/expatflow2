@@ -103,10 +103,10 @@
 .hero::after {
   content: "";
   position: absolute;
-  left: -60px;
-  top: -40px;
-  width: 520px;
-  height: 680px;
+  left: -40px;
+  top: 20px;
+  width: 460px;
+  height: 600px;
   background-image: url('/germany-outline.svg');
   background-size: contain;
   background-repeat: no-repeat;
