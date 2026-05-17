@@ -23,9 +23,8 @@ export function GuideSidebar({ activeId }: { activeId: string }) {
       )}
 
       <aside className={`sidebar${open ? " open" : ""}`}>
-        <Link className="brand" href="/" onClick={() => setOpen(false)}>
-          <span className="brand-mark">S</span>
-          <span>SimplyExpat <span className="b-blue">Berlin</span></span>
+        <Link className="brand" href="/" onClick={() => setOpen(false)} style={{ letterSpacing: "-0.02em", color: "#0075FF", fontSize: 16 }}>
+          <span style={{ fontWeight: 400 }}>Simply</span><span style={{ fontWeight: 700 }}>Expat</span>
         </Link>
 
         <div className="sb-trust">
