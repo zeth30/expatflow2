@@ -92,8 +92,9 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
+            <div className="kf-eyebrow">Key Facts</div>
             <div className="kf-grid">
               <div className="kf-card kf-blue reveal" style={{ transitionDelay: "0ms" }}>
                 <div className="kf-bg">01</div>
@@ -103,12 +104,12 @@ export default function Wohnungsgeberbestaetigung() {
               <div className="kf-card kf-rose reveal" style={{ transitionDelay: "80ms" }}>
                 <div className="kf-bg">02</div>
                 <div className="kf-num">Fact 02</div>
-                <p className="kf-text">Without it, the Bürgeramt will not register you. No exceptions.</p>
+                <p className="kf-text">Without it, the Bürgeramt will not register you — but if your landlord is being difficult, there is a workaround.</p>
               </div>
-              <div className="kf-card kf-green reveal" style={{ transitionDelay: "160ms" }}>
+              <div className="kf-card kf-amber reveal" style={{ transitionDelay: "160ms" }}>
                 <div className="kf-bg">03</div>
                 <div className="kf-num">Fact 03</div>
-                <p className="kf-text">Many landlords include it in the move-in pack — check before asking.</p>
+                <p className="kf-text">Landlord refusing or delaying? Attend with your rental contract — the Bürgeramt accepts the form by email afterwards.</p>
               </div>
             </div>
           </div>

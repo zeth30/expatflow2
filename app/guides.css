@@ -241,78 +241,117 @@ h2.h2 .accent { color: var(--blue); }
 .darkbox .eyebrow { color: #60a5fa; }
 @media (max-width: 720px) { .darkbox { padding: 32px 24px; } }
 
-/* —— Key facts cards —— */
-.kf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+/* —— Key facts — dark editorial strip —— */
+.kf-section {
+  background: var(--ink) !important;
+  padding: 48px 0 52px !important;
+}
+/* Override the alternating section background for kf-section */
+.main > .kf-section:nth-child(odd),
+.main > .kf-section:nth-child(even) { background: var(--ink) !important; }
+
+.kf-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 32px;
+}
+
+/* Grid: no gap — dividers are drawn with borders */
+.kf-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+
 .kf-card {
-  background: white;
-  border: 1.5px solid var(--line);
-  border-radius: 20px;
-  padding: 28px 24px 22px;
+  padding: 36px 32px 34px;
   position: relative;
   overflow: hidden;
   cursor: default;
-  transition: border-color .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s cubic-bezier(.2,.7,.3,1), transform .25s cubic-bezier(.2,.7,.3,1);
+  transition: background .25s cubic-bezier(.2,.7,.3,1);
 }
-/* Top accent bar — slides in left → right on hover */
-.kf-card::before {
+
+/* Vertical rule between cards */
+.kf-card + .kf-card { border-left: 1px solid rgba(255,255,255,.08); }
+
+/* Bottom accent line — sweeps left → right on hover */
+.kf-card::after {
   content: "";
   position: absolute;
-  top: 0; left: 0; right: 0;
+  bottom: 0; left: 0;
   height: 3px;
+  width: 0%;
   background: var(--kf-color, var(--blue));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .32s cubic-bezier(.2,.7,.3,1);
+  transition: width .4s cubic-bezier(.2,.7,.3,1);
 }
-.kf-card:hover { box-shadow: 0 14px 36px rgba(10,22,56,.1), 0 2px 6px rgba(10,22,56,.05); transform: translateY(-5px); }
-.kf-card:hover::before { transform: scaleX(1); }
+.kf-card:hover { background: rgba(255,255,255,.03); }
+.kf-card:hover::after { width: 100%; }
 
 /* Color variants */
-.kf-card.kf-blue  { --kf-color: var(--blue);   --kf-tint: var(--blue-tint); }
-.kf-card.kf-amber { --kf-color: var(--amber);  --kf-tint: var(--amber-tint); }
-.kf-card.kf-green { --kf-color: var(--green);  --kf-tint: var(--green-tint); }
-.kf-card.kf-rose  { --kf-color: var(--rose);   --kf-tint: var(--rose-tint); }
-.kf-card.kf-purple{ --kf-color: var(--purple); --kf-tint: var(--purple-tint); }
-.kf-card:hover    { border-color: var(--kf-color, var(--blue)); }
+.kf-card.kf-blue   { --kf-color: var(--blue); }
+.kf-card.kf-amber  { --kf-color: var(--amber); }
+.kf-card.kf-green  { --kf-color: var(--green); }
+.kf-card.kf-rose   { --kf-color: #f87171; }
+.kf-card.kf-purple { --kf-color: var(--purple); }
 
-/* Fact number pill */
+/* Fact number — dash + label */
 .kf-num {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   font-family: "JetBrains Mono", monospace;
   font-size: 10.5px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  padding: 4px 9px;
-  border-radius: 7px;
-  margin-bottom: 16px;
+  letter-spacing: .16em; text-transform: uppercase;
   color: var(--kf-color, var(--blue));
-  background: var(--kf-tint, var(--blue-tint));
-  transition: background .22s, color .22s;
+  margin-bottom: 22px;
 }
-.kf-card:hover .kf-num { background: var(--kf-color, var(--blue)); color: white; }
+.kf-num::before {
+  content: "";
+  display: block;
+  width: 20px; height: 2px;
+  background: var(--kf-color, var(--blue));
+  border-radius: 2px;
+  flex-shrink: 0;
+}
 
 /* Fact text */
-.kf-text { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.55; margin: 0; }
+.kf-text {
+  font-size: 17px; font-weight: 700;
+  color: rgba(255,255,255,.88);
+  line-height: 1.55; margin: 0;
+  letter-spacing: -0.01em;
+}
 
-/* Ghost number — large, very faint, bottom-right watermark */
+/* Giant ghost number — bottom-right watermark, faint on dark */
 .kf-bg {
   position: absolute;
-  right: 12px; bottom: -10px;
-  font-size: 88px; font-weight: 800;
+  right: 14px; bottom: -12px;
+  font-size: 130px; font-weight: 800;
   line-height: 1;
-  color: rgba(10,22,56,.055);
+  color: rgba(255,255,255,.045);
   font-family: "JetBrains Mono", monospace;
   letter-spacing: -0.04em;
   pointer-events: none;
   user-select: none;
   transition: color .25s;
 }
-.kf-card:hover .kf-bg { color: rgba(10,22,56,.09); }
+.kf-card:hover .kf-bg { color: rgba(255,255,255,.09); }
 
-/* Stagger reveal on scroll — applied inline via style transitionDelay */
-.reveal.kf-card { transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1), border-color .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s cubic-bezier(.2,.7,.3,1); }
-.reveal.kf-card.in:hover { transform: translateY(-5px); }
+/* Reveal: override compound transition so background hover still works after .in */
+.reveal.kf-card {
+  transition: opacity .55s cubic-bezier(.2,.7,.3,1),
+              transform .55s cubic-bezier(.2,.7,.3,1),
+              background .25s cubic-bezier(.2,.7,.3,1);
+}
 
-@media (max-width: 720px) { .kf-grid { grid-template-columns: 1fr; gap: 10px; } }
+@media (max-width: 720px) {
+  .kf-grid { grid-template-columns: 1fr; border-top: none; }
+  .kf-card { padding: 28px 24px; border-top: 1px solid rgba(255,255,255,.1); }
+  .kf-card + .kf-card { border-left: none; }
+  .kf-section { padding: 36px 0 40px !important; }
+}
 
 /* —— Callout —— */
 .callout { display: flex; gap: 18px; padding: 24px 26px; border-radius: 18px; align-items: flex-start; }

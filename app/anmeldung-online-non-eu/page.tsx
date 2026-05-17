@@ -83,8 +83,9 @@ export default function OnlineNonEU() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
+            <div className="kf-eyebrow">Key Facts</div>
             <div className="kf-grid">
               <div className="kf-card kf-rose reveal" style={{ transitionDelay: "0ms" }}>
                 <div className="kf-bg">01</div>
