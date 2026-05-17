@@ -99,11 +99,29 @@
   z-index: 0;
   pointer-events: none;
 }
+/* Bottom fade — smooth transition into the first section below */
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
 /* Content above everything */
 .hero .wrap { position: relative; z-index: 2; }
 @media (max-width: 980px) {
   .hero { padding: 72px 0 36px; }
-  .hero::before { background: rgba(251, 252, 255, 0.90); }
+  /* Top-heavy gradient — keeps text readable but lets image show through at the bottom */
+  .hero::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(251, 252, 255, 0.97) 0%,
+      rgba(251, 252, 255, 0.88) 45%,
+      rgba(251, 252, 255, 0.65) 100%
+    );
+  }
   .hero::after { display: none; }
 }
 .crumbs { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 20px; flex-wrap: wrap; }
