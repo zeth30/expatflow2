@@ -86,15 +86,21 @@ export default function WhatIsAnmeldung() {
         {/* Key facts */}
         <section className="section" style={{ paddingTop: 0 }}>
           <div className="wrap">
-            <div className="callout info reveal">
-              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
-              <div>
-                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
-                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
-                  <li>Register within 14 days of moving in (§17 BMG). Fine up to €1,000.</li>
-                  <li>Fine is rarely imposed if you have an appointment booked and documented.</li>
-                  <li>You need your landlord's signed Wohnungsgeberbestätigung to register.</li>
-                </ul>
+            <div className="kf-grid">
+              <div className="kf-card kf-blue reveal" style={{ transitionDelay: "0ms" }}>
+                <div className="kf-bg">01</div>
+                <div className="kf-num">Fact 01</div>
+                <p className="kf-text">Register within 14 days of moving in (§17 BMG). Fine up to €1,000.</p>
+              </div>
+              <div className="kf-card kf-amber reveal" style={{ transitionDelay: "80ms" }}>
+                <div className="kf-bg">02</div>
+                <div className="kf-num">Fact 02</div>
+                <p className="kf-text">The fine is rarely imposed if you have an appointment booked and documented.</p>
+              </div>
+              <div className="kf-card kf-green reveal" style={{ transitionDelay: "160ms" }}>
+                <div className="kf-bg">03</div>
+                <div className="kf-num">Fact 03</div>
+                <p className="kf-text">You need your landlord&apos;s signed Wohnungsgeberbestätigung to register.</p>
               </div>
             </div>
           </div>
