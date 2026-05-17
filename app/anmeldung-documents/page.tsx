@@ -77,7 +77,7 @@ export default function AnmeldungDocuments() {
 
       <main className="main">
         {/* Hero */}
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540646794357-6cbbd6f3501e?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1583521214690-73421a1829a9?w=1920&q=80&auto=format')" }}>
           <div className="wrap">
             <div className="crumbs">
               <a href="/what-is-anmeldung">Guides</a>
