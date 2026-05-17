@@ -125,8 +125,8 @@ h1.hero-title .accent { color: var(--blue); display: block; }
 
 /* —— Section —— */
 .section { padding: 80px 0; background: white; }
-/* Alternating backgrounds — no divider lines */
-.main > .section:nth-child(odd) { background: #F8F9FA; }
+/* Alternating backgrounds — fade in from white at the top */
+.main > .section:nth-child(odd) { background: linear-gradient(to bottom, white 0px, #F8F9FA 72px); }
 
 .section-head { margin-bottom: 36px; }
 .eyebrow { color: var(--blue); font-size: 12.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
