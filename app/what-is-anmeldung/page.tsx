@@ -120,7 +120,7 @@ export default function WhatIsAnmeldung() {
         </section>
 
         {/* 02 · Why it matters */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · Why it matters</div>
@@ -200,7 +200,7 @@ export default function WhatIsAnmeldung() {
         </section>
 
         {/* 03 · At the Bürgeramt */}
-        <section className="section" id="sec-appt" style={{ paddingTop: 0 }}>
+        <section className="section" id="sec-appt">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · At the Bürgeramt</div>
@@ -228,7 +228,7 @@ export default function WhatIsAnmeldung() {
         </section>
 
         {/* 04 · The 8% trap */}
-        <section className="section" id="sec-religion" style={{ paddingTop: 0 }}>
+        <section className="section" id="sec-religion">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow" style={{ color: "var(--purple)" }}>04 · The 8% trap</div>
@@ -240,7 +240,7 @@ export default function WhatIsAnmeldung() {
         </section>
 
         {/* 05 · After registration */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow" style={{ color: "var(--amber)" }}>05 · The next 4 weeks</div>
@@ -265,7 +265,7 @@ export default function WhatIsAnmeldung() {
         </section>
 
         {/* 06 · Special situations */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">06 · Special situations</div>
@@ -299,7 +299,7 @@ export default function WhatIsAnmeldung() {
         </section>
 
         {/* FAQ */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">07 · Common questions</div>

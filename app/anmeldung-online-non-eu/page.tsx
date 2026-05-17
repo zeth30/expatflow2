@@ -80,7 +80,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* 01 · Eligibility checker */}
-        <section className="section" style={{ paddingTop: 24 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">01 · Eligibility checker</div>
@@ -94,7 +94,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* EU note */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="callout info reveal">
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
@@ -107,7 +107,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* 03 · 4 steps */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · What you must do instead</div>
@@ -136,7 +136,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* Reality check dark box */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="darkbox reveal">
               <div className="eyebrow">Reality check</div>
@@ -147,7 +147,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* 04 · FAQ */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">04 · Common questions</div>

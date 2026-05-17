@@ -94,7 +94,7 @@ export default function AnmeldungDocuments() {
         </section>
 
         {/* 01 · Personalised checklist */}
-        <section className="section" style={{ paddingTop: 24 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">01 · Personalised checklist</div>
@@ -108,7 +108,7 @@ export default function AnmeldungDocuments() {
         </section>
 
         {/* Dark warning */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="darkbox reveal">
               <div className="eyebrow">No exceptions</div>
@@ -119,7 +119,7 @@ export default function AnmeldungDocuments() {
         </section>
 
         {/* 02 · Form pitfalls */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · Why the form is so easy to get wrong</div>
@@ -174,7 +174,7 @@ export default function AnmeldungDocuments() {
         </section>
 
         {/* Callouts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div className="callout warn reveal">
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
@@ -194,7 +194,7 @@ export default function AnmeldungDocuments() {
         </section>
 
         {/* FAQ */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · Common questions</div>

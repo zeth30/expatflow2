@@ -92,7 +92,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 01 · What it looks like */}
-        <section className="section" style={{ paddingTop: 24 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">01 · What it is</div>
@@ -141,7 +141,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 02 · How to request it */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · How to request it</div>
@@ -186,7 +186,7 @@ export default function Wohnungsgeberbestaetigung() {
 
 
         {/* 03 · Who can sign */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · Who can sign it</div>
@@ -230,7 +230,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 04 · Risk scenarios */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">04 · If your landlord is difficult</div>
@@ -270,7 +270,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 05 · Quick rules */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">05 · Quick rules</div>
@@ -321,7 +321,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 06 · Emergency: landlord delaying, you need your Steuer-ID */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">06 · Emergency situation</div>
@@ -369,7 +369,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 07 · Subletting situations */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">07 · Subletting situations</div>
@@ -399,7 +399,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 08 · Airbnb and short-term rentals */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">08 · Airbnb and short-term rentals</div>
@@ -434,7 +434,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* FAQ */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">09 · Common questions</div>

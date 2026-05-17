@@ -92,7 +92,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 01 · Where to book */}
-        <section className="section" style={{ paddingTop: 24 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">01 · Where to book</div>
@@ -122,7 +122,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 02 · Booking hacks */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · The strategies that work</div>
@@ -171,7 +171,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 03 · Walk-in — reality check */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · Walk-in — last resort</div>
@@ -196,7 +196,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 14-day reality check */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="darkbox reveal">
               <div className="eyebrow">No slots before your deadline?</div>
@@ -220,7 +220,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 04 · At the appointment */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">04 · At the appointment</div>
@@ -280,7 +280,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* What they reject */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">Common failures</div>
@@ -307,7 +307,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* FAQ */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">05 · Common questions</div>
