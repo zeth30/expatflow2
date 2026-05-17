@@ -126,7 +126,7 @@ h1.hero-title .accent { color: var(--blue); display: block; }
 /* —— Section —— */
 .section { padding: 80px 0; background: white; }
 /* Alternating backgrounds — fade in from white at the top */
-.main > .section:nth-child(odd) { background: linear-gradient(to bottom, white 0px, #F8F9FA 72px); }
+.main > .section:nth-child(odd) { background: linear-gradient(to bottom, white 0px, #F8F9FA 72px, #F8F9FA calc(100% - 72px), white 100%); }
 
 .section-head { margin-bottom: 36px; }
 .eyebrow { color: var(--blue); font-size: 12.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
@@ -268,4 +268,37 @@ h2.h2 .accent { color: var(--blue); }
   .wrap { padding: 0 16px; }
   .card { padding: 18px; }
   .callout { padding: 16px 18px; gap: 12px; }
+}
+
+/* ── Mobile fixes ── */
+
+/* Fix 1: sb-toggle — move below 52px fixed SharedNav */
+@media (max-width: 980px) {
+  .sb-toggle { top: 64px; }
+}
+/* At <640px SharedNav's own hamburger covers guide nav — hide duplicate toggle */
+@media (max-width: 640px) {
+  .sb-toggle { display: none; }
+}
+
+/* Fix 4: darkbox right column — remove left border + padding when stacked */
+@media (max-width: 720px) {
+  .mob-no-border-left {
+    border-left: none !important;
+    padding-left: 0 !important;
+  }
+}
+
+/* Fix 3: ChecklistClient responsive grid */
+@media (max-width: 720px) {
+  .checklist-grid { grid-template-columns: 1fr !important; }
+  .checklist-ring {
+    order: -1;               /* ring above list on mobile */
+    position: static !important;
+  }
+}
+
+/* Fix 5: pagenav next — left-align when stacked */
+@media (max-width: 720px) {
+  .pagenav .next { text-align: left; }
 }
