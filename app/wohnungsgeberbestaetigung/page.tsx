@@ -91,6 +91,23 @@ export default function Wohnungsgeberbestaetigung() {
           </div>
         </section>
 
+        {/* Key facts */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="callout info reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div>
+                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
+                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
+                  <li>Your landlord is legally required to sign (§19 BMG). Refusal = fine for them.</li>
+                  <li>Without it, the Bürgeramt will not register you. No exceptions.</li>
+                  <li>Many landlords include it in the move-in pack — check before asking.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 01 · What it looks like */}
         <section className="section">
           <div className="wrap">
@@ -446,6 +463,9 @@ export default function Wohnungsgeberbestaetigung() {
               <details><summary>What if my landlord refuses to sign the Wohnungsgeberbestätigung?</summary><div className="ans">Attend your Bürgeramt appointment anyway with your rental contract — the office can register you provisionally and accept the Wohnungsgeberbestätigung by email afterwards. Then report the refusal: it is a regulatory offence under §19 BMG and the landlord faces a fine of up to €1,000. For further action contact the Berliner Mieterverein (Berlin Tenants' Association).</div></details>
               <details><summary>Can my flatmate sign the Wohnungsgeberbestätigung in a WG?</summary><div className="ans">Yes, if they are the main tenant on the lease and the landlord has given written permission for the sublet. Without that written authorisation, the main tenant cannot legally act as Wohnungsgeber. If your flatmate says they cannot provide the form, this may indicate the sublet is unauthorised — a legal grey area for both parties.</div></details>
               <details><summary>How long does the landlord have to provide the Wohnungsgeberbestätigung?</summary><div className="ans">Under §19 BMG, your landlord must provide the form promptly after your move-in. Since your own registration deadline is 14 days, in practice you need the form within the same window. If your landlord is slow, request it in writing immediately — your email is evidence that you asked. See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full document checklist</a> for what else to prepare at the same time.</div></details>
+              <details><summary>What information must the Wohnungsgeberbestätigung contain?</summary><div className="ans">Under §19 BMG, the form must include: (1) the full name of the Wohnungsgeber (landlord or main tenant), (2) the complete address of the property — street, house number, floor or apartment designation, postcode and city, (3) your full name as the person moving in, (4) your exact move-in date (Einzugsdatum), and (5) the signature of the Wohnungsgeber. All fields must be filled — an unsigned form or one with the address missing will not be accepted by the Bürgeramt.</div></details>
+              <details><summary>How long is the Wohnungsgeberbestätigung valid?</summary><div className="ans">There is no formal expiry date — the form is a one-time confirmation of a specific move-in event, not a recurring document. However, it must match the move-in date you declare on the Anmeldeformular. If there is a significant gap between the date on the form and your appointment (for example, your appointment was delayed by weeks), the clerk may ask about it but will generally accept it. The key is that the move-in date, address, and names are all consistent across your documents.</div></details>
+              <details><summary>My landlord is abroad — can they sign the Wohnungsgeberbestätigung digitally?</summary><div className="ans">There is no official rule prohibiting a digital signature on the Wohnungsgeberbestätigung, and in practice the Bürgeramt has accepted forms signed via tools like DocuSign or a typed signature over the form PDF — especially when accompanied by an email from the landlord confirming it. The safest approach if your landlord is abroad: have them sign the PDF digitally and email it back to you, then print it and bring it to your appointment. If the clerk raises questions, the email trail showing the landlord authorised the move-in is strong supporting evidence. When in doubt, call 115 before your appointment to confirm what your specific office will accept.</div></details>
             </div>
           </div>
         </section>

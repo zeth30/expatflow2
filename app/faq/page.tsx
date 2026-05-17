@@ -170,6 +170,26 @@ const SECTIONS = [
         q: "Is SimplyExpat an official German government service?",
         a: "No. SimplyExpat is an independent service, not affiliated with any German government authority. Always use your city's official website to book your Bürgeramt appointment and verify current requirements.",
       },
+      {
+        q: "Can I fill the Anmeldung form in English?",
+        a: "Yes — that is exactly what SimplyExpat is for. You answer every question in English through a step-by-step wizard. SimplyExpat translates your answers into the correct German entries and generates the completed official Anmeldeformular. You never have to write a single German word.",
+      },
+      {
+        q: "Does SimplyExpat generate the official German PDF?",
+        a: "Yes. SimplyExpat fills the official Berlin Anmeldeformular — the same 54-field form you would get from the Bürgeramt — in correct German. Country names, citizenship adjectives, date formats (DD.MM.YYYY), and all required fields are handled automatically. The output is a print-ready PDF you bring directly to your appointment.",
+      },
+      {
+        q: "What if I am registering more than one person?",
+        a: "SimplyExpat supports households of up to 6 people. The Anmeldung form fits 2 people per sheet, so for larger households SimplyExpat generates multiple sheets and packages them as a single ZIP file. Each person's information is filled in correctly across as many sheets as needed.",
+      },
+      {
+        q: "Do I need to create an account to use SimplyExpat?",
+        a: "No. No account, no login, no email required. You answer the wizard, pay once, and download your PDF. Nothing is stored on SimplyExpat's servers — all data is processed locally in your browser.",
+      },
+      {
+        q: "What if I need to re-download my PDF?",
+        a: "Your form data is saved in your browser's local storage — it stays there until you clear your browser data or use the restart button. As long as you are on the same device and browser, you can re-download your PDF any time from the completion page without paying again.",
+      },
     ],
   },
 ];

@@ -93,6 +93,23 @@ export default function AnmeldungDocuments() {
           </div>
         </section>
 
+        {/* Key facts */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="callout info reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div>
+                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
+                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
+                  <li>Missing one required document = turned away, slot lost. Check the night before.</li>
+                  <li>Every adult registering needs their own valid ID document.</li>
+                  <li>Non-EU citizens also need their valid visa or residence permit.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 01 · Personalised checklist */}
         <section className="section">
           <div className="wrap">

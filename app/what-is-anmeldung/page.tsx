@@ -83,6 +83,23 @@ export default function WhatIsAnmeldung() {
           </div>
         </section>
 
+        {/* Key facts */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="callout info reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div>
+                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
+                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
+                  <li>Register within 14 days of moving in (§17 BMG). Fine up to €1,000.</li>
+                  <li>Fine is rarely imposed if you have an appointment booked and documented.</li>
+                  <li>You need your landlord's signed Wohnungsgeberbestätigung to register.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 01 · Definition */}
         <section className="section" id="sec-what">
           <div className="wrap">

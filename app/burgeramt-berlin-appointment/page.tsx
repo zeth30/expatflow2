@@ -91,6 +91,23 @@ export default function BurgeramtBerlinAppointment() {
           </div>
         </section>
 
+        {/* Key facts */}
+        <section className="section" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <div className="callout info reveal">
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+              <div>
+                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
+                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
+                  <li>Slots on service.berlin.de appear Tuesdays at 8:00 AM and vanish in under 60 seconds.</li>
+                  <li>No appointment = no service. Walk-ins are officially not accepted.</li>
+                  <li>Call 115 at 7:00 AM for same-day cancellation slots.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 01 · Where to book */}
         <section className="section">
           <div className="wrap">
