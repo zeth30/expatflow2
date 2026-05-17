@@ -7,7 +7,7 @@ import "./globals.css";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "SimplyExpat | Berlin Registration PDF in 5 Minutes",
+  title: "Anmeldung Berlin in English — Fill Your Form | SimplyExpat",
   description:
     "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
   keywords: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "SimplyExpat | Berlin Registration PDF in 5 Minutes",
+    title: "Anmeldung Berlin in English — Fill Your Form | SimplyExpat",
     description:
       "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
     url: DOMAIN,

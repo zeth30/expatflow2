@@ -8,7 +8,7 @@ import { ChecklistClient } from "./ChecklistClient";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Document Checklist — What to Bring to the Bürgeramt (2026) · SimplyExpat Berlin",
+  title: "Anmeldung Documents Checklist Berlin 2026 | SimplyExpat",
   description:
     "The complete document checklist for your Anmeldung in Germany. Personalised for your situation — missing a required document means a failed appointment; minor form errors are usually corrected at the counter.",
   alternates: { canonical: `${DOMAIN}/anmeldung-documents` },
@@ -86,8 +86,8 @@ export default function AnmeldungDocuments() {
             </div>
             <span className="pill warn"><span className="dot" />Guide 03 · Document Checklist</span>
             <h1 className="hero-title">
-              Show up missing a document and they send you home.
-              <span className="accent">Here is everything you need.</span>
+              Anmeldung document checklist.
+              <span className="accent">Show up missing one and they send you home.</span>
             </h1>
             <p className="lede">The complete checklist of what to bring to your <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>Bürgeramt appointment</a>. Tick them off as you prepare. New to this? Start with <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>guide 01 — What is Anmeldung</a>.</p>
           </div>

@@ -8,7 +8,7 @@ import { EmailTemplateClient } from "./EmailTemplateClient";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Wohnungsgeberbestätigung — What It Is and How to Get It (2026) · SimplyExpat Berlin",
+  title: "Wohnungsgeberbestätigung Berlin Guide 2026 | SimplyExpat",
   description:
     "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away. Here is exactly what it is, who can sign it, and how to get it fast.",
   alternates: { canonical: `${DOMAIN}/wohnungsgeberbestaetigung` },
@@ -84,8 +84,8 @@ export default function Wohnungsgeberbestaetigung() {
             </div>
             <span className="pill warn"><span className="dot" />Guide 04 · Landlord Confirmation</span>
             <h1 className="hero-title">
-              The one form your landlord must provide.
-              <span className="accent">Without it, no registration.</span>
+              What is the Wohnungsgeberbestätigung?
+              <span className="accent">The one form your landlord must sign.</span>
             </h1>
             <p className="lede">What it is, who can sign it, how to request it — and exactly what to do if your landlord is difficult.</p>
           </div>

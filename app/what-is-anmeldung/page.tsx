@@ -8,7 +8,7 @@ import { ReligionPicker } from "./ReligionPicker";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "What is Anmeldung? Germany Address Registration Guide (2026) · SimplyExpat Berlin",
+  title: "What is Anmeldung? Berlin Guide 2026 | SimplyExpat",
   description:
     "The Anmeldung is Germany's mandatory address registration. Register at your Bürgeramt within 14 days of moving in or face fines up to €1,000. Required for your tax ID, bank account, health insurance, and residence permit.",
   alternates: { canonical: `${DOMAIN}/what-is-anmeldung` },
@@ -76,8 +76,8 @@ export default function WhatIsAnmeldung() {
             </div>
             <span className="pill"><span className="dot" />Guide 01 · Main Guide · Start Here</span>
             <h1 className="hero-title">
-              Germany requires you to register your address.
-              <span className="accent">Here is what that means.</span>
+              What is the Anmeldung?
+              <span className="accent">Germany&apos;s mandatory address registration, explained.</span>
             </h1>
             <p className="lede">The Anmeldung is not optional. It is not just for citizens. The consequences of getting it wrong follow you for months.</p>
           </div>

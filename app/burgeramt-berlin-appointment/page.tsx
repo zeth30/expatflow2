@@ -7,7 +7,7 @@ import { GuideReveal } from "../components/guides/GuideReveal";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "How to Book a Bürgeramt Appointment in Berlin (2026) · SimplyExpat Berlin",
+  title: "Bürgeramt Appointment Berlin 2026 | SimplyExpat",
   description:
     "Berlin Bürgeramt appointments vanish in seconds. Here is exactly how to find a slot in 2026 — the Tuesday trick, walk-in options, the 115 hotline, and what to do when there are no slots before your 14-day deadline.",
   alternates: { canonical: `${DOMAIN}/burgeramt-berlin-appointment` },
@@ -84,8 +84,8 @@ export default function BurgeramtBerlinAppointment() {
             </div>
             <span className="pill info"><span className="dot" />Guide 05 · Bürgeramt Appointment</span>
             <h1 className="hero-title">
-              Berlin slots vanish in 60 seconds.
-              <span className="accent">Here is how to get one.</span>
+              How to book a Bürgeramt appointment in Berlin.
+              <span className="accent">Slots vanish in 60 seconds.</span>
             </h1>
             <p className="lede">Appointments book out 3–6 weeks in advance. Here is exactly when new slots appear, where to look, and what to do when the portal shows nothing. Before booking, make sure you have your <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>documents ready</a> — missing one means losing your slot. Non-EU citizens: <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>online Anmeldung is not available to you</a>.</p>
           </div>

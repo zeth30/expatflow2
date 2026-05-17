@@ -8,7 +8,7 @@ import { EligibilityChecker } from "./EligibilityChecker";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Online Anmeldung for Non-EU Citizens — Why It's Not Available (2026) · SimplyExpat Berlin",
+  title: "Anmeldung Online: Non-EU Citizens Berlin 2026 | SimplyExpat",
   description:
     "Non-EU citizens cannot register their address online in Germany. Online Anmeldung requires an EU/EEA eID card. Here is the in-person path that works for US, UK, Indian, and other non-EU expats.",
   alternates: { canonical: `${DOMAIN}/anmeldung-online-non-eu` },
@@ -72,7 +72,7 @@ export default function OnlineNonEU() {
             </div>
             <span className="pill warn"><span className="dot" />Guide 02 · Non-EU Citizens</span>
             <h1 className="hero-title">
-              You just found out you can&apos;t register online.
+              Online Anmeldung is not available for non-EU citizens.
               <span className="accent">Here is what to do instead.</span>
             </h1>
             <p className="lede">Online Anmeldung exists. Non-EU citizens cannot use it. Here is exactly why — and your fastest path forward.</p>
