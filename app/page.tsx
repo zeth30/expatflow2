@@ -3814,6 +3814,9 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
             <p style={{ textAlign: "center", color: "rgba(147,197,253,0.6)", fontSize: 11.5 }}>
               🔒 Powered by Stripe · Secure · No card stored
             </p>
+            <p style={{ textAlign: "center", color: "rgba(147,197,253,0.45)", fontSize: 10.5, lineHeight: 1.5 }}>
+              By paying you consent to immediate service delivery and acknowledge the loss of your 14-day right of withdrawal (§356 Abs. 5 BGB).
+            </p>
             {isDevTest && (
               <button
                 onClick={onGenerate}

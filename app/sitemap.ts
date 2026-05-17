@@ -46,5 +46,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${DOMAIN}/barrierefreiheit`,
+      lastModified: new Date("2026-05-17"),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 }

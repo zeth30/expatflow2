@@ -4,6 +4,23 @@ html {
   overflow-x: hidden;
 }
 
+.skip-nav {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: #0f172a;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.skip-nav:focus {
+  left: 8px;
+}
+
 body {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

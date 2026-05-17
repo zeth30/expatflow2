@@ -57,6 +57,8 @@ export function Impressum({ onClose }: { onClose: () => void }) {
       </LP>
       <LH2>Haftungsausschluss</LH2>
       <LP>SimplyExpat ist ein technisches Hilfsmittel (Ausfüllhilfe) gemäß §2 RDG und stellt keine Rechtsberatung dar. Die generierten Dokumente ersetzen keine rechtliche Beratung. Die Richtigkeit der eingegebenen Daten liegt in der alleinigen Verantwortung des Nutzers.</LP>
+      <LH2>Umsatzsteuer</LH2>
+      <LP>Gemäß §19 UStG wird keine Umsatzsteuer erhoben und ausgewiesen (Kleinunternehmerregelung).</LP>
       <LH2>Streitschlichtung</LH2>
       <LP>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <strong>ec.europa.eu/consumers/odr</strong>. Wir sind nicht bereit und nicht verpflichtet, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</LP>
     </LegalModal>
@@ -67,7 +69,7 @@ export function Impressum({ onClose }: { onClose: () => void }) {
 export function TermsOfService({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Terms of Service — SimplyExpat" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat GmbH (in formation), Berlin, Germany</p>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat, Berlin, Germany</p>
       <LHighlight>
         SimplyExpat is a <strong>Technical Filing Aid (Ausfüllhilfe)</strong>. We are a software service, not a law firm, legal advisor, or governmental authority. Use of this service does not constitute legal advice and does not create a legal service relationship under §2 RDG (Rechtsdienstleistungsgesetz).
       </LHighlight>
@@ -101,7 +103,7 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
 export function CancellationPolicy({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Cancellation Policy (Widerrufsbelehrung)" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat GmbH (in formation)</p>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat</p>
       <LHighlight>
         <strong>Important notice:</strong> Because SimplyExpat is a digital service that is performed immediately upon your request, your statutory right of withdrawal expires as soon as the PDF generation is complete — provided you have expressly consented to this at checkout, as required by §356 para. 5 BGB and Article 16(m) of Directive 2011/83/EU.
       </LHighlight>
@@ -116,7 +118,7 @@ export function CancellationPolicy({ onClose }: { onClose: () => void }) {
       <LH2>Withdrawal Form (Model)</LH2>
       <LP>If you wish to withdraw, you may use the following model form (not mandatory):</LP>
       <div style={{ padding: "12px 16px", background: "#f8fafc", borderRadius: 10, border: "1px solid #e8ecf4", fontFamily: "monospace", fontSize: 12.5, lineHeight: 1.7, marginBottom: 16 }}>
-        To: SimplyExpat GmbH, info@simplyexpat.de<br/>
+        To: SimplyExpat, info@simplyexpat.de<br/>
         I/We hereby give notice that I/we withdraw from my/our contract for the provision of the following service: SimplyExpat Anmeldung PDF Generation<br/>
         Ordered on: ___________<br/>
         Name: ___________<br/>
@@ -137,7 +139,7 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
         <strong>In plain English:</strong> The form data you enter (address, passport details, family information) never leaves your device. It is stored only in your browser and deleted once your PDFs are generated. The only personal data that reaches our servers is: (1) your payment via Stripe, and (2) optionally your first name and email address if you choose to receive a post-purchase confirmation email with your next steps.
       </LHighlight>
       <LH2>1. Controller (Verantwortlicher)</LH2>
-      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: info@simplyexpat.de. Operating under the brand name SimplyExpat (GmbH in formation).</LP>
+      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: info@simplyexpat.de. Operating under the brand name SimplyExpat.</LP>
       <LH2>2. What data we process and why</LH2>
       <LP><strong>a) Registration form data</strong> — names, dates of birth, addresses, passport numbers, citizenship, marital status, religious affiliation: Stored exclusively in your browser's localStorage on your own device under the key "simplyexpat-v1". SimplyExpat has no technical access to this data at any point. It is never transmitted to our servers. It is automatically deleted from your browser once document generation is complete. Legal basis: this is not a processing activity by SimplyExpat within the meaning of Art. 4 No. 2 GDPR, as the data never reaches our systems (see GDPR Recital 26).</LP>
       <LP><strong>b) PDF generation</strong>: Your completed Anmeldung form and personalised checklist are generated entirely in your browser using the open-source pdf-lib library. The PDF bytes exist only in browser memory and are downloaded directly to your device. They are never transmitted to SimplyExpat servers.</LP>
@@ -200,7 +202,7 @@ export function LandingLegalFooter() {
         Whether you need Anmeldung Berlin English PDF support, expert relocation Berlin paperwork assistance, or simply want to fill your Bürgeramt form without storing your data anywhere,
         SimplyExpat prepares everything in 5 minutes. Available for every nationality moving to Berlin.
       </p>
-      <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat GmbH (in formation) · Berlin, Germany · Not a legal service (§2 RDG)</p>
+      <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
   );
 }
