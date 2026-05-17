@@ -8,12 +8,14 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
   return (
     <div className="fu" style={{ background: "white" }}>
       <style>{`
+        .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
         @media(max-width:640px){
           .lp-h1{font-size:32px!important;line-height:1.1!important}
           .lp-sub{font-size:14px!important}
           .lp-guides-sect{padding:32px 20px!important}
           .lp-guide-gap{margin-bottom:32px!important}
           .lp-cta-btn{width:100%!important;justify-content:center!important}
+          .stats-strip{grid-template-columns:1fr 1fr!important}
         }
       `}</style>
       <SharedNav onStart={onStart} />
@@ -31,9 +33,9 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           </div>
 
           {/* Headline */}
-          <h1 className="lp-h1" style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 12, letterSpacing: "-0.035em", maxWidth: 700 }}>
+          <h1 className="lp-h1" style={{ fontSize: 54, fontWeight: 900, color: "#1a0505", lineHeight: 1.06, marginBottom: 12, letterSpacing: "-0.035em", maxWidth: 700 }}>
             Your Anmeldung form,<br />
-            <span style={{ color: "#0075FF" }}>filled in 5 minutes.</span>
+            <span style={{ color: "#DD0000" }}>filled in 5 minutes.</span>
           </h1>
           <p style={{ fontSize: 15, color: "#64748b", fontWeight: 600, marginBottom: 32, letterSpacing: "-0.005em" }}>
             In English. No German required.
@@ -57,9 +59,9 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
                   { label: "Appointment guide", sub: "Hacks to get a slot fast in Berlin" },
                 ].map(({ label, sub }) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 15px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4" }}>
-                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#0075FF", flexShrink: 0 }} />
+                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#DD0000", flexShrink: 0 }} />
                     <div>
-                      <span style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5 }}>{label}</span>
+                      <span style={{ fontWeight: 800, color: "#1a0505", fontSize: 13.5 }}>{label}</span>
                       <span style={{ color: "#94a3b8", fontSize: 13 }}> — {sub}</span>
                     </div>
                   </div>
@@ -69,7 +71,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
               {/* CTA */}
               <button onClick={onStart} className="lp-cta-btn"
                 onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-                style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#0066ee" : "#0075FF", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>
+                style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#ee0000" : "#DD0000", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(221,0,0,0.45)" : "0 6px 24px rgba(221,0,0,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>
                 Prepare My Anmeldung <ArrowRight size={18} />
               </button>
               <p style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500, margin: "0 0 14px", letterSpacing: "0.01em" }}>
@@ -89,7 +91,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
                     style={{ width: "100%", display: "block" }}
                   />
                 </div>
-                <div style={{ position: "absolute", bottom: -14, right: -14, background: "#0075FF", color: "white", borderRadius: 10, padding: "8px 13px", boxShadow: "0 6px 20px rgba(0,117,255,0.4)", display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>
+                <div style={{ position: "absolute", bottom: -14, right: -14, background: "#DD0000", color: "white", borderRadius: 10, padding: "8px 13px", boxShadow: "0 6px 20px rgba(221,0,0,0.4)", display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>
                   <CheckCircle2 size={13} color="white" />
                   <span style={{ fontSize: 12, fontWeight: 800 }}>54 fields · Perfect German</span>
                 </div>
@@ -99,7 +101,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           </div>
 
           {/* Stats strip */}
-          <div className="stats-strip" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
+          <div className="stats-strip" style={{ marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
             {[
               { v: "54", l: "Fields filled in German" },
               { v: "5 min", l: "Average completion" },
@@ -107,7 +109,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
               { v: "0", l: "Bytes stored on any server" },
             ].map(({ v, l }) => (
               <div key={l} style={{ textAlign: "center", padding: "14px 10px" }}>
-                <div style={{ fontSize: 28, fontWeight: 900, color: "#0075FF", letterSpacing: "-0.03em", lineHeight: 1 }}>{v}</div>
+                <div style={{ fontSize: 28, fontWeight: 900, color: "#DD0000", letterSpacing: "-0.03em", lineHeight: 1 }}>{v}</div>
                 <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 5, fontWeight: 500 }}>{l}</div>
               </div>
             ))}
@@ -137,8 +139,8 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           {/* Guide cards */}
           <div className="lp-guide-gap" style={{ marginBottom: 64 }}>
             <div style={{ textAlign: "center", marginBottom: 36 }}>
-              <div style={{ fontSize: 10.5, fontWeight: 800, color: "#0075FF", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>Free Guides</div>
-              <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, color: "#DD0000", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>Free Guides</div>
+              <h2 style={{ fontSize: 28, fontWeight: 900, color: "#1a0505", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>
                 Everything you need to know before your appointment
               </h2>
               <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.7 }}>Step-by-step guides covering every part of the Anmeldung process.</p>
@@ -152,13 +154,13 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
                 { href: "/burgeramt-berlin-appointment", label: "Bürgeramt Appointment", desc: "Finding a slot, outer-district strategy, and what to do at the counter.", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
               ].map(g => (
                 <a key={g.href} href={g.href}
-                  style={{ display: "flex", flexDirection: "column", gap: 10, padding: "20px", borderRadius: 16, border: "1.5px solid #bfdbfe", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none" }}>
-                  <div style={{ width: 34, height: 34, borderRadius: 9, background: "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 2 }}>
+                  style={{ display: "flex", flexDirection: "column", gap: 10, padding: "20px", borderRadius: 16, border: "1.5px solid #fecaca", background: "linear-gradient(135deg,#fff5f5,#fee2e2)", textDecoration: "none" }}>
+                  <div style={{ width: 34, height: 34, borderRadius: 9, background: "#b91c1c", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 2 }}>
                     {g.icon}
                   </div>
-                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, lineHeight: 1.3 }}>{g.label}</div>
-                  <div style={{ fontSize: 13, color: "#1d4ed8", lineHeight: 1.55, flexGrow: 1 }}>{g.desc}</div>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12.5, fontWeight: 700, color: "#0075FF" }}>
+                  <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 14, lineHeight: 1.3 }}>{g.label}</div>
+                  <div style={{ fontSize: 13, color: "#b91c1c", lineHeight: 1.55, flexGrow: 1 }}>{g.desc}</div>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12.5, fontWeight: 700, color: "#DD0000" }}>
                     Read guide <ArrowRight size={11} />
                   </div>
                 </a>
@@ -170,7 +172,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           <div style={{ maxWidth: 780, margin: "0 auto" }}>
             <div style={{ textAlign: "center", marginBottom: 36 }}>
               <div style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 10 }}>Common Questions</div>
-              <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0f172a", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>
+              <h2 style={{ fontSize: 28, fontWeight: 900, color: "#1a0505", letterSpacing: "-0.025em", lineHeight: 1.2, marginBottom: 8 }}>
                 The questions expats ask most
               </h2>
               <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.7 }}>Quick answers — no German required.</p>
@@ -182,13 +184,13 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
                 { q: "Can I do the Anmeldung online?", a: "Only if you are an EU/EEA citizen with a German eID chip, already registered in Germany, and moving within Germany. The vast majority of expats — including all non-EU nationals — must register in person." },
               ].map(({ q, a }) => (
                 <div key={q} style={{ padding: "18px 22px", borderRadius: 12, border: "1.5px solid #e8ecf4", background: "white" }}>
-                  <div style={{ fontWeight: 700, color: "#0f172a", fontSize: 14.5, marginBottom: 7 }}>{q}</div>
+                  <div style={{ fontWeight: 700, color: "#1a0505", fontSize: 14.5, marginBottom: 7 }}>{q}</div>
                   <div style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.7 }}>{a}</div>
                 </div>
               ))}
             </div>
             <div style={{ textAlign: "center" }}>
-              <a href="/faq" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 26px", borderRadius: 10, border: "2px solid #e8ecf4", background: "white", color: "#0f172a", fontWeight: 700, fontSize: 13.5, textDecoration: "none", letterSpacing: "-0.01em" }}>
+              <a href="/faq" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 26px", borderRadius: 10, border: "2px solid #e8ecf4", background: "white", color: "#1a0505", fontWeight: 700, fontSize: 13.5, textDecoration: "none", letterSpacing: "-0.01em" }}>
                 See all 20 questions <ArrowRight size={13} />
               </a>
             </div>
@@ -198,7 +200,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
       </div>
 
       {/* ══ BOTTOM CTA ══ */}
-      <div style={{ background: "#0f172a", padding: "56px 20px" }}>
+      <div style={{ background: "#1a0505", padding: "56px 20px" }}>
         <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: 26, fontWeight: 900, color: "white", marginBottom: 10, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Walk in better prepared than anyone else in that waiting room.
@@ -206,7 +208,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           <p style={{ color: "#475569", fontSize: 14, marginBottom: 28, lineHeight: 1.7 }}>
             Perfect German form. Personalised checklist. Zero data stored. Ready in 5 minutes.
           </p>
-          <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#0075FF", color: "white", fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.4)" }}>
+          <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: "#DD0000", color: "white", fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(221,0,0,0.4)" }}>
             Get started <ArrowRight size={15} />
           </button>
         </div>

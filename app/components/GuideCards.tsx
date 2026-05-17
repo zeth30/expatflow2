@@ -60,23 +60,23 @@ export function GuideCards({ currentPage }: { currentPage?: string }) {
   const cards = GUIDES.filter(g => g.slug !== currentPage);
   return (
     <div style={{ marginBottom: 52 }}>
-      <h2 style={{ fontSize: 22, fontWeight: 900, color: "#0f172a", marginBottom: 18, letterSpacing: "-0.02em" }}>More guides</h2>
+      <h2 style={{ fontSize: 22, fontWeight: 900, color: "#1a0505", marginBottom: 18, letterSpacing: "-0.02em" }}>More guides</h2>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 12 }}>
         {cards.map(g => (
           <a
             key={g.slug}
             href={g.href}
-            style={{ display: "flex", flexDirection: "column", gap: 10, padding: "18px 18px 16px", borderRadius: 16, border: "1.5px solid #bfdbfe", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "box-shadow 0.15s" }}
+            style={{ display: "flex", flexDirection: "column", gap: 10, padding: "18px 18px 16px", borderRadius: 16, border: "1.5px solid #fecaca", background: "linear-gradient(135deg,#fff5f5,#fee2e2)", textDecoration: "none", transition: "box-shadow 0.15s" }}
           >
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: "#DD0000", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               {g.icon}
             </div>
-            <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5, lineHeight: 1.3 }}>{g.title}</div>
-            <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5, flexGrow: 1 }}>{g.desc}</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 700, color: "#0075FF", marginTop: 2 }}>
+            <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 13.5, lineHeight: 1.3 }}>{g.title}</div>
+            <div style={{ fontSize: 12.5, color: "#b91c1c", lineHeight: 1.5, flexGrow: 1 }}>{g.desc}</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 700, color: "#DD0000", marginTop: 2 }}>
               Read guide
               <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#DD0000" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
           </a>

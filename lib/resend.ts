@@ -38,13 +38,13 @@ function buildReminderHtml(firstName: string, sheets: number): string {
 <table width="100%" style="max-width:540px;">
 
   <tr><td style="padding-bottom:20px;" align="center">
-    <span style="font-size:15px;font-weight:800;color:#0f172a;">SimplyExpat </span>
-    <span style="font-size:15px;font-weight:800;color:#0075FF;">Berlin</span>
+    <span style="font-size:15px;font-weight:800;color:#1a0505;">SimplyExpat </span>
+    <span style="font-size:15px;font-weight:800;color:#DD0000;">Berlin</span>
   </td></tr>
 
   <tr><td style="background:white;border-radius:20px;border:1px solid #e8ecf4;box-shadow:0 4px 24px rgba(0,0,0,0.06);overflow:hidden;">
     <table width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="background:linear-gradient(135deg,#0f172a,#0075FF);padding:28px 32px 24px;border-radius:20px 20px 0 0;">
+      <tr><td style="background:linear-gradient(135deg,#1a0505,#DD0000);padding:28px 32px 24px;border-radius:20px 20px 0 0;">
         <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:rgba(191,219,254,0.8);letter-spacing:0.1em;text-transform:uppercase;">Documents ready</p>
         <h1 style="margin:0;font-size:22px;font-weight:900;color:white;line-height:1.2;letter-spacing:-0.02em;">
           Almost there, ${firstName}.<br/>One thing left to do.
@@ -63,10 +63,10 @@ function buildReminderHtml(firstName: string, sheets: number): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
           <tr>
             <td width="30" valign="top">
-              <div style="width:22px;height:22px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:6px;text-align:center;line-height:22px;font-size:10px;font-weight:800;color:#0075FF;">${n}</div>
+              <div style="width:22px;height:22px;background:#fff5f5;border:1.5px solid #fecaca;border-radius:6px;text-align:center;line-height:22px;font-size:10px;font-weight:800;color:#DD0000;">${n}</div>
             </td>
             <td style="padding-left:10px;">
-              <p style="margin:0 0 2px;font-size:13px;font-weight:700;color:#0f172a;">${title}</p>
+              <p style="margin:0 0 2px;font-size:13px;font-weight:700;color:#1a0505;">${title}</p>
               <p style="margin:0;font-size:12px;color:#64748b;line-height:1.5;">${desc}</p>
             </td>
           </tr>
@@ -75,7 +75,7 @@ function buildReminderHtml(firstName: string, sheets: number): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
           <tr><td align="center">
             <a href="https://service.berlin.de/dienstleistung/120686/"
-               style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#0f172a,#0075FF);color:white;font-size:13.5px;font-weight:800;text-decoration:none;border-radius:11px;">
+               style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#1a0505,#DD0000);color:white;font-size:13.5px;font-weight:800;text-decoration:none;border-radius:11px;">
               Book Bürgeramt Appointment →
             </a>
           </td></tr>

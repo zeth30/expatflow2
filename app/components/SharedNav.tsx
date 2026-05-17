@@ -52,7 +52,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
       <style>{`
         .snav-pad{padding:0 40px}
         .snav-hide{display:flex}
-        .snav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#0f172a;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit;border:none;cursor:pointer}
+        .snav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#1a0505;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit;border:none;cursor:pointer}
         .snav-ham{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;border:1.5px solid #e8ecf4;background:white;cursor:pointer;padding:0;color:#374151;flex-shrink:0}
         .snav-mob-drawer{display:none;border-top:1px solid #e8ecf4;background:white;padding:8px 16px 20px;max-height:80vh;overflow-y:auto}
         .snav-dropdown{display:block}
@@ -76,14 +76,14 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
             {/* Left: logo + dropdowns */}
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <Link href="/" style={{ textDecoration: "none" }}>
-                <span style={{ fontWeight: 800, fontSize: 15, color: "#0f172a", letterSpacing: "-0.02em" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
+                <span style={{ fontWeight: 800, fontSize: 15, color: "#1a0505", letterSpacing: "-0.02em" }}>SimplyExpat <span style={{ color: "#DD0000" }}>Berlin</span></span>
               </Link>
 
               {/* Guides — blue */}
               <button
                 className="snav-hide"
                 onClick={() => setMenuOpen(o => o === "guides" ? null : "guides")}
-                style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "guides" ? "1.5px solid #0075FF" : "1.5px solid transparent", background: menuOpen === "guides" ? "#eff6ff" : "transparent", color: "#0075FF", fontWeight: 700, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
+                style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "guides" ? "1.5px solid #DD0000" : "1.5px solid transparent", background: menuOpen === "guides" ? "#fff5f5" : "transparent", color: "#DD0000", fontWeight: 700, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
               >
                 Guides {chevron(menuOpen === "guides")}
               </button>
@@ -92,7 +92,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
               <button
                 className="snav-hide"
                 onClick={() => setMenuOpen(o => o === "services" ? null : "services")}
-                style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "services" ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: menuOpen === "services" ? "#eff6ff" : "transparent", color: menuOpen === "services" ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
+                style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: menuOpen === "services" ? "1.5px solid #fecaca" : "1.5px solid transparent", background: menuOpen === "services" ? "#fff5f5" : "transparent", color: menuOpen === "services" ? "#DD0000" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
               >
                 Services {chevron(menuOpen === "services")}
               </button>
@@ -134,23 +134,23 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
           {GUIDE_ITEMS.map(g => (
             <a key={g.href} href={g.href} onClick={() => setMobileOpen(false)}
               style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: "1px solid #f1f5f9", textDecoration: "none" }}>
-              <div style={{ width: 28, height: 28, borderRadius: 7, background: "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{g.icon}</div>
-              <span style={{ fontSize: 13.5, fontWeight: 600, color: "#0f172a" }}>{g.label}</span>
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: "#b91c1c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{g.icon}</div>
+              <span style={{ fontSize: 13.5, fontWeight: 600, color: "#1a0505" }}>{g.label}</span>
             </a>
           ))}
           <a href="/faq" onClick={() => setMobileOpen(false)}
-            style={{ display: "block", padding: "12px 0", fontSize: 13.5, fontWeight: 600, color: "#0f172a", textDecoration: "none", borderBottom: "1px solid #f1f5f9" }}>
+            style={{ display: "block", padding: "12px 0", fontSize: 13.5, fontWeight: 600, color: "#1a0505", textDecoration: "none", borderBottom: "1px solid #f1f5f9" }}>
             FAQ
           </a>
           <div style={{ paddingTop: 14 }}>
             {onStart ? (
               <button onClick={() => { setMobileOpen(false); onStart(); }}
-                style={{ width: "100%", padding: "13px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 14, border: "none", cursor: "pointer", fontFamily: "inherit" }}>
+                style={{ width: "100%", padding: "13px", borderRadius: 10, background: "#1a0505", color: "white", fontWeight: 700, fontSize: 14, border: "none", cursor: "pointer", fontFamily: "inherit" }}>
                 Prepare My Anmeldung →
               </button>
             ) : (
               <a href={ctaHref} onClick={() => setMobileOpen(false)}
-                style={{ display: "block", padding: "13px", borderRadius: 10, background: "#0f172a", color: "white", fontWeight: 700, fontSize: 14, textDecoration: "none", textAlign: "center" }}>
+                style={{ display: "block", padding: "13px", borderRadius: 10, background: "#1a0505", color: "white", fontWeight: 700, fontSize: 14, textDecoration: "none", textAlign: "center" }}>
                 Prepare My Anmeldung →
               </a>
             )}
@@ -171,17 +171,17 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
                 const isCurrent = currentPage === g.href.slice(1);
                 return (
                   <a key={g.href} href={g.href} onClick={() => setMenuOpen(null)}
-                    style={{ display: "block", padding: "18px 20px", borderRadius: 16, border: `1.5px solid ${isCurrent ? "#0075FF" : "#bfdbfe"}`, background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "box-shadow 0.15s" }}>
-                    <div style={{ width: 34, height: 34, borderRadius: 9, background: isCurrent ? "#0075FF" : "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                    style={{ display: "block", padding: "18px 20px", borderRadius: 16, border: `1.5px solid ${isCurrent ? "#DD0000" : "#fecaca"}`, background: "linear-gradient(135deg,#fff5f5,#fee2e2)", textDecoration: "none", transition: "box-shadow 0.15s" }}>
+                    <div style={{ width: 34, height: 34, borderRadius: 9, background: isCurrent ? "#DD0000" : "#b91c1c", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                       {g.icon}
                     </div>
-                    <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5, marginBottom: 5 }}>{g.label}</div>
-                    <div style={{ fontSize: 12, color: "#1d4ed8", lineHeight: 1.55, marginBottom: 12 }}>{g.desc}</div>
-                    <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11.5, fontWeight: 700, color: "#0075FF" }}>
+                    <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 13.5, marginBottom: 5 }}>{g.label}</div>
+                    <div style={{ fontSize: 12, color: "#b91c1c", lineHeight: 1.55, marginBottom: 12 }}>{g.desc}</div>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11.5, fontWeight: 700, color: "#DD0000" }}>
                       {isCurrent ? "You are here" : "Read guide"}
                       {!isCurrent && (
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                          <path d="M2 5h6M5 2l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M2 5h6M5 2l3 3-3 3" stroke="#DD0000" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       )}
                     </div>
@@ -203,32 +203,32 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
               {/* Anmeldung — active service */}
               {onStart ? (
                 <button onClick={() => { setMenuOpen(null); onStart(); }}
-                  style={{ textAlign: "left", display: "block", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", width: "100%" }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  style={{ textAlign: "left", display: "block", padding: "20px", borderRadius: 16, border: "2px solid #DD0000", background: "linear-gradient(135deg,#fff5f5,#fee2e2)", cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s", width: "100%" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "#DD0000", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
                     </svg>
                   </div>
-                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
-                  <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
-                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                  <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
+                  <div style={{ fontSize: 12.5, color: "#b91c1c", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
+                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#DD0000" }}>
                     Start now
-                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#DD0000" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </div>
                 </button>
               ) : (
                 <a href={ctaHref} onClick={() => setMenuOpen(null)}
-                  style={{ display: "block", padding: "20px", borderRadius: 16, border: "2px solid #0075FF", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "all 0.15s" }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  style={{ display: "block", padding: "20px", borderRadius: 16, border: "2px solid #DD0000", background: "linear-gradient(135deg,#fff5f5,#fee2e2)", textDecoration: "none", transition: "all 0.15s" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: "#DD0000", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
                     </svg>
                   </div>
-                  <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
-                  <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
-                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                  <div style={{ fontWeight: 800, color: "#1a0505", fontSize: 15, marginBottom: 4 }}>Bürgeramt Anmeldung <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Registration)</span></div>
+                  <div style={{ fontSize: 12.5, color: "#b91c1c", lineHeight: 1.5 }}>Auto-generated official form — 54 fields in perfect German — plus your personalised document checklist.</div>
+                  <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#DD0000" }}>
                     Start now
-                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#DD0000" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </div>
                 </a>
               )}

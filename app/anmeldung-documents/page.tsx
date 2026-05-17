@@ -89,7 +89,7 @@ export default function AnmeldungDocuments() {
               Show up missing one document and they send you home.
               <span className="accent">Here is the exact list.</span>
             </h1>
-            <p className="lede">The complete checklist of what to bring to your <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>Bürgeramt appointment</a>. Tick them off as you prepare. New to this? Start with <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>guide 01 — What is Anmeldung</a>.</p>
+            <p className="lede">The complete checklist of what to bring to your <a href="/burgeramt-berlin-appointment" style={{ color: "var(--red)", fontWeight: 700, textDecoration: "none" }}>Bürgeramt appointment</a>. Tick them off as you prepare. New to this? Start with <a href="/what-is-anmeldung" style={{ color: "var(--red)", fontWeight: 700, textDecoration: "none" }}>guide 01 — What is Anmeldung</a>.</p>
           </div>
         </section>
 
@@ -155,7 +155,7 @@ export default function AnmeldungDocuments() {
                       <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.015em" }}>{p.title}</div>
                     </div>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                  <div className="mob-2col">
                     <div style={{ padding: 22, borderRadius: 16, border: "1.5px solid #fecdd3", background: "var(--rose-tint)" }}>
                       <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 800, color: "var(--rose)", letterSpacing: ".14em" }}>{p.bad.lbl}</div>
                       <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 22, fontWeight: 700, marginTop: 8, color: "var(--ink)" }}>{p.bad.val}</div>
@@ -180,7 +180,7 @@ export default function AnmeldungDocuments() {
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
               <div>
                 <div className="h">The religion field — Religionsgesellschaft</div>
-                <div className="p">Triggers Kirchensteuer (~8–9% of income tax) if you declare a recognised denomination. Leave it blank or write <strong>OA</strong> (Ohne Angabe) to opt out — no negative consequences. <a href="/what-is-anmeldung#sec-religion" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Full explainer in guide 01 →</a> Non-EU citizens: also see <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 02</a> for why online Anmeldung is not available to you and what to do instead.</div>
+                <div className="p">Triggers Kirchensteuer (~8–9% of income tax) if you declare a recognised denomination. Leave it blank or write <strong>OA</strong> (Ohne Angabe) to opt out — no negative consequences. <a href="/what-is-anmeldung#sec-religion" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Full explainer in guide 01 →</a> Non-EU citizens: also see <a href="/anmeldung-online-non-eu" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>guide 02</a> for why online Anmeldung is not available to you and what to do instead.</div>
               </div>
             </div>
             <div className="callout info reveal">
@@ -201,11 +201,11 @@ export default function AnmeldungDocuments() {
               <h2 className="h2">Quick answers.</h2>
             </div>
             <div className="faq reveal">
-              <details><summary>What documents do I need for the Anmeldung in Germany?</summary><div className="ans">Three documents are always required: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a> signed by your landlord. Non-EU citizens must also bring a current visa or residence permit. Married couples need a marriage certificate; families registering children need a birth certificate per child. Use the checklist above to personalise this for your situation.</div></details>
+              <details><summary>What documents do I need for the Anmeldung in Germany?</summary><div className="ans">Three documents are always required: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a> signed by your landlord. Non-EU citizens must also bring a current visa or residence permit. Married couples need a marriage certificate; families registering children need a birth certificate per child. Use the checklist above to personalise this for your situation.</div></details>
               <details><summary>Does the Anmeldung form need to be in German?</summary><div className="ans">Yes. All 54 fields of the Anmeldeformular must be completed in German. Country names, occupations, and titles must all be translated. The clerk will not translate for you at the counter — any English entries are grounds for rejection on the spot.</div></details>
               <details><summary>Can I show the form on my phone at the Bürgeramt?</summary><div className="ans">No. The Anmeldeformular must be printed on paper and signed by hand (wet ink) after printing. Showing the form on a phone screen is not accepted. Sign the form as the last step before you leave home — signing before printing is also rejected by the clerk.</div></details>
-              <details><summary>What happens if I bring the wrong documents?</summary><div className="ans">The clerk turns you away on the spot. You lose your appointment slot and must re-book — which in most German cities means waiting weeks. There are no exceptions and no coming back later. Check the night before. Check again in the morning. See <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 05</a> for how to re-book efficiently.</div></details>
-              <details><summary>Is the Wohnungsgeberbestätigung the same as my rental contract?</summary><div className="ans">No. The Wohnungsgeberbestätigung is a separate one-page form your landlord must sign confirming your move-in date. In normal circumstances, a rental contract alone is not accepted. Your landlord is legally required to provide it under §19 Bundesmeldegesetz. <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Guide 04</a> explains what to do if your landlord is slow or refuses.</div></details>
+              <details><summary>What happens if I bring the wrong documents?</summary><div className="ans">The clerk turns you away on the spot. You lose your appointment slot and must re-book — which in most German cities means waiting weeks. There are no exceptions and no coming back later. Check the night before. Check again in the morning. See <a href="/burgeramt-berlin-appointment" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>guide 05</a> for how to re-book efficiently.</div></details>
+              <details><summary>Is the Wohnungsgeberbestätigung the same as my rental contract?</summary><div className="ans">No. The Wohnungsgeberbestätigung is a separate one-page form your landlord must sign confirming your move-in date. In normal circumstances, a rental contract alone is not accepted. Your landlord is legally required to provide it under §19 Bundesmeldegesetz. <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--red)", fontWeight: 600, textDecoration: "none" }}>Guide 04</a> explains what to do if your landlord is slow or refuses.</div></details>
             </div>
           </div>
         </section>

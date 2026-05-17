@@ -18,7 +18,7 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
       <style>{`
         .gnav-wrap{max-width:1100px;margin:0 auto;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
         .gnav-hide{display:flex}
-        .gnav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#0f172a;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit}
+        .gnav-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:10px;background:#1a0505;color:white;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;font-family:inherit}
         @media(max-width:640px){
           .gnav-wrap{padding:0 16px}
           .gnav-hide{display:none}
@@ -29,17 +29,17 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
         <div className="gnav-wrap">
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-              <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#1a0505,#DD0000)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
               </div>
-              <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>
-                SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span>
+              <span style={{ fontWeight: 800, fontSize: 14, color: "#1a0505" }}>
+                SimplyExpat <span style={{ color: "#DD0000" }}>Berlin</span>
               </span>
             </Link>
             <div className="gnav-hide" style={{ position: "relative" }}>
               <button
                 onClick={() => setOpen(o => !o)}
-                style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: open ? "1.5px solid #bfdbfe" : "1.5px solid transparent", background: open ? "#eff6ff" : "transparent", color: open ? "#0075FF" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
+                style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 8, border: open ? "1.5px solid #fecaca" : "1.5px solid transparent", background: open ? "#fff5f5" : "transparent", color: open ? "#DD0000" : "#374151", fontWeight: 600, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit", transition: "all 0.15s" }}
               >
                 Guides
                 <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
@@ -56,7 +56,7 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
                         <a
                           key={g.href}
                           href={g.href}
-                          style={{ display: "block", padding: "9px 12px", borderRadius: 9, textDecoration: "none", color: currentPage === g.href.slice(1) ? "#0075FF" : "#0f172a", fontWeight: currentPage === g.href.slice(1) ? 700 : 500, fontSize: 13.5, background: currentPage === g.href.slice(1) ? "#eff6ff" : "transparent", transition: "background 0.12s" }}
+                          style={{ display: "block", padding: "9px 12px", borderRadius: 9, textDecoration: "none", color: currentPage === g.href.slice(1) ? "#DD0000" : "#1a0505", fontWeight: currentPage === g.href.slice(1) ? 700 : 500, fontSize: 13.5, background: currentPage === g.href.slice(1) ? "#fff5f5" : "transparent", transition: "background 0.12s" }}
                           onMouseEnter={e => { if (currentPage !== g.href.slice(1)) (e.currentTarget as HTMLAnchorElement).style.background = "#f8fafc"; }}
                           onMouseLeave={e => { if (currentPage !== g.href.slice(1)) (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
                         >

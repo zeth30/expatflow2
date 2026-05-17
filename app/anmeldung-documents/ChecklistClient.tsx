@@ -87,7 +87,7 @@ export function ChecklistClient() {
                   <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 3, fontWeight: 500, lineHeight: 1.45 }}>
                     {doc.sub}
                     {"link" in doc && doc.link && !isDone && (
-                      <> <a href={doc.link} style={{ color: "var(--blue)", textDecoration: "none", fontWeight: 600 }} onClick={(e) => e.stopPropagation()}>See guide 04 →</a></>
+                      <> <a href={doc.link} style={{ color: "var(--red)", textDecoration: "none", fontWeight: 600 }} onClick={(e) => e.stopPropagation()}>See guide 04 →</a></>
                     )}
                   </div>
                 </div>
