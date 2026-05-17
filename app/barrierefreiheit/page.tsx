@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Barrierefreiheitserklärung — SimplyExpat",
   description: "Erklärung zur Barrierefreiheit von SimplyExpat gemäß BFSG.",
+  robots: { index: false, follow: false },
 };
 
 const s = {

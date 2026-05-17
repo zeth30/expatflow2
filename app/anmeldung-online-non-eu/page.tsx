@@ -140,8 +140,8 @@ export default function OnlineNonEU() {
           <div className="wrap">
             <div className="darkbox reveal">
               <div className="eyebrow">Reality check</div>
-              <h3>The form is entirely in German. Every field. <span className="b">One mistake and you go home.</span></h3>
-              <p>One wrong entry, one date in the wrong format, one field left blank — and the clerk turns you away on the spot. That means another long wait for a new appointment. Bürgeramt clerks follow the rules strictly. They will not help you complete the form at the counter.</p>
+              <h3>The form is entirely in German. Every field. <span className="b">Arriving prepared makes the difference.</span></h3>
+              <p>Bürgeramt clerks process registrations — they don't assist with form completion at the counter. A form with errors or missing information will need to be corrected and resubmitted, which usually means booking a new appointment. Getting it right the first time saves weeks.</p>
             </div>
           </div>
         </section>

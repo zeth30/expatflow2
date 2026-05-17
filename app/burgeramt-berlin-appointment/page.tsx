@@ -42,7 +42,7 @@ export default function BurgeramtBerlinAppointment() {
           { "@type": "HowToStep", position: 1, name: "Go to service.berlin.de", text: "The official Berlin appointment portal. Select 'Anmeldung einer Wohnung' from the service list." },
           { "@type": "HowToStep", position: 2, name: "Check Berlin-wide", text: "Use 'Termin berlinweit suchen' — do not restrict to your local district. An appointment in any district is legally identical." },
           { "@type": "HowToStep", position: 3, name: "Check at 8:00 AM on Tuesdays", text: "New appointment slots are released every Tuesday at 8:00 AM. They sell out within 60 seconds. Be on the portal before 8:00 AM." },
-          { "@type": "HowToStep", position: 4, name: "Attend with complete documents", text: "Bring your passport, Wohnungsgeberbestätigung, and completed Anmeldeformular in German. Missing one document means you go home." },
+          { "@type": "HowToStep", position: 4, name: "Attend with complete documents", text: "Bring your passport, Wohnungsgeberbestätigung, and completed Anmeldeformular in German. Having all documents ready ensures the process goes smoothly." },
         ],
       },
       {
@@ -232,7 +232,7 @@ export default function BurgeramtBerlinAppointment() {
                 { n: "1", title: "Arrive on time", body: "Late arrivals lose their slot. The clerk may give it to the next person. Arrive 5 minutes early. Check the building layout — some Bürgeramt offices are multi-floor." },
                 { n: "2", title: "Take a number at the terminal", body: "Most offices use an electronic queue system. Select \"Anmeldung\" and take your ticket. Wait until your number appears on the display." },
                 { n: "3", title: "Hand over your documents", body: "These are the core documents: passport, Wohnungsgeberbestätigung, and your completed Anmeldeformular in German. Others may apply depending on your situation — non-EU citizens also need a visa or residence permit, married couples a marriage certificate, families with children a birth certificate per child." },
-                { n: "4", title: "Clerk processes in 3–5 minutes", body: "They verify each field, confirm the address matches, and enter it into the system. They will not help you complete the form. If anything is wrong, they send you home." },
+                { n: "4", title: "Clerk processes in 3–5 minutes", body: "They verify each field, confirm the address matches, and enter it into the system. Clerks focus on processing, not on helping you fill in the form — which is why arriving prepared matters." },
                 { n: "5", title: "Receive your Anmeldebestätigung/Meldebestätigung", body: "They print your registration confirmation on the spot. Check your name, exact address, and move-in date before you leave. Corrections require a new appointment." },
               ].map((s) => (
                 <div key={s.n} className="card" style={{ display: "grid", gridTemplateColumns: "52px 1fr", gap: 20, alignItems: "flex-start" }}>
@@ -264,8 +264,8 @@ export default function BurgeramtBerlinAppointment() {
               <div className="callout warn">
                 <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
                 <div>
-                  <div className="h">They will not help you complete the form</div>
-                  <div className="p">Bürgeramt clerks follow the rules strictly. One wrong entry, one date in the wrong format, one English word where German is required — and you go home. Book another appointment. Wait another 3–6 weeks.</div>
+                  <div className="h">Arrive with a complete, correct form</div>
+                  <div className="p">Clerks are there to process registrations, not to assist with form completion. A form with errors or missing fields will need to be corrected before it can be accepted — so it pays to double-check everything at home first.</div>
                 </div>
               </div>
               <div className="callout info">

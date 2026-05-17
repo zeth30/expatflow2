@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { TermsContent } from "./TermsContent";
 
 // ─── Modal shell ──────────────────────────────────────────────────
 function LegalModal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
@@ -70,31 +71,7 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Terms of Service — SimplyExpat" onClose={onClose}>
       <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat, Berlin, Germany</p>
-      <LHighlight>
-        SimplyExpat is a <strong>Technical Filing Aid (Ausfüllhilfe)</strong>. We are a software service, not a law firm, legal advisor, or governmental authority. Use of this service does not constitute legal advice and does not create a legal service relationship under §2 RDG (Rechtsdienstleistungsgesetz).
-      </LHighlight>
-      <LH2>1. Service Description</LH2>
-      <LP>SimplyExpat provides a guided digital form-completion service that generates pre-filled PDF documents for the Berlin Anmeldung process (residential registration under §17 BMG). The service is strictly a technical tool. You remain solely responsible for the accuracy of the information you provide and for submitting completed documents to the relevant authority (Bürgeramt).</LP>
-      <LH2>2. What We Do Not Do</LH2>
-      <LUL items={[
-        "We do not submit any registration on your behalf.",
-        "We do not book Bürgeramt appointments. Appointment availability is managed exclusively by the Berlin city administration via service.berlin.de.",
-        "We do not guarantee that your registration will be accepted by the Bürgeramt. Acceptance depends on your personal circumstances and the discretion of the authority.",
-        "We do not provide legal, immigration, or tax advice.",
-      ]} />
-      <LH2>3. Eligibility</LH2>
-      <LP>The service is available only for registrations at a <strong>Berlin address</strong>. By using SimplyExpat you confirm that your new primary address is located within the city boundaries of Berlin, Germany. Use for other cities or regions is not supported and may produce incorrect outputs.</LP>
-      <LH2>4. Accuracy of Information</LH2>
-      <LP>You warrant that all information you enter is truthful, accurate, and matches your official identity documents. Deliberately providing false information on an Anmeldung constitutes an administrative offence (Ordnungswidrigkeit) under German law. SimplyExpat bears no liability for errors arising from incorrect user inputs.</LP>
-      <LH2>5. Payment and Delivery</LH2>
-      <LP>The service fee is <strong>€15 (one-time, no subscription)</strong>. Payment is processed by Stripe via a secure hosted checkout page. SimplyExpat never handles your card details. Upon successful payment confirmation, you are redirected to a success page where PDF documents are generated instantly in your browser. Delivery is considered complete at the moment the PDF generation process finishes in your browser. No physical documents are sent.</LP>
-      <LH2>6. Limitation of Liability</LH2>
-      <LP>To the maximum extent permitted by applicable law, SimplyExpat's total liability to you for any claim arising from or relating to these Terms or the service shall not exceed the amount you paid for the service (€15). We are not liable for indirect, incidental, or consequential damages, including any administrative fees, fines, or costs arising from a rejected Anmeldung.</LP>
-      <LH2>7. Governing Law</LH2>
-      <LP>These Terms are governed by the laws of the Federal Republic of Germany. The exclusive place of jurisdiction for all disputes is Berlin, Germany, to the extent permitted by applicable consumer protection law.</LP>
-      <LH2>8. Changes to Terms</LH2>
-      <LP>We may update these Terms from time to time. Material changes will be communicated via the website. Continued use of the service after changes constitutes acceptance.</LP>
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: info@simplyexpat.de</p>
+      <TermsContent />
     </LegalModal>
   );
 }
@@ -134,7 +111,7 @@ export function CancellationPolicy({ onClose }: { onClose: () => void }) {
 export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Privacy Policy — SimplyExpat" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: April 2026 · Verantwortlicher: Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: May 2026 · Verantwortlicher: Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
       <LHighlight>
         <strong>In plain English:</strong> The form data you enter (address, passport details, family information) never leaves your device. It is stored only in your browser and deleted once your PDFs are generated. The only personal data that reaches our servers is: (1) your payment via Stripe, and (2) optionally your first name and email address if you choose to receive a post-purchase confirmation email with your next steps.
       </LHighlight>
@@ -149,7 +126,7 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
       <LH2>3. Special category data — Religious affiliation (Art. 9 GDPR)</LH2>
       <LP>Religious affiliation is special-category personal data under Art. 9(1) GDPR. The Anmeldung form includes an optional field for religious affiliation for tax purposes (Kirchensteuer). Because all form data is processed exclusively in your browser and never transmitted to SimplyExpat servers, SimplyExpat does not process this data within the meaning of Art. 4 No. 2 GDPR. You may leave this field blank or select "None" — this is a valid choice that results in no church tax obligation.</LP>
       <LH2>4. Cookies and browser storage (§25 TTDSG)</LH2>
-      <LP>We use no marketing, tracking, or analytics cookies. We use no third-party advertising cookies. The only storage mechanisms are:</LP>
+      <LP>We use no marketing, tracking, or analytics cookies. We use no third-party advertising cookies. All fonts are self-hosted — no external font requests are made to Google Fonts or any other provider. The only storage mechanisms are:</LP>
       <LUL items={[
         "localStorage 'simplyexpat-v1': Your registration form state. Stored on your device only. Deleted automatically upon document generation. Legal basis: §25(2) No. 2 TTDSG — strictly necessary for the service you explicitly requested.",
         "localStorage 'simplyexpat-cookie-ack-v1': Records that you have acknowledged the cookie notice. Contains no personal data. Legal basis: §25(2) No. 2 TTDSG.",
