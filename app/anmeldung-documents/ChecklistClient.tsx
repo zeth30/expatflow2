@@ -5,20 +5,23 @@ const BASE_DOCS = [
   { id: "passport", label: "Valid passport or national ID",     sub: "EU citizens may use their national identity card. Non-EU citizens must bring their passport — IDs from outside the EU are not accepted.", required: true },
   { id: "wgb",      label: "Wohnungsgeberbestätigung",          sub: "Your landlord's signed confirmation that you have moved in. Legally required — your rental contract alone is not accepted.", required: true, link: "/wohnungsgeberbestaetigung" },
   { id: "form",     label: "Completed Anmeldeformular",         sub: "All 54 fields completed in German, every date in DD.MM.YYYY, every entry correctly translated. Print and sign before you arrive.", required: true },
+  { id: "birthself", label: "Your own birth certificate",       sub: "Required in most cases — especially if you were born outside Germany. If not in German, bring a certified translation from a sworn translator (vereidigter Übersetzer). Some Bürgerämter do not ask for this; many do.", required: false },
 ];
 
 const COND_DOCS = [
-  { id: "visa",      flag: "noneu",   label: "Current visa or residence permit",          sub: "Non-EU only. Bring your passport plus your current visa or residence permit (Aufenthaltstitel). Register early — your Anmeldebestätigung/Meldebestätigung is required for the residence permit application." },
-  { id: "marriage",  flag: "married", label: "Marriage certificate",                      sub: "Some Bürgerämter accept English-language certificates; others require certified German translations. A certified German translation is always the safest option." },
-  { id: "birth",     flag: "kids",    label: "Birth certificate for each child",           sub: "Original or certified copy. If the document is not in German, bring a certified translation." },
-  { id: "extraform", flag: "multi",   label: "Additional Anmeldeformular sheets",          sub: "The form fits two people per sheet. For 3+ people you need multiple completed sheets — one per pair. Each sheet fully filled and signed separately." },
+  { id: "visa",      flag: "noneu",     label: "Visa or residence permit (if you have one)",  sub: "Non-EU only — and only if you already hold one. If your residence permit (Aufenthaltstitel) is still being processed, bring your current visa label or entry stamp. If you have nothing yet, attend with your passport and explain your situation at the counter." },
+  { id: "marriage",  flag: "married",   label: "Marriage certificate",                        sub: "Some Bürgerämter accept English-language certificates; others require certified German translations. A certified German translation is always the safest option." },
+  { id: "birth",     flag: "kids",      label: "Birth certificate for each child",             sub: "Original or certified copy. If the document is not in German, bring a certified translation from a sworn translator." },
+  { id: "consent",   flag: "separated", label: "Einverständniserklärung (parental consent)",  sub: "Required when both parents hold joint parental authority (gemeinsames Sorgerecht) but only one parent attends. The attending parent must bring a written declaration of consent signed by the other parent, agreeing to the child being registered at this address. Alternatively, both parents attend in person." },
+  { id: "extraform", flag: "multi",     label: "Additional Anmeldeformular sheets",            sub: "The form fits two people per sheet. For 3+ people you need multiple completed sheets — one per pair. Each sheet fully filled and signed separately." },
 ];
 
 const CHIPS = [
-  { flag: "noneu",   label: "Non-EU citizen" },
-  { flag: "married", label: "Married" },
-  { flag: "kids",    label: "Registering children" },
-  { flag: "multi",   label: "3+ people on one form" },
+  { flag: "noneu",     label: "Non-EU citizen" },
+  { flag: "married",   label: "Married" },
+  { flag: "kids",      label: "Registering children" },
+  { flag: "separated", label: "Parents are separated" },
+  { flag: "multi",     label: "3+ people on one form" },
 ];
 
 const C = 2 * Math.PI * 50; // circumference

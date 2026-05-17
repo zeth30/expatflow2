@@ -45,7 +45,7 @@ export default function WhatIsAnmeldung() {
           { "@type": "Question", name: "Can I do the Anmeldung online?", acceptedAnswer: { "@type": "Answer", text: "Only if you hold a compatible EU/EEA eID card with the Online-Ausweis chip activated — and only for Ummeldung (changing an existing German address). First-time registrations are always in person. Non-EU citizens including US, UK, Indian, and Brazilian passport holders cannot use the online portal." } },
           { "@type": "Question", name: "Do I need to register if I'm only working remotely from Germany?", acceptedAnswer: { "@type": "Answer", text: "Yes, if you are staying for more than 3 months. The Anmeldung requirement is based on length of stay, not employment type. Remote workers, freelancers, and digital nomads staying 3+ months must register." } },
           { "@type": "Question", name: "What is the Religionsgesellschaft field and do I have to fill it in?", acceptedAnswer: { "@type": "Answer", text: "The Religionsgesellschaft field is the religion declaration on the Anmeldeformular. Declaring RK (Catholic) or EV (Protestant) triggers Kirchensteuer — 8–9% of your income tax. Write OA (Ohne Angabe) to opt out. No negative consequences for leaving it blank." } },
-          { "@type": "Question", name: "What documents do I need for the Anmeldung?", acceptedAnswer: { "@type": "Answer", text: "Three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens also need a current visa or residence permit." } },
+          { "@type": "Question", name: "What documents do I need for the Anmeldung?", acceptedAnswer: { "@type": "Answer", text: "Three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens should also bring their current visa or residence permit if they already have one." } },
         ],
       },
       {
@@ -192,8 +192,8 @@ export default function WhatIsAnmeldung() {
             <div className="callout bad reveal" style={{ marginTop: 18 }}>
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
               <div>
-                <div className="h">A lot of German employers will not let you start working without it.</div>
-                <div className="p">They need your <strong>Anmeldebestätigung/Meldebestätigung</strong> and your <strong>Steuer-ID</strong> before HR can add you to payroll. No Anmeldung means no Steuer-ID. No Steuer-ID means your first salary gets taxed at the emergency rate — <strong>Steuerklasse 6</strong>, the highest bracket. Register as soon as you move in.</div>
+                <div className="h">Many German employers won&apos;t let you start working without Anmeldung and Steuer-ID.</div>
+                <div className="p">In the unlikely event they proceed anyway, your payroll defaults to <strong>Steuerklasse 6</strong> — Germany&apos;s emergency tax bracket, the highest rate. Register as soon as you move in.</div>
               </div>
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function WhatIsAnmeldung() {
               {[
                 { n: "1", h: "You hand over the form", p: "54 fields, all in German. The clerk checks for missing or contradictory entries." },
                 { n: "2", h: "Clerk types it in", p: "The Meldebehörde records you as resident at this address from this date." },
-                { n: "3", h: "Anmeldebestätigung/Meldebestätigung prints", p: "Official proof of registration. Stamped, signed, on the spot." },
+                { n: "3", h: "(An)meldebestätigung prints", p: "Official proof of registration. Stamped, signed, on the spot." },
                 { n: "4", h: "Check before you leave", p: "Name spelling, address, move-in date. Corrections are harder once you walk out." },
               ].map((s) => (
                 <div key={s.n} className="step"><div className="num">{s.n}</div><h5>{s.h}</h5><p>{s.p}</p></div>
@@ -221,7 +221,7 @@ export default function WhatIsAnmeldung() {
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
               <div>
                 <div className="h">Before you leave the counter:</div>
-                <div className="p">Verify your <strong>name spelling</strong>, your <strong>registered address</strong>, and your <strong>move-in date</strong> on the printed Anmeldebestätigung/Meldebestätigung. The clerk will fix it now. They will not fix it next week. See <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 03</a> for the full document checklist and the three form mistakes that get most expats turned away.</div>
+                <div className="p">Verify your <strong>name spelling</strong>, your <strong>registered address</strong>, and your <strong>move-in date</strong> on the printed Anmeldebestätigung/Meldebestätigung. The clerk will fix it now. They will not fix it next week. See <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 03</a> for the full document checklist and the most common form mistakes and how to avoid them.</div>
               </div>
             </div>
           </div>
@@ -236,6 +236,37 @@ export default function WhatIsAnmeldung() {
               <p className="section-sub">One field on the Anmeldeformular — <strong>Religionsgesellschaft</strong> — quietly adds Kirchensteuer to your income tax bill. Try it. Watch what happens.</p>
             </div>
             <div className="reveal"><ReligionPicker /></div>
+
+            <div className="reveal" style={{ marginTop: 32, background: "linear-gradient(135deg,#faf5ff 0%,#ede9fe 100%)", border: "1px solid #c4b5fd", borderRadius: 24, padding: 36 }}>
+              <div className="mob-2col-feat">
+                <div>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 700, color: "#7c3aed", fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                    What is Kirchensteuer — and why does it exist?
+                  </span>
+                  <h4 style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.02em", margin: "0 0 14px", lineHeight: 1.1, color: "var(--ink)" }}>The German state collects taxes on behalf of Catholic and Protestant churches. It has done so since 1919.</h4>
+                  <p style={{ color: "var(--ink-2)", fontSize: 15, lineHeight: 1.6 }}>
+                    Kirchensteuer (church tax) dates back to the <strong>Weimar Republic constitution of 1919</strong>, which granted churches the right to levy taxes — with the state acting as collector. This arrangement was carried forward into the <strong>Grundgesetz</strong> (Germany&apos;s Basic Law, Art. 140) after World War II and has been in place ever since.
+                  </p>
+                  <p style={{ color: "var(--ink-2)", fontSize: 15, lineHeight: 1.6, marginTop: 12 }}>
+                    The Catholic and Protestant churches together collect roughly <strong>€12 billion per year</strong> through this system — funding schools, hospitals, social services, and clergy salaries.
+                  </p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  {[
+                    { label: "Rate", val: "8–9% of your income tax", note: "Not 8–9% of your salary. If you pay €10,000 in income tax, you pay ~€900 in Kirchensteuer on top." },
+                    { label: "Who pays", val: "Registered members earning income", note: "Declaring RK (Catholic) or EV (Evangelical/Protestant) on the Anmeldung triggers it automatically. OA (Ohne Angabe) = no declaration = no charge." },
+                    { label: "Leave the church", val: "Kirchenaustritt at Standesamt", note: "Formal resignation from a church requires an in-person visit to the Standesamt. Costs ~€30–40. Not free, not at the Finanzamt." },
+                  ].map((r) => (
+                    <div key={r.label} style={{ background: "rgba(255,255,255,.7)", borderRadius: 14, padding: "14px 18px", border: "1px solid #c4b5fd" }}>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: "#7c3aed", letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 4 }}>{r.label}</div>
+                      <div style={{ fontWeight: 700, fontSize: 15, color: "var(--ink)", marginBottom: 4 }}>{r.val}</div>
+                      <div style={{ fontSize: 13, color: "var(--ink-2)", lineHeight: 1.5 }}>{r.note}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -311,7 +342,7 @@ export default function WhatIsAnmeldung() {
               <details><summary>Can I do the Anmeldung online?</summary><div className="ans">Only if you hold a compatible EU/EEA eID card with the Online-Ausweis chip activated — and only for Ummeldung (changing an existing German address). First-time registrations from abroad are always in person at the Bürgeramt. Non-EU citizens — including US, UK, Indian, and Brazilian passport holders — cannot use the online portal at all. <a href="/anmeldung-online-non-eu" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Guide 02 covers this in full.</a></div></details>
               <details><summary>Do I need to register if I'm only working remotely from Germany?</summary><div className="ans">Yes, if you are staying for more than 3 months. The Anmeldung requirement is based on length of stay, not your employment type or contract location. Remote workers, freelancers, and digital nomads staying 3+ months must register. There are no exemptions based on having a foreign employer or working for a non-German company.</div></details>
               <details><summary>What is the Religionsgesellschaft field and do I have to fill it in?</summary><div className="ans">The Religionsgesellschaft field is the religion declaration on the Anmeldeformular. Declaring a recognised denomination — RK (Catholic) or EV (Protestant) — triggers Kirchensteuer, church tax of 8–9% of your income tax. Write OA (Ohne Angabe — no declaration) to opt out. There are no negative consequences for leaving it blank or writing OA.</div></details>
-              <details><summary>What documents do I need for the Anmeldung?</summary><div className="ans">You need three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens also need a current visa or residence permit. See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full personalised document checklist in guide 03.</a></div></details>
+              <details><summary>What documents do I need for the Anmeldung?</summary><div className="ans">You need three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens should also bring their current visa or residence permit if they already have one. See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full personalised document checklist in guide 03.</a></div></details>
             </div>
           </div>
         </section>

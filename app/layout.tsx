@@ -26,6 +26,10 @@ export const metadata: Metadata = {
     "relocation service Berlin",
     "Berlin relocation help",
     "expat relocation service Berlin",
+    "SimplyExpat",
+    "Simply Expat",
+    "Simply Expat Berlin",
+    "Simple Expat Berlin",
   ].join(", "),
   metadataBase: new URL(DOMAIN),
   alternates: {
