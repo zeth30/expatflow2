@@ -2050,9 +2050,8 @@ export default function BerlinButler() {
   const isWizard = phase === "wizard";
 
   return (
-    <div style={{ fontFamily: "'Geist',system-ui,sans-serif", minHeight: "100vh", background: "#f8f9fb" }}>
+    <div style={{ minHeight: "100vh", background: "#f8f9fb" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
         @keyframes FU{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .fu{animation:FU 0.35s cubic-bezier(0.22,1,0.36,1)}
@@ -2158,7 +2157,7 @@ export default function BerlinButler() {
       {isWizard             && <WizardLayout form={form} step={step} setStep={setStep} upd={upd} set_={set_} updPerson={updPerson} addPerson={addPerson} removePerson={removePerson} err={err} setErr={setErr} anxiety={anxiety} sheets={sheets} pushNav={pushNav} onGoHome={() => { setPhase("landing"); pushNav("landing"); }} onComplete={() => { setPhase("payment"); pushNav("payment"); }} onRestart={() => { try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem("simplyexpat-done-v1"); } catch {} setForm(EMPTY); setPhase("landing"); pushNav("landing"); }} />}
       {phase === "payment"  && <PaymentPage paid={paid} genStatus={genStatus} onGenerate={doGenerate} allDone={allDone} sheets={sheets} form={form} downloadWG={downloadWG} userEmail={userEmail} setUserEmail={setUserEmail} emailSent={emailSent} />}
       {phase === "generating" && (
-        <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }}>
+        <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc" }}>
           <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           <div style={{ textAlign: "center", padding: "0 20px" }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -3645,7 +3644,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }} className="fu">
+    <div style={{ minHeight: "100vh", background: "#f8fafc" }} className="fu">
 
       {/* ── Header ── */}
       <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -4013,7 +4012,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
   const berlinPhoto = berlinPhotos[Math.floor(Math.random() * berlinPhotos.length)];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "system-ui,Arial,sans-serif" }} className="fu">
+    <div style={{ minHeight: "100vh", background: "#f8fafc" }} className="fu">
 
       {/* ── Header ── */}
       <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40, boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}>
