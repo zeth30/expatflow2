@@ -102,6 +102,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       {
         "@type": "Organization",
         "name": "SimplyExpat Berlin",
+        "alternateName": ["SimplyExpat", "Simply Expat", "Simply Expat Berlin", "Simple Expat Berlin"],
         "url": DOMAIN,
         "logo": `${DOMAIN}/favicon.svg`,
         "description": "SimplyExpat helps international expats complete Berlin's mandatory Anmeldung address registration form in English.",
