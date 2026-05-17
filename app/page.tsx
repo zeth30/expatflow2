@@ -3009,6 +3009,22 @@ const NON_EU_OPTS2 = ["United Kingdom","United States","Canada","Australia","Ind
 function ComingSoonOverlay({ onBack }: { onBack: () => void }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  async function handleNotify() {
+    if (!email.includes("@")) return;
+    setLoading(true);
+    try {
+      await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+    } catch {}
+    setLoading(false);
+    setSubmitted(true);
+  }
+
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.72)", backdropFilter: "blur(8px)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
       <div style={{ maxWidth: 440, width: "100%", background: "white", borderRadius: 24, padding: "36px 32px", boxShadow: "0 32px 80px rgba(0,0,0,0.28)", textAlign: "center" }}>
@@ -3029,9 +3045,10 @@ function ComingSoonOverlay({ onBack }: { onBack: () => void }) {
               style={{ width: "100%", border: "2px solid #e8ecf4", borderRadius: 12, padding: "12px 16px", fontSize: 15, fontFamily: "inherit", color: "#111111", outline: "none" }}
             />
             <button
-              onClick={() => { if (email.includes("@")) setSubmitted(true); }}
-              style={{ width: "100%", padding: "13px", borderRadius: 12, background: "#111111", color: "white", fontWeight: 700, fontSize: 14, border: "none", cursor: "pointer", fontFamily: "inherit" }}>
-              Notify me when it launches
+              onClick={handleNotify}
+              disabled={loading}
+              style={{ width: "100%", padding: "13px", borderRadius: 12, background: "#111111", color: "white", fontWeight: 700, fontSize: 14, border: "none", cursor: "pointer", fontFamily: "inherit", opacity: loading ? 0.6 : 1 }}>
+              {loading ? "Saving…" : "Notify me when it launches"}
             </button>
             <button onClick={onBack}
               style={{ width: "100%", padding: "11px", borderRadius: 12, background: "transparent", color: "#94a3b8", fontWeight: 600, fontSize: 13, border: "2px solid #e8ecf4", cursor: "pointer", fontFamily: "inherit" }}>

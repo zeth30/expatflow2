@@ -30,15 +30,14 @@ export async function POST(req: NextRequest) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    if (!process.env.RESEND_AUDIENCE_ID) {
-      console.error("[SimplyExpat] RESEND_AUDIENCE_ID not set.");
+    if (!process.env.RESEND_SEGMENT_ID) {
+      console.error("[SimplyExpat] RESEND_SEGMENT_ID not set.");
       return NextResponse.json({ error: "Audience not configured." }, { status: 500 });
     }
 
-    const { error } = await resend.contacts.create({
+    const { error } = await resend.contacts.segments.add({
       email: email.trim().toLowerCase(),
-      audienceId: process.env.RESEND_AUDIENCE_ID,
-      unsubscribed: false,
+      segmentId: process.env.RESEND_SEGMENT_ID,
     });
 
     if (error) {
