@@ -75,7 +75,7 @@ export default function BurgeramtBerlinAppointment() {
 
       <main className="main">
         {/* Hero */}
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1540646794357-6cbbd6f3501e?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1552553302-9211bf7f7053?w=1920&q=80&auto=format')" }}>
           <div className="wrap">
             <div className="crumbs">
               <a href="/what-is-anmeldung">Guides</a>
