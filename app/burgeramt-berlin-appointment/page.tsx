@@ -239,8 +239,8 @@ export default function BurgeramtBerlinAppointment() {
                   <div style={{ width: 52, height: 52, borderRadius: 14, background: "var(--ink)", display: "grid", placeItems: "center", flexShrink: 0 }}>
                     <span style={{ color: "white", fontWeight: 800, fontSize: 22, letterSpacing: "-0.04em" }}>{s.n}</span>
                   </div>
-                  <div>
-                    <h4 style={{ fontSize: 18 }}>{s.title}</h4>
+                  <div style={{ minWidth: 0 }}>
+                    <h4 style={{ fontSize: 18, overflowWrap: "break-word" }}>{s.title}</h4>
                     <p>{s.body}</p>
                   </div>
                 </div>
