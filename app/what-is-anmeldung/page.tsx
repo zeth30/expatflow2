@@ -256,7 +256,7 @@ export default function WhatIsAnmeldung() {
                   {[
                     { label: "Rate", val: "8–9% of your income tax", note: "Not 8–9% of your salary. If you pay €10,000 in income tax, you pay ~€900 in Kirchensteuer on top." },
                     { label: "Who pays", val: "Registered members earning income", note: "Declaring RK (Catholic) or EV (Evangelical/Protestant) on the Anmeldung triggers it automatically. OA (Ohne Angabe) = no declaration = no charge." },
-                    { label: "Leave the church", val: "Kirchenaustritt at Standesamt", note: "Formal resignation from a church requires an in-person visit to the Standesamt. Costs ~€30–40. Not free, not at the Finanzamt." },
+                    { label: "Leave the church", val: "Kirchenaustritt at Amtsgericht", note: "Formal resignation from a church requires an in-person visit to the Amtsgericht (district court). Costs ~€30–40. Not free, not at the Finanzamt." },
                   ].map((r) => (
                     <div key={r.label} style={{ background: "rgba(255,255,255,.7)", borderRadius: 14, padding: "14px 18px", border: "1px solid #c4b5fd" }}>
                       <div style={{ fontSize: 11, fontWeight: 800, color: "#7c3aed", letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 4 }}>{r.label}</div>

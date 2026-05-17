@@ -1652,11 +1652,11 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   cur2 = bulletBlock(p2pg, "Letterbox (Briefkasten):", "Put your surname on your letterbox immediately after moving in. Official German mail is NOT delivered to unlabelled mailboxes. This is how your Steuer-ID and all government letters reach you.", cur2, GRN);
   if (isMarried) {
     const kirchStr = d.people.some(p => ["rk","ev"].includes(p.religion))
-      ? "You registered a church affiliation — approx. 8-9% Kirchensteuer (church tax) applies on your income tax. To leave (Kirchenaustritt), visit the Standesamt — approx. EUR 30-40 fee."
+      ? "You registered a church affiliation — approx. 8-9% Kirchensteuer (church tax) applies on your income tax. To leave (Kirchenaustritt), visit the Amtsgericht (district court) — approx. EUR 30-40 fee."
       : "You did not register a church affiliation — no church tax applies.";
     cur2 = bulletBlock(p2pg, "Kirchensteuer:", kirchStr, cur2);
   } else {
-    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you declared Catholic or Protestant membership, approx. 8-9% church tax on your income tax applies automatically. To leave: you must formally exit (Kirchenaustritt) at the Standesamt or Amtsgericht — approx. EUR 30-40 fee, separate appointment required.", cur2);
+    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you declared Catholic or Protestant membership, approx. 8-9% church tax on your income tax applies automatically. To leave: you must formally exit (Kirchenaustritt) at the Amtsgericht (district court) — approx. EUR 30-40 fee, separate appointment required.", cur2);
   }
   cur2 += 4;
 

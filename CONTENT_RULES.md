@@ -30,7 +30,7 @@ Any guide content that tells the user how to fill the Anmeldeformular themselves
 
 - Declaring a religion on the Anmeldeformular triggers ~8–9% extra income tax (Kirchensteuer)
 - Leave the Religionsgesellschaft field blank or write "OA" (Ohne Angabe) to opt out — zero negative consequences
-- Leaving the church requires a separate process at the **Standesamt** — NOT the Finanzamt, NOT free
+- Leaving the church requires a separate process at the **Amtsgericht** (district court) — NOT the Standesamt, NOT the Finanzamt, NOT free. Approx. €30–40.
 
 ---
 

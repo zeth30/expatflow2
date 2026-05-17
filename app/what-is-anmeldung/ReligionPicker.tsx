@@ -135,7 +135,7 @@ export function ReligionPicker() {
 
           <div style={{ marginTop: 16, padding: "16px 18px", background: "var(--blue-soft)", borderRadius: 12, fontSize: 13.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
             <strong style={{ color: "var(--ink)" }}>Already a church member and want to leave?</strong> That requires a separate process at the{" "}
-            <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>Standesamt</span> — the <em>Kirchenaustritt</em>. Not done on this form.
+            <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>Amtsgericht</span> — the <em>Kirchenaustritt</em>. Not done on this form.
           </div>
         </div>
       </div>

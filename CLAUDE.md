@@ -270,7 +270,7 @@ HTML `lang="de-DE"` set in layout.tsx so date inputs display DD/MM/YYYY.
 
 - **14-day rule:** Bundesmeldegesetz §17 — must register within 14 days of moving in. Fine up to €1,000. BUT: as long as appointment is booked, Amt tolerates delays. No fine if you show up with appointment.
 - **Wohnungsgeberbestätigung:** Landlord must sign under §19 BMG. Refusal = fine up to €1,000 for landlord. Many landlords include it in move-in docs automatically.
-- **Kirchensteuer:** To leave church (Kirchenaustritt) requires visit to Standesamt, approx. €30-40 fee. NOT free, NOT at Finanzamt. Previous incorrect text said "no penalty, change at Finanzamt" — this is wrong.
+- **Kirchensteuer:** To leave church (Kirchenaustritt) requires visit to Amtsgericht (district court), approx. €30-40 fee. NOT free, NOT at Finanzamt, NOT at Standesamt. Previous incorrect text said "Standesamt" — this is wrong.
 - **Appointment hacks:** Tuesday 7:55 AM on service.berlin.de (new slots appear at 8:00 AM, gone in 60 seconds). Call 115 at 7 AM for cancellations. Walk-ins: Bürgeramt Tempelhof (Tempelhofer Damm 165), Mitte (Karl-Marx-Allee 31).
 - **Print:** DM or Rossmann self-service kiosks ~€0.10-0.15/page. Bürgeramt does NOT accept phone screens.
 - **Signature:** Must sign form AFTER printing at the bottom ("Datum, Unterschrift"). Do NOT sign before printing.
