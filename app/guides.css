@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
-
-/* SimplyExpat Berlin · Shared guides stylesheet */
+/* SimplyExpat Berlin · Guide pages only — layout, sidebar, hero, sections.
+   Fonts are declared in globals.css — do not add @import font rules here. */
 :root {
   --blue: #0040ff;
   --blue-deep: #0033cc;
