@@ -95,19 +95,19 @@ export default function Wohnungsgeberbestaetigung() {
         <section className="section kf-section">
           <div className="wrap">
             <div className="kf-grid">
-              <a href="#sec-what" className="kf-card kf-blue reveal" style={{ transitionDelay: "0ms" }}>
+              <a href="#sec-what" className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
                 <div className="kf-num">Fact 01</div>
                 <p className="kf-text">Your landlord is legally required to sign (§19 BMG). Refusal = fine for them.</p>
                 <span className="kf-arrow">↗</span>
               </a>
-              <a href="#sec-difficult" className="kf-card kf-rose reveal" style={{ transitionDelay: "80ms" }}>
+              <a href="#sec-difficult" className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
                 <div className="kf-num">Fact 02</div>
                 <p className="kf-text">Without it, the Bürgeramt will not register you — but if your landlord is being difficult, there is a workaround.</p>
                 <span className="kf-arrow">↗</span>
               </a>
-              <a href="#sec-difficult" className="kf-card kf-amber reveal" style={{ transitionDelay: "160ms" }}>
+              <a href="#sec-difficult" className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
                 <div className="kf-num">Fact 03</div>
                 <p className="kf-text">Landlord refusing or delaying? Attend with your rental contract — the Bürgeramt accepts the form by email afterwards.</p>

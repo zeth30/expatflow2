@@ -245,12 +245,12 @@ h2.h2 .accent { color: var(--blue); }
 html { scroll-behavior: smooth; }
 
 .kf-section {
-  background: linear-gradient(130deg, #EBF0FF 0%, #ECF8F2 48%, #FFF6E8 100%) !important;
+  background: linear-gradient(130deg, #f5f4f2 0%, #edeae5 50%, #f2ede6 100%) !important;
   padding: 52px 0 56px !important;
 }
 .main > .kf-section:nth-child(odd),
 .main > .kf-section:nth-child(even) {
-  background: linear-gradient(130deg, #EBF0FF 0%, #ECF8F2 48%, #FFF6E8 100%) !important;
+  background: linear-gradient(130deg, #f5f4f2 0%, #edeae5 50%, #f2ede6 100%) !important;
 }
 
 .kf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -286,12 +286,10 @@ html { scroll-behavior: smooth; }
 }
 .kf-card:hover::before { transform: scaleX(1); }
 
-/* Color variants */
-.kf-card.kf-blue   { --kf-color: var(--blue);   --kf-tint: var(--blue-tint);   --kf-glow: rgba(0,64,255,.18); }
-.kf-card.kf-amber  { --kf-color: var(--amber);  --kf-tint: var(--amber-tint);  --kf-glow: rgba(217,119,6,.2); }
-.kf-card.kf-green  { --kf-color: var(--green);  --kf-tint: var(--green-tint);  --kf-glow: rgba(22,163,74,.18); }
-.kf-card.kf-rose   { --kf-color: var(--rose);   --kf-tint: var(--rose-tint);   --kf-glow: rgba(225,29,72,.18); }
-.kf-card.kf-purple { --kf-color: var(--purple); --kf-tint: var(--purple-tint); --kf-glow: rgba(124,58,237,.18); }
+/* Color variants — German flag palette (subtle: charcoal · crimson · gold) */
+.kf-card.kf-slate   { --kf-color: #2e2a26; --kf-tint: #f0efed; --kf-glow: rgba(46,42,38,.13); }
+.kf-card.kf-crimson { --kf-color: #a83232; --kf-tint: #faeaea; --kf-glow: rgba(168,50,50,.15); }
+.kf-card.kf-gold    { --kf-color: #9a6e00; --kf-tint: #fdf4db; --kf-glow: rgba(154,110,0,.16); }
 
 /* Pill label */
 .kf-num {
@@ -314,11 +312,9 @@ html { scroll-behavior: smooth; }
   opacity: .08; transition: opacity .28s;
   will-change: opacity; transform: translateZ(0);
 }
-.kf-card.kf-blue   .kf-bg text { fill: #0040ff; }
-.kf-card.kf-amber  .kf-bg text { fill: #d97706; }
-.kf-card.kf-green  .kf-bg text { fill: #16a34a; }
-.kf-card.kf-rose   .kf-bg text { fill: #e11d48; }
-.kf-card.kf-purple .kf-bg text { fill: #7c3aed; }
+.kf-card.kf-slate   .kf-bg text { fill: #2e2a26; }
+.kf-card.kf-crimson .kf-bg text { fill: #a83232; }
+.kf-card.kf-gold    .kf-bg text { fill: #9a6e00; }
 .kf-card:hover .kf-bg { opacity: .16; }
 
 /* Arrow cue — appears bottom-right on hover */

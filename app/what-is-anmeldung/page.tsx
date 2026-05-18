@@ -87,19 +87,19 @@ export default function WhatIsAnmeldung() {
         <section className="section kf-section">
           <div className="wrap">
             <div className="kf-grid">
-              <a href="#sec-what" className="kf-card kf-blue reveal" style={{ transitionDelay: "0ms" }}>
+              <a href="#sec-what" className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
                 <div className="kf-num">Fact 01</div>
                 <p className="kf-text">Register within 14 days of moving in (§17 BMG). Fine up to €1,000.</p>
                 <span className="kf-arrow">↗</span>
               </a>
-              <a href="#sec-appt" className="kf-card kf-amber reveal" style={{ transitionDelay: "80ms" }}>
+              <a href="#sec-appt" className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
                 <div className="kf-num">Fact 02</div>
                 <p className="kf-text">The fine is rarely imposed if you have an appointment booked and documented.</p>
                 <span className="kf-arrow">↗</span>
               </a>
-              <a href="/wohnungsgeberbestaetigung" className="kf-card kf-green reveal" style={{ transitionDelay: "160ms" }}>
+              <a href="/wohnungsgeberbestaetigung" className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
                 <div className="kf-num">Fact 03</div>
                 <p className="kf-text">You need your landlord&apos;s signed Wohnungsgeberbestätigung to register.</p>

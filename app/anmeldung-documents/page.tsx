@@ -97,19 +97,19 @@ export default function AnmeldungDocuments() {
         <section className="section kf-section">
           <div className="wrap">
             <div className="kf-grid">
-              <a href="#sec-checklist" className="kf-card kf-rose reveal" style={{ transitionDelay: "0ms" }}>
+              <a href="#sec-checklist" className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
                 <div className="kf-num">Fact 01</div>
                 <p className="kf-text">Missing one required document = turned away, slot lost. Check the night before.</p>
                 <span className="kf-arrow">↗</span>
               </a>
-              <a href="#sec-checklist" className="kf-card kf-blue reveal" style={{ transitionDelay: "80ms" }}>
+              <a href="#sec-checklist" className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
                 <div className="kf-num">Fact 02</div>
                 <p className="kf-text">Every adult registering needs their own valid ID document.</p>
                 <span className="kf-arrow">↗</span>
               </a>
-              <a href="#sec-checklist" className="kf-card kf-amber reveal" style={{ transitionDelay: "160ms" }}>
+              <a href="#sec-checklist" className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
                 <div className="kf-num">Fact 03</div>
                 <p className="kf-text">Non-EU citizens also need their valid visa or residence permit.</p>
