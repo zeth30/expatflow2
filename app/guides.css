@@ -241,51 +241,65 @@ h2.h2 .accent { color: var(--blue); }
 .darkbox .eyebrow { color: #60a5fa; }
 @media (max-width: 720px) { .darkbox { padding: 32px 24px; } }
 
-/* —— Key facts cards —— */
+/* —— Key facts — glass on pastel gradient —— */
+html { scroll-behavior: smooth; }
+
+.kf-section {
+  background: linear-gradient(130deg, #EBF0FF 0%, #ECF8F2 48%, #FFF6E8 100%) !important;
+  padding: 52px 0 56px !important;
+}
+.main > .kf-section:nth-child(odd),
+.main > .kf-section:nth-child(even) {
+  background: linear-gradient(130deg, #EBF0FF 0%, #ECF8F2 48%, #FFF6E8 100%) !important;
+}
+
 .kf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
 .kf-card {
-  background: white;
-  border: 1.5px solid var(--line);
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.85);
   border-radius: 20px;
-  padding: 28px 24px 22px;
+  padding: 28px 24px 38px;
   position: relative;
   overflow: hidden;
-  cursor: default;
-  transition: border-color .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s cubic-bezier(.2,.7,.3,1), transform .25s cubic-bezier(.2,.7,.3,1);
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 12px rgba(10,22,56,.07);
+  transition: transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s cubic-bezier(.2,.7,.3,1), background .22s, border-color .22s;
 }
-/* Top accent bar — slides in left → right on hover */
 .kf-card::before {
   content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: var(--kf-color, var(--blue));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .32s cubic-bezier(.2,.7,.3,1);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .35s cubic-bezier(.2,.7,.3,1);
 }
-.kf-card:hover { box-shadow: 0 14px 36px rgba(10,22,56,.1), 0 2px 6px rgba(10,22,56,.05); transform: translateY(-5px); }
+.kf-card:hover {
+  transform: translateY(-7px);
+  background: rgba(255,255,255,.92);
+  border-color: var(--kf-color, var(--blue));
+  box-shadow: 0 22px 52px var(--kf-glow, rgba(0,64,255,.18)), 0 4px 14px rgba(10,22,56,.06);
+}
 .kf-card:hover::before { transform: scaleX(1); }
 
 /* Color variants */
-.kf-card.kf-blue  { --kf-color: var(--blue);   --kf-tint: var(--blue-tint); }
-.kf-card.kf-amber { --kf-color: var(--amber);  --kf-tint: var(--amber-tint); }
-.kf-card.kf-green { --kf-color: var(--green);  --kf-tint: var(--green-tint); }
-.kf-card.kf-rose  { --kf-color: var(--rose);   --kf-tint: var(--rose-tint); }
-.kf-card.kf-purple{ --kf-color: var(--purple); --kf-tint: var(--purple-tint); }
-.kf-card:hover    { border-color: var(--kf-color, var(--blue)); }
+.kf-card.kf-blue   { --kf-color: var(--blue);   --kf-tint: var(--blue-tint);   --kf-glow: rgba(0,64,255,.18); }
+.kf-card.kf-amber  { --kf-color: var(--amber);  --kf-tint: var(--amber-tint);  --kf-glow: rgba(217,119,6,.2); }
+.kf-card.kf-green  { --kf-color: var(--green);  --kf-tint: var(--green-tint);  --kf-glow: rgba(22,163,74,.18); }
+.kf-card.kf-rose   { --kf-color: var(--rose);   --kf-tint: var(--rose-tint);   --kf-glow: rgba(225,29,72,.18); }
+.kf-card.kf-purple { --kf-color: var(--purple); --kf-tint: var(--purple-tint); --kf-glow: rgba(124,58,237,.18); }
 
-/* Fact number pill */
+/* Pill label */
 .kf-num {
   display: inline-block;
   font-family: "JetBrains Mono", monospace;
-  font-size: 10.5px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  padding: 4px 9px;
-  border-radius: 7px;
-  margin-bottom: 16px;
-  color: var(--kf-color, var(--blue));
-  background: var(--kf-tint, var(--blue-tint));
+  font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 7px; margin-bottom: 16px;
+  color: var(--kf-color, var(--blue)); background: var(--kf-tint, var(--blue-tint));
   transition: background .22s, color .22s;
 }
 .kf-card:hover .kf-num { background: var(--kf-color, var(--blue)); color: white; }
@@ -293,26 +307,41 @@ h2.h2 .accent { color: var(--blue); }
 /* Fact text */
 .kf-text { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.55; margin: 0; }
 
-/* Ghost number — large, very faint, bottom-right watermark */
+/* SVG ghost number — crisp vector rendering at all screen densities */
 .kf-bg {
-  position: absolute;
-  right: 12px; bottom: -10px;
-  font-size: 88px; font-weight: 800;
-  line-height: 1;
-  color: rgba(10,22,56,.055);
-  font-family: "JetBrains Mono", monospace;
-  letter-spacing: -0.04em;
-  pointer-events: none;
-  user-select: none;
-  transition: color .25s;
+  position: absolute; right: 10px; bottom: 6px;
+  pointer-events: none; user-select: none;
+  opacity: .08; transition: opacity .28s;
+  will-change: opacity; transform: translateZ(0);
 }
-.kf-card:hover .kf-bg { color: rgba(10,22,56,.09); }
+.kf-card.kf-blue   .kf-bg text { fill: #0040ff; }
+.kf-card.kf-amber  .kf-bg text { fill: #d97706; }
+.kf-card.kf-green  .kf-bg text { fill: #16a34a; }
+.kf-card.kf-rose   .kf-bg text { fill: #e11d48; }
+.kf-card.kf-purple .kf-bg text { fill: #7c3aed; }
+.kf-card:hover .kf-bg { opacity: .16; }
 
-/* Stagger reveal on scroll — applied inline via style transitionDelay */
-.reveal.kf-card { transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1), border-color .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s cubic-bezier(.2,.7,.3,1); }
-.reveal.kf-card.in:hover { transform: translateY(-5px); }
+/* Arrow cue — appears bottom-right on hover */
+.kf-arrow {
+  position: absolute; bottom: 14px; right: 16px;
+  color: var(--kf-color, var(--blue));
+  opacity: 0; transition: opacity .2s, transform .2s;
+  font-size: 13px; font-weight: 700; line-height: 1;
+  font-family: "JetBrains Mono", monospace;
+}
+.kf-card:hover .kf-arrow { opacity: .65; transform: translate(2px, -2px); }
 
-@media (max-width: 720px) { .kf-grid { grid-template-columns: 1fr; gap: 10px; } }
+/* Reveal: stagger via inline transitionDelay */
+.reveal.kf-card {
+  transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1),
+              background .22s, border-color .22s, box-shadow .28s cubic-bezier(.2,.7,.3,1);
+}
+.reveal.kf-card.in:hover { transform: translateY(-7px); }
+
+@media (max-width: 720px) {
+  .kf-grid { grid-template-columns: 1fr; gap: 10px; }
+  .kf-section { padding: 36px 0 40px !important; }
+}
 
 /* —— Callout —— */
 .callout { display: flex; gap: 18px; padding: 24px 26px; border-radius: 18px; align-items: flex-start; }

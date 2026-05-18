@@ -92,24 +92,27 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
             <div className="kf-grid">
-              <div className="kf-card kf-amber reveal" style={{ transitionDelay: "0ms" }}>
-                <div className="kf-bg">01</div>
+              <a href="#sec-hacks" className="kf-card kf-amber reveal" style={{ transitionDelay: "0ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
                 <div className="kf-num">Fact 01</div>
                 <p className="kf-text">Slots on service.berlin.de appear Tuesdays at 8:00 AM and vanish in under 60 seconds.</p>
-              </div>
-              <div className="kf-card kf-rose reveal" style={{ transitionDelay: "80ms" }}>
-                <div className="kf-bg">02</div>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-walkin" className="kf-card kf-rose reveal" style={{ transitionDelay: "80ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
                 <div className="kf-num">Fact 02</div>
                 <p className="kf-text">No appointment = no service. Walk-ins are officially not accepted.</p>
-              </div>
-              <div className="kf-card kf-blue reveal" style={{ transitionDelay: "160ms" }}>
-                <div className="kf-bg">03</div>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-hacks" className="kf-card kf-blue reveal" style={{ transitionDelay: "160ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
                 <div className="kf-num">Fact 03</div>
                 <p className="kf-text">Call 115 at 7:00 AM for same-day cancellation slots.</p>
-              </div>
+                <span className="kf-arrow">↗</span>
+              </a>
             </div>
           </div>
         </section>
@@ -145,7 +148,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 02 · Booking hacks */}
-        <section className="section">
+        <section className="section" id="sec-hacks">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · The strategies that work</div>
@@ -194,7 +197,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 03 · Walk-in — reality check */}
-        <section className="section">
+        <section className="section" id="sec-walkin">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · Walk-in — last resort</div>

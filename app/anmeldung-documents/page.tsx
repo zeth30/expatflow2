@@ -94,30 +94,33 @@ export default function AnmeldungDocuments() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
             <div className="kf-grid">
-              <div className="kf-card kf-rose reveal" style={{ transitionDelay: "0ms" }}>
-                <div className="kf-bg">01</div>
+              <a href="#sec-checklist" className="kf-card kf-rose reveal" style={{ transitionDelay: "0ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
                 <div className="kf-num">Fact 01</div>
                 <p className="kf-text">Missing one required document = turned away, slot lost. Check the night before.</p>
-              </div>
-              <div className="kf-card kf-blue reveal" style={{ transitionDelay: "80ms" }}>
-                <div className="kf-bg">02</div>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-checklist" className="kf-card kf-blue reveal" style={{ transitionDelay: "80ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
                 <div className="kf-num">Fact 02</div>
                 <p className="kf-text">Every adult registering needs their own valid ID document.</p>
-              </div>
-              <div className="kf-card kf-amber reveal" style={{ transitionDelay: "160ms" }}>
-                <div className="kf-bg">03</div>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-checklist" className="kf-card kf-amber reveal" style={{ transitionDelay: "160ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
                 <div className="kf-num">Fact 03</div>
                 <p className="kf-text">Non-EU citizens also need their valid visa or residence permit.</p>
-              </div>
+                <span className="kf-arrow">↗</span>
+              </a>
             </div>
           </div>
         </section>
 
         {/* 01 · Personalised checklist */}
-        <section className="section">
+        <section className="section" id="sec-checklist">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">01 · Personalised checklist</div>
