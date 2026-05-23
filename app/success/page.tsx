@@ -60,6 +60,9 @@ function SuccessInner() {
 
         {/* Logo */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 40 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: `linear-gradient(135deg,#0f172a,${BLUE})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>R</span>
+          </div>
           <span style={{ fontWeight: 800, fontSize: 15, color: INK }}>ReadyExpat <span style={{ color: BLUE }}>Berlin</span></span>
         </div>
 

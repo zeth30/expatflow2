@@ -2138,6 +2138,9 @@ export default function BerlinButler() {
       {!mounted ? (
         <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ textAlign: "center" }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>R</span>
+            </div>
             <div style={{ width: 80, height: 4, borderRadius: 99, background: "#e8ecf4", margin: "0 auto", overflow: "hidden", position: "relative" }}>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#0075FF,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
             </div>
@@ -2157,6 +2160,9 @@ export default function BerlinButler() {
         <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc" }}>
           <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           <div style={{ textAlign: "center", padding: "0 20px" }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>R</span>
+            </div>
             <div style={{ width: 24, height: 24, border: "3px solid #e8ecf4", borderTopColor: "#0075FF", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
             <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 17, marginBottom: 6 }}>
               {genStatus || "Generating your documents…"}
@@ -2455,6 +2461,9 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           {/* Logo */}
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: 0, flexShrink: 0 }}>
+            <div style={{ width: 22, height: 22, borderRadius: 5, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontSize: 10, fontWeight: 900 }}>R</span>
+            </div>
           </button>
 
           {/* Step name — grows to fill */}
@@ -2498,6 +2507,9 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
+            <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#0075FF,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontSize: 12, fontWeight: 900 }}>R</span>
+            </div>
             <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>ReadyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
           </button>
         </div>
@@ -3656,6 +3668,9 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 32 }}>
+            <div style={{ width: 30, height: 30, borderRadius: 8, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontWeight: 900, fontSize: 15 }}>R</span>
+            </div>
             <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>ReadyExpat <span style={{ color: "#60a5fa" }}>Berlin</span></span>
           </div>
           {(() => {
@@ -4022,6 +4037,9 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       {/* ── Header ── */}
       <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40, boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ color: "white", fontSize: 13, fontWeight: 900 }}>R</span>
+          </div>
           <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>ReadyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 12px" }}>
