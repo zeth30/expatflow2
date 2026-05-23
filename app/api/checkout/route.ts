@@ -1,5 +1,5 @@
 /**
- * SimplyExpat — Stripe Checkout Session
+ * ReadyExpat — Stripe Checkout Session
  * app/api/checkout/route.ts
  *
  * POST /api/checkout
@@ -8,7 +8,7 @@
  *
  * Environment variables required:
  *   STRIPE_SECRET_KEY      — sk_live_... or sk_test_...
- *   NEXT_PUBLIC_DOMAIN     — https://simplyexpat.de (no trailing slash)
+ *   NEXT_PUBLIC_DOMAIN     — https://readyexpat.de (no trailing slash)
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
             currency: "eur",
             unit_amount: 1500, // €15.00 in cents
             product_data: {
-              name: "SimplyExpat Berlin — Anmeldung Preparation",
+              name: "ReadyExpat Berlin — Anmeldung Preparation",
               description:
                 "Official Anmeldung form (all 54 fields filled), personalised checklist, and expert appointment guide. One-time digital service.",
               images: [`${domain}/og-image.png`],
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       custom_text: {
         terms_of_service_acceptance: {
           message:
-            "I agree to the [Terms of Service](https://simplyexpat.de/terms) and acknowledge that PDF generation begins immediately after payment, waiving my right of withdrawal under §356 BGB.",
+            "I agree to the [Terms of Service](https://readyexpat.de/terms) and acknowledge that PDF generation begins immediately after payment, waiving my right of withdrawal under §356 BGB.",
         },
         submit: {
           message:
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: session.url });
   } catch (err: any) {
-    console.error("[SimplyExpat] Stripe checkout error:", err?.message);
+    console.error("[ReadyExpat] Stripe checkout error:", err?.message);
     return NextResponse.json(
       { error: err?.message ?? "Internal server error." },
       { status: 500 }

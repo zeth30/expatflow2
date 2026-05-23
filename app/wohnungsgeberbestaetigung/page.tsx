@@ -5,10 +5,10 @@ import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { EmailTemplateClient } from "./EmailTemplateClient";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Wohnungsgeberbestätigung Berlin Guide 2026 | SimplyExpat",
+  title: "Wohnungsgeberbestätigung Berlin Guide 2026 | ReadyExpat",
   description:
     "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away. Here is exactly what it is, who can sign it, and how to get it fast.",
   alternates: { canonical: `${DOMAIN}/wohnungsgeberbestaetigung` },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Wohnungsgeberbestätigung — What It Is and How to Get It",
     description: "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away.",
     url: `${DOMAIN}/wohnungsgeberbestaetigung`,
-    siteName: "SimplyExpat Berlin",
+    siteName: "ReadyExpat Berlin",
     type: "article",
   },
 };
@@ -30,8 +30,8 @@ export default function Wohnungsgeberbestaetigung() {
         "@type": "Article",
         headline: "Wohnungsgeberbestätigung — What It Is and How to Get It",
         description: "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away.",
-        author: { "@type": "Organization", name: "SimplyExpat Berlin" },
-        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        author: { "@type": "Organization", name: "ReadyExpat Berlin" },
+        publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
         dateModified: "2026-05-14",
         mainEntityOfPage: `${DOMAIN}/wohnungsgeberbestaetigung`,
@@ -59,7 +59,7 @@ export default function Wohnungsgeberbestaetigung() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 1, name: "ReadyExpat Berlin", item: DOMAIN },
           { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
           { "@type": "ListItem", position: 3, name: "Wohnungsgeberbestätigung", item: `${DOMAIN}/wohnungsgeberbestaetigung` },
         ],
@@ -186,7 +186,7 @@ export default function Wohnungsgeberbestaetigung() {
                 <div className="tag">Download →</div>
               </a>
               <div style={{ marginTop: 14, padding: "16px 18px", borderRadius: 12, background: "var(--bg)", border: "1px solid var(--line)", fontSize: 13.5, color: "var(--ink-2)", lineHeight: 1.55 }}>
-                <div style={{ marginBottom: 12 }}>This is the blank template. SimplyExpat generates a <strong>pre-filled version</strong> with your name, address, and move-in date as part of the Anmeldung preparation.</div>
+                <div style={{ marginBottom: 12 }}>This is the blank template. ReadyExpat generates a <strong>pre-filled version</strong> with your name, address, and move-in date as part of the Anmeldung preparation.</div>
                 <Link href="/#wizard/origin" className="cta-btn" style={{ fontSize: 15, padding: "14px 22px", display: "inline-flex", boxShadow: "0 8px 20px rgba(0,64,255,.28)" }}>
                   Prepare My Anmeldung
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -475,7 +475,7 @@ export default function Wohnungsgeberbestaetigung() {
           <div className="wrap">
             <div className="cta-box reveal">
               <div className="eye">The Wohnungsgeberbestätigung is one document. The form is another.</div>
-              <h2>SimplyExpat handles the Anmeldeformular <span className="b">for you.</span></h2>
+              <h2>ReadyExpat handles the Anmeldeformular <span className="b">for you.</span></h2>
               <p>All 54 fields in correct German — dates, translations, format. You focus on getting your landlord to sign. We handle the rest.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung

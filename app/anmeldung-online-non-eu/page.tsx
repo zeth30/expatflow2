@@ -5,10 +5,10 @@ import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { EligibilityChecker } from "./EligibilityChecker";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Online: Non-EU Citizens Berlin 2026 | SimplyExpat",
+  title: "Anmeldung Online: Non-EU Citizens Berlin 2026 | ReadyExpat",
   description:
     "Non-EU citizens cannot register their address online in Germany. Online Anmeldung requires an EU/EEA eID card. Here is the in-person path that works for US, UK, Indian, and other non-EU expats.",
   alternates: { canonical: `${DOMAIN}/anmeldung-online-non-eu` },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Online Anmeldung for Non-EU Citizens — Why It's Not Available",
     description: "Non-EU citizens cannot register online in Germany. The eID requirement excludes everyone without an EU/EEA passport. Here is the in-person path.",
     url: `${DOMAIN}/anmeldung-online-non-eu`,
-    siteName: "SimplyExpat Berlin",
+    siteName: "ReadyExpat Berlin",
     type: "article",
   },
 };
@@ -30,8 +30,8 @@ export default function OnlineNonEU() {
         "@type": "Article",
         headline: "Online Anmeldung for Non-EU Citizens — Why It's Not Available",
         description: "Germany's online Anmeldung portal requires an EU/EEA eID card. Non-EU citizens including US, UK, Indian, Brazilian, Canadian and Australian passport holders must register in person.",
-        author: { "@type": "Organization", name: "SimplyExpat Berlin" },
-        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        author: { "@type": "Organization", name: "ReadyExpat Berlin" },
+        publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
         dateModified: "2026-05-14",
         mainEntityOfPage: `${DOMAIN}/anmeldung-online-non-eu`,
@@ -50,7 +50,7 @@ export default function OnlineNonEU() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 1, name: "ReadyExpat Berlin", item: DOMAIN },
           { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
           { "@type": "ListItem", position: 3, name: "Online Anmeldung for Non-EU Citizens", item: `${DOMAIN}/anmeldung-online-non-eu` },
         ],
@@ -264,7 +264,7 @@ export default function OnlineNonEU() {
                   </div>
                 ))}
               </div>
-              <div style={{ padding: "12px 20px 16px", fontSize: 13, color: "var(--ink-2)" }}>SimplyExpat translates your citizenship into the correct German adjective automatically. You answer in English — we handle every translation.</div>
+              <div style={{ padding: "12px 20px 16px", fontSize: 13, color: "var(--ink-2)" }}>ReadyExpat translates your citizenship into the correct German adjective automatically. You answer in English — we handle every translation.</div>
             </div>
           </div>
         </section>

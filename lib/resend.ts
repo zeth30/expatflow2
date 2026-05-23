@@ -1,5 +1,5 @@
 /**
- * SimplyExpat — Resend Email Service (Option A — Reminder Only)
+ * ReadyExpat — Resend Email Service (Option A — Reminder Only)
  * lib/resend.ts
  *
  * Legal basis: Art. 6(1)(a) DSGVO — freely given consent via email field.
@@ -13,7 +13,7 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Update to your verified domain. Use "onboarding@resend.dev" for local testing.
-const FROM = "SimplyExpat Berlin <info@simplyexpat.de>";
+const FROM = "ReadyExpat Berlin <info@readyexpat.de>";
 
 export interface SendReminderEmailParams {
   to: string;
@@ -38,7 +38,7 @@ function buildReminderHtml(firstName: string, sheets: number): string {
 <table width="100%" style="max-width:540px;">
 
   <tr><td style="padding-bottom:20px;" align="center">
-    <span style="font-size:15px;font-weight:800;color:#0f172a;">SimplyExpat </span>
+    <span style="font-size:15px;font-weight:800;color:#0f172a;">ReadyExpat </span>
     <span style="font-size:15px;font-weight:800;color:#0075FF;">Berlin</span>
   </td></tr>
 
@@ -94,9 +94,9 @@ function buildReminderHtml(firstName: string, sheets: number): string {
 
   <tr><td style="padding:20px 0 0;" align="center">
     <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.6;">
-      SimplyExpat Berlin · info@simplyexpat.de<br/>
+      ReadyExpat Berlin · info@readyexpat.de<br/>
       You received this because you entered your email at checkout.<br/>
-      <a href="https://simplyexpat.de/privacy" style="color:#94a3b8;">Privacy Policy</a>
+      <a href="https://readyexpat.de/privacy" style="color:#94a3b8;">Privacy Policy</a>
     </p>
   </td></tr>
 
@@ -122,11 +122,11 @@ export async function sendReminderEmail({
     });
 
     if (error) {
-      console.error("[SimplyExpat] Resend error:", error);
+      console.error("[ReadyExpat] Resend error:", error);
       return { success: false, error: error.message };
     }
 
-    console.log("[SimplyExpat] Reminder sent:", data?.id);
+    console.log("[ReadyExpat] Reminder sent:", data?.id);
     return { success: true };
   } catch (err: any) {
     return { success: false, error: err?.message ?? "Unknown error" };

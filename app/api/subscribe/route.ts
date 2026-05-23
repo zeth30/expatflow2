@@ -1,5 +1,5 @@
 /**
- * SimplyExpat — Waitlist Subscribe
+ * ReadyExpat — Waitlist Subscribe
  * app/api/subscribe/route.ts
  *
  * POST /api/subscribe
@@ -36,13 +36,13 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      console.error("[SimplyExpat] Resend contacts error:", error);
+      console.error("[ReadyExpat] Resend contacts error:", error);
       return NextResponse.json({ error: "Could not add to list." }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
   } catch (err: any) {
-    console.error("[SimplyExpat] /api/subscribe error:", err);
+    console.error("[ReadyExpat] /api/subscribe error:", err);
     return NextResponse.json({ error: "Internal server error." }, { status: 500 });
   }
 }

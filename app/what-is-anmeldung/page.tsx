@@ -5,10 +5,10 @@ import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { ReligionPicker } from "./ReligionPicker";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "What is Anmeldung? Berlin Guide 2026 | SimplyExpat",
+  title: "What is Anmeldung? Berlin Guide 2026 | ReadyExpat",
   description:
     "The Anmeldung is Germany's mandatory address registration. Register at your Bürgeramt within 14 days of moving in or face fines up to €1,000. Required for your tax ID, bank account, health insurance, and residence permit.",
   alternates: { canonical: `${DOMAIN}/what-is-anmeldung` },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "What is Anmeldung? Germany Address Registration Guide (2026)",
     description: "The Anmeldung is Germany's mandatory address registration. Register within 14 days of moving in. Here's everything expats need to know.",
     url: `${DOMAIN}/what-is-anmeldung`,
-    siteName: "SimplyExpat Berlin",
+    siteName: "ReadyExpat Berlin",
     locale: "en_US",
     type: "article",
   },
@@ -31,8 +31,8 @@ export default function WhatIsAnmeldung() {
         "@type": "Article",
         headline: "What is Anmeldung? Germany's Address Registration Explained",
         description: "Comprehensive guide to the Anmeldung — Germany's mandatory address registration system. Required within 14 days of moving in under §17 Bundesmeldegesetz.",
-        author: { "@type": "Organization", name: "SimplyExpat Berlin", url: DOMAIN },
-        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
+        publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
         dateModified: "2026-05-14",
         mainEntityOfPage: `${DOMAIN}/what-is-anmeldung`,
@@ -51,7 +51,7 @@ export default function WhatIsAnmeldung() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 1, name: "ReadyExpat Berlin", item: DOMAIN },
           { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
           { "@type": "ListItem", position: 3, name: "What is the Anmeldung?", item: `${DOMAIN}/what-is-anmeldung` },
         ],

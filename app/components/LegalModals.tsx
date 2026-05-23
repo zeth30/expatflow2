@@ -49,7 +49,7 @@ export function Impressum({ onClose }: { onClose: () => void }) {
         Germany
       </LP>
       <LH2>Kontakt</LH2>
-      <LP>E-Mail: info@simplyexpat.de</LP>
+      <LP>E-Mail: info@readyexpat.de</LP>
       <LH2>Verantwortlich für den Inhalt nach §18 Abs. 2 MStV</LH2>
       <LP>
         Karl Fasselt<br/>
@@ -57,7 +57,7 @@ export function Impressum({ onClose }: { onClose: () => void }) {
         10961 Berlin
       </LP>
       <LH2>Haftungsausschluss</LH2>
-      <LP>SimplyExpat ist ein technisches Hilfsmittel (Ausfüllhilfe) gemäß §2 RDG und stellt keine Rechtsberatung dar. Die generierten Dokumente ersetzen keine rechtliche Beratung. Die Richtigkeit der eingegebenen Daten liegt in der alleinigen Verantwortung des Nutzers.</LP>
+      <LP>ReadyExpat ist ein technisches Hilfsmittel (Ausfüllhilfe) gemäß §2 RDG und stellt keine Rechtsberatung dar. Die generierten Dokumente ersetzen keine rechtliche Beratung. Die Richtigkeit der eingegebenen Daten liegt in der alleinigen Verantwortung des Nutzers.</LP>
       <LH2>Umsatzsteuer</LH2>
       <LP>Gemäß §19 UStG wird keine Umsatzsteuer erhoben und ausgewiesen (Kleinunternehmerregelung).</LP>
       <LH2>Streitschlichtung</LH2>
@@ -69,8 +69,8 @@ export function Impressum({ onClose }: { onClose: () => void }) {
 // ─── Terms of Service ─────────────────────────────────────────────
 export function TermsOfService({ onClose }: { onClose: () => void }) {
   return (
-    <LegalModal title="Terms of Service — SimplyExpat" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat, Berlin, Germany</p>
+    <LegalModal title="Terms of Service — ReadyExpat" onClose={onClose}>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · ReadyExpat, Berlin, Germany</p>
       <TermsContent />
     </LegalModal>
   );
@@ -80,29 +80,29 @@ export function TermsOfService({ onClose }: { onClose: () => void }) {
 export function CancellationPolicy({ onClose }: { onClose: () => void }) {
   return (
     <LegalModal title="Cancellation Policy (Widerrufsbelehrung)" onClose={onClose}>
-      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · SimplyExpat</p>
+      <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · ReadyExpat</p>
       <LHighlight>
-        <strong>Important notice:</strong> Because SimplyExpat is a digital service that is performed immediately upon your request, your statutory right of withdrawal expires as soon as the PDF generation is complete — provided you have expressly consented to this at checkout, as required by §356 para. 5 BGB and Article 16(m) of Directive 2011/83/EU.
+        <strong>Important notice:</strong> Because ReadyExpat is a digital service that is performed immediately upon your request, your statutory right of withdrawal expires as soon as the PDF generation is complete — provided you have expressly consented to this at checkout, as required by §356 para. 5 BGB and Article 16(m) of Directive 2011/83/EU.
       </LHighlight>
       <LH2>Right of Withdrawal</LH2>
       <LP>You have the right to withdraw from this contract within <strong>14 days</strong> without giving any reason (§355 BGB). The withdrawal period begins on the day the contract is concluded (i.e., the moment payment is confirmed).</LP>
-      <LP>To exercise your right of withdrawal, you must inform us of your decision by an unequivocal statement (e.g., by email to info@simplyexpat.de) before the service has been fully performed.</LP>
+      <LP>To exercise your right of withdrawal, you must inform us of your decision by an unequivocal statement (e.g., by email to info@readyexpat.de) before the service has been fully performed.</LP>
       <LH2>Expiry of the Right of Withdrawal for Digital Services</LH2>
-      <LP><strong>You expressly acknowledge and agree</strong> that SimplyExpat will begin performing the service (PDF generation) immediately after your payment is confirmed, and that the service is fully performed at the moment PDF generation completes. By requesting immediate performance and confirming this at the point of payment, <strong>you waive your right of withdrawal</strong> under §356 para. 5 BGB once the service has been fully performed.</LP>
+      <LP><strong>You expressly acknowledge and agree</strong> that ReadyExpat will begin performing the service (PDF generation) immediately after your payment is confirmed, and that the service is fully performed at the moment PDF generation completes. By requesting immediate performance and confirming this at the point of payment, <strong>you waive your right of withdrawal</strong> under §356 para. 5 BGB once the service has been fully performed.</LP>
       <LP>This waiver is legally valid under §356 para. 5 BGB and Article 16(m) of EU Directive 2011/83/EU, which exempts fully-performed digital content services from the right of withdrawal where the consumer has given prior express consent and acknowledged the loss of the withdrawal right.</LP>
       <LH2>Consequence of Withdrawal (Before Service Completion)</LH2>
       <LP>If you exercise your right of withdrawal before PDF generation has started, we will reimburse all payments received from you, without undue delay and no later than 14 days after the day on which we receive your withdrawal decision. We will use the same means of payment as you used for the initial transaction.</LP>
       <LH2>Withdrawal Form (Model)</LH2>
       <LP>If you wish to withdraw, you may use the following model form (not mandatory):</LP>
       <div style={{ padding: "12px 16px", background: "#f8fafc", borderRadius: 10, border: "1px solid #e8ecf4", fontFamily: "monospace", fontSize: 12.5, lineHeight: 1.7, marginBottom: 16 }}>
-        To: SimplyExpat, info@simplyexpat.de<br/>
-        I/We hereby give notice that I/we withdraw from my/our contract for the provision of the following service: SimplyExpat Anmeldung PDF Generation<br/>
+        To: ReadyExpat, info@readyexpat.de<br/>
+        I/We hereby give notice that I/we withdraw from my/our contract for the provision of the following service: ReadyExpat Anmeldung PDF Generation<br/>
         Ordered on: ___________<br/>
         Name: ___________<br/>
         Signature (if paper): ___________<br/>
         Date: ___________
       </div>
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: info@simplyexpat.de</p>
+      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: info@readyexpat.de</p>
     </LegalModal>
   );
 }
@@ -110,21 +110,21 @@ export function CancellationPolicy({ onClose }: { onClose: () => void }) {
 // ─── Privacy Policy ───────────────────────────────────────────────
 export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
   return (
-    <LegalModal title="Privacy Policy — SimplyExpat" onClose={onClose}>
+    <LegalModal title="Privacy Policy — ReadyExpat" onClose={onClose}>
       <p style={{ color: "#64748b", fontSize: 12.5, marginBottom: 20 }}>Effective date: 1 April 2026 · Last reviewed: May 2026 · Verantwortlicher: Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
       <LHighlight>
         <strong>In plain English:</strong> The form data you enter (address, passport details, family information) never leaves your device. It is stored only in your browser and deleted once your PDFs are generated. The only personal data that reaches our servers is: (1) your payment via Stripe, and (2) optionally your first name and email address if you choose to receive a post-purchase confirmation email with your next steps.
       </LHighlight>
       <LH2>1. Controller (Verantwortlicher)</LH2>
-      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: info@simplyexpat.de. Operating under the brand name SimplyExpat.</LP>
+      <LP>Karl Fasselt, Fürbringerstraße 25, 10961 Berlin, Germany. E-Mail: info@readyexpat.de. Operating under the brand name ReadyExpat.</LP>
       <LH2>2. What data we process and why</LH2>
-      <LP><strong>a) Registration form data</strong> — names, dates of birth, addresses, passport numbers, citizenship, marital status, religious affiliation: Stored exclusively in your browser's localStorage on your own device under the key "simplyexpat-v1". SimplyExpat has no technical access to this data at any point. It is never transmitted to our servers. It is automatically deleted from your browser once document generation is complete. Legal basis: this is not a processing activity by SimplyExpat within the meaning of Art. 4 No. 2 GDPR, as the data never reaches our systems (see GDPR Recital 26).</LP>
-      <LP><strong>b) PDF generation</strong>: Your completed Anmeldung form and personalised checklist are generated entirely in your browser using the open-source pdf-lib library. The PDF bytes exist only in browser memory and are downloaded directly to your device. They are never transmitted to SimplyExpat servers.</LP>
-      <LP><strong>c) Payment processing</strong>: Your payment of €15 is handled exclusively by Stripe, Inc. (510 Townsend Street, San Francisco, CA 94103, USA), a PCI-DSS Level 1 certified payment processor. You are redirected to a Stripe-hosted payment page. SimplyExpat never receives or processes your card number, bank details, or any payment credentials. After your payment is completed, your browser transmits only your Stripe session ID to our server for the sole purpose of confirming payment status (paid / not paid). No personal form data is included in this request. Legal basis: Art. 6(1)(b) GDPR — performance of a contract. Stripe's Privacy Policy: stripe.com/privacy.</LP>
-      <LP><strong>d) Post-purchase next-steps email (optional)</strong>: After your documents are generated, you may optionally provide your email address to receive a transactional confirmation email. This email contains your next steps: printing your form, booking your Bürgeramt appointment, and your document checklist. The only data transmitted to our server and forwarded to our email service provider Resend, Inc. for delivery is: your email address, your first name, and the number of forms generated. No form data, no passport information, no special-category data (Art. 9 GDPR) is included. This field is entirely optional — the service is fully functional without providing an email. Legal basis: Art. 6(1)(a) GDPR — your freely given, specific, informed, and unambiguous consent by voluntarily entering your email address. You may withdraw this consent at any time by contacting info@simplyexpat.de; withdrawal does not affect the lawfulness of processing prior to withdrawal. Resend, Inc. Privacy Policy: resend.com/privacy.</LP>
+      <LP><strong>a) Registration form data</strong> — names, dates of birth, addresses, passport numbers, citizenship, marital status, religious affiliation: Stored exclusively in your browser's localStorage on your own device under the key "simplyexpat-v1". ReadyExpat has no technical access to this data at any point. It is never transmitted to our servers. It is automatically deleted from your browser once document generation is complete. Legal basis: this is not a processing activity by ReadyExpat within the meaning of Art. 4 No. 2 GDPR, as the data never reaches our systems (see GDPR Recital 26).</LP>
+      <LP><strong>b) PDF generation</strong>: Your completed Anmeldung form and personalised checklist are generated entirely in your browser using the open-source pdf-lib library. The PDF bytes exist only in browser memory and are downloaded directly to your device. They are never transmitted to ReadyExpat servers.</LP>
+      <LP><strong>c) Payment processing</strong>: Your payment of €15 is handled exclusively by Stripe, Inc. (510 Townsend Street, San Francisco, CA 94103, USA), a PCI-DSS Level 1 certified payment processor. You are redirected to a Stripe-hosted payment page. ReadyExpat never receives or processes your card number, bank details, or any payment credentials. After your payment is completed, your browser transmits only your Stripe session ID to our server for the sole purpose of confirming payment status (paid / not paid). No personal form data is included in this request. Legal basis: Art. 6(1)(b) GDPR — performance of a contract. Stripe's Privacy Policy: stripe.com/privacy.</LP>
+      <LP><strong>d) Post-purchase next-steps email (optional)</strong>: After your documents are generated, you may optionally provide your email address to receive a transactional confirmation email. This email contains your next steps: printing your form, booking your Bürgeramt appointment, and your document checklist. The only data transmitted to our server and forwarded to our email service provider Resend, Inc. for delivery is: your email address, your first name, and the number of forms generated. No form data, no passport information, no special-category data (Art. 9 GDPR) is included. This field is entirely optional — the service is fully functional without providing an email. Legal basis: Art. 6(1)(a) GDPR — your freely given, specific, informed, and unambiguous consent by voluntarily entering your email address. You may withdraw this consent at any time by contacting info@readyexpat.de; withdrawal does not affect the lawfulness of processing prior to withdrawal. Resend, Inc. Privacy Policy: resend.com/privacy.</LP>
       <LP><strong>e) Cookie / localStorage consent flag</strong>: When you acknowledge the cookie notice, a flag ("simplyexpat-cookie-ack-v1") is stored in your browser's localStorage. This flag contains no personal data and is used solely to avoid showing the notice repeatedly. Legal basis: §25(2) No. 2 TTDSG — strictly necessary.</LP>
       <LH2>3. Special category data — Religious affiliation (Art. 9 GDPR)</LH2>
-      <LP>Religious affiliation is special-category personal data under Art. 9(1) GDPR. The Anmeldung form includes an optional field for religious affiliation for tax purposes (Kirchensteuer). Because all form data is processed exclusively in your browser and never transmitted to SimplyExpat servers, SimplyExpat does not process this data within the meaning of Art. 4 No. 2 GDPR. You may leave this field blank or select "None" — this is a valid choice that results in no church tax obligation.</LP>
+      <LP>Religious affiliation is special-category personal data under Art. 9(1) GDPR. The Anmeldung form includes an optional field for religious affiliation for tax purposes (Kirchensteuer). Because all form data is processed exclusively in your browser and never transmitted to ReadyExpat servers, ReadyExpat does not process this data within the meaning of Art. 4 No. 2 GDPR. You may leave this field blank or select "None" — this is a valid choice that results in no church tax obligation.</LP>
       <LH2>4. Cookies and browser storage (§25 TTDSG)</LH2>
       <LP>We use no marketing, tracking, or analytics cookies. We use no third-party advertising cookies. All fonts are self-hosted — no external font requests are made to Google Fonts or any other provider. The only storage mechanisms are:</LP>
       <LUL items={[
@@ -139,18 +139,18 @@ export function PrivacyPolicy({ onClose }: { onClose: () => void }) {
         "Resend, Inc. — transactional email delivery. Data processed: email address and first name, only when you voluntarily provide your email. Basis: Art. 28 GDPR + Standard Contractual Clauses (SCCs). Only used if you opt in to the confirmation email.",
       ]} />
       <LH2>6. International data transfers (Art. 44–49 GDPR)</LH2>
-      <LP>Stripe and Resend are US-based companies. Data transfers to the USA are carried out on the basis of Standard Contractual Clauses (SCCs) pursuant to Art. 46(2)(c) GDPR, as adopted by the European Commission. You may request a copy of the applicable SCCs by contacting info@simplyexpat.de.</LP>
+      <LP>Stripe and Resend are US-based companies. Data transfers to the USA are carried out on the basis of Standard Contractual Clauses (SCCs) pursuant to Art. 46(2)(c) GDPR, as adopted by the European Commission. You may request a copy of the applicable SCCs by contacting info@readyexpat.de.</LP>
       <LH2>7. Your rights (Art. 15–22 GDPR)</LH2>
-      <LP>You have the following rights regarding your personal data: the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20), and the right to object (Art. 21). Because SimplyExpat does not store your form data on our servers, most of these rights apply to data held by Stripe (for payment records) or Resend (for email delivery, if you opted in). To exercise any right, contact info@simplyexpat.de. We will respond within 30 days.</LP>
-      <LP>If you provided your email address and wish to withdraw consent for email processing, contact info@simplyexpat.de and we will instruct Resend to delete any data associated with your email. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</LP>
-      <LP>You also have the right to lodge a complaint with a supervisory authority. The competent authority for SimplyExpat is: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin, mailbox@datenschutz-berlin.de.</LP>
+      <LP>You have the following rights regarding your personal data: the right of access (Art. 15), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20), and the right to object (Art. 21). Because ReadyExpat does not store your form data on our servers, most of these rights apply to data held by Stripe (for payment records) or Resend (for email delivery, if you opted in). To exercise any right, contact info@readyexpat.de. We will respond within 30 days.</LP>
+      <LP>If you provided your email address and wish to withdraw consent for email processing, contact info@readyexpat.de and we will instruct Resend to delete any data associated with your email. Withdrawal does not affect the lawfulness of processing carried out before withdrawal.</LP>
+      <LP>You also have the right to lodge a complaint with a supervisory authority. The competent authority for ReadyExpat is: Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin, mailbox@datenschutz-berlin.de.</LP>
       <LH2>8. Data retention</LH2>
-      <LP>SimplyExpat retains no personal data on its own systems. Browser localStorage data is deleted upon service completion. Stripe retains payment records for 7 years per §257 HGB (German Commercial Code). Resend retains email delivery data per their own retention policy; contact info@simplyexpat.de to request deletion.</LP>
+      <LP>ReadyExpat retains no personal data on its own systems. Browser localStorage data is deleted upon service completion. Stripe retains payment records for 7 years per §257 HGB (German Commercial Code). Resend retains email delivery data per their own retention policy; contact info@readyexpat.de to request deletion.</LP>
       <LH2>9. Automated decision-making</LH2>
-      <LP>SimplyExpat does not use automated decision-making or profiling within the meaning of Art. 22 GDPR.</LP>
+      <LP>ReadyExpat does not use automated decision-making or profiling within the meaning of Art. 22 GDPR.</LP>
       <LH2>10. Changes to this policy</LH2>
-      <LP>We will notify you of material changes via the website at least 14 days before they take effect. The current version is always available at simplyexpat.de. The effective date is shown at the top of this document.</LP>
-      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Datenschutzanfragen / GDPR enquiries: info@simplyexpat.de · Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
+      <LP>We will notify you of material changes via the website at least 14 days before they take effect. The current version is always available at readyexpat.de. The effective date is shown at the top of this document.</LP>
+      <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Datenschutzanfragen / GDPR enquiries: info@readyexpat.de · Karl Fasselt, Fürbringerstraße 25, 10961 Berlin</p>
     </LegalModal>
   );
 }
@@ -175,11 +175,11 @@ export function LandingLegalFooter() {
         <button style={linkStyle} onClick={() => setModal("impressum")}>Impressum</button>
       </div>
       <p style={{ color: "#94a3b8", fontSize: 11, marginTop: 20, marginBottom: 10, lineHeight: 1.7, maxWidth: 680, textAlign: "center" }}>
-        SimplyExpat helps expats complete the Berlin Anmeldung form in English and generate an official PDF ready for the Bürgeramt — with zero data stored on any server.
+        ReadyExpat helps expats complete the Berlin Anmeldung form in English and generate an official PDF ready for the Bürgeramt — with zero data stored on any server.
         Whether you need Anmeldung Berlin English PDF support, expert relocation Berlin paperwork assistance, or simply want to fill your Bürgeramt form without storing your data anywhere,
-        SimplyExpat prepares everything in 5 minutes. Available for every nationality moving to Berlin.
+        ReadyExpat prepares everything in 5 minutes. Available for every nationality moving to Berlin.
       </p>
-      <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, marginTop: 14 }}>© 2026 SimplyExpat · Berlin, Germany · Not a legal service (§2 RDG)</p>
+      <p style={{ color: "rgba(100,116,139,0.6)", fontSize: 11.5, marginTop: 14 }}>© 2026 ReadyExpat · Berlin, Germany · Not a legal service (§2 RDG)</p>
     </>
   );
 }

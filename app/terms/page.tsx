@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { TermsContent } from "../components/TermsContent";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — SimplyExpat",
-  description: "Terms of Service for SimplyExpat — the Berlin Anmeldung PDF preparation service.",
+  title: "Terms of Service — ReadyExpat",
+  description: "Terms of Service for ReadyExpat — the Berlin Anmeldung PDF preparation service.",
   robots: { index: false, follow: false },
 };
 
@@ -22,7 +22,7 @@ export default function TermsPage() {
         Terms of Service
       </h1>
       <p style={{ color: "#94a3b8", fontSize: 12.5, marginBottom: 32 }}>
-        Effective date: 1 April 2026 · SimplyExpat, Berlin, Germany
+        Effective date: 1 April 2026 · ReadyExpat, Berlin, Germany
       </p>
       <TermsContent />
     </div>

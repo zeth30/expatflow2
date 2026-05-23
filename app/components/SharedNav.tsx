@@ -76,7 +76,7 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
             {/* Left: logo + dropdowns */}
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <Link href="/" style={{ textDecoration: "none" }}>
-                <span style={{ fontWeight: 800, fontSize: 15, color: "#0f172a", letterSpacing: "-0.02em" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
+                <span style={{ fontWeight: 800, fontSize: 15, color: "#0f172a", letterSpacing: "-0.02em" }}>ReadyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
               </Link>
 
               {/* Guides — blue */}

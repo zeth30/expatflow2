@@ -3,10 +3,10 @@ import Link from "next/link";
 import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuideReveal } from "../components/guides/GuideReveal";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Germany FAQ — Complete Registration Guide | SimplyExpat",
+  title: "Anmeldung Germany FAQ — Complete Registration Guide | ReadyExpat",
   description:
     "Every question answered about Germany's mandatory Anmeldung registration. 14-day deadline, required documents, Bürgeramt appointments, online registration, and what happens after.",
   keywords: [
@@ -17,10 +17,10 @@ export const metadata: Metadata = {
     "Anmeldung documents needed",
     "Germany residence registration expat",
     "Anmeldung online Germany",
-    "SimplyExpat",
-    "Simply Expat",
-    "Simply Expat Berlin",
-    "Simple Expat Berlin",
+    "ReadyExpat",
+    "Ready Expat",
+    "Ready Expat Berlin",
+    "Ready Expat Berlin",
   ].join(", "),
   alternates: { canonical: `${DOMAIN}/faq` },
   robots: { index: true, follow: true },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Every question expats ask about Germany's mandatory address registration. Deadlines, documents, Bürgeramt tips, and more.",
     url: `${DOMAIN}/faq`,
-    siteName: "SimplyExpat Berlin",
+    siteName: "ReadyExpat Berlin",
     locale: "en_US",
     type: "article",
     modifiedTime: "2026-05-05T00:00:00.000Z",
@@ -134,7 +134,7 @@ const SECTIONS = [
       },
       {
         q: "What is the Rundfunkbeitrag letter I received?",
-        a: "It is Germany's public broadcasting fee — €18.36 per household per month in 2025, regardless of how many people live there. You automatically receive this letter after registering. It is not optional. SimplyExpat does not cover this process — it is a separate registration.",
+        a: "It is Germany's public broadcasting fee — €18.36 per household per month in 2025, regardless of how many people live there. You automatically receive this letter after registering. It is not optional. ReadyExpat does not cover this process — it is a separate registration.",
       },
       {
         q: "Do I need to re-register when I move to a new address in Germany?",
@@ -143,48 +143,48 @@ const SECTIONS = [
     ],
   },
   {
-    id: "sec-simplyexpat",
+    id: "sec-readyexpat",
     num: "05",
-    title: "About SimplyExpat",
+    title: "About ReadyExpat",
     headline: "About",
-    accent: "SimplyExpat.",
+    accent: "ReadyExpat.",
     color: "var(--ink)",
     faqs: [
       {
         q: "Why would I pay €15 to fill out a form?",
-        a: "The Anmeldung form is in German with no official English version. One wrong field — wrong date format, wrong marital status code, wrong religion entry — means your appointment fails and you start over, sometimes weeks later. SimplyExpat guides you through every field in plain English, formats everything correctly for German authorities, and generates a print-ready PDF in 5 minutes. The €15 buys you certainty and saves you weeks of potential delay.",
+        a: "The Anmeldung form is in German with no official English version. One wrong field — wrong date format, wrong marital status code, wrong religion entry — means your appointment fails and you start over, sometimes weeks later. ReadyExpat guides you through every field in plain English, formats everything correctly for German authorities, and generates a print-ready PDF in 5 minutes. The €15 buys you certainty and saves you weeks of potential delay.",
       },
       {
-        q: "What exactly does SimplyExpat do?",
-        a: "SimplyExpat guides you through your Anmeldung form in English. You answer simple questions in your language, we translate and format everything correctly, and you download a completed PDF ready to bring to your Bürgeramt appointment. The in-person appointment is still required — we make sure your paperwork is perfect before you walk in.",
+        q: "What exactly does ReadyExpat do?",
+        a: "ReadyExpat guides you through your Anmeldung form in English. You answer simple questions in your language, we translate and format everything correctly, and you download a completed PDF ready to bring to your Bürgeramt appointment. The in-person appointment is still required — we make sure your paperwork is perfect before you walk in.",
       },
       {
-        q: "How much does SimplyExpat cost?",
+        q: "How much does ReadyExpat cost?",
         a: "A one-time fee of €15. No subscription, no account required, no hidden costs. Pay once and download your completed Anmeldung PDF immediately.",
       },
       {
         q: "Is my personal data safe?",
-        a: "Yes. SimplyExpat operates a strict Zero Storage policy. Your data exists only in your browser during your active session. Nothing is sent to or stored on our servers — no database, no logs, no personal data retention of any kind. When you close the tab, your data is permanently gone.",
+        a: "Yes. ReadyExpat operates a strict Zero Storage policy. Your data exists only in your browser during your active session. Nothing is sent to or stored on our servers — no database, no logs, no personal data retention of any kind. When you close the tab, your data is permanently gone.",
       },
       {
-        q: "Is SimplyExpat an official German government service?",
-        a: "No. SimplyExpat is an independent service, not affiliated with any German government authority. Always use your city's official website to book your Bürgeramt appointment and verify current requirements.",
+        q: "Is ReadyExpat an official German government service?",
+        a: "No. ReadyExpat is an independent service, not affiliated with any German government authority. Always use your city's official website to book your Bürgeramt appointment and verify current requirements.",
       },
       {
         q: "Can I fill the Anmeldung form in English?",
-        a: "Yes — that is exactly what SimplyExpat is for. You answer every question in English through a step-by-step wizard. SimplyExpat translates your answers into the correct German entries and generates the completed official Anmeldeformular. You never have to write a single German word.",
+        a: "Yes — that is exactly what ReadyExpat is for. You answer every question in English through a step-by-step wizard. ReadyExpat translates your answers into the correct German entries and generates the completed official Anmeldeformular. You never have to write a single German word.",
       },
       {
-        q: "Does SimplyExpat generate the official German PDF?",
-        a: "Yes. SimplyExpat fills the official Berlin Anmeldeformular — the same 54-field form you would get from the Bürgeramt — in correct German. Country names, citizenship adjectives, date formats (DD.MM.YYYY), and all required fields are handled automatically. The output is a print-ready PDF you bring directly to your appointment.",
+        q: "Does ReadyExpat generate the official German PDF?",
+        a: "Yes. ReadyExpat fills the official Berlin Anmeldeformular — the same 54-field form you would get from the Bürgeramt — in correct German. Country names, citizenship adjectives, date formats (DD.MM.YYYY), and all required fields are handled automatically. The output is a print-ready PDF you bring directly to your appointment.",
       },
       {
         q: "What if I am registering more than one person?",
-        a: "SimplyExpat supports households of up to 6 people. The Anmeldung form fits 2 people per sheet, so for larger households SimplyExpat generates multiple sheets and packages them as a single ZIP file. Each person's information is filled in correctly across as many sheets as needed.",
+        a: "ReadyExpat supports households of up to 6 people. The Anmeldung form fits 2 people per sheet, so for larger households ReadyExpat generates multiple sheets and packages them as a single ZIP file. Each person's information is filled in correctly across as many sheets as needed.",
       },
       {
-        q: "Do I need to create an account to use SimplyExpat?",
-        a: "No. No account, no login, no email required. You answer the wizard, pay once, and download your PDF. Nothing is stored on SimplyExpat's servers — all data is processed locally in your browser.",
+        q: "Do I need to create an account to use ReadyExpat?",
+        a: "No. No account, no login, no email required. You answer the wizard, pay once, and download your PDF. Nothing is stored on ReadyExpat's servers — all data is processed locally in your browser.",
       },
       {
         q: "What if I need to re-download my PDF?",
@@ -227,7 +227,7 @@ export default function FAQPage() {
     ],
     step: [
       { "@type": "HowToStep", position: 1, name: "Get the Wohnungsgeberbestätigung from your landlord", text: "Request the landlord confirmation form (Wohnungsgeberbestätigung) on your move-in day. Your landlord is legally required to provide it under §19 BMG. Email them in writing so you have a paper trail. Without this form the Bürgeramt cannot register you — your rental contract alone is not accepted." },
-      { "@type": "HowToStep", position: 2, name: "Fill in the Anmeldung form in English", text: "Go to simplyexpat.de and answer the guided questions in plain English. SimplyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €15." },
+      { "@type": "HowToStep", position: 2, name: "Fill in the Anmeldung form in English", text: "Go to readyexpat.de and answer the guided questions in plain English. ReadyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €15." },
       { "@type": "HowToStep", position: 3, name: "Book a Bürgeramt appointment as early as possible", text: "Book at service.berlin.de. Check early in the morning for the best slot availability — new slots are released in batches and go quickly. Outer districts like Marzahn and Lichtenberg have more availability than central offices. Keep a screenshot of your booking as evidence you tried within the 14-day window." },
       { "@type": "HowToStep", position: 4, name: "Print your completed form", text: "Print the PDF on plain white paper. DM or Rossmann self-service kiosks charge approximately €0.10–0.15 per page. The Bürgeramt does not accept digital forms shown on a phone screen." },
       { "@type": "HowToStep", position: 5, name: "Attend your Bürgeramt appointment", text: "Bring your printed form, passport or ID, Wohnungsgeberbestätigung, and any additional documents. The appointment takes 5–10 minutes. Sign the form at the office after printing — do not sign before. Check your Anmeldebestätigung/Meldebestätigung for errors before leaving." },

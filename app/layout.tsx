@@ -4,10 +4,10 @@ import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
 import "./globals.css";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin in English — Fill Your Form | SimplyExpat",
+  title: "Anmeldung Berlin in English — Fill Your Form | ReadyExpat",
   description:
     "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
   keywords: [
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
     "Berlin Anmeldung form fill in English",
     "expat Berlin registration",
     "expat relocation Berlin paperwork",
-    "expert relocation Berlin paperwork",
     "Berlin address registration help",
     "Anmeldung ausfüllen English",
     "Berlin Bürgeramt appointment form",
@@ -29,10 +28,17 @@ export const metadata: Metadata = {
     "relocation service Berlin",
     "Berlin relocation help",
     "expat relocation service Berlin",
-    "SimplyExpat",
-    "Simply Expat",
-    "Simply Expat Berlin",
-    "Simple Expat Berlin",
+    "ReadyExpat",
+    "Ready Expat",
+    "Ready Expat Berlin",
+    "ready expat germany",
+    "expat ready germany",
+    "expat ready berlin",
+    "ready paperwork expat germany",
+    "ready paperwork berlin",
+    "anmeldung ready expat",
+    "berlin paperwork expat english",
+    "germany registration expat ready",
   ].join(", "),
   metadataBase: new URL(DOMAIN),
   alternates: {
@@ -53,18 +59,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Anmeldung Berlin in English — Fill Your Form | SimplyExpat",
+    title: "Anmeldung Berlin in English — Fill Your Form | ReadyExpat",
     description:
       "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
     url: DOMAIN,
-    siteName: "SimplyExpat Berlin",
-    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "SimplyExpat Berlin — Anmeldung PDF in English" }],
+    siteName: "ReadyExpat Berlin",
+    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "ReadyExpat Berlin — Anmeldung PDF in English" }],
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anmeldung Berlin in English | SimplyExpat",
+    title: "Anmeldung Berlin in English | ReadyExpat",
     description: "Official Berlin registration PDF, filled in English. No data stored. Expert expat relocation help.",
     images: ["/og-image.svg"],
   },
@@ -81,7 +87,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "name": "SimplyExpat Berlin",
+        "name": "ReadyExpat Berlin",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "description": "Generate your official Berlin Anmeldung PDF in English. All 54 fields filled in perfect German. No data stored. Expert relocation paperwork for expats.",
@@ -104,11 +110,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       },
       {
         "@type": "Organization",
-        "name": "SimplyExpat Berlin",
-        "alternateName": ["SimplyExpat", "Simply Expat", "Simply Expat Berlin", "Simple Expat Berlin"],
+        "name": "ReadyExpat Berlin",
+        "alternateName": ["ReadyExpat", "Ready Expat", "Ready Expat Berlin", "ready expat germany"],
         "url": DOMAIN,
         "logo": `${DOMAIN}/favicon.svg`,
-        "description": "SimplyExpat helps international expats complete Berlin's mandatory Anmeldung address registration form in English.",
+        "description": "ReadyExpat helps international expats complete Berlin's mandatory Anmeldung address registration form in English.",
         "areaServed": {
           "@type": "City",
           "name": "Berlin",
@@ -116,7 +122,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         },
         "contactPoint": {
           "@type": "ContactPoint",
-          "email": "info@simplyexpat.de",
+          "email": "info@readyexpat.de",
           "contactType": "customer support",
           "availableLanguage": ["English", "German"],
         },

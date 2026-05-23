@@ -22,7 +22,7 @@ export function AppFooter() {
         {modal === "privacy"   && <PrivacyPolicy      onClose={() => setModal(null)} />}
         {modal === "impressum" && <Impressum          onClose={() => setModal(null)} />}
         {modal === "joinus"   && <JoinUsModal         onClose={() => setModal(null)} />}
-        <span className="af-copy">© 2026 SimplyExpat · Not a legal service (§2 RDG) · Keine MwSt. gem. §19 UStG</span>
+        <span className="af-copy">© 2026 ReadyExpat · Not a legal service (§2 RDG) · Keine MwSt. gem. §19 UStG</span>
         <span style={{ color: "#cbd5e1" }} className="mob-hide">·</span>
         <button className="af-link" onClick={() => setModal("tos")}>Terms</button>
         <button className="af-link" onClick={() => setModal("cancel")}>Cancellation</button>

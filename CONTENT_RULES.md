@@ -1,10 +1,10 @@
-# SimplyExpat — Content Rules
+# ReadyExpat — Content Rules
 
 Established facts and rules that must stay consistent across all guide pages, landing page, FAQ, and done page. Read this before writing or editing any user-facing copy.
 
 ---
 
-## What SimplyExpat does and does not do
+## What ReadyExpat does and does not do
 
 - **DOES:** Generate the completed Anmeldeformular PDF from English answers — all 54 fields, correct German, DD.MM.YYYY dates, all translations handled
 - **DOES:** Handle the Kirchensteuer religion field (blank by default unless user chooses otherwise)
@@ -47,7 +47,7 @@ Any guide content that tells the user how to fill the Anmeldeformular themselves
 
 - Guide body = pure editorial. No inline product pitches inside lists, steps, or warnings
 - One neutral category hint per relevant page max: *"English-language form preparation services exist for this step"* — no brand name in body text
-- SimplyExpat named explicitly only inside CTA blocks (visually distinct from editorial content)
+- ReadyExpat named explicitly only inside CTA blocks (visually distinct from editorial content)
 - Test: would a newspaper publish this body text as-is? If not, it's too promotional
 
 ---

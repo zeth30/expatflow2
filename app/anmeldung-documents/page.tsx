@@ -5,10 +5,10 @@ import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { ChecklistClient } from "./ChecklistClient";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Documents Checklist Berlin 2026 | SimplyExpat",
+  title: "Anmeldung Documents Checklist Berlin 2026 | ReadyExpat",
   description:
     "The complete document checklist for your Anmeldung in Germany. Personalised for your situation — missing a required document means a failed appointment; minor form errors are usually corrected at the counter.",
   alternates: { canonical: `${DOMAIN}/anmeldung-documents` },
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Anmeldung Document Checklist — What to Bring to the Bürgeramt",
     description: "Personalised document checklist for your Anmeldung appointment. Know exactly what to bring for your situation — missing a document costs you the appointment slot.",
     url: `${DOMAIN}/anmeldung-documents`,
-    siteName: "SimplyExpat Berlin",
+    siteName: "ReadyExpat Berlin",
     type: "article",
   },
 };
@@ -30,8 +30,8 @@ export default function AnmeldungDocuments() {
         "@type": "Article",
         headline: "Anmeldung Document Checklist — What to Bring to the Bürgeramt",
         description: "The complete document checklist for the Anmeldung in Germany, with situation-specific additions for non-EU citizens, married couples, and families.",
-        author: { "@type": "Organization", name: "SimplyExpat Berlin" },
-        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        author: { "@type": "Organization", name: "ReadyExpat Berlin" },
+        publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
         dateModified: "2026-05-14",
         mainEntityOfPage: `${DOMAIN}/anmeldung-documents`,
@@ -61,7 +61,7 @@ export default function AnmeldungDocuments() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 1, name: "ReadyExpat Berlin", item: DOMAIN },
           { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
           { "@type": "ListItem", position: 3, name: "Anmeldung Document Checklist", item: `${DOMAIN}/anmeldung-documents` },
         ],
@@ -280,7 +280,7 @@ export default function AnmeldungDocuments() {
             <div className="cta-box reveal">
               <div className="eye">Personalised checklist + correct German PDF — nothing left to chance.</div>
               <h2>Know exactly what to bring. <span className="b">Arrive ready.</span></h2>
-              <p>SimplyExpat builds your personalised document checklist based on your situation, then fills all 54 form fields correctly in German — translations, dates, format. Done in 5 minutes.</p>
+              <p>ReadyExpat builds your personalised document checklist based on your situation, then fills all 54 form fields correctly in German — translations, dates, format. Done in 5 minutes.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>

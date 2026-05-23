@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Barrierefreiheitserklärung — SimplyExpat",
-  description: "Erklärung zur Barrierefreiheit von SimplyExpat gemäß BFSG.",
+  title: "Barrierefreiheitserklärung — ReadyExpat",
+  description: "Erklärung zur Barrierefreiheit von ReadyExpat gemäß BFSG.",
   robots: { index: false, follow: false },
 };
 
@@ -21,14 +21,14 @@ export default function BarrierefreiheitPage() {
   return (
     <div style={s.page}>
       <h1 style={s.h1}>Erklärung zur Barrierefreiheit</h1>
-      <p style={s.meta}>Stand: Mai 2026 · SimplyExpat, Berlin</p>
+      <p style={s.meta}>Stand: Mai 2026 · ReadyExpat, Berlin</p>
 
       <div style={s.notice}>
-        <strong>Hinweis:</strong> SimplyExpat ist ein privates Digitalangebot und bemüht sich um Konformität mit dem Barrierefreiheitsstärkungsgesetz (BFSG) sowie den Web Content Accessibility Guidelines (WCAG) 2.1 Level AA. Diese Erklärung dokumentiert den aktuellen Stand und bekannte Einschränkungen.
+        <strong>Hinweis:</strong> ReadyExpat ist ein privates Digitalangebot und bemüht sich um Konformität mit dem Barrierefreiheitsstärkungsgesetz (BFSG) sowie den Web Content Accessibility Guidelines (WCAG) 2.1 Level AA. Diese Erklärung dokumentiert den aktuellen Stand und bekannte Einschränkungen.
       </div>
 
       <h2 style={s.h2}>Stand der Barrierefreiheit</h2>
-      <p style={s.p}>SimplyExpat ist <strong>teilweise konform</strong> mit WCAG 2.1 Level AA. Die bekannten Einschränkungen sind nachfolgend aufgeführt.</p>
+      <p style={s.p}>ReadyExpat ist <strong>teilweise konform</strong> mit WCAG 2.1 Level AA. Die bekannten Einschränkungen sind nachfolgend aufgeführt.</p>
 
       <h2 style={s.h2}>Nicht barrierefreie Inhalte</h2>
       <p style={s.p}>Die folgenden Einschränkungen sind bekannt und werden schrittweise behoben:</p>
@@ -52,7 +52,7 @@ export default function BarrierefreiheitPage() {
         Wenn Sie Barrieren auf dieser Website feststellen oder Hilfe benötigen, kontaktieren Sie uns bitte:
       </p>
       <p style={s.p}>
-        <strong>E-Mail:</strong> <a href="mailto:info@simplyexpat.de" style={{ color: "#0075FF" }}>info@simplyexpat.de</a><br />
+        <strong>E-Mail:</strong> <a href="mailto:info@readyexpat.de" style={{ color: "#0075FF" }}>info@readyexpat.de</a><br />
         <strong>Betreff:</strong> Barrierefreiheit
       </p>
       <p style={s.p}>Wir bemühen uns um eine Antwort innerhalb von 5 Werktagen.</p>
@@ -69,7 +69,7 @@ export default function BarrierefreiheitPage() {
       <p style={s.p}>Diese Erklärung wurde am 17. Mai 2026 erstellt und wird regelmäßig aktualisiert.</p>
 
       <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 32 }}>
-        SimplyExpat · Fürbringerstraße 25, 10961 Berlin · info@simplyexpat.de
+        ReadyExpat · Fürbringerstraße 25, 10961 Berlin · info@readyexpat.de
       </p>
     </div>
   );

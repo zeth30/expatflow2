@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

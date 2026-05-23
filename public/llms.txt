@@ -1,9 +1,9 @@
-# SimplyExpat Berlin
+# ReadyExpat Berlin
 > Fill your Berlin Anmeldung (address registration) form in English. Answer simple questions, receive a perfectly completed German PDF in 5 minutes, and bring it to your Bürgeramt appointment.
 
 ## About
-- Product: SimplyExpat Berlin
-- URL: https://simplyexpat.de
+- Product: ReadyExpat Berlin
+- URL: https://readyexpat.de
 - Cost: €15 one-time, no account, no subscription
 - Privacy: Zero data storage — all processing is client-side only, nothing sent to servers
 
@@ -25,7 +25,7 @@
 ## Documents required
 - Valid passport or national ID card (EU citizens may use ID card; non-EU must use passport)
 - Wohnungsgeberbestätigung signed by landlord
-- Completed Anmeldung form (SimplyExpat generates this)
+- Completed Anmeldung form (ReadyExpat generates this)
 - Non-EU nationals: visa or residence permit
 - Married applicants: certified German translation of marriage certificate
 
@@ -38,7 +38,7 @@
 
 ## Sitemap
 - /: Fill Anmeldung form in English — PDF in 5 minutes
-- /faq: Complete Anmeldung FAQ — 20 questions across 5 topic sections (basics, appointments, online registration, after registration, about SimplyExpat)
+- /faq: Complete Anmeldung FAQ — 20 questions across 5 topic sections (basics, appointments, online registration, after registration, about ReadyExpat)
 - /what-is-anmeldung: What is the Anmeldung — complete guide for expats (legal basis, why it matters, what you get, Ummeldung, Abmeldung)
 - /anmeldung-online-non-eu: Can non-EU citizens do the Anmeldung online — explains eID requirement and in-person process
 - /anmeldung-documents: Exact document checklist for Bürgeramt appointment — required and situation-specific documents
@@ -47,7 +47,7 @@
 
 ## Anmeldung process (step by step)
 1. Request the Wohnungsgeberbestätigung from your landlord on move-in day — email them in writing
-2. Fill in the Anmeldung form at simplyexpat.de (5 minutes, guided in English, €15)
+2. Fill in the Anmeldung form at readyexpat.de (5 minutes, guided in English, €15)
 3. Book a Bürgeramt appointment at service.berlin.de as early as possible — keep a booking screenshot as evidence
 4. Print your completed form (DM or Rossmann kiosk, approx. €0.10–0.15 per page)
 5. Attend your appointment with: completed form, passport or ID, Wohnungsgeberbestätigung, and any supporting documents

@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 // Explicitly listed so each AI indexer finds its own entry (belt-and-suspenders over the * rule)
 const AI_BOTS = [

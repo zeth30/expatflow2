@@ -121,7 +121,7 @@ const FIELD_LIMITS: Record<string, number> = {
 function truncField(fieldName: string, value: string): string {
   const limit = FIELD_LIMITS[fieldName];
   if (!limit || value.length <= limit) return value;
-  console.warn("[SimplyExpat] Truncated:", fieldName, value.length, "->", limit);
+  console.warn("[ReadyExpat] Truncated:", fieldName, value.length, "->", limit);
   return value.slice(0, limit - 1) + "\u2026";
 }
 
@@ -834,7 +834,7 @@ async function buildWGPDF(d: FormData): Promise<Uint8Array> {
   const { width, height } = page.getSize();
   if (Math.abs(width - WG_PAGE_W) > 2 || Math.abs(height - WG_PAGE_H) > 2) {
     console.warn(
-      `[SimplyExpat] WG template size mismatch: got ${width}×${height}, expected ${WG_PAGE_W}×${WG_PAGE_H}. ` +
+      `[ReadyExpat] WG template size mismatch: got ${width}×${height}, expected ${WG_PAGE_W}×${WG_PAGE_H}. ` +
       `Coordinates may be off — falling back to generated PDF.`
     );
     return buildWGPDFFallback(d);
@@ -966,7 +966,7 @@ async function buildWGPDFFallback(d: FormData): Promise<Uint8Array> {
   legal.forEach(l => { page.drawText(safe(l), { x: M + 8, y, size: 8, font: hv, color: rgb(0.55, 0.1, 0.08) }); y -= 13; });
 
   page.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.82, 0.86, 0.92) });
-  page.drawText("SimplyExpat Berlin  ·  " + fmtToday(), { x: M, y: 20, size: 7, font: hv, color: rgb(0.68, 0.72, 0.8) });
+  page.drawText("ReadyExpat Berlin  ·  " + fmtToday(), { x: M, y: 20, size: 7, font: hv, color: rgb(0.68, 0.72, 0.8) });
   return doc.save();
 }
 
@@ -995,7 +995,7 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
 
   const drawFooter = (pg: any) => {
     pg.drawLine({ start: { x: M, y: 36 }, end: { x: width - M, y: 36 }, thickness: 0.3, color: rgb(0.8, 0.84, 0.92) });
-    pg.drawText("SimplyExpat Berlin  \u00b7  service.berlin.de  \u00b7  Ohne Gew\u00e4hr", { x: M, y: 20, size: 7, font: hv, color: rgb(0.65, 0.68, 0.76) });
+    pg.drawText("ReadyExpat Berlin  \u00b7  service.berlin.de  \u00b7  Ohne Gew\u00e4hr", { x: M, y: 20, size: 7, font: hv, color: rgb(0.65, 0.68, 0.76) });
   };
 
   const addNewPage = () => {
@@ -1379,14 +1379,14 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   const LOGO_X = PW - ML - 22;
   p1pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
   p1pg.drawText("S", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
-  p1pg.drawText("simplyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
+  p1pg.drawText("readyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
 
   // Title
   p1pg.drawText("Your Personalised Anmeldung Checklist", {
     x: ML, y: PH - 34, size: 20, font: HB, color: WHITE,
   });
   // Subtitle
-  p1pg.drawText(safe("SimplyExpat Berlin  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + fmtToday()), {
+  p1pg.drawText(safe("ReadyExpat Berlin  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + fmtToday()), {
     x: ML, y: PH - 52, size: 9, font: HV, color: rgb(0.70, 0.82, 1.00),
   });
 
@@ -1513,7 +1513,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   let curPage1 = p1pg;
   const overflowToNextPage = () => {
     curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-    curPage1.drawText("SimplyExpat Berlin  ·  Your personalised checklist  ·  continued", {
+    curPage1.drawText("ReadyExpat Berlin  ·  Your personalised checklist  ·  continued", {
       x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
     });
     curPage1 = doc.addPage([PW, PH] as [number, number]);
@@ -1578,7 +1578,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  curPage1.drawText("simplyexpat.de  ·  Your personalised checklist  ·  Page 1 of 2", {
+  curPage1.drawText("readyexpat.de  ·  Your personalised checklist  ·  Page 1 of 2", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
   curPage1.drawText("service.berlin.de/dienstleistung/120686", {
@@ -1596,7 +1596,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   // Brand mark — top right
   p2pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
   p2pg.drawText("S", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
-  p2pg.drawText("simplyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
+  p2pg.drawText("readyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
 
   p2pg.drawText("Your Berlin Anmeldung Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
   const nameStr = (p1.firstName + " " + p1.lastName).trim();
@@ -1673,7 +1673,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   p2pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
-  p2pg.drawText("simplyexpat.de  ·  Expert Guide  ·  Page 2 of 2  ·  Information without guarantee", {
+  p2pg.drawText("readyexpat.de  ·  Expert Guide  ·  Page 2 of 2  ·  Information without guarantee", {
     x: ML, y: 14, size: 7.5, font: HV, color: MUTE,
   });
   p2pg.drawText("service.berlin.de", {
@@ -2022,7 +2022,7 @@ export default function BerlinButler() {
           });
           setEmailSent(true);
         } catch (emailErr) {
-          console.warn("[SimplyExpat] Reminder email failed (non-critical):", emailErr);
+          console.warn("[ReadyExpat] Reminder email failed (non-critical):", emailErr);
         }
         setGenStatus("");
       }
@@ -2138,9 +2138,6 @@ export default function BerlinButler() {
       {!mounted ? (
         <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <div style={{ textAlign: "center" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
-            </div>
             <div style={{ width: 80, height: 4, borderRadius: 99, background: "#e8ecf4", margin: "0 auto", overflow: "hidden", position: "relative" }}>
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#0075FF,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
             </div>
@@ -2160,9 +2157,6 @@ export default function BerlinButler() {
         <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#f8fafc" }}>
           <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
           <div style={{ textAlign: "center", padding: "0 20px" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontSize: 14, fontWeight: 900 }}>S</span>
-            </div>
             <div style={{ width: 24, height: 24, border: "3px solid #e8ecf4", borderTopColor: "#0075FF", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto 16px" }} />
             <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 17, marginBottom: 6 }}>
               {genStatus || "Generating your documents…"}
@@ -2218,7 +2212,7 @@ function BureaucracyBattleIllustration() {
   return (
     <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg"
       style={{ width: "100%", maxWidth: 420, height: "auto" }}
-      aria-label="Expat fighting the German bureaucracy monster with SimplyExpat">
+      aria-label="Expat fighting the German bureaucracy monster with ReadyExpat">
 
       {/* ── Background glow ── */}
       <defs>
@@ -2461,9 +2455,6 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
           {/* Logo */}
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", padding: 0, flexShrink: 0 }}>
-            <div style={{ width: 22, height: 22, borderRadius: 5, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontSize: 10, fontWeight: 900 }}>S</span>
-            </div>
           </button>
 
           {/* Step name — grows to fill */}
@@ -2507,10 +2498,7 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
         <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
           <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
             style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
-            <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#0075FF,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontSize: 12, fontWeight: 900 }}>S</span>
-            </div>
-            <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
+            <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>ReadyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
           </button>
         </div>
 
@@ -3033,7 +3021,7 @@ function ComingSoonOverlay({ onBack }: { onBack: () => void }) {
         </div>
         <h2 style={{ fontSize: 22, fontWeight: 900, color: "#111111", letterSpacing: "-0.02em", marginBottom: 8 }}>Coming to your city soon</h2>
         <p style={{ color: "#64748b", fontSize: 14, lineHeight: 1.65, marginBottom: 24 }}>
-          SimplyExpat currently supports <strong>Berlin only</strong>. We are expanding to Hamburg, Munich, and Frankfurt in 2026.
+          ReadyExpat currently supports <strong>Berlin only</strong>. We are expanding to Hamburg, Munich, and Frankfurt in 2026.
         </p>
         {!submitted ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -3088,7 +3076,7 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
       {/* Berlin gate */}
       <div>
         <p style={{ color: "#64748b", fontSize: 13, marginBottom: 12, lineHeight: 1.55 }}>
-          SimplyExpat currently supports Berlin only. Please confirm your new address is within the city of Berlin.
+          ReadyExpat currently supports Berlin only. Please confirm your new address is within the city of Berlin.
         </p>
         <div style={{ display: "flex", gap: 10 }}>
           {([["true", "Yes — my new address is in Berlin"], ["false", "No — different city"]] as const).map(([v, l]) => {
@@ -3229,7 +3217,7 @@ function StepOrigin({ form, set_, updPerson }: { form: FormData; set_: any; updP
             <div>
               <div style={{ fontWeight: 700, color: "#1e40af", fontSize: 13, marginBottom: 3 }}>Beiblatt not supported yet</div>
               <p style={{ color: "#1e3a8a", fontSize: 12.5, lineHeight: 1.6 }}>
-                We currently cannot generate the Beiblatt (supplementary sheet for multiple residences). You will need to fill that form manually. You can still use SimplyExpat for the main Anmeldung — uncheck this box to continue.
+                We currently cannot generate the Beiblatt (supplementary sheet for multiple residences). You will need to fill that form manually. You can still use ReadyExpat for the main Anmeldung — uncheck this box to continue.
               </p>
             </div>
           </div>
@@ -3668,10 +3656,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 32 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 8, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontWeight: 900, fontSize: 15 }}>S</span>
-            </div>
-            <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>SimplyExpat <span style={{ color: "#60a5fa" }}>Berlin</span></span>
+            <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>ReadyExpat <span style={{ color: "#60a5fa" }}>Berlin</span></span>
           </div>
           {(() => {
             const d = form.moveInDate ? Math.ceil((new Date().getTime() - new Date(form.moveInDate).getTime()) / 86400000) : null;
@@ -3788,7 +3773,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
               <div style={{ padding: "12px 14px", borderRadius: 11, background: "#eef2ff", border: "1px solid #bfdbfe", display: "flex", gap: 9 }}>
                 <AlertCircle size={14} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
                 <p style={{ color: "#1e40af", fontSize: 13, lineHeight: 1.5 }}>
-                  <strong>Berlin only:</strong> SimplyExpat currently supports Berlin addresses only. Please go back and confirm your address is in Berlin.
+                  <strong>Berlin only:</strong> ReadyExpat currently supports Berlin addresses only. Please go back and confirm your address is in Berlin.
                 </p>
               </div>
             )}
@@ -4037,10 +4022,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
       {/* ── Header ── */}
       <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40, boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ color: "white", fontSize: 13, fontWeight: 900 }}>S</span>
-          </div>
-          <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
+          <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>ReadyExpat <span style={{ color: "#0075FF" }}>Berlin</span></span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 12px" }}>
           <CheckCircle2 size={12} color="#16a34a" />
@@ -4128,7 +4110,7 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
               <div>
                 <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13, marginBottom: 3 }}>Session data not found</div>
                 <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6 }}>
-                  Your form data is no longer in this browser — it may have been cleared. Use the "Clear data & start over" button below to begin again. If you completed payment, contact us at info@simplyexpat.de with your payment confirmation.
+                  Your form data is no longer in this browser — it may have been cleared. Use the "Clear data & start over" button below to begin again. If you completed payment, contact us at info@readyexpat.de with your payment confirmation.
                 </p>
               </div>
             </div>
@@ -4311,9 +4293,9 @@ function DonePage({ form, sheets, generatedPDFs, onRestart }: {
             <h3 style={{ fontSize: 17, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1.25 }}>Saved your life?<br/>Send this to another expat.</h3>
             <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 13, lineHeight: 1.6, maxWidth: 340, margin: "0 auto 16px" }}>Every expat in Berlin needs this. One link saves them hours.</p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20in%20English%20in%205%20minutes%20%E2%80%94%20perfectly%20in%20German%2C%20no%20data%20stored%3A%20https%3A%2F%2Fsimplyexpat.de" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/?text=Just%20used%20this%20to%20fill%20my%20Berlin%20Anmeldung%20in%20English%20in%205%20minutes%20%E2%80%94%20perfectly%20in%20German%2C%20no%20data%20stored%3A%20https%3A%2F%2Freadyexpat.de" target="_blank" rel="noopener noreferrer"
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "11px 18px", borderRadius: 11, background: "#25D366", color: "white", fontWeight: 800, fontSize: 13, textDecoration: "none" }}>Share on WhatsApp</a>
-              <button onClick={() => { navigator.clipboard.writeText("https://simplyexpat.de").then(() => { const btn = document.getElementById("copy-link-btn"); if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); } }); }} id="copy-link-btn"
+              <button onClick={() => { navigator.clipboard.writeText("https://readyexpat.de").then(() => { const btn = document.getElementById("copy-link-btn"); if (btn) { btn.textContent = "✓ Copied!"; setTimeout(() => { btn.textContent = "Copy link"; }, 2000); } }); }} id="copy-link-btn"
                 style={{ padding: "11px 18px", borderRadius: 11, background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.25)", color: "white", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>Copy link</button>
             </div>
           </div>

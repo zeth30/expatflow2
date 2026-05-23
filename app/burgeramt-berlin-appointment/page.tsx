@@ -4,10 +4,10 @@ import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Bürgeramt Appointment Berlin 2026 | SimplyExpat",
+  title: "Bürgeramt Appointment Berlin 2026 | ReadyExpat",
   description:
     "Berlin Bürgeramt appointments vanish in seconds. Here is exactly how to find a slot in 2026 — the Tuesday trick, walk-in options, the 115 hotline, and what to do when there are no slots before your 14-day deadline.",
   alternates: { canonical: `${DOMAIN}/burgeramt-berlin-appointment` },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: "How to Book a Bürgeramt Appointment in Berlin (2026)",
     description: "Berlin Bürgeramt slots vanish in seconds. Here is exactly how to find one — including the Tuesday trick, walk-in options, and what to do if there are no slots before your 14-day deadline.",
     url: `${DOMAIN}/burgeramt-berlin-appointment`,
-    siteName: "SimplyExpat Berlin",
+    siteName: "ReadyExpat Berlin",
     type: "article",
   },
 };
@@ -29,8 +29,8 @@ export default function BurgeramtBerlinAppointment() {
         "@type": "Article",
         headline: "How to Book a Bürgeramt Appointment in Berlin (2026)",
         description: "Berlin Bürgeramt appointments book out 3–6 weeks in advance. Here is exactly how to find a slot, what to do if there are none, and how to prepare once you have one.",
-        author: { "@type": "Organization", name: "SimplyExpat Berlin" },
-        publisher: { "@type": "Organization", name: "SimplyExpat Berlin" },
+        author: { "@type": "Organization", name: "ReadyExpat Berlin" },
+        publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
         dateModified: "2026-05-14",
         mainEntityOfPage: `${DOMAIN}/burgeramt-berlin-appointment`,
@@ -59,7 +59,7 @@ export default function BurgeramtBerlinAppointment() {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "SimplyExpat Berlin", item: DOMAIN },
+          { "@type": "ListItem", position: 1, name: "ReadyExpat Berlin", item: DOMAIN },
           { "@type": "ListItem", position: 2, name: "Guides", item: `${DOMAIN}/#guides` },
           { "@type": "ListItem", position: 3, name: "How to Book a Bürgeramt Appointment in Berlin", item: `${DOMAIN}/burgeramt-berlin-appointment` },
         ],
@@ -346,7 +346,7 @@ export default function BurgeramtBerlinAppointment() {
           <div className="wrap">
             <div className="cta-box reveal">
               <div className="eye">Your documents need to be perfect. The appointment is the easy part.</div>
-              <h2>SimplyExpat generates your German form <span className="b">in 5 minutes.</span></h2>
+              <h2>ReadyExpat generates your German form <span className="b">in 5 minutes.</span></h2>
               <p>Every field correct. Every date in the right format. Every entry in German. Plus a personalised checklist of exactly what to bring for your situation. Show up knowing your paperwork is right.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung

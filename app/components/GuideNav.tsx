@@ -29,11 +29,8 @@ export function GuideNav({ currentPage }: { currentPage?: string }) {
         <div className="gnav-wrap">
           <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-              <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>S</span>
-              </div>
               <span style={{ fontWeight: 800, fontSize: 14, color: "#0f172a" }}>
-                SimplyExpat <span style={{ color: "#0075FF" }}>Berlin</span>
+                ReadyExpat <span style={{ color: "#0075FF" }}>Berlin</span>
               </span>
             </Link>
             <div className="gnav-hide" style={{ position: "relative" }}>
