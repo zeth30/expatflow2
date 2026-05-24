@@ -83,18 +83,27 @@ export default function OnlineNonEU() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
-            <div className="callout info reveal">
-              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
-              <div>
-                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
-                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
-                  <li>Online registration requires an EU/EEA eID card — non-EU passports don&apos;t qualify.</li>
-                  <li>You must register in person at a Bürgeramt. There is no workaround.</li>
-                  <li>Book your appointment first, then prepare your documents.</li>
-                </ul>
-              </div>
+            <div className="kf-grid">
+              <a href="#sec-why" className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
+                <div className="kf-num">Fact 01</div>
+                <p className="kf-text">Online registration requires an EU/EEA eID card — non-EU passports don&apos;t qualify.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-inperson" className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
+                <div className="kf-num">Fact 02</div>
+                <p className="kf-text">You must register in person at a Bürgeramt. There is no workaround.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-inperson" className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
+                <div className="kf-num">Fact 03</div>
+                <p className="kf-text">Book your appointment first, then prepare your documents.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
             </div>
           </div>
         </section>
@@ -127,7 +136,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* 02 · Why online is blocked */}
-        <section className="section">
+        <section className="section" id="sec-why">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · Why online is blocked</div>
@@ -162,7 +171,7 @@ export default function OnlineNonEU() {
         </section>
 
         {/* 03 · 4 steps */}
-        <section className="section">
+        <section className="section" id="sec-inperson">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · What you must do instead</div>

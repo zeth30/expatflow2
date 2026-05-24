@@ -92,24 +92,33 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
-            <div className="callout info reveal">
-              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
-              <div>
-                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
-                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
-                  <li>Your landlord is legally required to sign (§19 BMG). Refusal = fine for them.</li>
-                  <li>Without it, the Bürgeramt will not register you. No exceptions.</li>
-                  <li>Many landlords include it in the move-in pack — check before asking.</li>
-                </ul>
-              </div>
+            <div className="kf-grid">
+              <a href="#sec-what" className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
+                <div className="kf-num">Fact 01</div>
+                <p className="kf-text">Your landlord is legally required to sign (§19 BMG). Refusal = fine for them.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-difficult" className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
+                <div className="kf-num">Fact 02</div>
+                <p className="kf-text">Without it, the Bürgeramt will not register you — but if your landlord is being difficult, there is a workaround.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-difficult" className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
+                <div className="kf-num">Fact 03</div>
+                <p className="kf-text">Landlord refusing or delaying? Attend with your rental contract — the Bürgeramt accepts the form by email afterwards.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
             </div>
           </div>
         </section>
 
         {/* 01 · What it looks like */}
-        <section className="section">
+        <section className="section" id="sec-what">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">01 · What it is</div>
@@ -247,7 +256,7 @@ export default function Wohnungsgeberbestaetigung() {
         </section>
 
         {/* 04 · Risk scenarios */}
-        <section className="section">
+        <section className="section" id="sec-difficult">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">04 · If your landlord is difficult</div>

@@ -92,18 +92,27 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* Key facts */}
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section kf-section">
           <div className="wrap">
-            <div className="callout info reveal">
-              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
-              <div>
-                <div className="h" style={{ marginBottom: 8 }}>Key facts</div>
-                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.8 }}>
-                  <li>Slots on service.berlin.de appear Tuesdays at 8:00 AM and vanish in under 60 seconds.</li>
-                  <li>No appointment = no service. Walk-ins are officially not accepted.</li>
-                  <li>Call 115 at 7:00 AM for same-day cancellation slots.</li>
-                </ul>
-              </div>
+            <div className="kf-grid">
+              <a href="#sec-hacks" className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">01</text></svg>
+                <div className="kf-num">Fact 01</div>
+                <p className="kf-text">Slots on service.berlin.de appear Tuesdays at 8:00 AM and vanish in under 60 seconds.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-walkin" className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">02</text></svg>
+                <div className="kf-num">Fact 02</div>
+                <p className="kf-text">No appointment = no service. Walk-ins are officially not accepted.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
+              <a href="#sec-hacks" className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
+                <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">03</text></svg>
+                <div className="kf-num">Fact 03</div>
+                <p className="kf-text">Call 115 at 7:00 AM for same-day cancellation slots.</p>
+                <span className="kf-arrow">↗</span>
+              </a>
             </div>
           </div>
         </section>
@@ -139,7 +148,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 02 · Booking hacks */}
-        <section className="section">
+        <section className="section" id="sec-hacks">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">02 · The strategies that work</div>
@@ -188,7 +197,7 @@ export default function BurgeramtBerlinAppointment() {
         </section>
 
         {/* 03 · Walk-in — reality check */}
-        <section className="section">
+        <section className="section" id="sec-walkin">
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">03 · Walk-in — last resort</div>
@@ -332,7 +341,7 @@ export default function BurgeramtBerlinAppointment() {
             </div>
             <div className="faq reveal">
               <details><summary>When are new Berlin Bürgeramt appointment slots released?</summary><div className="ans">New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Be on the portal before 8:00 AM, have the Anmeldung service pre-selected, and refresh immediately when the clock hits 8:00. You should also <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>prepare your documents</a> before booking so you are ready for any slot that appears.</div></details>
-              <details><summary>Can I do walk-in Anmeldung in Berlin without an appointment?</summary><div className="ans">Yes — two locations accept walk-ins: Bürgeramt Tempelhof (Tempelhofer Damm 165) and Bürgeramt Mitte (Karl-Marx-Allee 31). Walk-in tickets are limited. Arrive by 7:30 AM — tickets are often gone by 8:00 AM. Bring all your documents: passport, <a href="/wohnungsgeberbestaetigung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Wohnungsgeberbestätigung</a>, and completed German-language form.</div></details>
+              <details><summary>Can I do walk-in Anmeldung in Berlin without an appointment?</summary><div className="ans">No. service.berlin.de is explicit: <em>&ldquo;Ohne Termin erfolgt keine Bearbeitung&rdquo;</em> — without an appointment, no service. This applies to all Berlin Bürgeramt offices. Expat forums listing Tempelhof or Mitte as walk-in friendly are outdated. If your 14-day deadline is genuinely about to expire, call 115 at 7 AM — operators can sometimes book same-day cancellations not visible online. Book the next available slot as a backup and keep a screenshot as evidence.</div></details>
               <details><summary>What if there are no Bürgeramt appointments before my 14-day deadline?</summary><div className="ans">This is common in Berlin. Book the earliest available slot — even if it is 4–5 weeks away. Take a screenshot of the booking portal showing you searched and found nothing earlier. Keep that screenshot as evidence. You will not be fined if you have documentation that the system had no earlier availability. For background on the 14-day rule, see <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 01</a>.</div></details>
               <details><summary>How long does a Bürgeramt Anmeldung appointment take?</summary><div className="ans">5–10 minutes when your documents are complete. The clerk verifies each field, confirms the address, and prints your Anmeldebestätigung/Meldebestätigung on the spot. If anything is wrong or missing, they send you home immediately — no partial processing, no coming back later.</div></details>
               <details><summary>Which Berlin district has the most Bürgeramt appointment availability?</summary><div className="ans">Outer districts — Marzahn-Hellersdorf, Lichtenberg, Spandau, and Reinickendorf — consistently have more availability than central offices. Use "Termin berlinweit suchen" to search all districts at once. The appointment is legally identical regardless of which district processes it.</div></details>

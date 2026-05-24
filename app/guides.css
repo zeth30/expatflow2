@@ -241,6 +241,104 @@ h2.h2 .accent { color: var(--blue); }
 .darkbox .eyebrow { color: #60a5fa; }
 @media (max-width: 720px) { .darkbox { padding: 32px 24px; } }
 
+/* —— Key facts — glass on pastel gradient —— */
+html { scroll-behavior: smooth; }
+
+.kf-section {
+  background: linear-gradient(130deg, #f5f4f2 0%, #edeae5 50%, #f2ede6 100%) !important;
+  padding: 52px 0 56px !important;
+}
+.main > .kf-section:nth-child(odd),
+.main > .kf-section:nth-child(even) {
+  background: linear-gradient(130deg, #f5f4f2 0%, #edeae5 50%, #f2ede6 100%) !important;
+}
+
+.kf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+.kf-card {
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 20px;
+  padding: 28px 24px 38px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 12px rgba(10,22,56,.07);
+  transition: transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s cubic-bezier(.2,.7,.3,1), background .22s, border-color .22s;
+}
+.kf-card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--kf-color, var(--blue));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .35s cubic-bezier(.2,.7,.3,1);
+}
+.kf-card:hover {
+  transform: translateY(-7px);
+  background: rgba(255,255,255,.92);
+  border-color: var(--kf-color, var(--blue));
+  box-shadow: 0 22px 52px var(--kf-glow, rgba(0,64,255,.18)), 0 4px 14px rgba(10,22,56,.06);
+}
+.kf-card:hover::before { transform: scaleX(1); }
+
+/* Color variants — German flag palette (subtle: charcoal · crimson · gold) */
+.kf-card.kf-slate   { --kf-color: #2e2a26; --kf-tint: #f0efed; --kf-glow: rgba(46,42,38,.13); }
+.kf-card.kf-crimson { --kf-color: #a83232; --kf-tint: #faeaea; --kf-glow: rgba(168,50,50,.15); }
+.kf-card.kf-gold    { --kf-color: #9a6e00; --kf-tint: #fdf4db; --kf-glow: rgba(154,110,0,.16); }
+
+/* Pill label */
+.kf-num {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 7px; margin-bottom: 16px;
+  color: var(--kf-color, var(--blue)); background: var(--kf-tint, var(--blue-tint));
+  transition: background .22s, color .22s;
+}
+.kf-card:hover .kf-num { background: var(--kf-color, var(--blue)); color: white; }
+
+/* Fact text */
+.kf-text { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.55; margin: 0; }
+
+/* SVG ghost number — crisp vector rendering at all screen densities */
+.kf-bg {
+  position: absolute; right: 10px; bottom: 6px;
+  pointer-events: none; user-select: none;
+  opacity: .08; transition: opacity .28s;
+  will-change: opacity; transform: translateZ(0);
+}
+.kf-card.kf-slate   .kf-bg text { fill: #2e2a26; }
+.kf-card.kf-crimson .kf-bg text { fill: #a83232; }
+.kf-card.kf-gold    .kf-bg text { fill: #9a6e00; }
+.kf-card:hover .kf-bg { opacity: .16; }
+
+/* Arrow cue — appears bottom-right on hover */
+.kf-arrow {
+  position: absolute; bottom: 14px; right: 16px;
+  color: var(--kf-color, var(--blue));
+  opacity: 0; transition: opacity .2s, transform .2s;
+  font-size: 13px; font-weight: 700; line-height: 1;
+  font-family: "JetBrains Mono", monospace;
+}
+.kf-card:hover .kf-arrow { opacity: .65; transform: translate(2px, -2px); }
+
+/* Reveal: stagger via inline transitionDelay */
+.reveal.kf-card {
+  transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1),
+              background .22s, border-color .22s, box-shadow .28s cubic-bezier(.2,.7,.3,1);
+}
+.reveal.kf-card.in:hover { transform: translateY(-7px); }
+
+@media (max-width: 720px) {
+  .kf-grid { grid-template-columns: 1fr; gap: 10px; }
+  .kf-section { padding: 36px 0 40px !important; }
+}
+
 /* —— Callout —— */
 .callout { display: flex; gap: 18px; padding: 24px 26px; border-radius: 18px; align-items: flex-start; }
 .callout.warn { background: var(--amber-tint); border: 1px solid #fde4a8; }
