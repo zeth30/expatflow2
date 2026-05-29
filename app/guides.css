@@ -442,3 +442,26 @@ html { scroll-behavior: smooth; }
     text-align: left !important;
   }
 }
+
+/* ── Overflow prevention — stop horizontal scroll/swiping on all guide pages ── */
+html, body { overflow-x: hidden; max-width: 100%; overscroll-behavior-x: none; }
+
+/* Long German compound words — prevent overflow, break gracefully */
+.card h4, .card p, .section-sub, .callout .p, .callout .h,
+.darkbox h3, .darkbox p, .lede, .faq .ans, h2.h2, h1.hero-title {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Citizenship examples table — 3 cols desktop → 2 mobile → 1 very small */
+.citizen-table-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+@media (max-width: 580px) {
+  .citizen-table-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 360px) {
+  .citizen-table-grid { grid-template-columns: 1fr; }
+}

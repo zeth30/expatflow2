@@ -2,6 +2,7 @@
 
 html {
   overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 
 .skip-nav {
@@ -25,4 +26,5 @@ body {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overscroll-behavior-x: none;
 }

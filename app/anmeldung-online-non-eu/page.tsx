@@ -184,15 +184,15 @@ export default function OnlineNonEU() {
                 { n: "3", title: "Book a Bürgeramt appointment", body: "Every city runs its own booking portal. Wait times, slot-drop times, and which districts are fastest vary completely between Berlin, Hamburg, Munich and the rest. Pick your city in guide 05 for the specific playbook.", link: "/burgeramt-berlin-appointment", lt: "See guide 05 →" },
                 { n: "4", title: "Attend in person", body: "Bring your passport, your completed German-language form, and your Wohnungsgeberbestätigung. Non-EU: also bring your visa or residence permit. Done in 5–10 minutes when documents are complete.", link: null, lt: null },
               ].map((s) => (
-                <div key={s.n} className="card" style={{ display: "grid", gridTemplateColumns: s.link ? "64px 1fr auto" : "64px 1fr", gap: 24, alignItems: "center" }}>
-                  <div style={{ fontSize: 42, fontWeight: 800, color: "var(--blue)", letterSpacing: "-0.04em" }}>{s.n}</div>
+                <div key={s.n} className="card" style={{ display: "grid", gridTemplateColumns: "64px 1fr", gap: 24, alignItems: "start" }}>
+                  <div style={{ fontSize: 42, fontWeight: 800, color: "var(--blue)", letterSpacing: "-0.04em", paddingTop: 4 }}>{s.n}</div>
                   <div>
                     <h4>{s.title}</h4>
                     <p>{s.body}</p>
+                    {s.link && (
+                      <Link href={s.link} className="tag" style={{ textDecoration: "none", marginTop: 12, display: "inline-flex" }}>{s.lt}</Link>
+                    )}
                   </div>
-                  {s.link && (
-                    <Link href={s.link} className="tag" style={{ textDecoration: "none", whiteSpace: "nowrap" }}>{s.lt}</Link>
-                  )}
                 </div>
               ))}
             </div>
@@ -255,7 +255,7 @@ export default function OnlineNonEU() {
                 <div style={{ color: "white", fontWeight: 800, fontSize: 15 }}>Staatsangehörigkeiten — examples</div>
                 <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, marginTop: 2 }}>German adjective form — not the country name</div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", padding: "20px 20px 8px", gap: 12 }}>
+              <div className="citizen-table-grid" style={{ padding: "20px 20px 8px" }}>
                 {[
                   { country: "United States", de: "amerikanisch" },
                   { country: "United Kingdom", de: "britisch" },
