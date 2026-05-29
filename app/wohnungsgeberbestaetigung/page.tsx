@@ -8,7 +8,7 @@ import { EmailTemplateClient } from "./EmailTemplateClient";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Wohnungsgeberbestätigung Berlin Guide 2026 | ReadyExpat",
+  title: "Wohnungsgeberbestätigung — How to Get It and What to Do If Your Landlord Refuses",
   description:
     "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away. Here is exactly what it is, who can sign it, and how to get it fast.",
   alternates: { canonical: `${DOMAIN}/wohnungsgeberbestaetigung` },

@@ -7,7 +7,7 @@ import { GuideReveal } from "../components/guides/GuideReveal";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Bürgeramt Appointment Berlin 2026 | ReadyExpat",
+  title: "How to Get a Bürgeramt Berlin Appointment — Hacks That Actually Work (2026)",
   description:
     "Berlin Bürgeramt appointments vanish in seconds. Here is exactly how to find a slot in 2026 — the Tuesday trick, walk-in options, the 115 hotline, and what to do when there are no slots before your 14-day deadline.",
   alternates: { canonical: `${DOMAIN}/burgeramt-berlin-appointment` },

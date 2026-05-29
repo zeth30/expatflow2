@@ -8,7 +8,7 @@ import { ChecklistClient } from "./ChecklistClient";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Documents Checklist Berlin 2026 | ReadyExpat",
+  title: "Anmeldung Documents — What to Bring to Your Bürgeramt Appointment",
   description:
     "The complete document checklist for your Anmeldung in Germany. Personalised for your situation — missing a required document means a failed appointment; minor form errors are usually corrected at the counter.",
   alternates: { canonical: `${DOMAIN}/anmeldung-documents` },

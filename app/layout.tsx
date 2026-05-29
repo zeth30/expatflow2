@@ -7,7 +7,7 @@ import "./globals.css";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin in English — Fill Your Form | ReadyExpat",
+  title: "Anmeldung Berlin in English — Fill All 54 Fields Correctly",
   description:
     "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
   keywords: [
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Anmeldung Berlin in English — Fill Your Form | ReadyExpat",
+    title: "Anmeldung Berlin in English — Fill All 54 Fields Correctly",
     description:
       "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
     url: DOMAIN,
@@ -70,13 +70,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Anmeldung Berlin in English | ReadyExpat",
+    title: "Anmeldung Berlin in English — Fill All 54 Fields Correctly",
     description: "Official Berlin registration PDF, filled in English. No data stored. Expert expat relocation help.",
     images: ["/og-image.svg"],
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 };

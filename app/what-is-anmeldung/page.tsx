@@ -8,7 +8,7 @@ import { ReligionPicker } from "./ReligionPicker";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "What is Anmeldung? Berlin Guide 2026 | ReadyExpat",
+  title: "What is the Anmeldung? Berlin Address Registration Explained",
   description:
     "The Anmeldung is Germany's mandatory address registration. Register at your Bürgeramt within 14 days of moving in or face fines up to €1,000. Required for your tax ID, bank account, health insurance, and residence permit.",
   alternates: { canonical: `${DOMAIN}/what-is-anmeldung` },

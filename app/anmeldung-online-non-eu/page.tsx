@@ -8,7 +8,7 @@ import { EligibilityChecker } from "./EligibilityChecker";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Online: Non-EU Citizens Berlin 2026 | ReadyExpat",
+  title: "Can Non-EU Citizens Do the Anmeldung Online? — Berlin 2026",
   description:
     "Non-EU citizens cannot register their address online in Germany. Online Anmeldung requires an EU/EEA eID card. Here is the in-person path that works for US, UK, Indian, and other non-EU expats.",
   alternates: { canonical: `${DOMAIN}/anmeldung-online-non-eu` },
