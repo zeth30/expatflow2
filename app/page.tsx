@@ -1820,6 +1820,12 @@ export default function BerlinButler() {
       }
     } catch {}
 
+    // Restore email opt-in that was entered before the Stripe redirect
+    try {
+      const savedEmail = sessionStorage.getItem("readyexpat-email-optin");
+      if (savedEmail) setUserEmail(savedEmail);
+    } catch {}
+
     // Check if user already completed — land on done page and restore form for re-downloads
     try {
       if (localStorage.getItem("simplyexpat-done-v1") === "1") {
@@ -1867,6 +1873,14 @@ export default function BerlinButler() {
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ form })); } catch {}
   }, [form]);
+
+  // ── Persist email opt-in through Stripe redirect ─────────────────
+  useEffect(() => {
+    try {
+      if (userEmail) sessionStorage.setItem("readyexpat-email-optin", userEmail);
+      else sessionStorage.removeItem("readyexpat-email-optin");
+    } catch {}
+  }, [userEmail]);
 
   // ── Guard: if done flag is set, always redirect to done page ─────
   // Prevents getting stuck in wizard after pressing back from done page.
@@ -2021,6 +2035,7 @@ export default function BerlinButler() {
             }),
           });
           setEmailSent(true);
+          try { sessionStorage.removeItem("readyexpat-email-optin"); } catch {}
         } catch (emailErr) {
           console.warn("[ReadyExpat] Reminder email failed (non-critical):", emailErr);
         }
