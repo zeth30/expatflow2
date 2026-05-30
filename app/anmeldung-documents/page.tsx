@@ -122,10 +122,6 @@ export default function AnmeldungDocuments() {
         {/* 01 · Personalised checklist */}
         <section className="section" id="sec-checklist">
           <div className="wrap">
-            <div style={{ margin: "0 0 24px", padding: "14px 18px", background: "#fff1f2", border: "1px solid #fecdd3", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 14, color: "#9f1239", fontWeight: 600 }}>Wrong documents = lost appointment slot</span>
-              <Link href="/anmeldung-mistakes-berlin" style={{ fontSize: 13, fontWeight: 800, color: "#e11d48", textDecoration: "none", whiteSpace: "nowrap" }}>See the 6 mistakes →</Link>
-            </div>
             <div className="section-head reveal">
               <div className="eyebrow">01 · Personalised checklist</div>
               <h2 className="h2">Tell us your <span className="accent">situation.</span></h2>
@@ -301,6 +297,9 @@ export default function AnmeldungDocuments() {
               <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
             <GuidePageNav activeId="checklist" />
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 0" }}>
+              <Link href="/anmeldung-mistakes-berlin" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Common Mistakes →</Link>
+            </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>
         </section>

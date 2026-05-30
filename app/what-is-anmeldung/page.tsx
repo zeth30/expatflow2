@@ -142,10 +142,6 @@ export default function WhatIsAnmeldung() {
                 </div>
               </div>
             </div>
-            <div style={{ margin: "16px 0", padding: "14px 18px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 14, color: "#1e40af", fontWeight: 600 }}>Calculate your exact deadline →</span>
-              <Link href="/anmeldung-deadline-berlin" style={{ fontSize: 13, fontWeight: 800, color: "#0040ff", textDecoration: "none", whiteSpace: "nowrap" }}>Deadline guide →</Link>
-            </div>
           </div>
         </section>
 
@@ -412,6 +408,7 @@ export default function WhatIsAnmeldung() {
               <details><summary>Do I need to register if I'm only working remotely from Germany?</summary><div className="ans">Yes, if you are staying for more than 3 months. The Anmeldung requirement is based on length of stay, not your employment type or contract location. Remote workers, freelancers, and digital nomads staying 3+ months must register. There are no exemptions based on having a foreign employer or working for a non-German company.</div></details>
               <details><summary>What is the Religionsgesellschaft field and do I have to fill it in?</summary><div className="ans">The Religionsgesellschaft field is the religion declaration on the Anmeldeformular. Declaring a recognised denomination — RK (Catholic) or EV (Protestant) — triggers Kirchensteuer, church tax of 8–9% of your income tax. Write OA (Ohne Angabe — no declaration) to opt out. There are no negative consequences for leaving it blank or writing OA.</div></details>
               <details><summary>What documents do I need for the Anmeldung?</summary><div className="ans">You need three core documents: a valid passport or EU national ID, the completed Anmeldeformular (all 54 fields in German), and the Wohnungsgeberbestätigung signed by your landlord. Non-EU citizens should also bring their current visa or residence permit if they already have one. See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full personalised document checklist in guide 03.</a></div></details>
+              <details><summary>Do I need a visa or residence permit before I can register my address?</summary><div className="ans">No. The Bürgeramt registers your address — not your immigration status. You do not need a residence permit to complete the Anmeldung. In fact, most non-EU residents do the Anmeldung first, then use the Anmeldebestätigung as proof of address when applying for their residence permit at the Ausländerbehörde (Landesamt für Einwanderung in Berlin). If you already have a permit, bring it — the clerk will note your address for their records.</div></details>
             </div>
           </div>
         </section>
@@ -430,6 +427,9 @@ export default function WhatIsAnmeldung() {
               <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
             <GuidePageNav activeId="anmeldung" />
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 0" }}>
+              <Link href="/anmeldung-deadline-berlin" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>The 14-Day Deadline →</Link>
+            </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>
         </section>

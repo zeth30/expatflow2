@@ -120,10 +120,6 @@ export default function BurgeramtBerlinAppointment() {
         {/* 01 · Where to book */}
         <section className="section">
           <div className="wrap">
-            <div style={{ margin: "0 0 24px", padding: "14px 18px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-              <span style={{ fontSize: 14, color: "#15803d", fontWeight: 600 }}>New to Berlin? Start with the full registration guide.</span>
-              <Link href="/moving-to-berlin-registration" style={{ fontSize: 13, fontWeight: 800, color: "#16a34a", textDecoration: "none", whiteSpace: "nowrap" }}>Moving to Berlin guide →</Link>
-            </div>
             <div className="section-head reveal">
               <div className="eyebrow">01 · Where to book</div>
               <h2 className="h2">One official portal. <span className="accent">No alternatives.</span></h2>
@@ -368,6 +364,9 @@ export default function BurgeramtBerlinAppointment() {
               <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
             <GuidePageNav activeId="termin" />
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 0" }}>
+              <Link href="/moving-to-berlin-registration" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Moving to Berlin Guide →</Link>
+            </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>
         </section>
