@@ -315,7 +315,8 @@ html { scroll-behavior: smooth; }
 .kf-card.kf-slate   .kf-bg text { fill: #1a1a1a; }
 .kf-card.kf-crimson .kf-bg text { fill: #CC0000; }
 .kf-card.kf-gold    .kf-bg text { fill: #C8A000; }
-.kf-card:hover .kf-bg { opacity: .16; }
+.kf-card.kf-slate   .kf-bg { opacity: .13; }
+.kf-card:hover .kf-bg { opacity: .20; }
 
 /* Arrow cue — appears bottom-right on hover */
 .kf-arrow {

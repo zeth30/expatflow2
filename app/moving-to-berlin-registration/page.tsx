@@ -98,7 +98,7 @@ export default function MovingToBerlinRegistration() {
               <div className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">14</text></svg>
                 <div className="kf-num">Days to register</div>
-                <p className="kf-text">Calendar days from move-in. Fine up to €1,000 — but extremely rare if you have a booking screenshot.</p>
+                <p className="kf-text">Calendar days from move-in. Screenshot your search — fines essentially never happen.</p>
               </div>
               <div className="kf-card kf-gold reveal" style={{ transitionDelay: "80ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">3</text></svg>
