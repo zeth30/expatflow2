@@ -245,12 +245,12 @@ h2.h2 .accent { color: var(--blue); }
 html { scroll-behavior: smooth; }
 
 .kf-section {
-  background: #f4f4f4 !important;
+  background: linear-gradient(180deg, var(--bg) 0px, #f0f0f0 52px, #f0f0f0 calc(100% - 52px), var(--bg) 100%) !important;
   padding: 52px 0 56px !important;
 }
 .main > .kf-section:nth-child(odd),
 .main > .kf-section:nth-child(even) {
-  background: #f4f4f4 !important;
+  background: linear-gradient(180deg, var(--bg) 0px, #f0f0f0 52px, #f0f0f0 calc(100% - 52px), var(--bg) 100%) !important;
 }
 
 .kf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -303,7 +303,7 @@ html { scroll-behavior: smooth; }
 .kf-card:hover .kf-num { background: var(--kf-color, var(--blue)); color: white; }
 
 /* Fact text */
-.kf-text { font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.55; margin: 0; }
+.kf-text { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.55; margin: 0; }
 
 /* SVG ghost number — crisp vector rendering at all screen densities */
 .kf-bg {
@@ -337,7 +337,17 @@ html { scroll-behavior: smooth; }
 
 @media (max-width: 720px) {
   .kf-grid { grid-template-columns: 1fr; gap: 10px; }
-  .kf-section { padding: 36px 0 40px !important; }
+  .kf-section {
+    padding: 36px 0 40px !important;
+    background: linear-gradient(180deg, var(--bg) 0px, #f0f0f0 36px, #f0f0f0 calc(100% - 36px), var(--bg) 100%) !important;
+  }
+  .main > .kf-section:nth-child(odd),
+  .main > .kf-section:nth-child(even) {
+    background: linear-gradient(180deg, var(--bg) 0px, #f0f0f0 36px, #f0f0f0 calc(100% - 36px), var(--bg) 100%) !important;
+  }
+  .faq summary { font-size: 15px; }
+  .faq .ans { font-size: 14.5px; }
+  .kf-card { padding: 22px 18px 30px; }
 }
 
 /* —— Callout —— */
@@ -396,6 +406,10 @@ html { scroll-behavior: smooth; }
   .wrap { padding: 0 16px; }
   .card { padding: 18px; }
   .callout { padding: 16px 18px; gap: 12px; }
+  .faq summary { font-size: 14px; }
+  .faq details { padding: 14px 16px; }
+  .kf-num { font-size: 10px; }
+  .kf-text { font-size: 13.5px; }
 }
 
 /* ── Mobile fixes ── */
