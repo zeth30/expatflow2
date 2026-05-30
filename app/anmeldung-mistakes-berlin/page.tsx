@@ -102,17 +102,21 @@ export default function AnmeldungMistakesBerlin() {
 
         <section className="section" id="sec-checker">
           <div className="wrap">
-            <div className="eyebrow">01 · Mistake Checker</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 8px", letterSpacing: "-0.02em" }}>Check each one before your appointment</h2>
-            <p style={{ color: "#6b7693", fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>Tick each mistake you've verified you haven't made.</p>
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · Mistake Checker</div>
+              <h2 className="h2">Check each one before <span className="accent">your appointment.</span></h2>
+              <p className="section-sub">Tick each mistake you've verified you haven't made.</p>
+            </div>
             <MistakeChecker />
           </div>
         </section>
 
         <section className="section" id="sec-detail">
           <div className="wrap">
-            <div className="eyebrow">02 · In Detail</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>Why each mistake matters</h2>
+            <div className="section-head reveal">
+              <div className="eyebrow">02 · In Detail</div>
+              <h2 className="h2">Why each mistake <span className="accent">matters.</span></h2>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 720 }}>
               {[
                 { n: "01", title: "Missing Wohnungsgeberbestätigung", color: "#e11d48", content: "The landlord confirmation form (Wohnungsgeberbestätigung) is legally required under §19 BMG. Without it, registration is impossible — the clerk has no authority to proceed. A rental contract, email from your landlord, or keys receipt does not substitute. The form has a specific format. Download the official blank from the Berlin Senate or use the ReadyExpat pre-filled version." },
@@ -134,25 +138,29 @@ export default function AnmeldungMistakesBerlin() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="final-cta">
           <div className="wrap">
-            <div style={{ background: "#0a1638", borderRadius: 20, padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8 }}>
-                  ReadyExpat eliminates all 6 mistakes automatically.
-                </div>
-                <div style={{ fontSize: 15, color: "rgba(255,255,255,.6)" }}>Correct German throughout. All 54 fields. €15 one-time.</div>
-              </div>
-              <a href="/" style={{ background: "#0040ff", color: "white", fontWeight: 800, fontSize: 15, padding: "16px 28px", borderRadius: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Prepare My Anmeldung →
-              </a>
+            <div className="cta-box reveal">
+              <div className="eye">All 6 mistakes — eliminated automatically.</div>
+              <h2>Correct German. All 54 fields. <span className="b">Nothing missed.</span></h2>
+              <p>One wrong field, wrong date format, or missing translation costs you the appointment slot. ReadyExpat handles every one of the mistakes above.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
+            <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>
         </section>
 
         <section className="section">
           <div className="wrap">
-            <div className="faq-list">
+            <div className="section-head reveal">
+              <div className="eyebrow">FAQ</div>
+              <h2 className="h2">Common questions.</h2>
+            </div>
+            <div className="faq reveal">
               <details><summary>What is the most common reason for Anmeldung rejection at the Bürgeramt?</summary><div className="ans">Missing or incorrect Wohnungsgeberbestätigung. The landlord confirmation form is mandatory under §19 BMG. Without it the clerk cannot process your registration. A rental contract alone is not accepted.</div></details>
               <details><summary>Can I use a different name than my passport on the Anmeldung form?</summary><div className="ans">No. The name must match your passport exactly, including middle names, hyphens, and diacritics.</div></details>
               <details><summary>What date format does the Anmeldung form use?</summary><div className="ans">DD.MM.YYYY. All dates must use this format. The US format MM/DD/YYYY is one of the most common errors made by American expats.</div></details>

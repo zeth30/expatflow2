@@ -103,9 +103,11 @@ export default function AnmeldungCoupleBerlin() {
 
         <section className="section" id="sec-counter">
           <div className="wrap">
-            <div className="eyebrow">01 · How Many Sheets?</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 8px", letterSpacing: "-0.02em" }}>Calculate your sheets</h2>
-            <p style={{ color: "#6b7693", fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>Select how many people are registering at the same address.</p>
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · How Many Sheets?</div>
+              <h2 className="h2">Calculate your <span className="accent">sheets.</span></h2>
+              <p className="section-sub">Select how many people are registering at the same address.</p>
+            </div>
             <PeopleCounter />
           </div>
         </section>
@@ -144,8 +146,10 @@ export default function AnmeldungCoupleBerlin() {
 
         <section className="section" id="sec-situations">
           <div className="wrap">
-            <div className="eyebrow">03 · Common Situations</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>How it works for your situation</h2>
+            <div className="section-head reveal">
+              <div className="eyebrow">03 · Common Situations</div>
+              <h2 className="h2">How it works for <span className="accent">your situation.</span></h2>
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
               {[
                 { title: "Unmarried couple", color: "#0040ff", points: ["Same process as married couples", "Familienstand: 'ledig' for each person", "Both names on Wohnungsgeberbestätigung", "1 sheet for 2 people"] },
@@ -169,25 +173,29 @@ export default function AnmeldungCoupleBerlin() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="final-cta">
           <div className="wrap">
-            <div style={{ background: "#0a1638", borderRadius: 20, padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8 }}>
-                  ReadyExpat handles couples and families — up to 6 people.
-                </div>
-                <div style={{ fontSize: 15, color: "rgba(255,255,255,.6)" }}>One order. All sheets generated. All fields correct. €15 flat.</div>
-              </div>
-              <a href="/" style={{ background: "#0040ff", color: "white", fontWeight: 800, fontSize: 15, padding: "16px 28px", borderRadius: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Prepare My Anmeldung →
-              </a>
+            <div className="cta-box reveal">
+              <div className="eye">Couples and families — up to 6 people.</div>
+              <h2>One order. All sheets. <span className="b">Everyone registered.</span></h2>
+              <p>ReadyExpat generates the right number of form sheets for your household — all 54 fields filled correctly in German. €15 flat, all sheets included.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">€15 one-time · no account needed · all sheets included</div>
             </div>
+            <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>
         </section>
 
         <section className="section">
           <div className="wrap">
-            <div className="faq-list">
+            <div className="section-head reveal">
+              <div className="eyebrow">FAQ</div>
+              <h2 className="h2">Common questions.</h2>
+            </div>
+            <div className="faq reveal">
               <details><summary>Can a couple register together at the same Bürgeramt appointment?</summary><div className="ans">Yes. Both people are registered at a single appointment. You submit one Anmeldeformular sheet with both people listed. One person can attend on behalf of both with a written Vollmacht and both passports.</div></details>
               <details><summary>How many Anmeldung forms does a family of 4 need?</summary><div className="ans">Two sheets. The Anmeldeformular fits 2 people per sheet. A family of 4 submits 2 sheets at the same appointment.</div></details>
               <details><summary>Does each person need their own Wohnungsgeberbestätigung?</summary><div className="ans">No. One Wohnungsgeberbestätigung covers everyone registering at the same address.</div></details>

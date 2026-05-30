@@ -106,8 +106,10 @@ export default function AnmeldungDeadlineBerlin() {
         {/* Calculator */}
         <section className="section" id="sec-calc">
           <div className="wrap">
-            <div className="eyebrow">01 · Your Deadline</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>Calculate your deadline</h2>
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · Your Deadline</div>
+              <h2 className="h2">Calculate your <span className="accent">deadline.</span></h2>
+            </div>
             <DeadlineCalculator />
           </div>
         </section>
@@ -150,8 +152,10 @@ export default function AnmeldungDeadlineBerlin() {
         {/* Already missed it */}
         <section className="section" id="sec-missed">
           <div className="wrap">
-            <div className="eyebrow">03 · Already Missed It?</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>What to do now</h2>
+            <div className="section-head reveal">
+              <div className="eyebrow">03 · Already Missed It?</div>
+              <h2 className="h2">What to do <span className="accent">now.</span></h2>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 640 }}>
               {[
                 { n: "1", t: "Don't wait any longer", d: "Every extra day increases your exposure. Register this week regardless of how late you are." },
@@ -173,28 +177,30 @@ export default function AnmeldungDeadlineBerlin() {
         </section>
 
         {/* CTA */}
-        <section className="section">
+        <section className="final-cta">
           <div className="wrap">
-            <div style={{ background: "#0a1638", borderRadius: 20, padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8 }}>
-                  Don't let a wrong form waste your appointment slot.
-                </div>
-                <div style={{ fontSize: 15, color: "rgba(255,255,255,.6)" }}>ReadyExpat fills all 54 fields correctly in German. 5 minutes. €15.</div>
-              </div>
-              <a href="/" style={{ background: "#0040ff", color: "white", fontWeight: 800, fontSize: 15, padding: "16px 28px", borderRadius: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Prepare My Anmeldung →
-              </a>
+            <div className="cta-box reveal">
+              <div className="eye">Don't let a wrong form waste your appointment slot.</div>
+              <h2>Ready for your appointment. <span className="b">Nothing left to chance.</span></h2>
+              <p>ReadyExpat fills all 54 Anmeldeformular fields correctly in German — translations, dates, format. Done in 5 minutes. €15.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
+            <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>
         </section>
 
         {/* FAQ */}
         <section className="section">
           <div className="wrap">
-            <div className="eyebrow">FAQ</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>Common questions</h2>
-            <div className="faq-list">
+            <div className="section-head reveal">
+              <div className="eyebrow">FAQ</div>
+              <h2 className="h2">Common questions.</h2>
+            </div>
+            <div className="faq reveal">
               <details><summary>How many days do I have to register after moving to Berlin?</summary><div className="ans">14 calendar days from the day you move in, as required by §17 Bundesmeldegesetz (BMG). The clock starts on your move-in date — not when you sign the lease.</div></details>
               <details><summary>What is the fine for missing the Anmeldung deadline?</summary><div className="ans">Up to €1,000 under §54 BMG. In practice the fine is rarely enforced if you register as soon as possible and can show you were trying — for example with an appointment booking screenshot.</div></details>
               <details><summary>What if there are no Bürgeramt appointments before my deadline?</summary><div className="ans">Book the earliest available appointment and take a screenshot showing you searched. Authorities are aware that Berlin appointments are hard to get. Documented intent is almost always sufficient to avoid a fine. See our <Link href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>appointment guide</Link> for hacks to find slots faster.</div></details>

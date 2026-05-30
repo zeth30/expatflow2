@@ -116,8 +116,10 @@ export default function MovingToBerlinRegistration() {
 
         <section className="section" id="sec-steps">
           <div className="wrap">
-            <div className="eyebrow">01 · The Process</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>6 steps — in this order</h2>
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · The Process</div>
+              <h2 className="h2">6 steps — <span className="accent">in this order.</span></h2>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               {STEPS.map(({ n, label, time, desc, color, link }) => (
                 <div key={n} className="reveal" style={{ display: "flex", gap: 0, padding: "20px 24px", background: "white", border: "1px solid #e6ebf5", borderRadius: 14, borderLeft: `4px solid ${color}`, position: "relative" }}>
@@ -141,8 +143,10 @@ export default function MovingToBerlinRegistration() {
 
         <section className="section" id="sec-guides">
           <div className="wrap">
-            <div className="eyebrow">02 · Go Deeper</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 24px", letterSpacing: "-0.02em" }}>Complete guides for each step</h2>
+            <div className="section-head reveal">
+              <div className="eyebrow">02 · Go Deeper</div>
+              <h2 className="h2">Complete guides for <span className="accent">each step.</span></h2>
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
               {[
                 { href: "/what-is-anmeldung", n: "01", title: "What is Anmeldung?", sub: "The law, who must register, consequences" },
@@ -161,25 +165,29 @@ export default function MovingToBerlinRegistration() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="final-cta">
           <div className="wrap">
-            <div style={{ background: "#0a1638", borderRadius: 20, padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8 }}>
-                  The form — done in 5 minutes.
-                </div>
-                <div style={{ fontSize: 15, color: "rgba(255,255,255,.6)" }}>Answer in English. Get a correct German PDF. €15 once.</div>
-              </div>
-              <a href="/" style={{ background: "#0040ff", color: "white", fontWeight: 800, fontSize: 15, padding: "16px 28px", borderRadius: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Prepare My Anmeldung →
-              </a>
+            <div className="cta-box reveal">
+              <div className="eye">The Anmeldung form — done in 5 minutes.</div>
+              <h2>Answer in English. <span className="b">Get a correct German PDF.</span></h2>
+              <p>ReadyExpat fills all 54 Anmeldeformular fields correctly in German. All translations, dates, and formats handled. €15 once.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Prepare My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
+            <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>
         </section>
 
         <section className="section">
           <div className="wrap">
-            <div className="faq-list">
+            <div className="section-head reveal">
+              <div className="eyebrow">FAQ</div>
+              <h2 className="h2">Common questions.</h2>
+            </div>
+            <div className="faq reveal">
               <details><summary>What is the first thing I need to do after moving to Berlin?</summary><div className="ans">Register your address (Anmeldung) within 14 days. You need a signed Wohnungsgeberbestätigung from your landlord, a completed Anmeldeformular, and a Bürgeramt appointment. Start all three on day one.</div></details>
               <details><summary>How long does the Anmeldung process take in Berlin?</summary><div className="ans">The appointment itself takes 5–10 minutes. Getting an appointment can take days to weeks. The form takes 5 minutes with ReadyExpat.</div></details>
               <details><summary>Do I need to register if I'm staying in Berlin temporarily?</summary><div className="ans">If you stay more than 3 months, yes — mandatory. Under 3 months, tourists are exempt. Remote workers staying 3+ months must register regardless of employment situation.</div></details>

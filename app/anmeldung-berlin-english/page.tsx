@@ -112,9 +112,11 @@ export default function AnmeldungBerlinEnglish() {
 
         <section className="section" id="sec-fields">
           <div className="wrap">
-            <div className="eyebrow">01 · The Tricky Fields</div>
-            <h2 style={{ fontSize: 28, fontWeight: 900, color: "#0a1638", margin: "12px 0 8px", letterSpacing: "-0.02em" }}>Fields that catch expats out</h2>
-            <p style={{ color: "#6b7693", fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>These are the fields most commonly filled incorrectly by English-speaking expats.</p>
+            <div className="section-head reveal">
+              <div className="eyebrow">01 · The Tricky Fields</div>
+              <h2 className="h2">Fields that catch <span className="accent">expats out.</span></h2>
+              <p className="section-sub">These are the fields most commonly filled incorrectly by English-speaking expats.</p>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 1, border: "1px solid #e6ebf5", borderRadius: 16, overflow: "hidden" }}>
               <div style={{ display: "grid", gridTemplateColumns: "180px 160px 1fr 80px", gap: 0, padding: "10px 20px", background: "#f8fafc", fontSize: 11, fontWeight: 800, color: "#6b7693", letterSpacing: "0.08em", textTransform: "uppercase" }}>
                 <span>German field</span><span>Means</span><span>What to write</span><span>Risk</span>
@@ -135,25 +137,29 @@ export default function AnmeldungBerlinEnglish() {
           </div>
         </section>
 
-        <section className="section">
+        <section className="final-cta">
           <div className="wrap">
-            <div style={{ background: "#0a1638", borderRadius: 20, padding: "40px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32, flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "white", letterSpacing: "-0.02em", marginBottom: 8 }}>
-                  Answer in English. Get a correct German PDF.
-                </div>
-                <div style={{ fontSize: 15, color: "rgba(255,255,255,.6)" }}>ReadyExpat handles all 54 fields including the tricky ones above. 5 minutes. €15.</div>
-              </div>
-              <a href="/" style={{ background: "#0040ff", color: "white", fontWeight: 800, fontSize: 15, padding: "16px 28px", borderRadius: 12, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                Start Now →
-              </a>
+            <div className="cta-box reveal">
+              <div className="eye">Answer in English. Get a correct German PDF.</div>
+              <h2>No German required. <span className="b">No mistakes.</span></h2>
+              <p>ReadyExpat handles all 54 fields — Staatsangehörigkeit, Familienstand, Religionsgesellschaft, date formats — all correct German values throughout. 5 minutes. €15.</p>
+              <Link href="/#wizard/origin" className="cta-btn">
+                Start My Anmeldung
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </Link>
+              <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
+            <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>
         </section>
 
         <section className="section">
           <div className="wrap">
-            <div className="faq-list">
+            <div className="section-head reveal">
+              <div className="eyebrow">FAQ</div>
+              <h2 className="h2">Common questions.</h2>
+            </div>
+            <div className="faq reveal">
               <details><summary>Is there an official English version of the Berlin Anmeldung form?</summary><div className="ans">No. The official form is German-only. The Bürgeramt only accepts the German Anmeldeformular — all 54 fields must be completed in German.</div></details>
               <details><summary>Can I fill the Anmeldung form in English?</summary><div className="ans">No — the form must be in German. Names go as printed in your passport, but all other fields (marital status, gender, religion, citizenship) must use correct German terms.</div></details>
               <details><summary>What does Staatsangehörigkeit mean?</summary><div className="ans">Citizenship. It must be the German adjective form: 'amerikanisch' for American, 'britisch' for British, 'indisch' for Indian. Writing 'USA' or 'American' is incorrect.</div></details>
