@@ -142,7 +142,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   };
 
   return (
-    <html lang="en">
+    <html lang="en" translate="yes">
       <head>
         <script
           type="application/ld+json"
