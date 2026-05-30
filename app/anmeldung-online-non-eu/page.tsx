@@ -44,7 +44,7 @@ export default function OnlineNonEU() {
           { "@type": "Question", name: "Can I change my German address online?", acceptedAnswer: { "@type": "Answer", text: "Only if you hold a compatible eID card (German Personalausweis or a compatible EU/EEA national eID) with the Online-Ausweis chip activated. Non-EU citizens cannot obtain this card. EU citizens may have a compatible card from their home country, but the chip must be specifically activated — most EU expats arriving fresh will not have this set up." } },
           { "@type": "Question", name: "Which EU citizens can use online Anmeldung?", acceptedAnswer: { "@type": "Answer", text: "EU and EEA citizens whose home country issues a compatible national eID card with the Online-Ausweis chip activated. Compatible-issuing countries include Germany, Austria, Belgium, Estonia, Finland, Italy, Netherlands, Portugal, and Spain. However, the chip is not activated by default — an EU expat arriving in Germany for the first time will almost certainly not have it set up. The online portal is mainly relevant for Ummeldung (address changes), not first-time registration from abroad." } },
           { "@type": "Question", name: "Does a German residence permit allow online registration?", acceptedAnswer: { "@type": "Answer", text: "No. A German residence permit (Aufenthaltstitel) does not grant access to the online registration portal. The portal requires the Online-Ausweis chip in a compatible national identity card. A residence permit is a separate document and does not contain this chip. Non-EU citizens always register in person." } },
-          { "@type": "Question", name: "What documents does a non-EU citizen need at the Bürgeramt?", acceptedAnswer: { "@type": "Answer", text: "Four documents: a valid passport, the completed Anmeldeformular in German (all 54 fields), the Wohnungsgeberbestätigung signed by your landlord, and your current visa or residence permit. If your visa is still being processed, bring your entry stamp and any interim document issued (Fiktionsbescheinigung or Aufenthaltsgestattung)." } },
+          { "@type": "Question", name: "What documents does a non-EU citizen need at the Bürgeramt?", acceptedAnswer: { "@type": "Answer", text: "Three are required: a valid passport, the completed Anmeldeformular in German (all 54 fields), and the Wohnungsgeberbestätigung signed by your landlord. A visa or residence permit is not required to register — the Bürgeramt registers your address, not your immigration status. If you already have a permit, bring it so the clerk can update the address on it. Most people do the Anmeldung first, then use the Anmeldebestätigung to apply for their residence permit at the Ausländerbehörde." } },
         ],
       },
       {
@@ -182,7 +182,7 @@ export default function OnlineNonEU() {
                 { n: "1", title: "Get your Wohnungsgeberbestätigung", body: "Your landlord or main tenant must sign this form confirming your move-in date and address. Request it in writing the moment you know your move-in date. Without it, the Bürgeramt will not register you — your rental contract is not a substitute.", link: "/wohnungsgeberbestaetigung", lt: "See guide 04 →" },
                 { n: "2", title: "Complete the Anmeldeformular in German", body: "54 fields, all in German. Wrong date formats, untranslated entries, missed fields — this is where most expats get turned away. English-language form preparation services exist specifically for this step.", link: "/anmeldung-documents", lt: "See guide 03 →" },
                 { n: "3", title: "Book a Bürgeramt appointment", body: "Every city runs its own booking portal. Wait times, slot-drop times, and which districts are fastest vary completely between Berlin, Hamburg, Munich and the rest. Pick your city in guide 05 for the specific playbook.", link: "/burgeramt-berlin-appointment", lt: "See guide 05 →" },
-                { n: "4", title: "Attend in person", body: "Bring your passport, your completed German-language form, and your Wohnungsgeberbestätigung. Non-EU: also bring your visa or residence permit. Done in 5–10 minutes when documents are complete.", link: null, lt: null },
+                { n: "4", title: "Attend in person", body: "Bring your passport, your completed German-language form, and your Wohnungsgeberbestätigung. If you already have a residence permit or visa, bring it too — the clerk updates the address on it. Done in 5–10 minutes when documents are complete.", link: null, lt: null },
               ].map((s) => (
                 <div key={s.n} className="card" style={{ display: "grid", gridTemplateColumns: "64px 1fr", gap: 24, alignItems: "start" }}>
                   <div style={{ fontSize: 42, fontWeight: 800, color: "var(--blue)", letterSpacing: "-0.04em", paddingTop: 4 }}>{s.n}</div>
@@ -215,28 +215,28 @@ export default function OnlineNonEU() {
           <div className="wrap">
             <div className="section-head reveal">
               <div className="eyebrow">04 · Extra documents</div>
-              <h2 className="h2">Non-EU citizens need one <span className="accent">extra document.</span></h2>
-              <p className="section-sub">EU citizens bring three documents. Non-EU citizens bring four: passport, Wohnungsgeberbestätigung, completed German form — plus their current visa or residence permit.</p>
+              <h2 className="h2">Bring your permit if you <span className="accent">have one.</span></h2>
+              <p className="section-sub">The Bürgeramt does not check immigration status — your passport is what gets you registered. If you already have a residence permit or visa, bring it so the clerk can update the address printed on it.</p>
             </div>
             <div className="reveal mob-2col" style={{ marginBottom: 16 }}>
               <div className="card" style={{ borderColor: "var(--green-bd)" }}>
                 <div className="iconbox green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                <h4>You already have a visa</h4>
-                <p>Bring your passport with your valid national visa (D-Visum) or residence permit (Aufenthaltstitel). The clerk will check your visa status to confirm your right to reside in Germany.</p>
-                <span className="tag" style={{ marginTop: 8, display: "inline-flex" }}>Straightforward</span>
+                <h4>You have a residence permit or visa</h4>
+                <p>Bring it. The clerk puts a sticker on it with your new address — this keeps your permit current. Nothing to worry about.</p>
+                <span className="tag" style={{ marginTop: 8, display: "inline-flex" }}>Bring for address update</span>
               </div>
-              <div className="card" style={{ borderColor: "#fde68a" }}>
-                <div className="iconbox amber"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div>
-                <h4>Your visa is being processed</h4>
-                <p>If your residence permit is still being issued, bring your passport with entry stamp and any Fiktionsbescheinigung or Aufenthaltsgestattung issued to you. The Bürgeramt can still register you.</p>
-                <span className="tag warn" style={{ marginTop: 8, display: "inline-flex" }}>Bring all paperwork</span>
+              <div className="card" style={{ borderColor: "var(--line)" }}>
+                <div className="iconbox"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div>
+                <h4>You don't have one yet</h4>
+                <p>Your passport is enough to register. The Bürgeramt registers your address — that's all. Most people complete the Anmeldung first, then apply for their residence permit afterwards using the Anmeldebestätigung as proof of address.</p>
+                <span className="tag" style={{ marginTop: 8, display: "inline-flex" }}>Passport is enough</span>
               </div>
             </div>
             <div className="callout info reveal">
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
               <div>
-                <div className="h">Just arrived — no German visa yet?</div>
-                <div className="p">If you entered on a short-stay visa and your work or study visa application is pending, bring all paperwork you have and explain your situation. Berlin Bürgeramt clerks handle this regularly — they will advise on what is needed for your specific case.</div>
+                <div className="h">The Ausländerbehörde needs your Anmeldung — not the other way around.</div>
+                <div className="p">When you apply for a residence permit, the Berlin immigration office (Landesamt für Einwanderung) asks for proof of your registered address. Register first, then book your permit appointment with the Anmeldebestätigung in hand.</div>
               </div>
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function OnlineNonEU() {
               <details><summary>I already have a German address — can I change it online?</summary><div className="ans">Only if you hold a compatible eID card with the Online-Ausweis chip activated. This means the German Personalausweis (German citizens only) or a compatible EU/EEA national eID with the chip activated. If you are a non-EU citizen, you will never have this card. If you are an EU citizen but have not activated the Online-Ausweis function on your home-country eID, you cannot use the online portal either — registration in person applies to you too.</div></details>
               <details><summary>Which EU citizens can actually use the online Anmeldung?</summary><div className="ans">EU and EEA citizens whose home country issues a compatible national eID card — and only if the Online-Ausweis chip is specifically activated on that card. Compatible-issuing countries include Germany, Austria, Belgium, Estonia, Finland, Italy, Netherlands, Portugal, and Spain, among others. However, even for eligible EU citizens, the chip is not activated by default. An EU expat arriving in Germany for the first time will almost certainly not have this set up. The online portal is relevant for EU citizens doing an address change (Ummeldung) from an existing German address — not for first-time registration from abroad.</div></details>
               <details><summary>Does having a German residence permit let me register online?</summary><div className="ans">No. A German residence permit (Aufenthaltstitel) — whether a work visa, family reunion visa, Blue Card, or any other category — does not grant access to the online registration portal. The online portal requires a compatible eID card (the Online-Ausweis chip in a national identity card). A residence permit is a separate document and does not contain this chip.</div></details>
-              <details><summary>What documents does a non-EU citizen need at the Bürgeramt?</summary><div className="ans">Four documents: (1) valid passport, (2) the completed Anmeldeformular in German — all 54 fields, (3) the Wohnungsgeberbestätigung signed by your landlord, and (4) your current visa or residence permit. If your visa is being processed, bring your entry stamp and any interim document you were issued (Fiktionsbescheinigung or Aufenthaltsgestattung). See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full document checklist in guide 03</a> for a personalised list.</div></details>
+              <details><summary>What documents does a non-EU citizen need at the Bürgeramt?</summary><div className="ans">Three are required: (1) valid passport, (2) the completed Anmeldeformular in German — all 54 fields, (3) the Wohnungsgeberbestätigung signed by your landlord. If you already have a residence permit or visa, bring that too — the clerk will update the address on it. You do not need a permit to register; most people do the Anmeldung first and then apply for their permit using the Anmeldebestätigung as proof of address. See the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full document checklist in guide 03</a> for a personalised list.</div></details>
             </div>
           </div>
         </section>
