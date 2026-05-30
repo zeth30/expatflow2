@@ -254,6 +254,14 @@ export default function WhatIsAnmeldung() {
                 <div className="p">Verify your <strong>name spelling</strong>, your <strong>registered address</strong>, and your <strong>move-in date</strong> on the printed Anmeldebestätigung/Meldebestätigung. The clerk will fix it now. They will not fix it next week. See <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>guide 03</a> for the full document checklist and the most common form mistakes and how to avoid them.</div>
               </div>
             </div>
+
+            <div className="callout ok reveal" style={{ marginTop: 12 }}>
+              <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div>
+              <div>
+                <div className="h">The Ausländerbehörde needs your Anmeldung — not the other way around.</div>
+                <div className="p">When you apply for a residence permit, the Berlin immigration office (Landesamt für Einwanderung) asks for proof of your registered address. Register first, then book your permit appointment with the Anmeldebestätigung in hand.</div>
+              </div>
+            </div>
           </div>
         </section>
 
