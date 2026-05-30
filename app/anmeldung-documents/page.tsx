@@ -122,6 +122,9 @@ export default function AnmeldungDocuments() {
         {/* 01 · Personalised checklist */}
         <section className="section" id="sec-checklist">
           <div className="wrap">
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "0 0 20px" }}>
+              <Link href="/anmeldung-mistakes-berlin" style={{ padding: "6px 13px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 12.5, textDecoration: "none" }}>Common Mistakes →</Link>
+            </div>
             <div className="section-head reveal">
               <div className="eyebrow">01 · Personalised checklist</div>
               <h2 className="h2">Tell us your <span className="accent">situation.</span></h2>

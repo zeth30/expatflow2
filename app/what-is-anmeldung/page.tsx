@@ -148,6 +148,9 @@ export default function WhatIsAnmeldung() {
         {/* 02 · Why it matters */}
         <section className="section">
           <div className="wrap">
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "0 0 20px" }}>
+              <Link href="/anmeldung-deadline-berlin" style={{ padding: "6px 13px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 12.5, textDecoration: "none" }}>The 14-Day Deadline →</Link>
+            </div>
             <div className="section-head reveal">
               <div className="eyebrow">02 · Why it matters</div>
               <h2 className="h2">Without it, basic life in Germany is <span className="accent">locked.</span></h2>
