@@ -60,7 +60,7 @@ const SECTIONS = [
       },
       {
         q: "When do you have to do Anmeldung?",
-        a: "You have 14 days from your move-in date (§17 BMG). The law allows fines up to €1,000 for late registration — but in practice this is extremely rare. In cities like Berlin, Bürgeramt appointments are often booked out 3–4 weeks in advance, so most people end up registering late through no fault of their own. Book the earliest available slot and keep a screenshot as evidence. Offices understand this.",
+        a: "You have 14 days from your move-in date (§17 BMG). The law allows fines up to €1,000 for late registration — but in practice this is extremely rare. In Berlin, Bürgeramt appointments are often booked out 3–6 weeks in advance, so most people end up registering late through no fault of their own. Book the earliest available slot and keep a screenshot as evidence. Offices understand this.",
       },
       {
         q: "What documents do I need for Anmeldung?",
@@ -86,7 +86,7 @@ const SECTIONS = [
     faqs: [
       {
         q: "How do I book a Bürgeramt appointment in Berlin?",
-        a: "Book at service.berlin.de. Check early in the morning for the best availability — new slots are released in batches and go quickly. Outer districts like Marzahn, Lichtenberg, and Spandau typically have more slots than central offices in Mitte or Charlottenburg. You can also call 115 during business hours to ask about cancellations.",
+        a: "Book at service.berlin.de. New slots are released every Tuesday at 8:00 AM — they sell out within 60 seconds, so be on the portal just before 8:00. Outer districts like Marzahn, Lichtenberg, and Spandau typically have more slots than central offices in Mitte or Charlottenburg. You can also call 115 during business hours to ask about cancellations.",
       },
       {
         q: "What happens at the Anmeldung appointment?",
@@ -108,7 +108,7 @@ const SECTIONS = [
     faqs: [
       {
         q: "Can I do the Anmeldung online?",
-        a: "Online registration exists but only works for a very small group. You can only register online if you are an EU or EEA citizen with a German or EU eID card with the Online-Ausweis chip activated, are already registered in Germany, and are moving within Germany — not arriving from abroad for the first time. Cities currently offering it include Berlin, Hamburg, and Bremen. Available since October 2024.",
+        a: "Online registration exists but only works for a very small group. You can only register online if you are an EU or EEA citizen with a German or EU eID card with the Online-Ausweis chip activated, are already registered in Germany, and are moving within Germany (Ummeldung) — not arriving from abroad for the first time. Most expats moving to Berlin cannot use it.",
       },
       {
         q: "I am not an EU citizen — can I register online?",

@@ -162,7 +162,7 @@ export default function BurgeramtBerlinAppointment() {
                 {
                   icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>,
                   color: "var(--blue)", bg: "#eef2ff", bd: "#bfdbfe",
-                  label: "HACK 01", title: "Tuesday 7:55 AM",
+                  label: "HACK 01", title: "Tuesday 8:00 AM",
                   body: "New appointment slots are released every Tuesday at 8:00 AM on service.berlin.de. They sell out within 60 seconds. Open the portal before 8:00 AM, have your details ready, and refresh the moment the clock hits 8:00.",
                 },
                 {

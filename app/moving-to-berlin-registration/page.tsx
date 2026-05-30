@@ -54,7 +54,7 @@ export default function MovingToBerlinRegistration() {
         "@type": "FAQPage",
         mainEntity: [
           { "@type": "Question", name: "What is the first thing I need to do after moving to Berlin?", acceptedAnswer: { "@type": "Answer", text: "Register your address (Anmeldung) within 14 days of moving in. You need a signed Wohnungsgeberbestätigung from your landlord, a completed Anmeldeformular, and a Bürgeramt appointment. Start all three on day one." } },
-          { "@type": "Question", name: "How long does the Anmeldung process take in Berlin?", acceptedAnswer: { "@type": "Answer", text: "The appointment itself takes 5–10 minutes. Getting an appointment in Berlin can take days to weeks depending on availability. The form preparation takes 5 minutes with ReadyExpat. Start as early as possible." } },
+          { "@type": "Question", name: "How long does the Anmeldung process take in Berlin?", acceptedAnswer: { "@type": "Answer", text: "The appointment itself takes 5–10 minutes. Getting an appointment in Berlin typically takes 3–6 weeks — often beyond the 14-day legal window. Book immediately and keep a screenshot showing when you first searched. The form preparation takes 5 minutes with ReadyExpat." } },
           { "@type": "Question", name: "Do I need to register if I'm staying in Berlin temporarily?", acceptedAnswer: { "@type": "Answer", text: "If you stay more than 3 months, yes — registration is mandatory. Under 3 months, tourists and short-term visitors are exempt. Remote workers and digital nomads staying 3+ months must register regardless of their employment situation." } },
         ],
       },
@@ -98,7 +98,7 @@ export default function MovingToBerlinRegistration() {
               <div className="kf-card kf-slate reveal" style={{ transitionDelay: "0ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">14</text></svg>
                 <div className="kf-num">Days to register</div>
-                <p className="kf-text">Calendar days from move-in. Fine up to €1,000 if missed.</p>
+                <p className="kf-text">Calendar days from move-in. Fine up to €1,000 — but extremely rare if you have a booking screenshot.</p>
               </div>
               <div className="kf-card kf-gold reveal" style={{ transitionDelay: "80ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">3</text></svg>
@@ -189,7 +189,7 @@ export default function MovingToBerlinRegistration() {
             </div>
             <div className="faq reveal">
               <details><summary>What is the first thing I need to do after moving to Berlin?</summary><div className="ans">Register your address (Anmeldung) within 14 days. You need a signed Wohnungsgeberbestätigung from your landlord, a completed Anmeldeformular, and a Bürgeramt appointment. Start all three on day one.</div></details>
-              <details><summary>How long does the Anmeldung process take in Berlin?</summary><div className="ans">The appointment itself takes 5–10 minutes. Getting an appointment can take days to weeks. The form takes 5 minutes with ReadyExpat.</div></details>
+              <details><summary>How long does the Anmeldung process take in Berlin?</summary><div className="ans">The appointment itself takes 5–10 minutes. Getting an appointment in Berlin typically takes 3–6 weeks — often beyond the 14-day legal window. Book immediately and screenshot your first search attempt. That screenshot protects you if questions arise about the delay. The form takes 5 minutes with ReadyExpat.</div></details>
               <details><summary>Do I need to register if I'm staying in Berlin temporarily?</summary><div className="ans">If you stay more than 3 months, yes — mandatory. Under 3 months, tourists are exempt. Remote workers staying 3+ months must register regardless of employment situation.</div></details>
             </div>
           </div>
