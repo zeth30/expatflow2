@@ -126,6 +126,11 @@ export default function Wohnungsgeberbestaetigung() {
               <p className="section-sub">The Wohnungsgeberbestätigung is mandated by §19 Bundesmeldegesetz. Your landlord confirms in writing that you moved in on a specific date. Without it, the Bürgeramt cannot process your <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Anmeldung</a>. It is one of three core documents on the <a href="/anmeldung-documents" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>full document checklist</a> — the other two being your passport and the completed German-language form.</p>
             </div>
 
+            <div style={{ margin: "0 0 24px", padding: "14px 18px", background: "#f5f3ff", border: "1px solid #ddd6fe", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 14, color: "#5b21b6", fontWeight: 600 }}>Registering as a couple or family?</span>
+              <Link href="/anmeldung-couple-berlin" style={{ fontSize: 13, fontWeight: 800, color: "#7c3aed", textDecoration: "none", whiteSpace: "nowrap" }}>Couple & family guide →</Link>
+            </div>
+
             {/* Mock form preview */}
             <div className="reveal" style={{ background: "white", border: "1px solid var(--line)", borderRadius: 22, padding: 32, marginBottom: 24 }}>
               <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, fontWeight: 800, color: "var(--muted)", letterSpacing: ".14em", textTransform: "uppercase", marginBottom: 16 }}>Form preview — Wohnungsgeberbestätigung · not the complete document</div>

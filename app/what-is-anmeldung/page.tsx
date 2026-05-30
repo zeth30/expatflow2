@@ -142,6 +142,10 @@ export default function WhatIsAnmeldung() {
                 </div>
               </div>
             </div>
+            <div style={{ margin: "16px 0", padding: "14px 18px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 14, color: "#1e40af", fontWeight: 600 }}>Calculate your exact deadline →</span>
+              <Link href="/anmeldung-deadline-berlin" style={{ fontSize: 13, fontWeight: 800, color: "#0040ff", textDecoration: "none", whiteSpace: "nowrap" }}>Deadline guide →</Link>
+            </div>
           </div>
         </section>
 

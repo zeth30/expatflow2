@@ -120,6 +120,10 @@ export default function BurgeramtBerlinAppointment() {
         {/* 01 · Where to book */}
         <section className="section">
           <div className="wrap">
+            <div style={{ margin: "0 0 24px", padding: "14px 18px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 14, color: "#15803d", fontWeight: 600 }}>New to Berlin? Start with the full registration guide.</span>
+              <Link href="/moving-to-berlin-registration" style={{ fontSize: 13, fontWeight: 800, color: "#16a34a", textDecoration: "none", whiteSpace: "nowrap" }}>Moving to Berlin guide →</Link>
+            </div>
             <div className="section-head reveal">
               <div className="eyebrow">01 · Where to book</div>
               <h2 className="h2">One official portal. <span className="accent">No alternatives.</span></h2>
