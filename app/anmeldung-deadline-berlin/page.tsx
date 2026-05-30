@@ -8,7 +8,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
   title: "Anmeldung Deadline Berlin: The 14-Day Rule Explained | ReadyExpat",
-  description: "You have 14 days to register your address in Berlin after moving in. Miss it and face a fine up to €1,000. Here's what the law says, what actually happens, and what to do if you've already missed it.",
+  description: "You have 14 calendar days to register your address in Berlin. Berlin appointments often take 3–6 weeks. Here's what the law says, what actually happens in practice, and what a screenshot does for you.",
   alternates: { canonical: `${DOMAIN}/anmeldung-deadline-berlin` },
   robots: { index: true, follow: true },
   openGraph: {
@@ -28,7 +28,7 @@ export default function AnmeldungDeadlineBerlin() {
       {
         "@type": "Article",
         headline: "The 14-Day Anmeldung Deadline in Berlin Explained",
-        description: "You have 14 days to register your address in Berlin after moving in. Miss it and face a fine up to €1,000.",
+        description: "You have 14 calendar days to register your address in Berlin. In practice, Berlin appointments take 3–6 weeks. Here's what the law says and what actually happens.",
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-30",
@@ -39,10 +39,10 @@ export default function AnmeldungDeadlineBerlin() {
         "@type": "FAQPage",
         mainEntity: [
           { "@type": "Question", name: "How many days do I have to register after moving to Berlin?", acceptedAnswer: { "@type": "Answer", text: "14 calendar days from the day you move in, as required by §17 Bundesmeldegesetz (BMG). The clock starts on your move-in date — not when you sign the lease." } },
-          { "@type": "Question", name: "What is the fine for missing the Anmeldung deadline in Berlin?", acceptedAnswer: { "@type": "Answer", text: "Up to €1,000 under §54 BMG. In practice the fine is rarely enforced if you register as soon as possible and can show you were trying — for example by showing an appointment booking screenshot." } },
-          { "@type": "Question", name: "What if there are no Bürgeramt appointments before my 14-day deadline?", acceptedAnswer: { "@type": "Answer", text: "Book the earliest available appointment and take a screenshot showing you searched. Authorities are aware that Berlin appointments are hard to get. Showing documented intent is almost always sufficient to avoid a fine." } },
+          { "@type": "Question", name: "What is the fine for missing the Anmeldung deadline in Berlin?", acceptedAnswer: { "@type": "Answer", text: "Up to €1,000 under §54 BMG — but in practice, fines for first-time late registrations in Berlin are extremely rare. Berlin Bürgeramt appointments regularly take 3–6 weeks, well beyond the 14-day window. The city is aware of this. Book the earliest slot, take a screenshot showing you searched, and you will not be fined." } },
+          { "@type": "Question", name: "What if there are no Bürgeramt appointments before my 14-day deadline?", acceptedAnswer: { "@type": "Answer", text: "This is the normal situation in Berlin — not an exception. Book the earliest available slot even if it is 4–5 weeks away. Take a screenshot of the booking portal showing no earlier availability. Keep it. That screenshot is your protection. Berlin offices are well aware that appointment wait times routinely exceed the legal deadline." } },
           { "@type": "Question", name: "Does the 14-day deadline count calendar days or working days?", acceptedAnswer: { "@type": "Answer", text: "Calendar days. Weekends and public holidays count. Move in on a Friday and your deadline is the following Thursday." } },
-          { "@type": "Question", name: "What happens if I already missed the Anmeldung deadline?", acceptedAnswer: { "@type": "Answer", text: "Register as soon as you can. The Bürgeramt clerk may note the late registration, but fines for first-time late registrations are uncommon in Berlin, especially when the delay is short. Do not wait further." } },
+          { "@type": "Question", name: "What happens if I already missed the Anmeldung deadline?", acceptedAnswer: { "@type": "Answer", text: "Register as soon as you can — don't let it drift further. Book the next available Bürgeramt slot and show up with a complete form. In practice, clerks note the late registration and process you without further action. Fines are not issued to first-time registrants who turn up and complete the process." } },
         ],
       },
       {
@@ -64,19 +64,19 @@ export default function AnmeldungDeadlineBerlin() {
 
       <main className="main">
         {/* Hero */}
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1501139083538-0139583c060f?w=1920&q=80&auto=format')" }}>
           <div className="wrap">
             <div className="crumbs">
               <Link href="/#guides">Guides</Link>
               <span className="sep">→</span>
               <span className="here">Anmeldung Deadline</span>
             </div>
-            <span className="pill"><span className="dot" />Legal · §17 BMG · Fine up to €1,000</span>
+            <span className="pill"><span className="dot" />Legal · §17 BMG · Berlin reality check</span>
             <h1 className="hero-title">
               The 14-Day Anmeldung Deadline.
-              <span className="accent">What the law says. What actually happens. What to do.</span>
+              <span className="accent">What the law says. What actually happens in Berlin.</span>
             </h1>
-            <p className="lede">§17 Bundesmeldegesetz gives you 14 calendar days after moving in. The fine is real. The leniency is also real — but only if you act.</p>
+            <p className="lede">§17 BMG gives you 14 calendar days. Berlin Bürgeramt appointments regularly take 3–6 weeks. The city knows this. A screenshot of your booking attempt is all the protection you need.</p>
           </div>
         </section>
 
@@ -91,8 +91,8 @@ export default function AnmeldungDeadlineBerlin() {
               </div>
               <div className="kf-card kf-crimson reveal" style={{ transitionDelay: "80ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">€1k</text></svg>
-                <div className="kf-num">Maximum fine</div>
-                <p className="kf-text">Rarely enforced for first offence when you register promptly.</p>
+                <div className="kf-num">Theoretical fine</div>
+                <p className="kf-text">Essentially never issued to first-timers with a booked appointment and a screenshot.</p>
               </div>
               <div className="kf-card kf-gold reveal" style={{ transitionDelay: "160ms" }}>
                 <svg className="kf-bg" width="88" height="72" viewBox="0 0 88 72" aria-hidden="true"><text x="44" y="68" fontSize="80" textAnchor="middle">§17</text></svg>
@@ -153,16 +153,15 @@ export default function AnmeldungDeadlineBerlin() {
         <section className="section" id="sec-missed">
           <div className="wrap">
             <div className="section-head reveal">
-              <div className="eyebrow">03 · Already Missed It?</div>
-              <h2 className="h2">What to do <span className="accent">now.</span></h2>
+              <div className="eyebrow">03 · Already Past the Deadline?</div>
+              <h2 className="h2">You're not alone. <span className="accent">Here's what to do.</span></h2>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 640 }}>
               {[
-                { n: "1", t: "Don't wait any longer", d: "Every extra day increases your exposure. Register this week regardless of how late you are." },
-                { n: "2", t: "Book any available appointment", d: "Go to service.berlin.de right now. Take the first slot available, even if it's in 3 weeks." },
-                { n: "3", t: "Screenshot your booking attempt", d: "Screenshot the appointment search showing limited availability. This is your evidence of intent." },
-                { n: "4", t: "Prepare your form", d: "Have a complete, correct Anmeldeformular ready. A complete form shows you came prepared." },
-                { n: "5", t: "Attend and register", d: "The clerk may note the late registration. In most cases no further action follows for first-time registrants." },
+                { n: "1", t: "Stop worrying, start booking", d: "Late registration in Berlin is common — appointments routinely push beyond 14 days. Book the earliest available slot right now at service.berlin.de." },
+                { n: "2", t: "Take a screenshot", d: "Screenshot the search results showing no earlier availability. This is your protection. Keep it on your phone until after the appointment." },
+                { n: "3", t: "Prepare a complete form", d: "Show up with a correctly filled Anmeldeformular. A complete form signals you came in good faith — important if the clerk mentions the late date." },
+                { n: "4", t: "Attend and register", d: "The clerk processes you. In practice, no fine is issued to first-time registrants who show up with documents and a booking screenshot." },
               ].map(({ n, t, d }) => (
                 <div key={n} className="reveal" style={{ display: "flex", gap: 16, padding: "16px 20px", background: "white", border: "1px solid #e6ebf5", borderRadius: 14 }}>
                   <div style={{ width: 32, height: 32, borderRadius: 10, background: "#eff6ff", color: "#0040ff", fontWeight: 900, fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{n}</div>
@@ -202,10 +201,10 @@ export default function AnmeldungDeadlineBerlin() {
             </div>
             <div className="faq reveal">
               <details><summary>How many days do I have to register after moving to Berlin?</summary><div className="ans">14 calendar days from the day you move in, as required by §17 Bundesmeldegesetz (BMG). The clock starts on your move-in date — not when you sign the lease.</div></details>
-              <details><summary>What is the fine for missing the Anmeldung deadline?</summary><div className="ans">Up to €1,000 under §54 BMG. In practice the fine is rarely enforced if you register as soon as possible and can show you were trying — for example with an appointment booking screenshot.</div></details>
-              <details><summary>What if there are no Bürgeramt appointments before my deadline?</summary><div className="ans">Book the earliest available appointment and take a screenshot showing you searched. Authorities are aware that Berlin appointments are hard to get. Documented intent is almost always sufficient to avoid a fine. See our <Link href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>appointment guide</Link> for hacks to find slots faster.</div></details>
+              <details><summary>What is the fine for missing the Anmeldung deadline?</summary><div className="ans">Up to €1,000 under §54 BMG — but in practice, fines for first-time late registrants in Berlin are extremely rare. Berlin Bürgeramt appointments regularly take 3–6 weeks. The city is aware. Book the earliest slot, keep a screenshot showing you searched, and you will not be fined.</div></details>
+              <details><summary>What if there are no Bürgeramt appointments before my deadline?</summary><div className="ans">This is the normal situation in Berlin — not an exception. Book the earliest available slot even if it's 4–5 weeks away. Screenshot the search results showing no earlier availability and keep it. Berlin offices are well aware that wait times routinely exceed the 14-day window. See our <Link href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>appointment guide</Link> for hacks to find slots faster.</div></details>
               <details><summary>Does the 14-day deadline count calendar days or working days?</summary><div className="ans">Calendar days. Weekends and public holidays count. Move in on a Friday and your deadline is the following Thursday.</div></details>
-              <details><summary>What happens if I already missed the Anmeldung deadline?</summary><div className="ans">Register as soon as you can. Fines for first-time late registrations are uncommon in Berlin, especially when the delay is short. Do not wait further.</div></details>
+              <details><summary>What happens if I already missed the Anmeldung deadline?</summary><div className="ans">Book the next available slot and show up with a complete form. In practice, clerks note the late registration and process you without further action. Fines are not issued to first-time registrants who turn up and complete the process.</div></details>
             </div>
           </div>
         </section>
