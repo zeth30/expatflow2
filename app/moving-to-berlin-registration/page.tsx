@@ -76,7 +76,7 @@ export default function MovingToBerlinRegistration() {
       <GuideSidebar activeId="" />
 
       <main className="main">
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1920&q=80&auto=format')" }}>
           <div className="wrap">
             <div className="crumbs">
               <Link href="/#guides">Guides</Link>

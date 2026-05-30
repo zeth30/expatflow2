@@ -62,7 +62,7 @@ export default function AnmeldungMistakesBerlin() {
       <GuideSidebar activeId="" />
 
       <main className="main">
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80&auto=format')" }}>
           <div className="wrap">
             <div className="crumbs">
               <Link href="/#guides">Guides</Link>
