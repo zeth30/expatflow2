@@ -74,7 +74,7 @@ export default function AnmeldungBerlinEnglish() {
       <GuideSidebar activeId="" />
 
       <main className="main">
-        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1920&q=80&auto=format')" }}>
+        <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1920&q=80&auto=format')" }}>
           <div className="wrap" style={{ display: "flex", alignItems: "flex-end", gap: 48 }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div className="crumbs">
