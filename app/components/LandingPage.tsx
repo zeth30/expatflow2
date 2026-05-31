@@ -21,52 +21,31 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
       <SharedNav onStart={onStart} />
 
       {/* ══ HERO ══ */}
-      <div style={{ background: "white", borderBottom: "1px solid #e8ecf4" }}>
+      <div style={{ background: "#fbfcff", borderBottom: "1px solid #e8ecf4" }}>
         <div className="hero-pad" style={{ maxWidth: 1100, margin: "0 auto" }}>
 
-          {/* Trust badge */}
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 14px" }}>
-              <CheckCircle2 size={11} color="#16a34a" />
-              <span style={{ color: "#15803d", fontSize: 12, fontWeight: 700 }}>Trusted by 100+ expats in Berlin</span>
-            </div>
-          </div>
-
-          {/* Headline */}
-          <h1 className="lp-h1" style={{ fontSize: 54, fontWeight: 900, color: "#0f172a", lineHeight: 1.06, marginBottom: 12, letterSpacing: "-0.035em", maxWidth: 700 }}>
-            Your Anmeldung form,<br />
-            <span style={{ color: "#0075FF" }}>filled in 5 minutes.</span>
-          </h1>
-          <p style={{ fontSize: 15, color: "#64748b", fontWeight: 600, marginBottom: 32, letterSpacing: "-0.005em" }}>
-            In English. No German required.
-          </p>
-
           {/* Two columns */}
-          <div className="hero-grid" style={{ alignItems: "start" }}>
+          <div className="hero-grid" style={{ alignItems: "center" }}>
 
             {/* Left: copy + CTA */}
             <div>
-              <p style={{ fontSize: 16, color: "#475569", lineHeight: 1.8, marginBottom: 28 }}>
-                Moving to Berlin is exciting. German paperwork isn't.<br />
-                Answer a few simple questions in English — we handle the rest. Your completed, print-ready Anmeldung PDF in 5 minutes. For anyone moving to Berlin, wherever you're from.
+              {/* Green pill */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#ecfdf3", border: "1.5px solid #c7f0d3", borderRadius: 999, padding: "5px 13px", marginBottom: 22 }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", display: "inline-block", flexShrink: 0 }} />
+                <span style={{ color: "#16a34a", fontSize: 12, fontWeight: 700 }}>For expats in Berlin · 2026</span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="lp-h1" style={{ fontSize: 62, fontWeight: 900, color: "#0f172a", lineHeight: 0.92, letterSpacing: "-0.04em", marginBottom: 0 }}>
+                Kill the anxiety.
+              </h1>
+              <p style={{ fontSize: 24, fontWeight: 700, color: "#0075FF", letterSpacing: "-0.02em", lineHeight: 1.25, margin: "14px 0 18px" }}>
+                Berlin's Anmeldung — done correctly in English.
               </p>
 
-              {/* Deliverables */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 32 }}>
-                {[
-                  { label: "Anmeldung PDF", sub: "All 54 fields · Perfect German · All 44 Berlin Bürgerämter" },
-                  { label: "Document checklist", sub: "Personalised for your nationality and situation — exactly what to bring" },
-                  { label: "Appointment guide", sub: "Hacks to get a slot fast in Berlin" },
-                ].map(({ label, sub }) => (
-                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 15px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4" }}>
-                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#0075FF", flexShrink: 0 }} />
-                    <div>
-                      <span style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5 }}>{label}</span>
-                      <span style={{ color: "#94a3b8", fontSize: 13 }}> — {sub}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p className="lp-sub" style={{ fontSize: 16, color: "#6b7693", lineHeight: 1.65, marginBottom: 28, maxWidth: 420 }}>
+                All 54 fields filled in German. Names, dates, citizenship — all translated correctly. Download a PDF ready for the Bürgeramt in 5 minutes.
+              </p>
 
               {/* CTA */}
               <button onClick={onStart} className="lp-cta-btn"
@@ -75,7 +54,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
                 Prepare My Anmeldung <ArrowRight size={18} />
               </button>
               <p style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500, margin: "0 0 14px", letterSpacing: "0.01em" }}>
-                €15 · One-time · No account needed
+                One-time · no account · no subscription
               </p>
             </div>
 
@@ -98,6 +77,27 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
               </div>
             </div>
 
+          </div>
+
+          {/* Feature boxes */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, marginTop: 40, borderRadius: 16, overflow: "hidden", border: "1px solid #e8ecf4" }}>
+            {[
+              { icon: "📄", ttl: "Anmeldung PDF", dots: ["All 54 fields · Perfect German", "All 44 Berlin Bürgerämter"] },
+              { icon: "✅", ttl: "Document checklist", dots: ["Personalised for your nationality and situation", "Exactly what to bring"] },
+              { icon: "📅", ttl: "Appointment guide", dots: ["Hacks to get a slot fast in Berlin"] },
+            ].map(({ icon, ttl, dots }, i) => (
+              <div key={ttl} style={{ padding: "24px 26px 28px", background: "white", borderRight: i < 2 ? "1px solid #e8ecf4" : "none" }}>
+                <div style={{ fontSize: 22, marginBottom: 10 }}>{icon}</div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, marginBottom: 8 }}>{ttl}</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {dots.map(d => (
+                    <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
+                      <span style={{ color: "#0075FF", fontWeight: 900, flexShrink: 0 }}>·</span>{d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Stats strip */}
