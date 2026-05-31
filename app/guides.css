@@ -369,9 +369,9 @@ html { scroll-behavior: smooth; }
 .faq details { background: white; border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; transition: border-color .15s; }
 .faq details:hover { border-color: var(--ink); }
 .faq details[open] { border-color: var(--blue); background: var(--blue-soft); }
-.faq summary { list-style: none; cursor: pointer; font-weight: 800; font-size: 17px; letter-spacing: -0.01em; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.faq summary { list-style: none; cursor: pointer; font-weight: 800; font-size: 17px; letter-spacing: -0.01em; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; font-size: 26px; font-weight: 400; color: var(--blue); transition: transform .2s; line-height: 1; flex-shrink: 0; }
+.faq summary::after { content: "+"; font-size: 26px; font-weight: 400; color: var(--blue); transition: transform .2s; line-height: 1; flex-shrink: 0; margin-top: 1px; }
 .faq details[open] summary::after { content: "−"; }
 .faq .ans { color: var(--ink-2); margin-top: 14px; font-size: 15.5px; line-height: 1.6; }
 
@@ -467,11 +467,20 @@ html { scroll-behavior: smooth; }
 /* ── Overflow prevention — stop horizontal scroll/swiping on all guide pages ── */
 html, body { overflow-x: hidden; max-width: 100%; overscroll-behavior-x: none; }
 
-/* Long German compound words — prevent overflow, break gracefully */
+/* Long words / translated text — prevent overflow, break gracefully */
 .card h4, .card p, .section-sub, .callout .p, .callout .h,
-.darkbox h3, .darkbox p, .lede, .faq .ans, h2.h2, h1.hero-title {
+.darkbox h3, .darkbox p, .lede, .faq .ans, h2.h2, h1.hero-title,
+.kf-text, .kf-num, .cta-box h2, .cta-box p,
+.faq summary, .pagenav .ttl, .step h5, .step p,
+.sb-link .ttl, .sb-link .sub {
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+/* Soft hyphens for paragraph text — translated languages often have longer words */
+.lede, .section-sub, .faq .ans, .card p, .callout .p, .kf-text, .darkbox p, .cta-box p {
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 /* Citizenship examples table — 3 cols desktop → 2 mobile → 1 very small */
