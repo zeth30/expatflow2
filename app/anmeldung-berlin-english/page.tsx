@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuideReveal } from "../components/guides/GuideReveal";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -42,7 +44,7 @@ export default function AnmeldungBerlinEnglish() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-30",
-        dateModified: "2026-05-30",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/anmeldung-berlin-english`,
       },
       {
@@ -196,6 +198,12 @@ export default function AnmeldungBerlinEnglish() {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="english" />
           </div>
         </section>
       </main>

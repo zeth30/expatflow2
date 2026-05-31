@@ -4,6 +4,8 @@ import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { ChecklistClient } from "./ChecklistClient";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -33,7 +35,7 @@ export default function AnmeldungDocuments() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin" },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
-        dateModified: "2026-05-14",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/anmeldung-documents`,
       },
       {
@@ -89,6 +91,7 @@ export default function AnmeldungDocuments() {
               Anmeldung document checklist.
               <span className="accent">Show up missing one and they send you home.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">The complete checklist of what to bring to your <a href="/burgeramt-berlin-appointment" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>Bürgeramt appointment</a>. Tick them off as you prepare. New to this? Start with <a href="/what-is-anmeldung" style={{ color: "var(--blue)", fontWeight: 700, textDecoration: "none" }}>guide 01 — What is Anmeldung</a>.</p>
           </div>
         </section>
@@ -306,6 +309,12 @@ export default function AnmeldungDocuments() {
               <Link href="/anmeldung-berlin-english" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Form in English →</Link>
             </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="checklist" />
           </div>
         </section>
       </main>

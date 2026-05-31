@@ -4,6 +4,8 @@ import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { ReligionPicker } from "./ReligionPicker";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -34,7 +36,7 @@ export default function WhatIsAnmeldung() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
-        dateModified: "2026-05-14",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/what-is-anmeldung`,
       },
       {
@@ -79,6 +81,7 @@ export default function WhatIsAnmeldung() {
               What is the Anmeldung?
               <span className="accent">Germany&apos;s mandatory address registration, explained.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">The Anmeldung is not optional and not just for citizens. Here's what it is, who must do it, and what happens after — without the bureaucratic panic.</p>
           </div>
         </section>
@@ -436,6 +439,12 @@ export default function WhatIsAnmeldung() {
               <Link href="/anmeldung-berlin-english" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Form in English →</Link>
             </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="whatisit" />
           </div>
         </section>
       </main>

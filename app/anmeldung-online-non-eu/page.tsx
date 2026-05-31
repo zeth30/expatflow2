@@ -4,6 +4,8 @@ import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { EligibilityChecker } from "./EligibilityChecker";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -33,7 +35,7 @@ export default function OnlineNonEU() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin" },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
-        dateModified: "2026-05-14",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/anmeldung-online-non-eu`,
       },
       {
@@ -78,6 +80,7 @@ export default function OnlineNonEU() {
               Online Anmeldung is not available for non-EU citizens.
               <span className="accent">Here is what to do instead.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">Online Anmeldung exists. Non-EU citizens cannot use it. Here is exactly why — and your fastest path forward.</p>
           </div>
         </section>
@@ -318,6 +321,12 @@ export default function OnlineNonEU() {
               <Link href="/anmeldung-berlin-english" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Form in English →</Link>
             </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="noneu" />
           </div>
         </section>
       </main>

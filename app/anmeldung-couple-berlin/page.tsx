@@ -3,6 +3,8 @@ import Link from "next/link";
 import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { PeopleCounter } from "../components/guides/PeopleCounter";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -32,7 +34,7 @@ export default function AnmeldungCoupleBerlin() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-30",
-        dateModified: "2026-05-30",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/anmeldung-couple-berlin`,
       },
       {
@@ -230,6 +232,12 @@ export default function AnmeldungCoupleBerlin() {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="couple" />
           </div>
         </section>
       </main>

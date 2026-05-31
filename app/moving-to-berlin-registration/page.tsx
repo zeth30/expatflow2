@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuideReveal } from "../components/guides/GuideReveal";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -40,7 +42,7 @@ export default function MovingToBerlinRegistration() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-30",
-        dateModified: "2026-05-30",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/moving-to-berlin-registration`,
       },
       {
@@ -88,6 +90,7 @@ export default function MovingToBerlinRegistration() {
               Just moved to Berlin?
               <span className="accent">Here's your complete address registration guide — step by step, in English.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">The Anmeldung is mandatory within 14 days. The form is in German. The process has traps. This guide gets you through it without surprises.</p>
           </div>
         </section>
@@ -192,6 +195,12 @@ export default function MovingToBerlinRegistration() {
               <details><summary>How long does the Anmeldung process take in Berlin?</summary><div className="ans">The appointment itself takes 5–10 minutes. Getting an appointment in Berlin typically takes 3–6 weeks — often beyond the 14-day legal window. Book immediately and screenshot your first search attempt. That screenshot protects you if questions arise about the delay. The form takes 5 minutes with ReadyExpat.</div></details>
               <details><summary>Do I need to register if I'm staying in Berlin temporarily?</summary><div className="ans">If you stay more than 3 months, yes — mandatory. Under 3 months, tourists are exempt. Remote workers staying 3+ months must register regardless of employment situation.</div></details>
             </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="moving" />
           </div>
         </section>
       </main>

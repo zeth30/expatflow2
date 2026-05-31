@@ -4,6 +4,8 @@ import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuidePageNav } from "../components/guides/GuidePageNav";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { EmailTemplateClient } from "./EmailTemplateClient";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -33,7 +35,7 @@ export default function Wohnungsgeberbestaetigung() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin" },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-01",
-        dateModified: "2026-05-14",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/wohnungsgeberbestaetigung`,
       },
       {
@@ -87,6 +89,7 @@ export default function Wohnungsgeberbestaetigung() {
               What is the Wohnungsgeberbestätigung?
               <span className="accent">The one form your landlord must sign.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">What it is, who can sign it, how to request it — and exactly what to do if your landlord is difficult.</p>
           </div>
         </section>
@@ -500,6 +503,12 @@ export default function Wohnungsgeberbestaetigung() {
               <Link href="/anmeldung-couple-berlin" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Couples & Families →</Link>
             </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="wgb" />
           </div>
         </section>
       </main>

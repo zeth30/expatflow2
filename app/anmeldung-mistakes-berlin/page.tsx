@@ -3,6 +3,8 @@ import Link from "next/link";
 import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { MistakeChecker } from "../components/guides/MistakeChecker";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -32,7 +34,7 @@ export default function AnmeldungMistakesBerlin() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-30",
-        dateModified: "2026-05-30",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/anmeldung-mistakes-berlin`,
       },
       {
@@ -74,6 +76,7 @@ export default function AnmeldungMistakesBerlin() {
               6 Anmeldung Mistakes That Get You Turned Away.
               <span className="accent">Losing your appointment slot means waiting weeks for another one.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">Berlin Bürgeramt appointments are scarce. Getting turned away at the counter wastes one and restarts your 14-day deadline clock. Don't let a fixable mistake cost you weeks.</p>
           </div>
         </section>
@@ -184,6 +187,12 @@ export default function AnmeldungMistakesBerlin() {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="mistakes" />
           </div>
         </section>
       </main>

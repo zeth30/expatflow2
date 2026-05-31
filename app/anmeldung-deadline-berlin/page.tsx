@@ -3,6 +3,8 @@ import Link from "next/link";
 import { GuideSidebar } from "../components/guides/GuideSidebar";
 import { GuideReveal } from "../components/guides/GuideReveal";
 import { DeadlineCalculator } from "../components/guides/DeadlineCalculator";
+import { GuideByline } from "../components/guides/GuideByline";
+import { RelatedGuides } from "../components/guides/RelatedGuides";
 
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
@@ -32,7 +34,7 @@ export default function AnmeldungDeadlineBerlin() {
         author: { "@type": "Organization", name: "ReadyExpat Berlin", url: DOMAIN },
         publisher: { "@type": "Organization", name: "ReadyExpat Berlin" },
         datePublished: "2026-05-30",
-        dateModified: "2026-05-30",
+        dateModified: "2026-05-31",
         mainEntityOfPage: `${DOMAIN}/anmeldung-deadline-berlin`,
       },
       {
@@ -76,6 +78,7 @@ export default function AnmeldungDeadlineBerlin() {
               The 14-Day Anmeldung Deadline.
               <span className="accent">What the law says. What actually happens in Berlin.</span>
             </h1>
+            <GuideByline updated="May 2026" />
             <p className="lede">§17 BMG gives you 14 calendar days. Berlin Bürgeramt appointments regularly take 3–6 weeks. The city knows this. A screenshot of your booking attempt is all the protection you need.</p>
           </div>
         </section>
@@ -225,6 +228,12 @@ export default function AnmeldungDeadlineBerlin() {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="wrap">
+            <RelatedGuides excludeId="deadline" />
           </div>
         </section>
       </main>
