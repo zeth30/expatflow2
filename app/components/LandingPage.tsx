@@ -9,13 +9,28 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
     <div className="fu" style={{ background: "white" }}>
       <style>{`
         .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+        .feat-boxes{display:grid;grid-template-columns:repeat(3,1fr)}
+        .feat-box-border-r{border-right:1px solid #e8ecf4}
         @media(max-width:640px){
-          .lp-h1{font-size:32px!important;line-height:1.1!important}
-          .lp-sub{font-size:14px!important}
-          .lp-guides-sect{padding:32px 20px!important}
-          .lp-guide-gap{margin-bottom:32px!important}
-          .lp-cta-btn{width:100%!important;justify-content:center!important}
+          .lp-h1{font-size:36px!important;line-height:1.05!important;letter-spacing:-.025em!important}
+          .lp-h2{font-size:17px!important;margin:10px 0 14px!important}
+          .lp-sub{font-size:14px!important;margin-bottom:20px!important}
+          .lp-cta-btn{width:100%!important;justify-content:center!important;font-size:15px!important;padding:13px 20px!important}
+          .lp-micro{font-size:12px!important}
+          .hero-berlin-img{display:none!important}
+          .hero-grid{grid-template-columns:1fr!important;gap:0!important}
+          .feat-boxes{grid-template-columns:1fr!important}
+          .feat-box-border-r{border-right:none!important;border-bottom:1px solid #e8ecf4}
           .stats-strip{grid-template-columns:1fr 1fr!important}
+          .lp-guides-sect{padding:32px 16px!important}
+          .lp-guide-gap{margin-bottom:32px!important}
+          .lp-feat-wrap{margin-top:24px!important}
+          .lp-3in1{margin-bottom:8px!important}
+          .hero-pad{padding:28px 16px 24px!important}
+          .lp-pill{margin-bottom:14px!important}
+          .berlin-band{height:180px!important}
+          .bottom-cta{padding:40px 16px!important}
+          .bottom-cta h2{font-size:20px!important}
         }
       `}</style>
       <SharedNav onStart={onStart} />
@@ -30,7 +45,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
             {/* Left: copy + CTA */}
             <div>
               {/* Green pill */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#ecfdf3", border: "1.5px solid #c7f0d3", borderRadius: 999, padding: "5px 13px", marginBottom: 22 }}>
+              <div className="lp-pill" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#ecfdf3", border: "1.5px solid #c7f0d3", borderRadius: 999, padding: "5px 13px", marginBottom: 22 }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#16a34a", display: "inline-block", flexShrink: 0 }} />
                 <span style={{ color: "#16a34a", fontSize: 12, fontWeight: 700 }}>For expats in Berlin · 2026</span>
               </div>
@@ -39,7 +54,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
               <h1 className="lp-h1" style={{ fontSize: 62, fontWeight: 900, color: "#0f172a", lineHeight: 0.92, letterSpacing: "-0.04em", marginBottom: 0 }}>
                 Kill the Anmeldung anxiety.
               </h1>
-              <h2 style={{ fontSize: 24, fontWeight: 700, color: "#0075FF", letterSpacing: "-0.02em", lineHeight: 1.25, margin: "14px 0 18px" }}>
+              <h2 className="lp-h2" style={{ fontSize: 24, fontWeight: 700, color: "#0075FF", letterSpacing: "-0.02em", lineHeight: 1.25, margin: "14px 0 18px" }}>
                 Berlin's Anmeldung — done correctly in English.
               </h2>
 
@@ -53,7 +68,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
                 style={{ display: "flex", alignItems: "center", gap: 10, padding: "17px 34px", borderRadius: 13, background: hov ? "#0066ee" : "#0075FF", color: "white", fontWeight: 900, fontSize: 17, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>
                 Prepare My Anmeldung <ArrowRight size={18} />
               </button>
-              <p style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500, margin: "0 0 14px", letterSpacing: "0.01em" }}>
+              <p className="lp-micro" style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500, margin: "0 0 14px", letterSpacing: "0.01em" }}>
                 One-time · no account · no subscription
               </p>
             </div>
@@ -80,12 +95,12 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           </div>
 
           {/* Feature boxes */}
-          <div style={{ marginTop: 40 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>3 in 1</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, borderRadius: 16, overflow: "hidden", border: "1px solid #e8ecf4" }}>
+          <div className="lp-feat-wrap" style={{ marginTop: 40 }}>
+            <div className="lp-3in1" style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>3 in 1</div>
+            <div className="feat-boxes" style={{ gap: 0, borderRadius: 16, overflow: "hidden", border: "1px solid #e8ecf4" }}>
 
               {/* Box 1: Anmeldung PDF */}
-              <div style={{ padding: "24px 26px 28px", background: "white", borderRight: "1px solid #e8ecf4" }}>
+              <div className="feat-box-border-r" style={{ padding: "24px 26px 28px", background: "white" }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0075FF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                 </div>
@@ -101,7 +116,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
               </div>
 
               {/* Box 2: Personalised checklist */}
-              <div style={{ padding: "24px 26px 28px", background: "white", borderRight: "1px solid #e8ecf4" }}>
+              <div className="feat-box-border-r" style={{ padding: "24px 26px 28px", background: "white" }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f0fdf4", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 14l2 2 4-4"/></svg>
                 </div>
@@ -154,7 +169,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
       </div>
 
       {/* ══ BERLIN PHOTO BAND ══ */}
-      <div style={{ position: "relative", height: 380, backgroundImage: "url('/berlin-skyline.jpg')", backgroundSize: "cover", backgroundPosition: "center", overflow: "hidden" }}>
+      <div className="berlin-band" style={{ position: "relative", height: 380, backgroundImage: "url('/berlin-skyline.jpg')", backgroundSize: "cover", backgroundPosition: "center", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, padding: "0 24px" }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: "0.22em", textTransform: "uppercase" }}>
             52°31′N · 13°24′E · BERLIN
@@ -235,7 +250,7 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
       </div>
 
       {/* ══ BOTTOM CTA ══ */}
-      <div style={{ background: "#0f172a", padding: "56px 20px" }}>
+      <div className="bottom-cta" style={{ background: "#0f172a", padding: "56px 20px" }}>
         <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: 26, fontWeight: 900, color: "white", marginBottom: 10, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Walk in better prepared than anyone else in that waiting room.
