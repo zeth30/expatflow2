@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GUIDES } from "./guides-data";
+import { SIDEBAR_GUIDES as GUIDES } from "./guides-data";
 
 export function GuidePageNav({ activeId }: { activeId: string }) {
   const idx = GUIDES.findIndex((g) => g.id === activeId);

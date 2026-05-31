@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { GUIDES } from "./guides-data";
-export { GUIDES };
+import { SIDEBAR_GUIDES } from "./guides-data";
 
 export function GuideSidebar({ activeId }: { activeId: string }) {
   const [open, setOpen] = useState(false);
@@ -35,7 +34,7 @@ export function GuideSidebar({ activeId }: { activeId: string }) {
         <div>
           <div className="sb-eyebrow">Anmeldung Guides</div>
           <div className="sb-list">
-            {GUIDES.map((g) => (
+            {SIDEBAR_GUIDES.map((g) => (
               <Link
                 key={g.id}
                 className={`sb-link${g.id === activeId ? " active" : ""}`}
