@@ -65,7 +65,7 @@ export default function WhatIsAnmeldung() {
     <div className="shell">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <GuideReveal />
-      <GuideSidebar activeId="anmeldung" />
+      <GuideSidebar activeId="whatisit" />
 
       <main className="main">
         {/* Hero */}
