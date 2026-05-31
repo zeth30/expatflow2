@@ -4,6 +4,12 @@ import Link from "next/link";
 
 const GUIDE_ITEMS = [
   {
+    href: "/anmeldung-berlin-guide",
+    label: "Complete Anmeldung Berlin Guide",
+    desc: "Full 2026 overview — what it is, documents, appointment hacks, form fields, and what happens after.",
+    icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+  },
+  {
     href: "/what-is-anmeldung",
     label: "What is the Anmeldung?",
     desc: "Legal basis, deadlines, what you get, and what happens after registration.",
@@ -167,21 +173,25 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
           <div style={{ maxWidth: 1100, margin: "0 auto" }}>
             <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 16 }}>Anmeldung Guides</div>
             <div className="snav-megagrid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
-              {GUIDE_ITEMS.map(g => {
+              {GUIDE_ITEMS.map((g, i) => {
                 const isCurrent = currentPage === g.href.slice(1);
+                const isPillar = i === 0;
                 return (
                   <a key={g.href} href={g.href} onClick={() => setMenuOpen(null)}
-                    style={{ display: "block", padding: "18px 20px", borderRadius: 16, border: `1.5px solid ${isCurrent ? "#0075FF" : "#bfdbfe"}`, background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "box-shadow 0.15s" }}>
-                    <div style={{ width: 34, height: 34, borderRadius: 9, background: isCurrent ? "#0075FF" : "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
-                      {g.icon}
+                    style={{ display: "block", padding: "18px 20px", borderRadius: 16, border: `1.5px solid ${isCurrent ? "#0075FF" : isPillar ? "#0f172a" : "#bfdbfe"}`, background: isPillar ? "linear-gradient(135deg,#0f172a,#1e3a5f)" : "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "box-shadow 0.15s" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                      <div style={{ width: 34, height: 34, borderRadius: 9, background: isPillar ? "#0075FF" : isCurrent ? "#0075FF" : "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {g.icon}
+                      </div>
+                      {isPillar && <span style={{ fontSize: 10, fontWeight: 700, color: "#60a5fa", letterSpacing: "0.08em", textTransform: "uppercase" }}>Start here</span>}
                     </div>
-                    <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 13.5, marginBottom: 5 }}>{g.label}</div>
-                    <div style={{ fontSize: 12, color: "#1d4ed8", lineHeight: 1.55, marginBottom: 12 }}>{g.desc}</div>
-                    <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11.5, fontWeight: 700, color: "#0075FF" }}>
+                    <div style={{ fontWeight: 800, color: isPillar ? "#fff" : "#0f172a", fontSize: 13.5, marginBottom: 5 }}>{g.label}</div>
+                    <div style={{ fontSize: 12, color: isPillar ? "rgba(255,255,255,0.65)" : "#1d4ed8", lineHeight: 1.55, marginBottom: 12 }}>{g.desc}</div>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11.5, fontWeight: 700, color: isPillar ? "#60a5fa" : "#0075FF" }}>
                       {isCurrent ? "You are here" : "Read guide"}
                       {!isCurrent && (
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                          <path d="M2 5h6M5 2l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M2 5h6M5 2l3 3-3 3" stroke={isPillar ? "#60a5fa" : "#0075FF"} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       )}
                     </div>
