@@ -87,6 +87,7 @@ export default function AnmeldungBerlinEnglish() {
                 The Berlin Anmeldung Form — Explained in English.
                 <span className="accent">No official English version exists. Here's what every field actually means.</span>
               </h1>
+              <GuideByline updated="May 2026" />
               <p className="lede">The official Anmeldeformular is German-only. Every field must be completed in German or you risk rejection. Here's the complete field-by-field breakdown — and the translation traps that catch most expats.</p>
             </div>
             <div className="hero-form-preview">

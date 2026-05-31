@@ -78,6 +78,7 @@ export default function AnmeldungCoupleBerlin() {
                 Anmeldung for Couples and Families in Berlin.
                 <span className="accent">One appointment. 2 people per sheet. Here's exactly how it works.</span>
               </h1>
+              <GuideByline updated="May 2026" />
               <p className="lede">Moving to Berlin as a couple or family? The process is one appointment for everyone — but the form has specific rules about how many people fit on each sheet and what documents each person needs.</p>
             </div>
             <div className="hero-form-preview">
