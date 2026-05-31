@@ -37,11 +37,11 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
 
               {/* Headline */}
               <h1 className="lp-h1" style={{ fontSize: 62, fontWeight: 900, color: "#0f172a", lineHeight: 0.92, letterSpacing: "-0.04em", marginBottom: 0 }}>
-                Kill the anxiety.
+                Kill the Anmeldung anxiety.
               </h1>
-              <p style={{ fontSize: 24, fontWeight: 700, color: "#0075FF", letterSpacing: "-0.02em", lineHeight: 1.25, margin: "14px 0 18px" }}>
+              <h2 style={{ fontSize: 24, fontWeight: 700, color: "#0075FF", letterSpacing: "-0.02em", lineHeight: 1.25, margin: "14px 0 18px" }}>
                 Berlin's Anmeldung — done correctly in English.
-              </p>
+              </h2>
 
               <p className="lp-sub" style={{ fontSize: 16, color: "#6b7693", lineHeight: 1.65, marginBottom: 28, maxWidth: 420 }}>
                 All 54 fields filled in German. Names, dates, citizenship — all translated correctly. Download a PDF ready for the Bürgeramt in 5 minutes.
