@@ -185,6 +185,9 @@ export default function AnmeldungBerlinEnglish() {
               {[
                 { href: "/what-is-anmeldung", label: "What is Anmeldung?" },
                 { href: "/anmeldung-documents", label: "Document Checklist" },
+                { href: "/wohnungsgeberbestaetigung", label: "Landlord Confirmation" },
+                { href: "/burgeramt-berlin-appointment", label: "Book an Appointment" },
+                { href: "/anmeldung-online-non-eu", label: "Online Anmeldung" },
                 { href: "/anmeldung-mistakes-berlin", label: "Common Mistakes" },
                 { href: "/anmeldung-deadline-berlin", label: "The 14-Day Deadline" },
               ].map(({ href, label }) => (

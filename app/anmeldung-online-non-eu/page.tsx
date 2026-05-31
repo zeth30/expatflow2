@@ -138,6 +138,9 @@ export default function OnlineNonEU() {
         {/* 02 · Why online is blocked */}
         <section className="section" id="sec-why">
           <div className="wrap">
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "0 0 20px" }}>
+              <Link href="/anmeldung-berlin-english" style={{ padding: "6px 13px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 12.5, textDecoration: "none" }}>Form in English →</Link>
+            </div>
             <div className="section-head reveal">
               <div className="eyebrow">02 · Why online is blocked</div>
               <h2 className="h2">It comes down to one piece of <span className="accent">hardware.</span></h2>
@@ -311,6 +314,9 @@ export default function OnlineNonEU() {
               <div className="micro">€15 one-time · no subscription · no account needed</div>
             </div>
             <GuidePageNav activeId="noneu" />
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 0" }}>
+              <Link href="/anmeldung-berlin-english" style={{ padding: "7px 14px", borderRadius: 999, border: "1px solid var(--line)", background: "white", color: "var(--ink)", fontWeight: 700, fontSize: 13, textDecoration: "none" }}>Form in English →</Link>
+            </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>
         </section>
