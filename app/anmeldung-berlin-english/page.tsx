@@ -73,18 +73,28 @@ export default function AnmeldungBerlinEnglish() {
 
       <main className="main">
         <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=1920&q=80&auto=format')" }}>
-          <div className="wrap">
-            <div className="crumbs">
-              <Link href="/#guides">Guides</Link>
-              <span className="sep">→</span>
-              <span className="here">Anmeldung in English</span>
+          <div className="wrap" style={{ display: "flex", alignItems: "flex-end", gap: 48 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="crumbs">
+                <Link href="/#guides">Guides</Link>
+                <span className="sep">→</span>
+                <span className="here">Anmeldung in English</span>
+              </div>
+              <span className="pill"><span className="dot" />English Guide · All 54 Fields · Translation Traps</span>
+              <h1 className="hero-title">
+                The Berlin Anmeldung Form — Explained in English.
+                <span className="accent">No official English version exists. Here's what every field actually means.</span>
+              </h1>
+              <p className="lede">The official Anmeldeformular is German-only. Every field must be completed in German or you risk rejection. Here's the complete field-by-field breakdown — and the translation traps that catch most expats.</p>
             </div>
-            <span className="pill"><span className="dot" />English Guide · All 54 Fields · Translation Traps</span>
-            <h1 className="hero-title">
-              The Berlin Anmeldung Form — Explained in English.
-              <span className="accent">No official English version exists. Here's what every field actually means.</span>
-            </h1>
-            <p className="lede">The official Anmeldeformular is German-only. Every field must be completed in German or you risk rejection. Here's the complete field-by-field breakdown — and the translation traps that catch most expats.</p>
+            <div className="hero-form-preview">
+              <div style={{ position: "relative", width: 210 }}>
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(-3deg) translate(-7px, 6px)", borderRadius: 12, background: "white", border: "1px solid #e6ebf5", boxShadow: "0 6px 20px rgba(10,22,56,.09)" }} />
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(1.5deg) translate(5px, 3px)", borderRadius: 12, background: "white", border: "1px solid #e6ebf5", boxShadow: "0 6px 20px rgba(10,22,56,.06)" }} />
+                <img src="/anmeldung-form.png" alt="Official Berlin Anmeldung form" style={{ width: "100%", display: "block", borderRadius: 12, border: "1px solid #e6ebf5", boxShadow: "0 10px 32px rgba(10,22,56,.15)", position: "relative" }} />
+                <div style={{ position: "absolute", bottom: -11, left: "50%", transform: "translateX(-50%)", background: "#16a34a", color: "white", borderRadius: 999, padding: "5px 13px", fontSize: 11, fontWeight: 800, whiteSpace: "nowrap", boxShadow: "0 4px 10px rgba(22,163,74,.35)" }}>✓ 54 fields · Correct German</div>
+              </div>
+            </div>
           </div>
         </section>
 

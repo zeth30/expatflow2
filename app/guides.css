@@ -464,6 +464,10 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* —— Hero form image preview (desktop only) —— */
+.hero-form-preview { flex-shrink: 0; padding-bottom: 20px; }
+@media (max-width: 860px) { .hero-form-preview { display: none; } }
+
 /* ── Overflow prevention — stop horizontal scroll/swiping on all guide pages ── */
 html, body { overflow-x: hidden; max-width: 100%; overscroll-behavior-x: none; }
 

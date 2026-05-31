@@ -4,4 +4,5 @@ export const GUIDES = [
   { id: "checklist", num: "03", href: "/anmeldung-documents",          ttl: "Document Checklist",          sub: "What to bring · what fails" },
   { id: "wgb",       num: "04", href: "/wohnungsgeberbestaetigung",    ttl: "Wohnungsgeberbestätigung",    sub: "Landlord confirmation form" },
   { id: "termin",    num: "05", href: "/burgeramt-berlin-appointment", ttl: "Bürgeramt Appointment",       sub: "2026 booking guide · hacks" },
+  { id: "english",   num: "06", href: "/anmeldung-berlin-english",     ttl: "Form in English",             sub: "Every field explained" },
 ];

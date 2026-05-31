@@ -64,18 +64,28 @@ export default function AnmeldungCoupleBerlin() {
 
       <main className="main">
         <section className="hero" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&q=80&auto=format')" }}>
-          <div className="wrap">
-            <div className="crumbs">
-              <Link href="/#guides">Guides</Link>
-              <span className="sep">→</span>
-              <span className="here">Anmeldung for Couples</span>
+          <div className="wrap" style={{ display: "flex", alignItems: "flex-end", gap: 48 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="crumbs">
+                <Link href="/#guides">Guides</Link>
+                <span className="sep">→</span>
+                <span className="here">Anmeldung for Couples</span>
+              </div>
+              <span className="pill"><span className="dot" />Couples · Families · Up to 6 people</span>
+              <h1 className="hero-title">
+                Anmeldung for Couples and Families in Berlin.
+                <span className="accent">One appointment. 2 people per sheet. Here's exactly how it works.</span>
+              </h1>
+              <p className="lede">Moving to Berlin as a couple or family? The process is one appointment for everyone — but the form has specific rules about how many people fit on each sheet and what documents each person needs.</p>
             </div>
-            <span className="pill"><span className="dot" />Couples · Families · Up to 6 people</span>
-            <h1 className="hero-title">
-              Anmeldung for Couples and Families in Berlin.
-              <span className="accent">One appointment. 2 people per sheet. Here's exactly how it works.</span>
-            </h1>
-            <p className="lede">Moving to Berlin as a couple or family? The process is one appointment for everyone — but the form has specific rules about how many people fit on each sheet and what documents each person needs.</p>
+            <div className="hero-form-preview">
+              <div style={{ position: "relative", width: 210 }}>
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(-3deg) translate(-7px, 6px)", borderRadius: 12, background: "white", border: "1px solid #e6ebf5", boxShadow: "0 6px 20px rgba(10,22,56,.09)" }} />
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(1.5deg) translate(5px, 3px)", borderRadius: 12, background: "white", border: "1px solid #e6ebf5", boxShadow: "0 6px 20px rgba(10,22,56,.06)" }} />
+                <img src="/anmeldung-form.png" alt="Official Berlin Anmeldung form" style={{ width: "100%", display: "block", borderRadius: 12, border: "1px solid #e6ebf5", boxShadow: "0 10px 32px rgba(10,22,56,.15)", position: "relative" }} />
+                <div style={{ position: "absolute", bottom: -11, left: "50%", transform: "translateX(-50%)", background: "#16a34a", color: "white", borderRadius: 999, padding: "5px 13px", fontSize: 11, fontWeight: 800, whiteSpace: "nowrap", boxShadow: "0 4px 10px rgba(22,163,74,.35)" }}>✓ 2 people per sheet</div>
+              </div>
+            </div>
           </div>
         </section>
 
