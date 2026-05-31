@@ -80,24 +80,59 @@ export function LandingPage({ onStart, onDownloadWG }: { onStart: () => void; on
           </div>
 
           {/* Feature boxes */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, marginTop: 40, borderRadius: 16, overflow: "hidden", border: "1px solid #e8ecf4" }}>
-            {[
-              { icon: "📄", ttl: "Anmeldung PDF", dots: ["All 54 fields · Perfect German", "All 44 Berlin Bürgerämter"] },
-              { icon: "✅", ttl: "Document checklist", dots: ["Personalised for your nationality and situation", "Exactly what to bring"] },
-              { icon: "📅", ttl: "Appointment guide", dots: ["Hacks to get a slot fast in Berlin"] },
-            ].map(({ icon, ttl, dots }, i) => (
-              <div key={ttl} style={{ padding: "24px 26px 28px", background: "white", borderRight: i < 2 ? "1px solid #e8ecf4" : "none" }}>
-                <div style={{ fontSize: 22, marginBottom: 10 }}>{icon}</div>
-                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, marginBottom: 8 }}>{ttl}</div>
+          <div style={{ marginTop: 40 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>3 in 1</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, borderRadius: 16, overflow: "hidden", border: "1px solid #e8ecf4" }}>
+
+              {/* Box 1: Anmeldung PDF */}
+              <div style={{ padding: "24px 26px 28px", background: "white", borderRight: "1px solid #e8ecf4" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0075FF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, marginBottom: 2 }}>Anmeldung PDF</div>
+                <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>Print-ready for any Bürgeramt</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                  {dots.map(d => (
+                  {["All 54 fields · filled in correct German", "Accepted at all 44 Berlin Bürgerämter"].map(d => (
                     <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
                       <span style={{ color: "#0075FF", fontWeight: 900, flexShrink: 0 }}>·</span>{d}
                     </div>
                   ))}
                 </div>
               </div>
-            ))}
+
+              {/* Box 2: Personalised checklist */}
+              <div style={{ padding: "24px 26px 28px", background: "white", borderRight: "1px solid #e8ecf4" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f0fdf4", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 14l2 2 4-4"/></svg>
+                </div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, marginBottom: 2 }}>Personalised checklist</div>
+                <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>Just for you</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {["Tailored to your nationality and situation", "Exactly what to bring — nothing missing"].map(d => (
+                    <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
+                      <span style={{ color: "#16a34a", fontWeight: 900, flexShrink: 0 }}>·</span>{d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Box 3: Appointment guide */}
+              <div style={{ padding: "24px 26px 28px", background: "white" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#fff7ed", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 14, marginBottom: 2 }}>Appointment guide</div>
+                <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>Slots go in 60 seconds</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {["Hacks to get a slot fast in Berlin", "When to check, what to say, who to call"].map(d => (
+                    <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
+                      <span style={{ color: "#ea580c", fontWeight: 900, flexShrink: 0 }}>·</span>{d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
           </div>
 
           {/* Stats strip */}
