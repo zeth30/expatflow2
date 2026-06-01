@@ -2976,9 +2976,9 @@ function PersonForm({ person, idx, onChange, showDocuments = false }: {
         onChange={v => onChange("citizenship", v)}
         isPrefilled={idx === 0 && !!person.citizenship}
       />
-      <Sel label=”Religion (Religionsgesellschaft)” value={person.religion} onChange={u(“religion”)}
-        opts={[[“”,”— Select —“],[“none”,”None / non-religious”],[“rk”,”Catholic (röm.-kath.)”],[“ev”,”Protestant (ev.)”],[“jd”,”Jewish (jüdisch)”],[“is”,”Muslim (islamisch)”],[“or”,”Orthodox (orthodox)”],[“bu”,”Buddhist (buddhistisch)”],[“so”,”Other (sonstige)”]]}
-        info=”Must be filled. Select 'None / non-religious' to opt out of church tax — no negative consequences.” />
+      <Sel opt label="Religion (Religionsgesellschaft)" value={person.religion} onChange={u("religion")}
+        opts={[["none","None / non-religious"],["rk","Catholic (röm.-kath.)"],["ev","Protestant (ev.)"],["jd","Jewish (jüdisch)"],["is","Muslim (islamisch)"],["or","Orthodox (orthodox)"],["bu","Buddhist (buddhistisch)"],["so","Other (sonstige)"]]}
+        info="Selecting Catholic or Evangelical triggers Kirchensteuer (~8-9% extra income tax). Choose 'None / non-religious' to opt out." />
       <Inp opt label="Artistic / Order Name (optional)" value={person.artisticName} onChange={u("artisticName")} placeholder="Leave blank if not applicable" />
 
       {showDocuments && (
