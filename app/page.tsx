@@ -2382,12 +2382,12 @@ function WizardLayout({ form, step, setStep, upd, set_, updPerson, addPerson, re
     if (e) { setErr(e); return; }
     setErr("");
     const nxt = steps[idx + 1];
-    if (nxt) { setStep(nxt); pushNav("wizard", nxt); } else onComplete();
+    if (nxt) { setStep(nxt); pushNav("wizard", nxt); window.scrollTo({ top: 0, behavior: "instant" }); } else onComplete();
   };
   const back = () => {
     setErr("");
     const prv = steps[idx - 1];
-    if (prv) { setStep(prv); pushNav("wizard", prv); }
+    if (prv) { setStep(prv); pushNav("wizard", prv); window.scrollTo({ top: 0, behavior: "instant" }); }
   };
 
   // ── Confidence Score (= form completion 0–100) ───────────────────
@@ -3465,6 +3465,7 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <SH icon={Church}>Status & Religion</SH>
+      <p style={{ color: "#64748b", fontSize: 13.5, marginTop: -8, lineHeight: 1.6 }}>Just to confirm</p>
 
       {/* Religion for each person inline */}
       <div>
