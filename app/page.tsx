@@ -3464,8 +3464,7 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
   const isMarried = form.maritalStatus === "verheiratet" || form.maritalStatus === "partnerschaft";
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <SH icon={Church}>Status & Religion</SH>
-      <p style={{ color: "#64748b", fontSize: 13.5, marginTop: -8, lineHeight: 1.6 }}>Just to confirm</p>
+      <SH icon={Church}>Status & Religion<br/><span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12 }}>Just to confirm</span></SH>
 
       {/* Religion for each person inline */}
       <div>
