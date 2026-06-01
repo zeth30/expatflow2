@@ -270,91 +270,79 @@ const COUNTRY_DE: Record<string,string> = {
 };
 
 // ─── Citizenship (adjective form) → German ────────────────────────
+// Canonical adjective-form nationalities — these are the only options shown in the dropdown.
 const CITIZENSHIP_DE: Record<string,string> = {
   "Afghan":"afghanisch","Albanian":"albanisch","Algerian":"algerisch",
-  "Argentine":"argentinisch","Australian":"australisch","Austrian":"österreichisch",
-  "Bangladeshi":"bangladeschisch","Belarusian":"weißrussisch","Belgian":"belgisch",
-  "Bolivian":"bolivianisch","Bosnian":"bosnisch-herzegowinisch","Brazilian":"brasilianisch",
-  "British":"britisch","Bulgarian":"bulgarisch","Cambodian":"kambodschanisch",
-  "Canadian":"kanadisch","Chilean":"chilenisch","Chinese":"chinesisch",
-  "Colombian":"kolumbianisch","Croatian":"kroatisch","Cypriot":"zypriotisch",
-  "Czech":"tschechisch","Danish":"dänisch","Dutch":"niederländisch",
-  "Egyptian":"ägyptisch","Estonian":"estnisch","Ethiopian":"äthiopisch",
-  "Finnish":"finnisch","French":"französisch","Georgian":"georgisch",
-  "German":"deutsch","Ghanaian":"ghanaisch","Greek":"griechisch",
+  "American":"amerikanisch","Angolan":"angolanisch","Argentine":"argentinisch",
+  "Armenian":"armenisch","Australian":"australisch","Austrian":"österreichisch",
+  "Azerbaijani":"aserbaidschanisch","Bahraini":"bahrainisch","Bangladeshi":"bangladeschisch",
+  "Belarusian":"weißrussisch","Belgian":"belgisch","Bolivian":"bolivianisch",
+  "Bosnian":"bosnisch-herzegowinisch","Brazilian":"brasilianisch","British":"britisch",
+  "Bulgarian":"bulgarisch","Burmese":"myanmarisch","Cambodian":"kambodschanisch",
+  "Cameroonian":"kamerunisch","Canadian":"kanadisch","Chilean":"chilenisch",
+  "Chinese":"chinesisch","Colombian":"kolumbianisch","Congolese":"kongolesisch",
+  "Croatian":"kroatisch","Cuban":"kubanisch","Cypriot":"zypriotisch",
+  "Czech":"tschechisch","Danish":"dänisch","Dominican":"dominikanisch",
+  "Dutch":"niederländisch","Ecuadorian":"ecuadorianisch","Egyptian":"ägyptisch",
+  "Emirati":"emiratisch","Estonian":"estnisch","Ethiopian":"äthiopisch",
+  "Filipino":"philippinisch","Finnish":"finnisch","French":"französisch",
+  "Georgian":"georgisch","German":"deutsch","Ghanaian":"ghanaisch",
+  "Greek":"griechisch","Guatemalan":"guatemaltekisch","Haitian":"haitianisch",
   "Hungarian":"ungarisch","Icelandic":"isländisch","Indian":"indisch",
   "Indonesian":"indonesisch","Iranian":"iranisch","Iraqi":"irakisch",
   "Irish":"irisch","Israeli":"israelisch","Italian":"italienisch",
-  "Japanese":"japanisch","Jordanian":"jordanisch","Kazakh":"kasachisch",
-  "Kenyan":"kenianisch","Latvian":"lettisch","Lebanese":"libanesisch",
-  "Libyan":"libysch","Lithuanian":"litauisch","Luxembourgish":"luxemburgisch",
-  "Malaysian":"malaysisch","Maltese":"maltesisch","Mexican":"mexikanisch",
-  "Moldovan":"moldauisch","Moroccan":"marokkanisch","New Zealand":"neuseeländisch",
-  "Nigerian":"nigerianisch","Norwegian":"norwegisch","Pakistani":"pakistanisch",
-  "Palestinian":"palästinensisch","Peruvian":"peruanisch","Philippine":"philippinisch",
-  "Filipino":"philippinisch","Polish":"polnisch","Portuguese":"portugiesisch",
-  "Romanian":"rumänisch","Russian":"russisch","Saudi":"saudi-arabisch",
-  "Saudi Arabian":"saudi-arabisch","Serbian":"serbisch","Singaporean":"singapurisch",
+  "Ivorian":"ivorisch","Jamaican":"jamaikanisch","Japanese":"japanisch",
+  "Jordanian":"jordanisch","Kazakh":"kasachisch","Kenyan":"kenianisch",
+  "Korean":"südkoreanisch","Kuwaiti":"kuwaitisch","Kyrgyz":"kirgisisch",
+  "Latvian":"lettisch","Lebanese":"libanesisch","Libyan":"libysch",
+  "Lithuanian":"litauisch","Luxembourgish":"luxemburgisch","Malaysian":"malaysisch",
+  "Malian":"malisch","Maltese":"maltesisch","Mexican":"mexikanisch",
+  "Moldovan":"moldauisch","Mongolian":"mongolisch","Montenegrin":"montenegrinisch",
+  "Moroccan":"marokkanisch","Mozambican":"mosambikanisch","Nepali":"nepalesisch",
+  "New Zealander":"neuseeländisch","Nicaraguan":"nicaraguanisch","Nigerian":"nigerianisch",
+  "North Korean":"nordkoreanisch","Norwegian":"norwegisch","Omani":"omanisch",
+  "Pakistani":"pakistanisch","Palestinian":"palästinensisch","Panamanian":"panamaisch",
+  "Paraguayan":"paraguayisch","Peruvian":"peruanisch","Polish":"polnisch",
+  "Portuguese":"portugiesisch","Qatari":"katarisch","Romanian":"rumänisch",
+  "Russian":"russisch","Rwandan":"ruandisch","Saudi":"saudi-arabisch",
+  "Senegalese":"senegalesisch","Serbian":"serbisch","Singaporean":"singapurisch",
   "Slovak":"slowakisch","Slovenian":"slowenisch","Somali":"somalisch",
   "South African":"südafrikanisch","South Korean":"südkoreanisch","Spanish":"spanisch",
-  "Sudanese":"sudanesisch","Swedish":"schwedisch","Swiss":"schweizerisch",
-  "Syrian":"syrisch","Thai":"thailändisch","Tunisian":"tunesisch",
-  "Turkish":"türkisch","Ukrainian":"ukrainisch","Venezuelan":"venezolanisch",
-  "Vietnamese":"vietnamesisch","Yemeni":"jemenitisch",
-  // Country name aliases — so typing "United States" works in citizenship field
-  "American":"amerikanisch","United States":"amerikanisch","USA":"amerikanisch","US":"amerikanisch",
-  "British":"britisch","United Kingdom":"britisch","UK":"britisch",
-  "Swiss":"schweizerisch","Switzerland":"schweizerisch",
-  "Dutch":"niederländisch","Netherlands":"niederländisch",
-  "New Zealander":"neuseeländisch","New Zealand":"neuseeländisch",
-  "Saudi":"saudi-arabisch","Saudi Arabia":"saudi-arabisch",
-  "South African":"südafrikanisch","South Africa":"südafrikanisch",
-  "South Korean":"südkoreanisch","South Korea":"südkoreanisch","Korean":"südkoreanisch",
-  "Emirati":"emiratisch","UAE":"emiratisch","United Arab Emirates":"emiratisch",
-  "Ivorian":"ivorisch","Ivory Coast":"ivorisch",
-  "Congolese":"kongolesisch","Congo":"kongolesisch",
-  "Burmese":"myanmarisch","Myanmar":"myanmarisch","Burma":"myanmarisch",
-  "North Korean":"nordkoreanisch","North Korea":"nordkoreanisch",
-  "Sri Lankan":"sri-lankisch","Sri Lanka":"sri-lankisch",
-  "Taiwanese":"taiwanesisch","Taiwan":"taiwanesisch",
-  "Angolan":"angolanisch","Angola":"angolanisch",
-  "Armenian":"armenisch","Armenia":"armenisch",
-  "Azerbaijani":"aserbaidschanisch","Azerbaijan":"aserbaidschanisch",
-  "Bahraini":"bahrainisch","Bahrain":"bahrainisch",
-  "Cameroonian":"kamerunisch","Cameroon":"kamerunisch",
-  "Chilean":"chilenisch","Chile":"chilenisch",
-  "Congolese":"kongolesisch","DR Congo":"kongolesisch",
-  "Cuban":"kubanisch","Cuba":"kubanisch",
-  "Dominican":"dominikanisch","Dominican Republic":"dominikanisch",
-  "Ecuadorian":"ecuadorianisch","Ecuador":"ecuadorianisch",
-  "Ghanaian":"ghanaisch","Ghana":"ghanaisch",
-  "Guatemalan":"guatemaltekisch","Guatemala":"guatemaltekisch",
-  "Haitian":"haitianisch","Haiti":"haitianisch",
-  "Ivorian":"ivorisch","Ivory Coast":"ivorisch",
-  "Jamaican":"jamaikanisch","Jamaica":"jamaikanisch",
-  "Kuwaiti":"kuwaitisch","Kuwait":"kuwaitisch",
-  "Kyrgyz":"kirgisisch","Kyrgyzstan":"kirgisisch",
-  "Malian":"malisch","Mali":"malisch",
-  "Mongolian":"mongolisch","Mongolia":"mongolisch",
-  "Montenegrin":"montenegrinisch","Montenegro":"montenegrinisch",
-  "Mozambican":"mosambikanisch","Mozambique":"mosambikanisch",
-  "Nepali":"nepalesisch","Nepal":"nepalesisch",
-  "Nicaraguan":"nicaraguanisch","Nicaragua":"nicaraguanisch",
-  "Omani":"omanisch","Oman":"omanisch",
-  "Panamanian":"panamaisch","Panama":"panamaisch",
-  "Paraguayan":"paraguayisch","Paraguay":"paraguayisch",
-  "Qatari":"katarisch","Qatar":"katarisch",
-  "Rwandan":"ruandisch","Rwanda":"ruandisch",
-  "Senegalese":"senegalesisch","Senegal":"senegalesisch",
-  "Somali":"somalisch","Somalia":"somalisch",
-  "Tanzanian":"tansanisch","Tanzania":"tansanisch",
-  "Togolese":"togoisch","Togo":"togoisch",
-  "Ugandan":"ugandisch","Uganda":"ugandisch",
-  "Uruguayan":"uruguayisch","Uruguay":"uruguayisch",
-  "Uzbek":"usbekisch","Uzbekistan":"usbekisch",
-  "Zambian":"sambisch","Zambia":"sambisch",
-  "Zimbabwean":"simbabwisch","Zimbabwe":"simbabwisch",
-  "Tajik":"tadschikisch","Tajikistan":"tadschikisch",
+  "Sri Lankan":"sri-lankisch","Sudanese":"sudanesisch","Swedish":"schwedisch",
+  "Swiss":"schweizerisch","Syrian":"syrisch","Taiwanese":"taiwanesisch",
+  "Tajik":"tadschikisch","Thai":"thailändisch","Togolese":"togoisch",
+  "Tunisian":"tunesisch","Turkish":"türkisch","Ugandan":"ugandisch",
+  "Ukrainian":"ukrainisch","Uruguayan":"uruguayisch","Uzbek":"usbekisch",
+  "Venezuelan":"venezolanisch","Vietnamese":"vietnamesisch","Yemeni":"jemenitisch",
+  "Zambian":"sambisch","Zimbabwean":"simbabwisch",
+};
+
+// Country-name / abbreviation aliases — used only for translation, NOT shown in dropdown.
+const CITIZENSHIP_ALIASES: Record<string,string> = {
+  "United States":"amerikanisch","USA":"amerikanisch","US":"amerikanisch",
+  "United Kingdom":"britisch","UK":"britisch",
+  "Switzerland":"schweizerisch",
+  "Netherlands":"niederländisch",
+  "New Zealand":"neuseeländisch","Philippine":"philippinisch",
+  "Saudi Arabia":"saudi-arabisch","Saudi Arabian":"saudi-arabisch",
+  "South Africa":"südafrikanisch",
+  "South Korea":"südkoreanisch",
+  "UAE":"emiratisch","United Arab Emirates":"emiratisch",
+  "Ivory Coast":"ivorisch","Congo":"kongolesisch","DR Congo":"kongolesisch",
+  "Myanmar":"myanmarisch","Burma":"myanmarisch",
+  "North Korea":"nordkoreanisch","Sri Lanka":"sri-lankisch","Taiwan":"taiwanesisch",
+  "Angola":"angolanisch","Armenia":"armenisch","Azerbaijan":"aserbaidschanisch",
+  "Bahrain":"bahrainisch","Cameroon":"kamerunisch","Chile":"chilenisch",
+  "Cuba":"kubanisch","Dominican Republic":"dominikanisch","Ecuador":"ecuadorianisch",
+  "Ghana":"ghanaisch","Guatemala":"guatemaltekisch","Haiti":"haitianisch",
+  "Jamaica":"jamaikanisch","Kuwait":"kuwaitisch","Kyrgyzstan":"kirgisisch",
+  "Mali":"malisch","Mongolia":"mongolisch","Montenegro":"montenegrinisch",
+  "Mozambique":"mosambikanisch","Nepal":"nepalesisch","Nicaragua":"nicaraguanisch",
+  "Oman":"omanisch","Panama":"panamaisch","Paraguay":"paraguayisch",
+  "Qatar":"katarisch","Rwanda":"ruandisch","Senegal":"senegalesisch",
+  "Somalia":"somalisch","Tanzania":"tansanisch","Togo":"togoisch",
+  "Uganda":"ugandisch","Uruguay":"uruguayisch","Uzbekistan":"usbekisch",
+  "Zambia":"sambisch","Zimbabwe":"simbabwisch","Tajikistan":"tadschikisch",
 };
 
 // Translate a comma-separated citizenship string to German.
@@ -363,7 +351,7 @@ function toGermanCitizenship(raw: string): string {
   if (!raw?.trim()) return raw;
   return raw.split(",").map(s => {
     const t = s.trim();
-    return CITIZENSHIP_DE[t] ?? COUNTRY_DE[t] ?? t;
+    return CITIZENSHIP_DE[t] ?? CITIZENSHIP_ALIASES[t] ?? COUNTRY_DE[t] ?? t;
   }).join(", ");
 }
 
@@ -399,8 +387,7 @@ function pdfMaritalStatus(formStatus: string, person: Person): string {
 
 // All countries for searchable dropdowns (sorted)
 const ALL_COUNTRIES: string[] = Object.keys(COUNTRY_DE).sort();
-// All citizenships for searchable dropdowns
-// ALL_CITIZENSHIPS: adjective forms + country name aliases, both searchable
+// Canonical adjective forms only — aliases are in CITIZENSHIP_ALIASES (translation only, not in dropdown)
 const ALL_CITIZENSHIPS: string[] = Object.keys(CITIZENSHIP_DE).sort();
 // Maps citizenship adjective → { country (English), isEU }
 // Used to auto-derive originCountry and EU status from Step 1 citizenship answer
@@ -1716,8 +1703,8 @@ const HACKS: Record<WizardStep, { title: string; tip: string; tag: "tip"|"warn"|
     { title: "Same appointment!", tip: "You can register your whole family in one appointment with multiple forms.", tag: "tip" },
   ],
   status: [
-    { title: "Church tax trap", tip: "Catholic or Evangelical = ~8-9% extra income tax. Choose 'keine' to opt out entirely.", tag: "warn" },
-    { title: "Religion is optional", tip: "Choosing 'keine' has zero negative consequences. Changeable at Finanzamt anytime.", tag: "info" },
+    { title: "Church tax warning", tip: "Catholic or Evangelical = ~8-9% extra income tax deducted automatically. Select 'None' to avoid this.", tag: "warn" },
+    { title: "This field must be filled", tip: "Select 'None / non-religious' if you have no denomination. To leave a church after registering requires a visit to Amtsgericht (~€30 fee).", tag: "info" },
   ],
   documents: [
     { title: "Serial number location", tip: "German passport: top-right of photo page. ID card: front below photo.", tag: "info" },
@@ -2814,7 +2801,7 @@ function SearchableSelect({ label, value, onChange, options, placeholder, req, i
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const filtered = options.filter(o => o.toLowerCase().includes(query.toLowerCase())).slice(0, 40);
+  const filtered = options.filter(o => o.toLowerCase().includes(query.toLowerCase()));
   const displayVal = value || "";
 
   return (
@@ -2831,7 +2818,7 @@ function SearchableSelect({ label, value, onChange, options, placeholder, req, i
         <div style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#94a3b8", fontSize: 10 }}>▼</div>
       </div>
       {open && (
-        <div style={{ position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, background: "white", border: "2px solid #e8ecf4", borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.12)", zIndex: 300, maxHeight: 220, overflowY: "auto" }}>
+        <div style={{ position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, background: "white", border: "2px solid #e8ecf4", borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.12)", zIndex: 300, maxHeight: 280, overflowY: "auto" }}>
           {filtered.length === 0 && (
             <div style={{ padding: "12px 14px", color: "#94a3b8", fontSize: 13 }}>No results — type to add custom</div>
           )}
@@ -2989,9 +2976,9 @@ function PersonForm({ person, idx, onChange, showDocuments = false }: {
         onChange={v => onChange("citizenship", v)}
         isPrefilled={idx === 0 && !!person.citizenship}
       />
-      <Sel opt label="Religion (Religionsgesellschaft)" value={person.religion} onChange={u("religion")}
-        opts={[["none","None / non-religious"],["rk","Catholic (r\u00f6m.-kath.)"],["ev","Protestant (ev.)"],["jd","Jewish (j\u00fcdisch)"],["is","Muslim (islamisch)"],["or","Orthodox (orthodox)"],["bu","Buddhist (buddhistisch)"],["so","Other (sonstige)"]]}
-        info="Optional — but if you select Catholic or Protestant, ~8–9% church tax applies automatically. Select 'None' to opt out with no consequences." />
+      <Sel label=”Religion (Religionsgesellschaft)” value={person.religion} onChange={u(“religion”)}
+        opts={[[“”,”— Select —“],[“none”,”None / non-religious”],[“rk”,”Catholic (röm.-kath.)”],[“ev”,”Protestant (ev.)”],[“jd”,”Jewish (jüdisch)”],[“is”,”Muslim (islamisch)”],[“or”,”Orthodox (orthodox)”],[“bu”,”Buddhist (buddhistisch)”],[“so”,”Other (sonstige)”]]}
+        info=”Must be filled. Select 'None / non-religious' to opt out of church tax — no negative consequences.” />
       <Inp opt label="Artistic / Order Name (optional)" value={person.artisticName} onChange={u("artisticName")} placeholder="Leave blank if not applicable" />
 
       {showDocuments && (
@@ -3483,7 +3470,7 @@ function StepStatus({ form, upd, set_, updPerson }: { form: FormData; upd: any; 
       <div>
         <Lbl req>Religious Affiliation — All Persons</Lbl>
         <p style={{ color: "#64748b", fontSize: 12, marginBottom: 10, lineHeight: 1.5 }}>
-          Determines Kirchensteuer (church tax ~8–9% on income tax). Choose "keine" to opt out.
+          This field must be filled. Selecting Catholic or Evangelical triggers Kirchensteuer (~8–9% extra income tax). Select "None / non-religious" to opt out — no consequences.
         </p>
         {form.people.map((person, idx) => (
           <div key={idx} style={{ marginBottom: 10, padding: "12px 14px", background: "#f8fafc", border: "1px solid #e8ecf4", borderRadius: 11 }}>
