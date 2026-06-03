@@ -6,6 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Changelog
 
+### 2026-06-04
+- **SEO: pillar page `/anmeldung-berlin-guide` added** — 4,000-word hub page targeting "anmeldung berlin guide". Full JSON-LD (Article + HowTo + FAQPage + BreadcrumbList), product CTA, interlinks to all sub-guides. Uses the same design system as all other guides (kf-grid, darkbox, callouts, timeline, faq classes).
+- **SEO: `GuideByline` + `RelatedGuides` components added** — `app/components/guides/GuideByline.tsx` (author + "Last updated" badge) and `app/components/guides/RelatedGuides.tsx` (crosslink grid) added to all 11 guide pages. Wires the full topical cluster together.
+- **SEO: `guides-data.ts` expanded** — Pillar page added as Guide 00. Five cluster pages added with `cluster: true` flag. `SIDEBAR_GUIDES` export filters out cluster pages so the numbered sidebar (00–05) stays clean. `GuideSidebar` and `GuidePageNav` both updated to use `SIDEBAR_GUIDES`.
+- **SEO: nav dropdown updated** — Pillar page card added first in `SharedNav` `GUIDE_ITEMS`. Navy background + "Start here" badge distinguishes it from the other 5 blue guide cards. Grid is now 2×3.
+- **SEO: metadata keyword gaps fixed across all pages** — Added "expat", "no German required", "foreigners", nationality keywords (American, British, Indian, non-EU), and "form filler" to title + description on: homepage (`layout.tsx`), pillar, `what-is-anmeldung`, `anmeldung-online-non-eu`, `anmeldung-documents`, `burgeramt-berlin-appointment`, `wohnungsgeberbestaetigung`, `anmeldung-deadline-berlin`, `anmeldung-couple-berlin`, `anmeldung-berlin-english`, `moving-to-berlin-registration`.
+- **Homepage title** — Changed to "Anmeldung Berlin in English — Expat Form Filler, No German Required". Description now contains "expat", "ReadyExpat", "no German required", "foreigners", "new Berlin residents".
+- **`dateModified` refreshed** — All guide pages updated to `"2026-05-31"` in JSON-LD Article schema.
+- **Sitemap updated** — `/anmeldung-berlin-guide` added at priority 0.9. All guide `lastModified` dates refreshed to 2026-05-31.
+
 ### 2026-05-16
 - **Fact-check: walk-in locations removed (#12/#13)** — Section 03 of `burgeramt-berlin-appointment/page.tsx` previously listed Bürgeramt Tempelhof and Mitte as accepting walk-ins for Anmeldung. This is incorrect: service.berlin.de states "Ohne Termin erfolgt keine Bearbeitung" (no appointment = no service). Section rewritten as "Walk-in — last resort": explains the official position, warns against relying on walk-ins, and directs users to call 115 for genuine deadline emergencies. JSON-LD FAQ answer updated to match.
 - **Fact-check: Steuer-ID timing caveat added (#10)** — `what-is-anmeldung/page.tsx` section 05 Steuer-ID card previously said "2–4 weeks" without qualification. Added caveat: "up to 6–8 weeks during the peak September relocation season."
