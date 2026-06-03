@@ -9,13 +9,13 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung for Couples and Families in Berlin 2026 | ReadyExpat",
-  description: "Registering as a couple or family in Berlin uses a single Anmeldung appointment but multiple form sheets — 2 people per sheet. Here's exactly how it works, what differs for couples vs families, and how to prepare.",
+  title: "Anmeldung for Expat Couples and Families in Berlin 2026 | ReadyExpat",
+  description: "Expat couples and families in Berlin use one Anmeldung appointment but need 2 people per form sheet. Here's exactly how multi-person registration works, what each person needs, and how to prepare.",
   alternates: { canonical: `${DOMAIN}/anmeldung-couple-berlin` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Anmeldung for Couples and Families in Berlin 2026",
-    description: "One appointment. Multiple people. Here's how multi-person Anmeldung works in Berlin.",
+    title: "Anmeldung for Expat Couples and Families in Berlin 2026",
+    description: "One appointment for the whole household. How multi-person Anmeldung works in Berlin for expat couples, families, and flatmates.",
     url: `${DOMAIN}/anmeldung-couple-berlin`,
     siteName: "ReadyExpat Berlin",
     locale: "en_US",

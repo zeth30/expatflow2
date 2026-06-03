@@ -10,14 +10,14 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Documents — What to Bring to Your Bürgeramt Appointment",
+  title: "Anmeldung Berlin Documents: Expat Checklist for Bürgeramt 2026",
   description:
-    "The complete document checklist for your Anmeldung in Germany. Personalised for your situation — missing a required document means a failed appointment; minor form errors are usually corrected at the counter.",
+    "Complete Anmeldung document checklist for expats in Berlin. Passport, Wohnungsgeberbestätigung, German form — missing one item gets you sent home. What to bring, by nationality and situation.",
   alternates: { canonical: `${DOMAIN}/anmeldung-documents` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Anmeldung Document Checklist — What to Bring to the Bürgeramt",
-    description: "Personalised document checklist for your Anmeldung appointment. Know exactly what to bring for your situation — missing a document costs you the appointment slot.",
+    title: "Anmeldung Berlin Documents: Expat Checklist 2026",
+    description: "What expats need to bring to their Berlin Anmeldung appointment. Full checklist by nationality — missing one document means losing your slot.",
     url: `${DOMAIN}/anmeldung-documents`,
     siteName: "ReadyExpat Berlin",
     type: "article",

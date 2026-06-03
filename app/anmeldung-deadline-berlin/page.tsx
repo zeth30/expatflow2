@@ -9,13 +9,13 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Deadline Berlin: The 14-Day Rule Explained | ReadyExpat",
-  description: "You have 14 calendar days to register your address in Berlin. Berlin appointments often take 3–6 weeks. Here's what the law says, what actually happens in practice, and what a screenshot does for you.",
+  title: "Anmeldung Deadline Berlin: 14-Day Rule for Expats 2026 | ReadyExpat",
+  description: "Expats moving to Berlin have 14 days to register under §17 BMG. But Bürgeramt appointments take 3–6 weeks. Here's what actually happens and how a screenshot protects you from fines.",
   alternates: { canonical: `${DOMAIN}/anmeldung-deadline-berlin` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Anmeldung Deadline Berlin: The 14-Day Rule Explained",
-    description: "14 days to register. Fine up to €1,000. Here's the full breakdown plus a deadline calculator.",
+    title: "Anmeldung Deadline Berlin: 14-Day Rule for Expats 2026",
+    description: "14 days to register, but slots take 3–6 weeks. Here's the expat guide to the Berlin Anmeldung deadline — what the law says vs what actually happens.",
     url: `${DOMAIN}/anmeldung-deadline-berlin`,
     siteName: "ReadyExpat Berlin",
     locale: "en_US",

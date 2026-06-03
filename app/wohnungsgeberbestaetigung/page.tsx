@@ -10,14 +10,14 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Wohnungsgeberbestätigung — How to Get It and What to Do If Your Landlord Refuses",
+  title: "Wohnungsgeberbestätigung Berlin: Expat Landlord Guide 2026",
   description:
-    "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away. Here is exactly what it is, who can sign it, and how to get it fast.",
+    "Expats in Berlin need the Wohnungsgeberbestätigung signed by their landlord before Anmeldung. What it is, the official template, who can sign in a WG, and what to do if your landlord refuses.",
   alternates: { canonical: `${DOMAIN}/wohnungsgeberbestaetigung` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Wohnungsgeberbestätigung — What It Is and How to Get It",
-    description: "Your landlord must sign the Wohnungsgeberbestätigung before your Anmeldung. Without it the Bürgeramt turns you away.",
+    title: "Wohnungsgeberbestätigung Berlin: Expat Guide 2026",
+    description: "The landlord confirmation form every expat in Berlin needs before Anmeldung. Template, who signs, and what to do if your landlord refuses.",
     url: `${DOMAIN}/wohnungsgeberbestaetigung`,
     siteName: "ReadyExpat Berlin",
     type: "article",

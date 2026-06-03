@@ -8,15 +8,15 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "The Complete Anmeldung Berlin Guide (2026) | ReadyExpat",
+  title: "Anmeldung Berlin Guide for Expats (2026) | ReadyExpat",
   description:
-    "Everything you need to complete your Berlin Anmeldung in 2026. What it is, required documents, landlord confirmation, how to book a Bürgeramt appointment, and how to fill all 54 fields correctly in English.",
+    "Complete Anmeldung Berlin guide for expats in 2026. Documents, appointment hacks, landlord form, all 54 form fields in English. Register your Berlin address correctly — first time.",
   alternates: { canonical: `${DOMAIN}/anmeldung-berlin-guide` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "The Complete Anmeldung Berlin Guide (2026)",
+    title: "Anmeldung Berlin Guide for Expats (2026)",
     description:
-      "Everything expats need to complete their Berlin Anmeldung in 2026 — documents, appointment hacks, the landlord form, and a pre-filled PDF tool.",
+      "Complete Anmeldung guide for expats moving to Berlin — documents, appointment hacks, landlord form, and all 54 fields in English.",
     url: `${DOMAIN}/anmeldung-berlin-guide`,
     siteName: "ReadyExpat Berlin",
     locale: "en_US",

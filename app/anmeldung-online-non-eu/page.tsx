@@ -10,14 +10,14 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Can Non-EU Citizens Do the Anmeldung Online? — Berlin 2026",
+  title: "Online Anmeldung Berlin: Why Expats Cannot Register Online (2026)",
   description:
-    "Non-EU citizens cannot register their address online in Germany. Online Anmeldung requires an EU/EEA eID card. Here is the in-person path that works for US, UK, Indian, and other non-EU expats.",
+    "Non-EU expats in Berlin cannot use the online Anmeldung — it requires an EU eID chip. Guide for US, UK, Indian, Australian, and Brazilian expats: the in-person path that actually works.",
   alternates: { canonical: `${DOMAIN}/anmeldung-online-non-eu` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Online Anmeldung for Non-EU Citizens — Why It's Not Available",
-    description: "Non-EU citizens cannot register online in Germany. The eID requirement excludes everyone without an EU/EEA passport. Here is the in-person path.",
+    title: "Online Anmeldung Berlin: Why Expats Cannot Register Online",
+    description: "Non-EU expats cannot use the online Anmeldung portal in Berlin. Here is the in-person path for US, UK, Indian, and all non-EU passport holders.",
     url: `${DOMAIN}/anmeldung-online-non-eu`,
     siteName: "ReadyExpat Berlin",
     type: "article",

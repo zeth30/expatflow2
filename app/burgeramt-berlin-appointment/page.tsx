@@ -9,14 +9,14 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "How to Get a Bürgeramt Berlin Appointment — Hacks That Actually Work (2026)",
+  title: "Bürgeramt Berlin Appointment: Expat Guide to Booking (2026)",
   description:
-    "Berlin Bürgeramt appointments vanish in seconds. Here is exactly how to find a slot in 2026 — the Tuesday trick, walk-in options, the 115 hotline, and what to do when there are no slots before your 14-day deadline.",
+    "Berlin Bürgeramt appointment slots vanish in 60 seconds. Expat guide: Tuesday 8 AM trick, outer districts, 115 hotline, and what to do when there are no slots before your 14-day Anmeldung deadline.",
   alternates: { canonical: `${DOMAIN}/burgeramt-berlin-appointment` },
   robots: { index: true, follow: true },
   openGraph: {
-    title: "How to Book a Bürgeramt Appointment in Berlin (2026)",
-    description: "Berlin Bürgeramt slots vanish in seconds. Here is exactly how to find one — including the Tuesday trick, walk-in options, and what to do if there are no slots before your 14-day deadline.",
+    title: "Bürgeramt Berlin Appointment: Expat Booking Guide (2026)",
+    description: "Slots vanish in 60 seconds. The expat guide to booking a Berlin Bürgeramt appointment — Tuesday trick, outer districts, and 115 hotline.",
     url: `${DOMAIN}/burgeramt-berlin-appointment`,
     siteName: "ReadyExpat Berlin",
     type: "article",
