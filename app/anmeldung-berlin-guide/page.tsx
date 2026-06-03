@@ -10,7 +10,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 export const metadata: Metadata = {
   title: "Anmeldung Berlin Guide for Expats (2026) | ReadyExpat",
   description:
-    "Complete Anmeldung Berlin guide for expats in 2026. Documents, appointment hacks, landlord form, all 54 form fields in English. Register your Berlin address correctly — first time.",
+    "Complete Anmeldung Berlin guide for expats in 2026. No German required. Documents, appointment hacks, landlord form, all 54 fields in English — for American, British, Indian, and all non-EU residents.",
   alternates: { canonical: `${DOMAIN}/anmeldung-berlin-guide` },
   robots: { index: true, follow: true },
   openGraph: {

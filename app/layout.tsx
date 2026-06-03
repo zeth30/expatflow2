@@ -7,9 +7,9 @@ import "./globals.css";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin in English — Fill All 54 Fields Correctly",
+  title: "Anmeldung Berlin in English — Expat Form Filler, No German Required",
   description:
-    "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
+    "Fill your Berlin Anmeldung in English. No German required. ReadyExpat translates all 54 fields correctly and generates a ready-to-print PDF for expats, foreigners, and new Berlin residents. €15, done in 5 minutes.",
   keywords: [
     "Anmeldung Berlin English",
     "Anmeldung Berlin PDF",
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Anmeldung Berlin in English — Fill All 54 Fields Correctly",
+    title: "Anmeldung Berlin in English — Expat Form Filler, No German Required",
     description:
-      "Stop struggling with German bureaucracy. Convert your details into a perfect Anmeldung form for the Bürgeramt — all 54 fields filled in German. Fast, secure, and 0 storage.",
+      "Fill your Berlin Anmeldung in English. No German required. ReadyExpat fills all 54 fields correctly for expats and generates a ready-to-print German PDF in 5 minutes.",
     url: DOMAIN,
     siteName: "ReadyExpat Berlin",
     images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "ReadyExpat Berlin — Anmeldung PDF in English" }],
