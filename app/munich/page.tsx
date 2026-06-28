@@ -996,9 +996,14 @@ function StepReview({ f }: { f: MunichForm }) {
 }
 
 // ─── Payment page ─────────────────────────────────────────────────
-function MunichPaymentPage({ form }: { form: MunichForm }) {
+function MunichPaymentPage({ form, onDevSkip }: { form: MunichForm; onDevSkip: () => void }) {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState("");
+  const [isDevTest, setIsDevTest] = useState(false);
+  useEffect(() => {
+    const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
+    setIsDevTest(!!devToken && sessionStorage.getItem("devtest") === devToken);
+  }, []);
 
   const handlePay = async () => {
     setLoading(true);
@@ -1046,6 +1051,15 @@ function MunichPaymentPage({ form }: { form: MunichForm }) {
         <p style={{ color: MUTED, fontSize: 12, marginTop: 10, textAlign: "center" }}>
           Powered by Stripe · Secure payment
         </p>
+        {isDevTest && (
+          <button onClick={onDevSkip} style={{
+            width: "100%", marginTop: 12, padding: "12px", borderRadius: 8,
+            border: "2px dashed #60a5fa", background: "transparent",
+            color: "#60a5fa", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit",
+          }}>
+            [DEV] Skip payment &amp; generate PDF
+          </button>
+        )}
       </div>
       <AppFooter />
     </div>
@@ -1183,9 +1197,13 @@ export default function MunichPage() {
   const [sessionError, setSessionError] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
 
-  // Restore from localStorage + handle Stripe return
+  // Restore from localStorage + handle Stripe return + devtest flag
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
+    if (devToken && new URLSearchParams(window.location.search).get("devtest") === devToken) {
+      sessionStorage.setItem("devtest", devToken);
+    }
     if (localStorage.getItem(DONE_KEY) === "1") {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -1289,7 +1307,7 @@ export default function MunichPage() {
 
   // ── Phase: payment ───────────────────────────────────────────────
   if (phase === "payment") {
-    return <MunichPaymentPage form={form} />;
+    return <MunichPaymentPage form={form} onDevSkip={() => setPhase("generating")} />;
   }
 
   // ── Phase: generating ────────────────────────────────────────────
