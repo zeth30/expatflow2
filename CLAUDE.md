@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 > **Before editing any user-facing copy, read [`CONTENT_RULES.md`](./CONTENT_RULES.md).** It contains established facts about the product, legal details, and wording rules that must stay consistent across all pages.
 
+> **Before building any new feature, read [`MISSION.md`](./MISSION.md).** It contains the product vision, brand direction, architecture principles, and what is planned — so nothing is built that contradicts the bigger picture.
+
 ## Changelog
 
 ### 2026-06-04
@@ -58,13 +60,13 @@ Three variables are required; copy `.env.local.example` or set them directly:
 | Variable | Purpose |
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_test_...` or `sk_live_...` |
-| `NEXT_PUBLIC_DOMAIN` | Full domain, no trailing slash (e.g. `https://simplyexpat.de`) |
+| `NEXT_PUBLIC_DOMAIN` | Full domain, no trailing slash (e.g. `https://readyexpat.de`) |
 | `RESEND_API_KEY` | Resend API key for post-payment reminder emails |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` from Stripe Dashboard (for `/api/webhook`) |
 
 ## Architecture
 
-This is **SimplyExpat Berlin** — a Next.js 16 / React 19 app that lets expats fill in Berlin's official Anmeldung (address registration) form in English and generate a correctly-filled German PDF.
+This is **ReadyExpat** — a Next.js 16 / React 19 app that lets expats fill in Berlin's official Anmeldung (address registration) form in English and generate a correctly-filled German PDF.
 
 ### Privacy model
 All form data is stored exclusively in `localStorage` under the key `simplyexpat-v1`. It never reaches the server. The only data transmitted server-side is: Stripe payment info, and optionally a first name + email for the reminder email.
@@ -97,18 +99,18 @@ PDF generation is entirely client-side using `pdf-lib`. The template is `public/
 ### German translation tables
 `page.tsx` contains large inline lookup tables: `COUNTRY_DE` (English country name → German), `CITIZENSHIP_DE` (adjective/country → German adjective), `GENDER_DE`, `RELIGION_DE`, `MARITAL_DE`, and `CITIZENSHIP_TO_COUNTRY` (citizenship → `{ country, isEU }`). These drive both UI dropdowns and PDF field values — edits here affect what gets printed in the PDF.
 
-# SimplyExpat Berlin — Developer Transfer Package
+# ReadyExpat — Developer Transfer Package
 > Paste this file + the latest `page.tsx` into a new Claude chat. Claude will be immediately up to speed.
 
 ---
 
 ## 1. PROJECT OVERVIEW
 
-**Product:** SimplyExpat Berlin  
+**Product:** ReadyExpat  
 **What it does:** Auto-fills the official German Anmeldung (residence registration) PDF form in English. Users answer a wizard, pay €15 via Stripe, and download a perfectly filled PDF ready for the Bürgeramt.  
 **Stack:** Next.js 16.2.3 (App Router), TypeScript, pdf-lib (CDN via loadPdfLib()), Stripe, Resend, inline styles only (no Tailwind/CSS modules)  
 **Repo:** github.com/zeth30/expatflow2 (branch: main)  
-**Live:** simplyexpat.de (Vercel, deploy via deploy hook)  
+**Live:** readyexpat.de (Vercel, deploy via deploy hook)  
 **Local path:** /Users/zeth/expatflow/
 
 ---
@@ -331,7 +333,7 @@ const chk = (n: string, checked: boolean) => {
 
 ### BUG 6: Blank PDF on re-download after tab close — FIXED (2026-04-26)
 **Problem:** React state cleared on tab close. Re-downloading generates from empty form.
-**Fix:** Don't wipe localStorage after generation. `getForm()` reads from localStorage as fallback. Returns `null` (not empty form) when data is truly gone — shows `sessionError` banner in DonePage instead of generating a blank PDF. Banner text tells user to contact info@simplyexpat.de with payment confirmation.
+**Fix:** Don't wipe localStorage after generation. `getForm()` reads from localStorage as fallback. Returns `null` (not empty form) when data is truly gone — shows `sessionError` banner in DonePage instead of generating a blank PDF. Banner text tells user to contact info@readyexpat.de with payment confirmation.
 
 ### BUG 7: Back button from done page goes to wizard/payment
 **Fix:** `popstate` handler checks `simplyexpat-done-v1` flag, calls `window.history.replaceState({ ph: "done" })`. Also push 2 extra history entries on done page mount. Also `useEffect` watching `phase` redirects immediately if done flag set.
@@ -358,11 +360,11 @@ const chk = (n: string, checked: boolean) => {
 | Name | Value |
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_live_...` |
-| `NEXT_PUBLIC_DOMAIN` | `https://simplyexpat.de` |
+| `NEXT_PUBLIC_DOMAIN` | `https://readyexpat.de` |
 | `RESEND_API_KEY` | `re_...` |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` (from live webhook endpoint) |
 
-**Stripe webhook:** dashboard.stripe.com → Developers → Webhooks → endpoint `https://simplyexpat.de/api/webhook` → event `checkout.session.completed`
+**Stripe webhook:** dashboard.stripe.com → Developers → Webhooks → endpoint `https://readyexpat.de/api/webhook` → event `checkout.session.completed`
 
 ---
 
@@ -475,7 +477,7 @@ Both the done page cards and the PDF checklist show:
 - **FAQ nav link** — "FAQ" link added to `StickyNav` between Services dropdown and CTA button. FAQ teaser section (3 Q&As + "See all 20 questions →") added to `LandingPage` between hero and bottom CTA.
 - **Time consistency** — standardised to "5 minutes" everywhere. Was "2 Minutes" in `layout.tsx` title/OG, "3 minutes" in hero/stats/CTA/SEO paragraph/WhatsApp share link, "5 minutes" in FAQ CTA.
 - **Mailbox tip — 4 locations** — "Add your surname to the letterbox (Briefkasten). Official mail is not delivered to unlabelled mailboxes. Your Steuer-ID arrives by post 2–4 weeks after Anmeldung." Added to: (1) `StepNewAddress` IBox at bottom of form, (2) DonePage green card before print tip, (3) Guide PDF Page 1 green callout box after print warning, (4) Guide PDF Page 2 green bullet in "After your appointment" section.
-- **PDF branding** — SimplyExpat "S" logo box (navy/blue, 22×22pt) + `simplyexpat.de` URL added to top-right corner of both Page 1 and Page 2 headers in `buildGuidePDF`. Footers updated from "SimplyExpat Berlin" to "simplyexpat.de".
+- **PDF branding** — ReadyExpat "S" logo box (navy/blue, 22×22pt) + `readyexpat.de` URL added to top-right corner of both Page 1 and Page 2 headers in `buildGuidePDF`. Footers updated from "ReadyExpat" to "readyexpat.de".
 - **Landing page redesign (6 changes)** — (1) "In English. No German required." tagline added under H1. (2) Both old subheadline paragraphs replaced with new single paragraph ("Moving to Berlin is exciting. German paperwork isn't…"). (3) 14-day warning box removed from landing page only (kept in FAQ and wizard). (4) "€15 · One-time · No account needed" added below CTA button. (5) Testimonial added: `"This saved me so much stress." — Expat in Berlin`. (6) Brandenburg Gate Unsplash photo replaced with `/public/anmeldung-form.png` — styled as stacked-paper document preview with faint rotated shadow layers, light gradient background, and floating "✓ 54 fields · Perfect German" badge.
 
 ---
