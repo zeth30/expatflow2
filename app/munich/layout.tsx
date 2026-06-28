@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://simplyexpat.de";
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
   title: "Anmeldung München in English — Expat Form Filler, No German Required",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description:
       "Munich residence registration for expats. Fill in English, get a perfect German PDF in 5 minutes. No German required.",
     url: `${DOMAIN}/munich`,
-    siteName: "SimplyExpat",
+    siteName: "ReadyExpat",
     type: "website",
   },
   twitter: {

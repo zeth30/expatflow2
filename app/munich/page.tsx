@@ -1104,7 +1104,7 @@ function MunichDonePage({
         {sessionError ? (
           <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: 16, marginBottom: 20 }}>
             <p style={{ color: "#dc2626", fontSize: 14, margin: 0 }}>
-              Session data was lost. Please contact info@simplyexpat.de with your payment confirmation and we will resend your PDF.
+              Session data was lost. Please contact info@readyexpat.de with your payment confirmation and we will resend your PDF.
             </p>
           </div>
         ) : pdfBytes ? (
