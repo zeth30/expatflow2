@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
       session.payment_status === "paid" &&
       session.status === "complete";
 
-    return NextResponse.json({ paid });
+    const returnPath = session.metadata?.returnPath ?? "/";
+    return NextResponse.json({ paid, returnPath });
   } catch (err: any) {
     console.error("[ExpatFlow] verify-session error:", err?.message);
     return NextResponse.json({ paid: false }, { status: 500 });

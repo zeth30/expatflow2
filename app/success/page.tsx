@@ -39,12 +39,10 @@ function SuccessInner() {
           setStatus("error");
           return;
         }
-        // Payment confirmed — redirect to main app which handles PDF generation
-        // The ?paid=verified flag tells page.tsx to skip the payment screen
-        // and auto-trigger doGenerate
         setStatus("confirmed");
+        const returnPath = data.returnPath ?? "/";
         setTimeout(() => {
-          router.replace("/?paid=verified");
+          router.replace(`${returnPath}?paid=verified`);
         }, 1200);
       })
       .catch(() => setStatus("error"));

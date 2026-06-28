@@ -6,6 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: DOMAIN,                                              lastModified: new Date("2026-05-31"), changeFrequency: "weekly",  priority: 1   },
     { url: `${DOMAIN}/anmeldung-berlin-guide`,                 lastModified: new Date("2026-05-31"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${DOMAIN}/munich`,                                 lastModified: new Date("2026-06-28"), changeFrequency: "weekly",  priority: 0.9 },
     { url: `${DOMAIN}/faq`,                                    lastModified: new Date("2026-05-31"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${DOMAIN}/what-is-anmeldung`,                      lastModified: new Date("2026-05-31"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${DOMAIN}/anmeldung-online-non-eu`,                lastModified: new Date("2026-05-31"), changeFrequency: "monthly", priority: 0.8 },

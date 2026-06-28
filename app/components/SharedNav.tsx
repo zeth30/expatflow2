@@ -144,6 +144,13 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
               <span style={{ fontSize: 13.5, fontWeight: 600, color: "#0f172a" }}>{g.label}</span>
             </a>
           ))}
+          <a href="/munich" onClick={() => setMobileOpen(false)}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 0", borderBottom: "1px solid #f1f5f9", textDecoration: "none" }}>
+            <div style={{ width: 28, height: 28, borderRadius: 7, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+            </div>
+            <span style={{ fontSize: 13.5, fontWeight: 600, color: "#0f172a" }}>Anmeldung München</span>
+          </a>
           <a href="/faq" onClick={() => setMobileOpen(false)}
             style={{ display: "block", padding: "12px 0", fontSize: 13.5, fontWeight: 600, color: "#0f172a", textDecoration: "none", borderBottom: "1px solid #f1f5f9" }}>
             FAQ
@@ -242,6 +249,22 @@ export function SharedNav({ onStart, currentPage }: { onStart?: () => void; curr
                   </div>
                 </a>
               )}
+
+              {/* Munich Anmeldung — active service */}
+              <a href="/munich" onClick={() => setMenuOpen(null)}
+                style={{ display: "block", padding: "20px", borderRadius: 16, border: "1.5px solid #bfdbfe", background: "linear-gradient(135deg,#eff6ff,#dbeafe)", textDecoration: "none", transition: "all 0.15s" }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: "#0075FF", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+                  </svg>
+                </div>
+                <div style={{ fontWeight: 800, color: "#0f172a", fontSize: 15, marginBottom: 4 }}>Anmeldung München <span style={{ fontWeight: 500, color: "#64748b", fontSize: 12 }}>(Munich)</span></div>
+                <div style={{ fontSize: 12.5, color: "#1d4ed8", lineHeight: 1.5 }}>Official Munich registration form in English — all fields filled in German, ready to print.</div>
+                <div style={{ marginTop: 12, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, fontWeight: 700, color: "#0075FF" }}>
+                  Start now
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 5.5h7M6 2.5l3 3-3 3" stroke="#0075FF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </div>
+              </a>
 
               {/* Steuerliche Erfassung — coming soon */}
               <div style={{ padding: "20px", borderRadius: 16, border: "1.5px solid #e8ecf4", background: "#f8fafc", position: "relative", overflow: "hidden" }}>

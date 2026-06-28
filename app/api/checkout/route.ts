@@ -21,6 +21,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: NextRequest) {
   try {
     const domain = process.env.NEXT_PUBLIC_DOMAIN ?? "http://localhost:3000";
+    const body = await req.json().catch(() => ({}));
+    const returnPath: string = body.returnPath ?? "/";
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -47,6 +49,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         service: "anmeldung-preparation",
         version: "1.0",
+        returnPath,
       },
       // Enables "Add promo code" field on Stripe-hosted checkout
       allow_promotion_codes: true,
