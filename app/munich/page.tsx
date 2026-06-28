@@ -423,7 +423,7 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     sel(MF.REL[i], REL_CODE[p.religion] ?? "-");
 
     // Marriage date+place per person (only if married/partnership, not child)
-    if (p.relationship !== "child" && ["verheiratet","partnerschaft"].includes(d.maritalStatus)) {
+    if (p.relationship !== "child" && ["verheiratet","partnerschaft","getrennt"].includes(d.maritalStatus)) {
       const eheVal = [fmtDate(d.marriageDate), d.marriagePlace, toGermanCountry(d.marriageCountry)]
         .filter(Boolean).join(", ");
       txt(MF.DAT[i], safe(eheVal));
@@ -490,14 +490,17 @@ function getError(step: WizardStep, f: MunichForm): string {
   if (step === "people") {
     for (let i = 0; i < f.people.length; i++) {
       const p = f.people[i];
-      if (!p.lastName)   return `Person ${i+1}: last name is required.`;
-      if (!p.firstName)  return `Person ${i+1}: first name is required.`;
-      if (!p.birthDate)  return `Person ${i+1}: birth date is required.`;
+      if (!p.lastName)    return `Person ${i+1}: last name is required.`;
+      if (!p.firstName)   return `Person ${i+1}: first name is required.`;
+      if (!p.birthDate)   return `Person ${i+1}: birth date is required.`;
+      if (!p.gender)      return `Person ${i+1}: gender is required.`;
       if (!p.citizenship) return `Person ${i+1}: citizenship is required.`;
     }
   }
   if (step === "status") {
     if (!f.maritalStatus) return "Please select a marital status.";
+    if (["verheiratet","partnerschaft","getrennt"].includes(f.maritalStatus) && !f.marriageDate)
+      return "Marriage / partnership date is required.";
   }
   return "";
 }
@@ -822,9 +825,10 @@ function StepPeople({ f, set_ }: { f: MunichForm; set_: (k: keyof MunichForm, v:
   );
 }
 
-function StepStatus({ f, upd }: {
+function StepStatus({ f, upd, set_ }: {
   f: MunichForm;
   upd: (k: keyof MunichForm) => (e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void;
+  set_: (k: keyof MunichForm, v: any) => void;
 }) {
   const showMarriage = ["verheiratet","partnerschaft"].includes(f.maritalStatus);
   return (
@@ -1209,6 +1213,7 @@ export default function MunichPage() {
       if (raw) {
         try { setForm(f => ({ ...EMPTY, ...JSON.parse(raw).form })); } catch {}
       }
+      setSessionError(true); // pdfBytes are gone after tab close — show contact banner
       setPhase("done");
       return;
     }
@@ -1228,6 +1233,20 @@ export default function MunichPage() {
     if (typeof window === "undefined") return;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ form })); } catch {}
   }, [form]);
+
+  // Lock done page — prevent back-button from re-entering wizard
+  useEffect(() => {
+    if (phase !== "done") return;
+    window.history.pushState({ ph: "done" }, "");
+    window.history.pushState({ ph: "done" }, "");
+    const handler = () => {
+      if (localStorage.getItem(DONE_KEY) === "1") {
+        window.history.pushState({ ph: "done" }, "");
+      }
+    };
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, [phase]);
 
   // Generate PDF when entering "generating" phase
   useEffect(() => {
@@ -1372,7 +1391,7 @@ export default function MunichPage() {
     "new-address":  <StepNewAddress f={form} upd={upd} set_={set_} />,
     "prev-address": <StepPrevAddress f={form} upd={upd} set_={set_} />,
     "people":       <StepPeople f={form} set_={set_} />,
-    "status":       <StepStatus f={form} upd={upd} />,
+    "status":       <StepStatus f={form} upd={upd} set_={set_} />,
     "documents":    <StepDocuments f={form} set_={set_} />,
     "review":       <StepReview f={form} />,
   };
