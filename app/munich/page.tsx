@@ -1001,69 +1001,27 @@ function StepReview({ f }: { f: MunichForm }) {
 
 // ─── Payment page ─────────────────────────────────────────────────
 function MunichPaymentPage({ form, onDevSkip }: { form: MunichForm; onDevSkip: () => void }) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
-  const [isDevTest, setIsDevTest] = useState(false);
-  useEffect(() => {
-    const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
-    setIsDevTest(!!devToken && sessionStorage.getItem("devtest") === devToken);
-  }, []);
-
-  const handlePay = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ returnPath: "/munich" }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError("Payment setup failed. Please try again.");
-      }
-    } catch {
-      setError("Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
       <SharedNav />
       <div style={{ maxWidth: 480, margin: "80px auto", padding: "0 24px" }}>
-        <h2 style={{ fontSize: 24, fontWeight: 800, color: NAVY, marginBottom: 8 }}>One-time payment</h2>
-        <p style={{ color: MUTED, marginBottom: 28 }}>€15 · Instant PDF download · No account needed</p>
-        <div style={{ background: "#fff", border: BORDER, borderRadius: 12, padding: 20, marginBottom: 20 }}>
+        <div style={{ background: "#fff", border: BORDER, borderRadius: 12, padding: 20, marginBottom: 24 }}>
           <p style={{ fontWeight: 600, marginBottom: 4, color: NAVY }}>Munich Anmeldung — {form.people.length} person{form.people.length > 1 ? "s" : ""}</p>
           <p style={{ color: MUTED, fontSize: 14 }}>
             {form.people[0]?.firstName} {form.people[0]?.lastName} · {form.newStreet} {form.newNumber}, München
           </p>
         </div>
-        {error && <p style={{ color: "#ef4444", marginBottom: 12, fontSize: 14 }}>{error}</p>}
-        <button onClick={handlePay} disabled={loading} style={{
+        <button onClick={onDevSkip} style={{
           width: "100%", background: BLUE, color: "#fff", border: "none",
           padding: 14, borderRadius: 8, fontSize: 16, fontWeight: 700,
-          cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1,
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          fontFamily: "inherit",
         }}>
-          <CreditCard size={18} /> {loading ? "Redirecting…" : "Pay €15 and download PDF"}
+          <Download size={18} /> Get my Munich PDF — Free
         </button>
         <p style={{ color: MUTED, fontSize: 12, marginTop: 10, textAlign: "center" }}>
-          Powered by Stripe · Secure payment
+          Munich is free during our beta · No account needed
         </p>
-        {isDevTest && (
-          <button onClick={onDevSkip} style={{
-            width: "100%", marginTop: 12, padding: "12px", borderRadius: 8,
-            border: "2px dashed #60a5fa", background: "transparent",
-            color: "#60a5fa", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit",
-          }}>
-            [DEV] Skip payment &amp; generate PDF
-          </button>
-        )}
       </div>
       <AppFooter />
     </div>
