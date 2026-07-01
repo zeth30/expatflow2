@@ -347,7 +347,7 @@ function savePDF(bytes: Uint8Array, name: string) {
 
 // ─── Munich PDF filler ────────────────────────────────────────────
 async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
-  const { PDFDocument } = await loadPdfLib();
+  const { PDFDocument, PDFName } = await loadPdfLib();
   const templateBytes = await fetch("/munich-anmeldung.pdf").then(r => r.arrayBuffer());
   const doc = await PDFDocument.load(templateBytes, { ignoreEncryption: true });
   const form = doc.getForm();
@@ -358,10 +358,36 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     try { form.getTextField(n).setText(safe(v)); } catch {}
   };
 
-  // Radio button helper — Munich uses named export values (Männlich, Weiblich etc.)
-  const rdo = (n: string, v: string) => {
-    if (!v) return;
-    try { form.getRadioGroup(n).select(v); } catch {}
+  // Radio button helper — getRadioGroup().select() silently fails on this PDF (same issue as Berlin checkboxes).
+  // Directly set AS on each kid widget and V on the parent.
+  const rdo = (fieldName: string, exportVal: string) => {
+    if (!exportVal) return;
+    try {
+      const radioGroup = form.getRadioGroup(fieldName);
+      const acroField = (radioGroup as any).acroField;
+      acroField.dict.set(PDFName.of("V"), PDFName.of(exportVal));
+      const kids = acroField.Kids();
+      if (!kids) return;
+      kids.forEach((kidRef: any) => {
+        try {
+          const kid = doc.context.lookup(kidRef) as any;
+          const ap = kid.get(PDFName.of("AP"));
+          const nDict = ap?.get(PDFName.of("N"));
+          // Find this widget's own export value from its AP/N keys
+          let widgetExport: string | null = null;
+          if (nDict?.entries) {
+            for (const [k] of nDict.entries()) {
+              const kName = k.asString ? k.asString() : String(k);
+              if (kName !== "/Off" && kName !== "Off") {
+                widgetExport = kName.startsWith("/") ? kName.slice(1) : kName;
+                break;
+              }
+            }
+          }
+          kid.set(PDFName.of("AS"), PDFName.of(widgetExport === exportVal ? exportVal : "Off"));
+        } catch {}
+      });
+    } catch {}
   };
 
   // Choice field helper (combobox/listbox) — Munich famst1-4, rel1-4, art1-4
