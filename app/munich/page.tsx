@@ -11,9 +11,9 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import {
-  ArrowRight, ArrowLeft, Plus, Trash2, Download,
-  User, Users, MapPin, Home, CreditCard,
-  CheckCircle2, RotateCcw, AlertCircle,
+  ArrowRight, ArrowLeft, ChevronRight, Plus, Trash2, Download,
+  User, Users, Home, FileText, Shield, Layers,
+  CheckCircle2, Check, RotateCcw, AlertCircle,
 } from "lucide-react";
 import { SharedNav } from "../components/SharedNav";
 import { AppFooter } from "../components/AppFooter";
@@ -583,6 +583,39 @@ function getError(step: WizardStep, f: MunichForm): string {
   }
   return "";
 }
+
+const STEP_LABELS: Record<WizardStep, string> = {
+  "origin": "Origin", "new-address": "New Address", "prev-address": "Previous Address",
+  "people": "People", "status": "Status", "documents": "Documents", "review": "Review",
+};
+
+function calcMunichScore(f: MunichForm): number {
+  let filled = 0;
+  const total = 6;
+  if (f.originCountry) filled++;
+  if (f.newStreet && f.newPostalCode && f.moveInDate) filled++;
+  if (f.prevCountry) filled++;
+  if (f.people.length > 0 && f.people.every(p => p.lastName && p.firstName && p.birthDate && p.citizenship)) filled++;
+  if (f.maritalStatus) filled++;
+  if (f.people.some(p => p.docSerial || p.fillHandwritten)) filled++;
+  return Math.round((filled / total) * 100);
+}
+
+type MunichHack = { tag: "tip" | "warn" | "info"; title: string; tip: string };
+const MUNICH_HACKS: Partial<Record<WizardStep, MunichHack[]>> = {
+  "new-address": [
+    { tag: "info", title: "Sole / Primary / Secondary residence", tip: "Sole residence = your only home in Germany. Primary = your main home if you're keeping a second address. Secondary = a non-main address you keep registered." },
+  ],
+  "people": [
+    { tag: "tip", title: "One form fits your family", tip: "Munich's Anmeldung fits up to 4 people on a single sheet — no separate forms needed for the whole household." },
+  ],
+  "status": [
+    { tag: "info", title: "Non-moving spouse?", tip: "If your spouse or registered partner isn't moving to Munich with you, add their details separately — they don't need to be present at your appointment." },
+  ],
+  "documents": [
+    { tag: "tip", title: "Document code cheatsheet", tip: "RP = Reisepass (passport) · PA = Personalausweis (ID card) · KRP/KA = children's travel document/ID · AKN = Aufenthaltstitel (residence permit)." },
+  ],
+};
 
 // ─── Shared style tokens ──────────────────────────────────────────
 const NAVY  = "#0f172a";
@@ -1189,26 +1222,75 @@ function StepReview({ f }: { f: MunichForm }) {
 
 // ─── Payment page ─────────────────────────────────────────────────
 function MunichPaymentPage({ form, onDevSkip }: { form: MunichForm; onDevSkip: () => void }) {
+  const p1 = form.people[0] ?? EMPTY_PERSON;
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      <SharedNav />
-      <div style={{ maxWidth: 480, margin: "80px auto", padding: "0 24px" }}>
-        <div style={{ background: "#fff", border: BORDER, borderRadius: 12, padding: 20, marginBottom: 24 }}>
-          <p style={{ fontWeight: 600, marginBottom: 4, color: NAVY }}>Munich Anmeldung — {form.people.length} person{form.people.length > 1 ? "s" : ""}</p>
-          <p style={{ color: MUTED, fontSize: 14 }}>
-            {form.people[0]?.firstName} {form.people[0]?.lastName} · {form.newStreet} {form.newNumber}, München
+    <div style={{ minHeight: "100vh", background: "#f8fafc" }} className="fu">
+      {/* ── Header ── */}
+      <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 28 }}>
+            <div style={{ width: 30, height: 30, borderRadius: 8, background: BLUE, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ color: "white", fontWeight: 900, fontSize: 15 }}>R</span>
+            </div>
+            <span style={{ color: "white", fontWeight: 800, fontSize: 15 }}>ReadyExpat <span style={{ color: "#60a5fa" }}>München</span></span>
+          </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.4)", borderRadius: 999, padding: "5px 14px", marginBottom: 20 }}>
+            <CheckCircle2 size={11} color="#86efac" />
+            <span style={{ color: "#86efac", fontSize: 11.5, fontWeight: 700 }}>München Beta · Free</span>
+          </div>
+          <h1 style={{ fontSize: 30, fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 12 }}>
+            Your Munich Anmeldung<br/><span style={{ color: "#60a5fa" }}>is ready to generate.</span>
+          </h1>
+          <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 15, lineHeight: 1.65, maxWidth: 380, margin: "0 auto" }}>
+            Walk in to your Bürgerbüro prepared. All 105 fields filled in correct German.
           </p>
         </div>
-        <button onClick={onDevSkip} style={{
-          width: "100%", background: BLUE, color: "#fff", border: "none",
-          padding: 14, borderRadius: 8, fontSize: 16, fontWeight: 700,
-          cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-          fontFamily: "inherit",
-        }}>
-          <Download size={18} /> Get my Munich PDF — Free
+      </div>
+
+      {/* ── Card ── */}
+      <div style={{ maxWidth: 560, margin: "-60px auto 0", padding: "0 20px 80px", position: "relative", zIndex: 1 }}>
+        <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.12)", border: "1px solid #e2e8f0", marginBottom: 12 }}>
+          <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #f1f5f9" }}>
+            <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Munich Anmeldung — {form.people.length} person{form.people.length > 1 ? "s" : ""}</div>
+            <div style={{ fontWeight: 700, color: NAVY, fontSize: 16 }}>{p1.firstName} {p1.lastName}</div>
+            <div style={{ color: "#64748b", fontSize: 13, marginTop: 2 }}>{form.newStreet} {form.newNumber}, München</div>
+          </div>
+          <div style={{ padding: "16px 24px" }}>
+            {[
+              { label: "Official Munich Anmeldung PDF", desc: "All 105 fields · filled in correct German" },
+              { label: "Fits your whole household", desc: "Up to 4 people on one sheet" },
+            ].map(({ label, desc }, i) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: 14, paddingBottom: i === 0 ? 12 : 0, borderBottom: i === 0 ? "1px solid #f8fafc" : "none", marginBottom: i === 0 ? 12 : 0 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <FileText size={14} color={BLUE} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, color: NAVY, fontSize: 13.5 }}>{label}</div>
+                  <div style={{ color: "#94a3b8", fontSize: 12, marginTop: 1 }}>{desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ margin: "0 16px 16px", padding: "11px 14px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", gap: 9 }}>
+            <Shield size={13} color="#94a3b8" style={{ flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 12, color: "#64748b", lineHeight: 1.6 }}>We prepare your documents perfectly. We do not register you — that requires your personal appearance at the Bürgerbüro. We cannot book appointments for you.</p>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 12, background: "#f0f9ff", border: "1px solid #bae6fd", display: "flex", gap: 9 }}>
+          <Shield size={13} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
+          <p style={{ fontSize: 11.5, color: "#1e3a8a", lineHeight: 1.6 }}>
+            <strong>Your data never reaches our servers.</strong> Everything stays in your browser — deleted after generation.
+          </p>
+        </div>
+
+        <button onClick={onDevSkip}
+          style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(22,163,74,0.35)", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
+          <Download size={18} /> Get my Munich PDF — Free (beta)
         </button>
-        <p style={{ color: MUTED, fontSize: 12, marginTop: 10, textAlign: "center" }}>
-          Munich is free during our beta · No account needed
+        <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 12, marginTop: 10 }}>
+          München is free while we&apos;re in beta — no card required
         </p>
       </div>
       <AppFooter />
@@ -1218,67 +1300,253 @@ function MunichPaymentPage({ form, onDevSkip }: { form: MunichForm; onDevSkip: (
 
 // ─── Done page ────────────────────────────────────────────────────
 function MunichDonePage({
-  pdfBytes, pdfName, onRestart, sessionError,
+  form, pdfBytes, pdfName, onRestart, sessionError,
 }: {
+  form: MunichForm;
   pdfBytes: Uint8Array | null;
   pdfName: string;
   onRestart: () => void;
   sessionError: boolean;
 }) {
+  const p1 = form.people[0] ?? EMPTY_PERSON;
+  const [dlA, setDlA] = useState(false);
   const handleDownload = () => {
     if (!pdfBytes) return;
+    setDlA(true);
     savePDF(pdfBytes, pdfName);
+    setTimeout(() => setDlA(false), 400);
   };
-  return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      <SharedNav />
-      <div style={{ maxWidth: 560, margin: "80px auto", padding: "0 24px", textAlign: "center" }}>
-        <div style={{
-          width: 64, height: 64, borderRadius: "50%", background: "#dcfce7",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          margin: "0 auto 20px",
-        }}>
-          <CheckCircle2 size={32} color="#16a34a" />
-        </div>
-        <h2 style={{ fontSize: 26, fontWeight: 800, color: NAVY, marginBottom: 8 }}>
-          Your Munich Anmeldung is ready
-        </h2>
-        <p style={{ color: MUTED, marginBottom: 28, fontSize: 15 }}>
-          Print it, sign at the bottom (&ldquo;Datum, Unterschrift&rdquo;), and bring it to your Bürgerbüro appointment.
-        </p>
 
-        {sessionError ? (
-          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: 16, marginBottom: 20 }}>
-            <p style={{ color: "#dc2626", fontSize: 14, margin: 0 }}>
-              Session data was lost. Please contact info@readyexpat.de with your payment confirmation and we will resend your PDF.
+  const isMarried = ["verheiratet", "partnerschaft", "getrennt"].includes(form.maritalStatus);
+  const hasForeignBirth = form.people.some(p =>
+    p.birthCountry && !["germany", "deutschland"].includes(p.birthCountry.toLowerCase()));
+  const hasForeignMarriage = isMarried && form.marriageCountry &&
+    !["germany", "deutschland"].includes(form.marriageCountry.toLowerCase());
+
+  type Card = { title: string; items: { text: string; detail?: string; warn?: string }[]; color: string; bg: string; border: string };
+  const cards: Card[] = [];
+
+  cards.push({
+    title: "Munich Anmeldung Form — printed on paper",
+    color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
+    items: [{ text: "Your filled Anmeldung PDF — printed on paper", detail: "The Bürgerbüro does NOT accept phone screens. Sign at the bottom after printing — not before." }],
+  });
+
+  cards.push({
+    title: "Wohnungsgeberbestätigung — signed by your landlord",
+    color: "#d97706", bg: "#fffbeb", border: "#fde68a",
+    items: [{
+      text: "Original signed confirmation from your landlord",
+      detail: "Check your move-in documents and email first — many landlords include it automatically. Under §19 BMG they are legally required to provide it (refusal = fine up to €1,000).",
+    }],
+  });
+
+  cards.push({
+    title: "Identity Documents — one per person",
+    color: "#1e40af", bg: "#eff6ff", border: "#bfdbfe",
+    items: form.people.filter(p => p.firstName || p.lastName).map(p => ({
+      text: `${p.firstName} ${p.lastName}`.trim(),
+      detail: p.docType === "RP" ? "Reisepass (passport)" : p.docType === "PA" ? "Personalausweis (ID card)" : "Bring the document type selected in your form",
+    })),
+  });
+
+  if (hasForeignBirth) {
+    const foreignPeople = form.people.filter(p =>
+      p.birthCountry && !["germany", "deutschland"].includes(p.birthCountry.toLowerCase()));
+    cards.push({
+      title: "Birth Certificates (born outside Germany)",
+      color: "#0e7490", bg: "#f0f9ff", border: "#bae6fd",
+      items: foreignPeople.map(p => ({
+        text: `Birth certificate: ${p.firstName} ${p.lastName}`.trim(),
+        detail: `Born in ${p.birthCountry} — original required`,
+        warn: "CERTIFIED TRANSLATION REQUIRED: foreign birth certificates need a beglaubigte Übersetzung (certified German translation).",
+      })),
+    });
+  }
+
+  cards.push({
+    title: "Appointment Confirmation",
+    color: "#374151", bg: "#f9fafb", border: "#e5e7eb",
+    items: [{ text: "Bürgerbüro appointment confirmation", detail: "Email printout or screenshot on your phone." }],
+  });
+
+  if (isMarried) {
+    cards.push({
+      title: "Marriage or Civil Partnership Certificate",
+      color: "#5b21b6", bg: "#f5f3ff", border: "#ddd6fe",
+      items: [{
+        text: "Original marriage or civil partnership certificate",
+        detail: "Must be the original — no photocopies.",
+        warn: hasForeignMarriage ? "CERTIFIED TRANSLATION REQUIRED: bring a beglaubigte Übersetzung by a sworn translator." : undefined,
+      }],
+    });
+  }
+
+  if (!form.isEU) {
+    cards.push({
+      title: "Visa or Residence Permit (if you have one)",
+      color: "#2563eb", bg: "#eef2ff", border: "#bfdbfe",
+      items: [{ text: "Aufenthaltstitel or entry visa — original + copy", detail: "You do NOT need to wait for a visa before registering. Register first." }],
+    });
+  }
+
+  if (form.nonMovingSpouse) {
+    cards.push({
+      title: "Non-moving spouse / partner",
+      color: "#9a3412", bg: "#fff7ed", border: "#fed7aa",
+      items: [{ text: `${form.nonMovingSpouse.firstName} ${form.nonMovingSpouse.lastName}`.trim(), detail: "Their details were filled in the form's non-moving spouse section — they do not need to be present at your appointment." }],
+    });
+  }
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#f8fafc" }} className="fu">
+      <style>{`
+        .m-done-layout{display:flex;gap:0;min-height:100vh}
+        .m-done-main{flex:1;min-width:0;padding:28px 32px 100px}
+        .m-done-sidebar{width:320px;flex-shrink:0;background:#0f172a;padding:0;display:flex;flex-direction:column}
+        .m-done-sidebar-sticky{position:sticky;top:0;height:100vh;overflow-y:auto}
+        @media(max-width:768px){
+          .m-done-layout{display:block!important}
+          .m-done-sidebar{display:none!important}
+          .m-done-main{padding:16px 16px 80px!important}
+        }
+      `}</style>
+
+      {/* Header */}
+      <div style={{ background: "white", borderBottom: "1px solid #e8ecf4", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 40, boxShadow: "0 1px 8px rgba(0,0,0,0.05)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 7, background: "linear-gradient(135deg,#0f172a,#0075FF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ color: "white", fontSize: 13, fontWeight: 900 }}>R</span>
+          </div>
+          <span style={{ fontWeight: 800, fontSize: 14, color: NAVY }}>ReadyExpat <span style={{ color: BLUE }}>München</span></span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 999, padding: "5px 12px" }}>
+          <CheckCircle2 size={12} color="#16a34a" />
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#15803d" }}>Document ready</span>
+        </div>
+      </div>
+
+      <div className="m-done-layout">
+        {/* Desktop sidebar */}
+        <div className="m-done-sidebar">
+          <div className="m-done-sidebar-sticky">
+            <div style={{ padding: "24px 20px", flex: 1 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#475569", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>Your registration summary</div>
+              {[
+                ["Name", (p1.firstName + " " + p1.lastName).trim() || "—"],
+                ["Address", form.newStreet ? `${form.newStreet} ${form.newNumber}, ${form.newPostalCode} München` : "—"],
+                ["Move-in", form.moveInDate ? fmtDate(form.moveInDate) : "—"],
+                ["Status", form.isEU ? "EU/EEA citizen" : "Non-EU citizen"],
+                ["People", String(form.people.length)],
+              ].map(([k, v]) => (
+                <div key={k} style={{ marginBottom: 10 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em" }}>{k}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "white", marginTop: 2 }}>{v}</div>
+                </div>
+              ))}
+              <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 12, background: "rgba(0,117,255,0.1)", border: "1px solid rgba(0,117,255,0.2)" }}>
+                <div style={{ fontWeight: 800, color: "#60a5fa", fontSize: 12.5, marginBottom: 6 }}>Booking your appointment</div>
+                <p style={{ color: "rgba(191,219,254,0.8)", fontSize: 12, lineHeight: 1.6 }}>
+                  Book your Bürgerbüro appointment at muenchen.de. Slots can be limited — book as early as possible.
+                </p>
+              </div>
+              <div style={{ marginTop: 14, padding: "12px 16px", borderRadius: 12, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)" }}>
+                <p style={{ color: "rgba(187,247,208,0.85)", fontSize: 12, lineHeight: 1.6 }}>
+                  <strong style={{ color: "#86efac" }}>Don&apos;t stress about the days.</strong> As long as you have an appointment booked, you won&apos;t be fined for the 14-day deadline.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="m-done-main">
+          {/* Success banner */}
+          <div style={{ background: "linear-gradient(135deg,#14532d,#16a34a)", borderRadius: 18, padding: "22px 24px", marginBottom: 20, color: "white", textAlign: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 12 }}>
+              <CheckCircle2 size={20} color="#86efac" />
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#86efac", letterSpacing: "0.06em", textTransform: "uppercase" }}>Documents generated</span>
+            </div>
+            <h1 style={{ fontSize: 23, fontWeight: 900, letterSpacing: "-0.025em", marginBottom: 10, lineHeight: 1.15 }}>
+              {p1.firstName ? `${p1.firstName}, you're ready.` : "You're ready."}
+            </h1>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center", marginBottom: 10 }}>
+              {[
+                "1 Munich Anmeldung form",
+                ...(form.isEU ? ["EU/EEA — ID or passport"] : ["Non-EU — passport required"]),
+                ...(form.people.length > 1 ? [`${form.people.length} people`] : []),
+                ...(form.nonMovingSpouse ? ["Non-moving spouse included"] : []),
+              ].map(tag => (
+                <span key={tag} style={{ fontSize: 11.5, fontWeight: 700, color: "rgba(187,247,208,0.95)", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", padding: "3px 10px", borderRadius: 999 }}>{tag}</span>
+              ))}
+            </div>
+            <p style={{ color: "rgba(187,247,208,0.8)", fontSize: 13.5, lineHeight: 1.6 }}>
+              Book your Bürgerbüro appointment — the sooner the better.
             </p>
           </div>
-        ) : pdfBytes ? (
-          <button onClick={handleDownload} style={{
-            display: "flex", alignItems: "center", gap: 8, margin: "0 auto 16px",
-            background: BLUE, color: "#fff", border: "none",
-            padding: "14px 28px", borderRadius: 8, fontSize: 16, fontWeight: 700, cursor: "pointer",
-          }}>
-            <Download size={18} /> Download PDF
-          </button>
-        ) : null}
 
-        <div style={{ background: "#f8fafc", border: BORDER, borderRadius: 8, padding: 14, marginBottom: 16, textAlign: "left" }}>
-          <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 8, color: NAVY }}>Next steps</p>
-          <ol style={{ margin: 0, paddingLeft: 20, color: MUTED, fontSize: 14, lineHeight: 1.7 }}>
-            <li>Print the PDF (single-sided, black &amp; white is fine)</li>
-            <li>Sign at the bottom after printing — do NOT sign before</li>
-            <li>Book a Bürgerbüro appointment at muenchen.de</li>
-            <li>Bring: this form + ID/passport + Wohnungsgeberbestätigung from landlord</li>
-          </ol>
+          {sessionError && (
+            <div style={{ marginBottom: 14, padding: "14px 16px", borderRadius: 12, background: "#eef2ff", border: "1px solid #bfdbfe", display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <AlertCircle size={15} color="#2563eb" style={{ flexShrink: 0, marginTop: 1 }} />
+              <div>
+                <div style={{ fontWeight: 800, color: "#1e40af", fontSize: 13, marginBottom: 3 }}>Session data not found</div>
+                <p style={{ color: "#1d4ed8", fontSize: 12.5, lineHeight: 1.6 }}>
+                  Your form data is no longer in this browser. Use &quot;Clear data &amp; start over&quot; below to begin again, or contact info@readyexpat.de.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Primary download */}
+          {pdfBytes && (
+            <button onClick={handleDownload} disabled={dlA}
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "20px 22px", borderRadius: 18, background: dlA ? "#64748b" : "linear-gradient(135deg,#0f172a,#0075FF)", color: "white", border: "none", cursor: dlA ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 20, boxShadow: dlA ? "none" : "0 8px 32px rgba(0,117,255,0.35)", transition: "all 0.2s", textAlign: "left" }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <FileText size={24} color="white" />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 900, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 3 }}>Download Munich Anmeldung PDF</div>
+                <div style={{ fontSize: 12.5, opacity: 0.8 }}>All fields filled in German · Print &amp; sign</div>
+              </div>
+              <Download size={20} style={{ flexShrink: 0, opacity: 0.8 }} />
+            </button>
+          )}
+
+          {/* Next step — book appointment */}
+          <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 18, padding: "20px 22px", marginBottom: 24, color: "white" }}>
+            <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 6 }}>Next step: book your Bürgerbüro appointment</div>
+            <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 13, lineHeight: 1.6, marginBottom: 12 }}>
+              Book at muenchen.de as early as possible — slots fill up quickly.
+            </p>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "8px 14px", fontSize: 13, fontWeight: 700 }}>
+              muenchen.de <ChevronRight size={14} />
+            </div>
+          </div>
+
+          {/* Checklist cards */}
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 12 }}>What to bring</div>
+          {cards.map(card => (
+            <div key={card.title} style={{ background: card.bg, border: `1px solid ${card.border}`, borderRadius: 14, padding: "16px 18px", marginBottom: 12 }}>
+              <div style={{ fontWeight: 800, color: card.color, fontSize: 13.5, marginBottom: 8 }}>{card.title}</div>
+              {card.items.map((item, i) => (
+                <div key={i} style={{ marginBottom: i < card.items.length - 1 ? 10 : 0 }}>
+                  <div style={{ fontWeight: 700, color: NAVY, fontSize: 13 }}>{item.text}</div>
+                  {item.detail && <div style={{ color: "#475569", fontSize: 12, lineHeight: 1.6, marginTop: 2 }}>{item.detail}</div>}
+                  {item.warn && <div style={{ color: "#b45309", fontSize: 12, lineHeight: 1.6, marginTop: 4, fontWeight: 600 }}>⚠ {item.warn}</div>}
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div style={{ textAlign: "center", marginTop: 24 }}>
+            <button onClick={onRestart} style={{
+              background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 13,
+              display: "inline-flex", alignItems: "center", gap: 6,
+            }}>
+              <RotateCcw size={13} /> Clear data &amp; start over
+            </button>
+          </div>
         </div>
-
-        <button onClick={onRestart} style={{
-          background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: 13,
-          display: "flex", alignItems: "center", gap: 6, margin: "0 auto",
-        }}>
-          <RotateCcw size={13} /> Start over
-        </button>
       </div>
       <AppFooter />
     </div>
@@ -1287,47 +1555,414 @@ function MunichDonePage({
 
 // ─── Landing page ─────────────────────────────────────────────────
 function MunichLandingPage({ onStart }: { onStart: () => void }) {
+  const [hov, setHov] = useState(false);
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      <SharedNav />
-      <div style={{ maxWidth: 720, margin: "0 auto", padding: "80px 24px 60px" }}>
-        <div style={{ display: "inline-block", background: "#eff6ff", color: BLUE, borderRadius: 20, padding: "4px 14px", fontSize: 13, fontWeight: 600, marginBottom: 16 }}>
-          München · Anmeldung
-        </div>
-        <h1 style={{ fontSize: 36, fontWeight: 800, color: NAVY, marginBottom: 8, lineHeight: 1.2 }}>
-          Anmeldung München — in English
-        </h1>
-        <p style={{ fontSize: 18, color: MUTED, marginBottom: 8 }}>
-          In English. No German required.
-        </p>
-        <p style={{ fontSize: 16, color: "#475569", marginBottom: 32, maxWidth: 560 }}>
-          Fill Munich&apos;s official residence registration form in English.
-          We auto-fill all fields in German — ready to print and submit at your Bürgerbüro.
-        </p>
-        <button onClick={onStart} style={{
-          background: BLUE, color: "#fff", border: "none",
-          padding: "14px 32px", borderRadius: 8, fontSize: 16, fontWeight: 700,
-          cursor: "pointer", display: "flex", alignItems: "center", gap: 8,
-        }}>
-          Fill my Munich form now <ArrowRight size={18} />
-        </button>
-        <p style={{ marginTop: 10, fontSize: 13, color: "#94a3b8" }}>
-          €15 · One-time · No account needed
-        </p>
+    <div className="fu" style={{ background: "white" }}>
+      <style>{`
+        .m-stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+        .m-feat-boxes{display:grid;grid-template-columns:repeat(3,1fr)}
+        .m-feat-box-r{border-right:1px solid #e8ecf4}
+        @keyframes FU{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        .fu{animation:FU 0.35s cubic-bezier(0.22,1,0.36,1)}
+        @media(max-width:768px){
+          .m-hero-grid{grid-template-columns:1fr!important;gap:0!important}
+          .m-hero-visual{display:none!important}
+          .m-feat-boxes{grid-template-columns:1fr!important}
+          .m-feat-box-r{border-right:none!important;border-bottom:1px solid #e8ecf4}
+          .m-stats-strip{grid-template-columns:1fr 1fr!important}
+          .m-hero-pad{padding:36px 20px 32px!important}
+        }
+        @media(max-width:640px){
+          .m-h1{font-size:34px!important;line-height:1.08!important;letter-spacing:-0.02em!important}
+          .m-cta-btn{width:100%!important;justify-content:center!important}
+        }
+      `}</style>
+      <SharedNav onStart={onStart} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 48 }}>
-          {[
-            { icon: <MapPin size={20} />, title: "Munich-specific", body: "Uses the official Landeshauptstadt München form" },
-            { icon: <Users size={20} />, title: "Up to 4 people", body: "Register your whole family on one sheet" },
-            { icon: <Home size={20} />, title: "All field types", body: "Text, dropdowns, and radio buttons — all filled correctly" },
-          ].map((c, i) => (
-            <div key={i} style={{ background: "#fff", border: BORDER, borderRadius: 10, padding: 16 }}>
-              <div style={{ color: BLUE, marginBottom: 8 }}>{c.icon}</div>
-              <p style={{ fontWeight: 700, marginBottom: 4, fontSize: 14, color: NAVY }}>{c.title}</p>
-              <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>{c.body}</p>
+      {/* ══ HERO ══ */}
+      <div style={{ background: "#fbfcff", borderBottom: "1px solid #e8ecf4" }}>
+        <div className="m-hero-pad" style={{ maxWidth: 1100, margin: "0 auto", padding: "80px 40px 60px" }}>
+          <div className="m-hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: 56, alignItems: "center" }}>
+
+            {/* Left: copy + CTA */}
+            <div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#eff6ff", border: "1.5px solid #bfdbfe", borderRadius: 999, padding: "5px 13px", marginBottom: 22 }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: BLUE, display: "inline-block", flexShrink: 0 }} />
+                <span style={{ color: "#1d4ed8", fontSize: 12, fontWeight: 700 }}>For expats in München · Beta</span>
+              </div>
+
+              <h1 className="m-h1" style={{ fontSize: 48, fontWeight: 900, color: NAVY, lineHeight: 1.02, letterSpacing: "-0.03em", marginBottom: 0 }}>
+                Munich&apos;s Anmeldung — done correctly in English.
+              </h1>
+              <p style={{ fontSize: 16, color: "#6b7693", lineHeight: 1.65, margin: "16px 0 28px", maxWidth: 440 }}>
+                Fill the official Landeshauptstadt München residence registration form in English.
+                All fields auto-filled in German — ready to print and bring to your Bürgerbüro.
+              </p>
+
+              <button onClick={onStart} className="m-cta-btn"
+                onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+                style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 32px", borderRadius: 13, background: hov ? "#0066ee" : BLUE, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: hov ? "0 16px 48px rgba(0,117,255,0.45)" : "0 6px 24px rgba(0,117,255,0.3)", transform: hov ? "translateY(-2px)" : "none", transition: "all 0.18s", letterSpacing: "-0.01em", cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>
+                Fill my Munich form now <ArrowRight size={18} />
+              </button>
+              <p style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500, margin: 0 }}>
+                München Beta · Free · No account needed
+              </p>
             </div>
-          ))}
+
+            {/* Right: form preview mockup (no external image dependency) */}
+            <div className="m-hero-visual" style={{ borderRadius: 20, background: "linear-gradient(145deg,#eef3fb,#f0f4fa)", border: "1px solid #e8ecf4", boxShadow: "0 12px 48px rgba(0,0,0,0.10)", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 24px", minHeight: 420 }}>
+              <div style={{ position: "relative", width: "100%", maxWidth: 300 }}>
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(2deg) translateY(6px)", borderRadius: 4, background: "white", boxShadow: "0 4px 18px rgba(0,0,0,0.10)" }} />
+                <div style={{ position: "absolute", inset: 0, transform: "rotate(-1deg) translateY(3px)", borderRadius: 4, background: "white", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }} />
+                <div style={{ position: "relative", borderRadius: 4, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.16)", background: "white", padding: 20 }}>
+                  <div style={{ fontSize: 10, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>Anmeldung · München</div>
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <div key={i} style={{ marginBottom: 10 }}>
+                      <div style={{ width: `${60 + (i % 3) * 15}%`, height: 6, borderRadius: 3, background: "#e2e8f0", marginBottom: 5 }} />
+                      <div style={{ width: "100%", height: 9, borderRadius: 2, background: i % 2 === 0 ? "#eff6ff" : "#f8fafc", border: "1px solid #e2e8f0" }} />
+                    </div>
+                  ))}
+                </div>
+                <div style={{ position: "absolute", bottom: -14, right: -14, background: BLUE, color: "white", borderRadius: 10, padding: "8px 13px", boxShadow: "0 6px 20px rgba(0,117,255,0.4)", display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>
+                  <CheckCircle2 size={13} color="white" />
+                  <span style={{ fontSize: 12, fontWeight: 800 }}>105 fields · Perfect German</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature boxes */}
+          <div style={{ marginTop: 40 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: "#94a3b8", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Built for München</div>
+            <div className="m-feat-boxes" style={{ gap: 0, borderRadius: 16, overflow: "hidden", border: "1px solid #e8ecf4" }}>
+              <div className="m-feat-box-r" style={{ padding: "24px 26px 28px", background: "white" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <FileText size={16} color={BLUE} />
+                </div>
+                <div style={{ fontWeight: 800, color: NAVY, fontSize: 14, marginBottom: 2 }}>Munich Anmeldung PDF</div>
+                <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>Official Landeshauptstadt München form</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {["All 105 fields · filled in correct German", "Text, dropdowns, and radio buttons — all handled"].map(d => (
+                    <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
+                      <span style={{ color: BLUE, fontWeight: 900, flexShrink: 0 }}>·</span>{d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="m-feat-box-r" style={{ padding: "24px 26px 28px", background: "white" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f0fdf4", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <Users size={16} color="#16a34a" />
+                </div>
+                <div style={{ fontWeight: 800, color: NAVY, fontSize: 14, marginBottom: 2 }}>Up to 4 people, one sheet</div>
+                <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>No separate forms</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {["Register your whole family together", "Non-moving spouse support built in"].map(d => (
+                    <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
+                      <span style={{ color: "#16a34a", fontWeight: 900, flexShrink: 0 }}>·</span>{d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{ padding: "24px 26px 28px", background: "white" }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: "#fff7ed", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
+                  <Home size={16} color="#ea580c" />
+                </div>
+                <div style={{ fontWeight: 800, color: NAVY, fontSize: 14, marginBottom: 2 }}>Every field type, done right</div>
+                <div style={{ fontSize: 11.5, color: "#94a3b8", fontWeight: 500, marginBottom: 10 }}>Text, dropdowns, radios</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  {["Document codes (RP/PA/KRP/KA/AKN) mapped correctly", "Dwelling-type radios filled and visible"].map(d => (
+                    <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12.5, color: "#6b7693", lineHeight: 1.4 }}>
+                      <span style={{ color: "#ea580c", fontWeight: 900, flexShrink: 0 }}>·</span>{d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats strip */}
+          <div className="m-stats-strip" style={{ marginTop: 36, paddingTop: 32, borderTop: "1px solid #e8ecf4" }}>
+            {[
+              { v: "105", l: "Fields filled in German" },
+              { v: "5 min", l: "Average completion" },
+              { v: "4", l: "People per sheet" },
+              { v: "0", l: "Bytes stored on any server" },
+            ].map(({ v, l }) => (
+              <div key={l} style={{ textAlign: "center", padding: "14px 10px" }}>
+                <div style={{ fontSize: 28, fontWeight: 900, color: BLUE, letterSpacing: "-0.03em", lineHeight: 1 }}>{v}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 5, fontWeight: 500 }}>{l}</div>
+              </div>
+            ))}
+          </div>
         </div>
+      </div>
+
+      {/* ══ BOTTOM CTA ══ */}
+      <div style={{ background: NAVY, padding: "56px 20px" }}>
+        <div style={{ maxWidth: 500, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: "white", marginBottom: 10, letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+            Walk in to your Bürgerbüro fully prepared.
+          </h2>
+          <p style={{ color: "#94a3b8", fontSize: 14, marginBottom: 28, lineHeight: 1.7 }}>
+            Perfect German form. Zero data stored. Ready in 5 minutes. Free during München beta.
+          </p>
+          <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 12, background: BLUE, color: "white", fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em", boxShadow: "0 8px 28px rgba(0,117,255,0.4)" }}>
+            Get started <ArrowRight size={15} />
+          </button>
+        </div>
+      </div>
+
+      <AppFooter />
+      <CookieBanner />
+    </div>
+  );
+}
+
+// ─── Wizard shell (sidebar layout, mirrors Berlin's WizardLayout) ─
+function MunichWizardShell({
+  form, step, setStep, upd, set_, err, setErr, genError, next, back, onGoHome, onRestart,
+}: {
+  form: MunichForm; step: WizardStep; setStep: (s: WizardStep) => void;
+  upd: any; set_: any;
+  err: string; setErr: (s: string) => void; genError: string;
+  next: () => void; back: () => void;
+  onGoHome: () => void; onRestart: () => void;
+}) {
+  const [confirmHome, setConfirmHome] = useState(false);
+  const [confirmRestart, setConfirmRestart] = useState(false);
+  const hasData = !!(form.people[0]?.firstName || form.people[0]?.lastName || form.newStreet || form.originCountry);
+
+  const stepIdx = STEPS.indexOf(step);
+  const score = calcMunichScore(form);
+  const ringColor = score < 31 ? "#f59e0b" : score < 91 ? BLUE : "#22c55e";
+
+  const stepContent: Record<WizardStep, React.ReactNode> = {
+    "origin":       <StepOrigin f={form} set_={set_} />,
+    "new-address":  <StepNewAddress f={form} upd={upd} set_={set_} />,
+    "prev-address": <StepPrevAddress f={form} upd={upd} set_={set_} />,
+    "people":       <StepPeople f={form} set_={set_} />,
+    "status":       <StepStatus f={form} upd={upd} set_={set_} />,
+    "documents":    <StepDocuments f={form} set_={set_} />,
+    "review":       <StepReview f={form} />,
+  };
+  const hacks = MUNICH_HACKS[step] ?? [];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <style>{`
+        .m-wizard-aside{width:300px;flex-shrink:0}
+        .m-wizard-main-pad{padding:44px 56px 80px}
+        .m-wizard-max{max-width:720px}
+        .m-conf-ring circle.track{fill:none;stroke:#e8ecf4;stroke-width:5}
+        .m-conf-ring circle.fill{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 0.8s cubic-bezier(0.34,1.56,0.64,1),stroke 0.6s ease}
+        .m-mobile-bottom-nav{display:none}
+        @media(max-width:768px){
+          .m-wizard-aside{display:none!important}
+          .m-wizard-main-pad{padding:16px 16px 120px!important}
+          .m-wizard-max{max-width:100%!important}
+          .m-mob-hide{display:none!important}
+          .m-mobile-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #e8ecf4;padding:12px 16px;gap:8px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
+          .m-mobile-bottom-nav button{width:100%!important;flex:none!important;min-height:48px!important;font-size:16px!important;padding:12px 24px!important}
+        }
+      `}</style>
+
+      {/* Modals */}
+      {confirmRestart && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ maxWidth: 360, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
+            <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Clear all data and restart?</h3>
+            <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+              This will permanently delete everything you&apos;ve entered. You&apos;ll start from the beginning. This cannot be undone.
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={() => setConfirmRestart(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>Keep my data</button>
+              <button onClick={() => { setConfirmRestart(false); onRestart(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#2563eb", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>Clear &amp; restart</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {confirmHome && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(17,17,17,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div style={{ maxWidth: 380, width: "100%", background: "white", borderRadius: 20, padding: "28px 26px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)", textAlign: "center" }}>
+            <h3 style={{ fontWeight: 900, color: "#111111", fontSize: 17, marginBottom: 8 }}>Leave the registration?</h3>
+            <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.6, marginBottom: 22 }}>
+              Your progress is saved automatically. You can return at any time and continue where you left off.
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={() => setConfirmHome(false)} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "2px solid #e8ecf4", background: "white", fontWeight: 700, fontSize: 13.5, color: "#374151", cursor: "pointer", fontFamily: "inherit" }}>Keep going</button>
+              <button onClick={() => { setConfirmHome(false); onGoHome(); }} style={{ flex: 1, padding: "12px", borderRadius: 11, border: "none", background: "#111111", fontWeight: 700, fontSize: 13.5, color: "white", cursor: "pointer", fontFamily: "inherit" }}>Go to homepage</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Slim reminder bar */}
+      <div className="m-mob-hide" style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "7px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+        <span style={{ fontSize: 12, color: "#64748b" }}>⏱ <strong style={{ color: NAVY }}>14-day registration deadline</strong> — §17 BMG · Fines up to €1,000 for late registration</span>
+      </div>
+
+      <div style={{ display: "flex", flex: 1 }}>
+        {/* Sidebar */}
+        <aside className="m-wizard-aside" style={{ display: "flex", flexDirection: "column", background: "white", borderRight: "1px solid #e8ecf4", flexShrink: 0 }}>
+          <div style={{ padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
+            <button onClick={() => hasData ? setConfirmHome(true) : onGoHome()}
+              style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}>
+              <div style={{ width: 26, height: 26, borderRadius: 6, background: "linear-gradient(135deg,#0075FF,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ color: "white", fontSize: 12, fontWeight: 900 }}>R</span>
+              </div>
+              <span style={{ fontWeight: 800, fontSize: 13, color: "#111111" }}>ReadyExpat <span style={{ color: BLUE }}>München</span></span>
+            </button>
+          </div>
+
+          {/* Confidence ring */}
+          <div style={{ margin: "14px 14px 8px", padding: "16px 14px 14px", borderRadius: 16, background: "white", border: "1px solid #e8ecf4", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" }}>
+            <div style={{ fontSize: 9.5, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 12 }}>Form completeness</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>
+                <svg className="m-conf-ring" width="72" height="72" viewBox="0 0 72 72" style={{ transform: "rotate(-90deg)" }}>
+                  <circle className="track" cx="36" cy="36" r="30" />
+                  <circle className="fill" cx="36" cy="36" r="30" stroke={ringColor} strokeDasharray="188.5" strokeDashoffset={188.5 * (1 - score / 100)} />
+                </svg>
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 15, fontWeight: 900, color: ringColor, lineHeight: 1 }}>{score}%</span>
+                </div>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 800, color: NAVY, fontSize: 12.5, lineHeight: 1.3, marginBottom: 4 }}>
+                  {score < 31 ? "Just getting started" : score < 91 ? "Almost there" : "Ready to generate"}
+                </div>
+                <p style={{ fontSize: 11, color: "#64748b", lineHeight: 1.5 }}>Your data never reaches our servers — deleted after generation.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* One-sheet note */}
+          <div style={{ margin: "0 14px 8px", padding: "12px 14px", borderRadius: 12, background: "linear-gradient(135deg,#f0fdf4,#dcfce7)", border: "1px solid #86efac" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <Layers size={14} color="#16a34a" />
+              <div>
+                <div style={{ fontWeight: 800, color: "#15803d", fontSize: 12 }}>{form.people.length} of 4 people on this sheet</div>
+                <div style={{ color: "#16a34a", fontSize: 10.5, marginTop: 2 }}>Munich fits your whole family on one form</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Steps */}
+          <div style={{ padding: "6px 12px", flex: 1 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 8, paddingLeft: 8 }}>Progress</div>
+            {STEPS.map((s, i) => {
+              const isCur = s === step, isDone = i < stepIdx;
+              return (
+                <button key={s}
+                  onClick={() => { if (!isDone && !isCur) return; setErr(""); setStep(s); }}
+                  disabled={!isDone && !isCur}
+                  style={{ width: "100%", display: "flex", alignItems: "center", gap: 9, padding: "8px 9px", borderRadius: 9, border: "none", background: isCur ? "#eff6ff" : "transparent", marginBottom: 1, textAlign: "left", cursor: (isDone || isCur) ? "pointer" : "default", opacity: (!isDone && !isCur) ? 0.4 : 1 }}>
+                  <div style={{ width: 20, height: 20, borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: isCur ? "#2563eb" : isDone ? "#dcfce7" : "#f1f5f9" }}>
+                    {isDone ? <Check size={10} color="#16a34a" /> : <span style={{ fontSize: 9, fontWeight: 800, color: isCur ? "white" : "#94a3b8" }}>{i + 1}</span>}
+                  </div>
+                  <span style={{ fontSize: 12, fontWeight: isCur ? 700 : 500, color: isCur ? "#1e40af" : isDone ? "#16a34a" : "#64748b" }}>{STEP_LABELS[s]}</span>
+                  {isCur && <div style={{ marginLeft: "auto", width: 5, height: 5, borderRadius: "50%", background: "#2563eb" }} />}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Munich notes (hacks) */}
+          {hacks.length > 0 && (
+            <div style={{ padding: "12px 14px", borderTop: "1px solid #f1f5f9" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: 9 }}>Munich Notes</div>
+              {hacks.map((h, i) => {
+                const colors = {
+                  tip:  { bg: "#f0fdf4", bd: "#bbf7d0", dot: "#22c55e", tx: "#15803d", label: "TIP" },
+                  warn: { bg: "#fffbeb", bd: "#fde68a", dot: "#f59e0b", tx: "#92400e", label: "!" },
+                  info: { bg: "#eff6ff", bd: "#bfdbfe", dot: "#3b82f6", tx: "#1d4ed8", label: "i" },
+                }[h.tag];
+                return (
+                  <div key={i} style={{ marginBottom: 8, padding: "10px 12px", borderRadius: 10, background: colors.bg, border: `1px solid ${colors.bd}` }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                      <div style={{ width: 14, height: 14, borderRadius: "50%", background: colors.dot, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <span style={{ color: "white", fontSize: 8, fontWeight: 900 }}>{colors.label}</span>
+                      </div>
+                      <div style={{ fontWeight: 700, color: NAVY, fontSize: 11.5 }}>{h.title}</div>
+                    </div>
+                    <p style={{ color: colors.tx, fontSize: 11, lineHeight: 1.55, paddingLeft: 20 }}>{h.tip}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Restart */}
+          <div style={{ padding: "10px 14px", borderTop: "1px solid #f1f5f9", marginTop: "auto" }}>
+            <button onClick={() => setConfirmRestart(true)}
+              style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "10px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "white", color: "#94a3b8", fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>
+              <RotateCcw size={12} /> Restart &amp; clear data
+            </button>
+          </div>
+        </aside>
+
+        {/* Main content */}
+        <main className="m-wizard-main-pad" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div className="m-wizard-max" style={{ width: "100%" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 0 2px rgba(34,197,94,0.2)" }} />
+                <span style={{ fontSize: 10.5, color: "#64748b" }}>Progress saved on your device</span>
+              </div>
+              <div style={{ display: "flex", gap: 4 }}>
+                {STEPS.map((s, i) => (
+                  <div key={s} style={{ width: i === stepIdx ? 20 : 6, height: 6, borderRadius: 99, background: i < stepIdx ? "#22c55e" : i === stepIdx ? "#2563eb" : "#e2e8f0", transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)" }} />
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 5 }}>Step {stepIdx + 1} of {STEPS.length}</div>
+              <h1 style={{ fontSize: 24, fontWeight: 900, color: NAVY, letterSpacing: "-0.02em" }}>{STEP_LABELS[step]}</h1>
+            </div>
+
+            {genError && (
+              <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: 12, marginBottom: 16 }}>
+                <p style={{ color: "#dc2626", fontSize: 14, margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
+                  <AlertCircle size={14} /> {genError}
+                </p>
+              </div>
+            )}
+
+            <div style={{ background: "white", borderRadius: 20, border: "1px solid #e8ecf4", boxShadow: "0 4px 24px rgba(0,0,0,0.05)", padding: 28, marginBottom: 14 }}>
+              {stepContent[step]}
+              {err && (
+                <div style={{ marginTop: 16, display: "flex", gap: 9, background: "#eef2ff", border: "1px solid #bfdbfe", borderRadius: 11, padding: "11px 15px" }}>
+                  <AlertCircle size={14} color="#ef4444" style={{ flexShrink: 0, marginTop: 1 }} />
+                  <p style={{ color: "#1d4ed8", fontSize: 13 }}>{err}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop nav */}
+            <div className="m-mob-hide" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              {stepIdx > 0
+                ? <button onClick={back} style={{ display: "flex", alignItems: "center", gap: 7, padding: "10px 22px", borderRadius: 11, border: "2px solid #e2e8f0", background: "white", color: "#475569", fontWeight: 700, fontSize: 13 }}>
+                    <ArrowLeft size={13} /> Back
+                  </button>
+                : <div />}
+              <button onClick={next} style={{ display: "flex", alignItems: "center", gap: 8, padding: "12px 30px", borderRadius: 13, background: "linear-gradient(135deg,#1e3a8a,#2563eb)", color: "white", fontWeight: 800, fontSize: 13.5, border: "none", boxShadow: "0 6px 20px rgba(37,99,235,0.35)" }}>
+                {step === "review" ? "Continue to Get My PDF" : "Continue"} <ChevronRight size={15} />
+              </button>
+            </div>
+            {/* Mobile fixed nav */}
+            <div className="m-mobile-bottom-nav">
+              {stepIdx > 0
+                ? <button onClick={back} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "13px", borderRadius: 12, border: "2px solid #e2e8f0", background: "white", color: "#475569", fontWeight: 700, fontSize: 14, flex: "0 0 100px" }}>
+                    <ArrowLeft size={14} /> Back
+                  </button>
+                : <div />}
+              <button onClick={next} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "14px", borderRadius: 13, background: "linear-gradient(135deg,#1e3a8a,#2563eb)", color: "white", fontWeight: 800, fontSize: 15, border: "none", boxShadow: "0 6px 20px rgba(37,99,235,0.35)", flex: 1 }}>
+                {step === "review" ? "Get My PDF" : "Continue"} <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        </main>
       </div>
       <AppFooter />
       <CookieBanner />
@@ -1494,6 +2129,7 @@ export default function MunichPage() {
     return (
       <>
         <MunichDonePage
+          form={form}
           pdfBytes={pdfBytes}
           pdfName={pdfName}
           sessionError={sessionError}
@@ -1525,107 +2161,13 @@ export default function MunichPage() {
   }
 
   // ── Phase: wizard ────────────────────────────────────────────────
-  const stepIdx = STEPS.indexOf(step);
-
-  const stepLabels: Record<WizardStep, string> = {
-    "origin": "Origin", "new-address": "New Address", "prev-address": "Previous",
-    "people": "People", "status": "Status", "documents": "Documents", "review": "Review",
-  };
-
-  const stepContent: Record<WizardStep, React.ReactNode> = {
-    "origin":       <StepOrigin f={form} set_={set_} />,
-    "new-address":  <StepNewAddress f={form} upd={upd} set_={set_} />,
-    "prev-address": <StepPrevAddress f={form} upd={upd} set_={set_} />,
-    "people":       <StepPeople f={form} set_={set_} />,
-    "status":       <StepStatus f={form} upd={upd} set_={set_} />,
-    "documents":    <StepDocuments f={form} set_={set_} />,
-    "review":       <StepReview f={form} />,
-  };
-
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
-      <SharedNav />
-
-      {/* Restart confirm modal */}
-      {confirmRestart && (
-        <div style={{
-          position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)",
-          zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <div style={{ background: "#fff", borderRadius: 12, padding: 28, maxWidth: 380, width: "90%" }}>
-            <h3 style={{ fontWeight: 700, marginBottom: 8, color: NAVY }}>Clear &amp; restart?</h3>
-            <p style={{ color: MUTED, marginBottom: 20 }}>All entered data will be lost.</p>
-            <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={handleRestart} style={{
-                flex: 1, background: "#ef4444", color: "#fff", border: "none",
-                padding: 10, borderRadius: 6, fontWeight: 700, cursor: "pointer",
-              }}>Clear &amp; restart</button>
-              <button onClick={() => setConfirmRestart(false)} style={{
-                flex: 1, background: "#f1f5f9", color: NAVY, border: "none",
-                padding: 10, borderRadius: 6, fontWeight: 700, cursor: "pointer",
-              }}>Keep my data</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px 80px" }}>
-        {/* Progress */}
-        <div style={{ marginBottom: 28 }}>
-          <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
-            {STEPS.map((s, i) => (
-              <div key={s} style={{
-                flex: 1, height: 4, borderRadius: 2,
-                background: i <= stepIdx ? BLUE : "#e2e8f0",
-                transition: "background 0.2s",
-              }} />
-            ))}
-          </div>
-          <p style={{ fontSize: 12, color: "#94a3b8" }}>
-            {stepLabels[step]} · Step {stepIdx + 1} of {STEPS.length}
-          </p>
-        </div>
-
-        {/* Error banners */}
-        {genError && (
-          <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: 12, marginBottom: 16 }}>
-            <p style={{ color: "#dc2626", fontSize: 14, margin: 0, display: "flex", alignItems: "center", gap: 6 }}>
-              <AlertCircle size={14} /> {genError}
-            </p>
-          </div>
-        )}
-
-        {/* Step content */}
-        {stepContent[step]}
-
-        {stepError && (
-          <p style={{ color: "#ef4444", marginTop: 12, fontSize: 14, display: "flex", alignItems: "center", gap: 6 }}>
-            <AlertCircle size={14} /> {stepError}
-          </p>
-        )}
-
-        {/* Navigation */}
-        <div style={{ display: "flex", gap: 12, marginTop: 28 }}>
-          <button onClick={goBack} style={{
-            display: "flex", alignItems: "center", gap: 6,
-            background: "#f1f5f9", border: "none", padding: "12px 20px",
-            borderRadius: 8, cursor: "pointer", fontWeight: 600, fontSize: 15, color: NAVY,
-          }}>
-            <ArrowLeft size={16} /> Back
-          </button>
-          <button onClick={goNext} style={{
-            flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-            background: BLUE, color: "#fff", border: "none",
-            padding: "12px 20px", borderRadius: 8, cursor: "pointer",
-            fontWeight: 700, fontSize: 15,
-          }}>
-            {step === "review" ? "Pay €15 & get PDF" : "Continue"} <ArrowRight size={16} />
-          </button>
-        </div>
-      </div>
-
-      <AppFooter />
-      <CookieBanner />
-    </div>
+    <MunichWizardShell
+      form={form} step={step} setStep={setStep} upd={upd} set_={set_}
+      err={stepError} setErr={setStepError} genError={genError}
+      next={goNext} back={goBack}
+      onGoHome={() => setPhase("landing")}
+      onRestart={handleRestart}
+    />
   );
 }
