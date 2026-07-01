@@ -380,7 +380,7 @@ const RADIO_DOTS: Record<string, Record<string, { cx: number; cy: number }>> = {
 
 // ─── Munich PDF filler ────────────────────────────────────────────
 async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
-  const { PDFDocument, PDFName, rgb } = await loadPdfLib();
+  const { PDFDocument, PDFName, PDFString, rgb } = await loadPdfLib();
   const templateBytes = await fetch("/munich-anmeldung.pdf").then(r => r.arrayBuffer());
   const doc = await PDFDocument.load(templateBytes, { ignoreEncryption: true });
   const form = doc.getForm();
@@ -389,6 +389,22 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
   const txt = (n: string, v: string) => {
     if (!v?.trim()) return;
     try { form.getTextField(n).setText(safe(v)); } catch {}
+  };
+
+  // Direct dict setter for fields with /Kids + /AA JavaScript validation (e.g. einzug)
+  // setText() silently fails on these; setting V directly on the dict works.
+  const txtDirect = (n: string, v: string) => {
+    if (!v?.trim()) return;
+    try {
+      const fields = form.getFields();
+      const field = fields.find((f: any) => { try { return f.getName() === n; } catch { return false; } });
+      if (!field) return;
+      const acro = (field as any).acroField;
+      acro.dict.set(PDFName.of("V"), PDFString.of(safe(v)));
+      // Propagate to child widget if present
+      const kids = acro.Kids?.();
+      if (kids?.length) kids[0].dict.set(PDFName.of("V"), PDFString.of(safe(v)));
+    } catch {}
   };
 
   // Radio button helper — draw filled circle directly on page (bypasses form API entirely).
@@ -420,7 +436,7 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
   // ── New address ──────────────────────────────────────────────────
   const streetLine = [d.newStreet + " " + d.newNumber, d.newAddExtra]
     .map(s => s.trim()).filter(Boolean).join(", ");
-  txt(MF.EINZUG,       fmtDate(d.moveInDate));
+  txtDirect(MF.EINZUG, fmtDate(d.moveInDate));
   txt(MF.NEUW_STRASSE, safe(streetLine));
   txt(MF.NW_PLZ,       safe(d.newPostalCode));
   rdo(MF.WOHNUNG,      WOHNUNG_VALS[d.newResType as keyof typeof WOHNUNG_VALS] ?? "einzige Wohnung");
