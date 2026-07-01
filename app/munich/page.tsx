@@ -366,9 +366,21 @@ function savePDF(bytes: Uint8Array, name: string) {
   setTimeout(() => URL.revokeObjectURL(url), 6000);
 }
 
+// Radio button widget positions hardcoded from template PDF (pypdf, page 0, bottom-left origin).
+// cx/cy = center of each widget's /Rect. Used for direct circle drawing — bypasses form API.
+const RADIO_DOTS: Record<string, Record<string, { cx: number; cy: number }>> = {
+  geschl1: { "Männlich":[175.8,457.3], "Weiblich":[206.4,457.3], "ohne Angabe":[238.1,457.3], "Divers":[270.8,457.3] },
+  geschl2: { "Männlich":[175.8,440.6], "Weiblich":[206.4,440.6], "ohne Angabe":[238.4,440.6], "Divers":[270.8,440.9] },
+  geschl3: { "Männlich":[175.8,424.1], "Weiblich":[206.4,424.1], "ohne Angabe":[238.1,424.1], "Divers":[270.8,424.1] },
+  geschl4: { "Männlich":[175.8,407.5], "Weiblich":[206.4,407.5], "ohne Angabe":[238.1,407.5], "Divers":[270.8,407.5] },
+  wohnung:  { "einzige Wohnung":[52.0,599.8], "Hauptwohnung":[145.1,599.8], "Nebenwohnung":[227.4,599.8] },
+  geschl6:  { "Männlich":[102.8,113.4], "Weiblich":[134.0,113.8], "ohne Angabe":[165.3,113.4], "Divers":[198.0,113.4] },
+  getrennt1:{ "Ja":[499.7,171.5], "Nein":[535.6,171.5] },
+} as unknown as Record<string, Record<string, { cx: number; cy: number }>>;
+
 // ─── Munich PDF filler ────────────────────────────────────────────
 async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
-  const { PDFDocument, PDFName } = await loadPdfLib();
+  const { PDFDocument, PDFName, rgb } = await loadPdfLib();
   const templateBytes = await fetch("/munich-anmeldung.pdf").then(r => r.arrayBuffer());
   const doc = await PDFDocument.load(templateBytes, { ignoreEncryption: true });
   const form = doc.getForm();
@@ -379,20 +391,22 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     try { form.getTextField(n).setText(safe(v)); } catch {}
   };
 
-  // Radio button helper — same approach as Berlin's chk():
-  // find field by name via form.getFields(), get acroField, set AS+V on its dict directly.
-  // form.flatten() is NOT called (it overwrites AS with stale values); leaving fields
-  // interactive is fine — PDF viewers render from V, and the PDF prints correctly.
+  // Radio button helper — draw filled circle directly on page (bypasses form API entirely).
+  // Coordinates come from RADIO_DOTS (hardcoded from template via pypdf).
+  // Also sets V on the parent field so interactive PDF viewers show selection too.
+  const page0 = doc.getPages()[0];
   const rdo = (fieldName: string, exportVal: string) => {
     if (!exportVal) return;
+    // Set V on parent for completeness
     try {
       const fields = form.getFields();
       const field = fields.find((f: any) => { try { return f.getName() === fieldName; } catch { return false; } });
-      if (!field) return;
-      const acro = (field as any).acroField;
-      acro.dict.set(PDFName.of("AS"), PDFName.of(exportVal));
-      acro.dict.set(PDFName.of("V"),  PDFName.of(exportVal));
+      if (field) (field as any).acroField.dict.set(PDFName.of("V"), PDFName.of(exportVal));
     } catch {}
+    // Draw dot
+    const pos = (RADIO_DOTS[fieldName] as any)?.[exportVal] as [number, number] | undefined;
+    if (!pos) return;
+    page0.drawCircle({ x: pos[0], y: pos[1], size: 3, color: rgb(0, 0, 0) });
   };
 
   // Choice field helper (combobox/listbox) — Munich famst1-4, rel1-4, art1-4
