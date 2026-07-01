@@ -379,33 +379,19 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     try { form.getTextField(n).setText(safe(v)); } catch {}
   };
 
-  // Radio button helper — getRadioGroup().select() silently fails on this PDF (same issue as Berlin checkboxes).
-  // Kids() returns PDFAcroField[], not raw refs — access kid.dict directly (same as pdf-lib's getOptions()).
+  // Radio button helper — same approach as Berlin's chk():
+  // find field by name via form.getFields(), get acroField, set AS+V on its dict directly.
+  // form.flatten() is NOT called (it overwrites AS with stale values); leaving fields
+  // interactive is fine — PDF viewers render from V, and the PDF prints correctly.
   const rdo = (fieldName: string, exportVal: string) => {
     if (!exportVal) return;
     try {
-      const radioGroup = form.getRadioGroup(fieldName);
-      const acroField = (radioGroup as any).acroField;
-      acroField.dict.set(PDFName.of("V"), PDFName.of(exportVal));
-      const kids: any[] = acroField.Kids() ?? [];
-      for (const kid of kids) {
-        try {
-          const kidDict = (kid as any).dict;
-          if (!kidDict) continue;
-          // Read AP.N keys to find this widget's own export value (same logic as pdf-lib getOptions())
-          const ap = kidDict.get(PDFName.of("AP"));
-          const nDict = ap?.get ? ap.get(PDFName.of("N")) : null;
-          let widgetExport: string | null = null;
-          if (nDict?.keys) {
-            for (const k of nDict.keys()) {
-              // PDFName.asString() returns name WITHOUT leading slash
-              const name: string = k.asString ? k.asString() : String(k);
-              if (name !== "Off") { widgetExport = name; break; }
-            }
-          }
-          kidDict.set(PDFName.of("AS"), PDFName.of(widgetExport === exportVal ? exportVal : "Off"));
-        } catch {}
-      }
+      const fields = form.getFields();
+      const field = fields.find((f: any) => { try { return f.getName() === fieldName; } catch { return false; } });
+      if (!field) return;
+      const acro = (field as any).acroField;
+      acro.dict.set(PDFName.of("AS"), PDFName.of(exportVal));
+      acro.dict.set(PDFName.of("V"),  PDFName.of(exportVal));
     } catch {}
   };
 
@@ -516,7 +502,6 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     txt(MF.NMS_ANSCHR_A, safe(nms.postalCity));
   }
 
-  form.flatten();
   return doc.save();
 }
 
