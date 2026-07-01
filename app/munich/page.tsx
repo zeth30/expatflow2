@@ -535,6 +535,9 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     txt(MF.NMS_ANSCHR_A, safe(nms.postalCity));
   }
 
+  // Flatten form so drawn radio dots are visible and not hidden by AcroForm widget overlay
+  try { form.flatten(); } catch {}
+
   return doc.save();
 }
 
