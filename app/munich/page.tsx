@@ -436,7 +436,9 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
   // ── New address ──────────────────────────────────────────────────
   const streetLine = [d.newStreet + " " + d.newNumber, d.newAddExtra]
     .map(s => s.trim()).filter(Boolean).join(", ");
-  txtDirect(MF.EINZUG, fmtDate(d.moveInDate));
+  // einzug is an 8-cell comb — dots are printed on the form, value must be DDMMYYYY
+  const einzugVal = d.moveInDate ? (() => { const [y,m,dd] = d.moveInDate.split("-"); return dd+m+y; })() : "";
+  txtDirect(MF.EINZUG, einzugVal);
   txt(MF.NEUW_STRASSE, safe(streetLine));
   txt(MF.NW_PLZ,       safe(d.newPostalCode));
   rdo(MF.WOHNUNG,      WOHNUNG_VALS[d.newResType as keyof typeof WOHNUNG_VALS] ?? "einzige Wohnung");
