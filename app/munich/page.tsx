@@ -63,12 +63,22 @@ const MF = {
   // ── Legal representative (fill if any registering person is a minor) ──
   GESETZLVER: "gesetzlver",         // Tx  Vor- und Familienname, Doktorgrad, Geburtsdatum, Anschrift
 
+  // ── Non-moving spouse / registered partner ─────────────────────
+  NMS_FAM:     "fam5",              // Tx  Familienname
+  NMS_VORN:    "vorn5",             // Tx  Vorname(n)
+  NMS_GEBDAT:  "gebdat5",           // Tx  Geburtsdatum DD.MM.YYYY
+  NMS_GEBORT:  "gebort5",           // Tx  Geburtsort, Geburtsland
+  NMS_NAME:    "name5",             // Tx  Geburtsname / frühere Namen
+  NMS_GESCHL:  "geschl6",           // Btn Männlich|Weiblich|Divers|ohne Angabe
+  NMS_GETRENNT:"getrennt1",         // Btn Ja|Nein (dauerhaft getrennt?)
+  NMS_ANSCHR:  "anschr5",           // Tx  Straße, Hausnummer (current address)
+  NMS_ANSCHR_A:"anschr5a",          // Tx  PLZ, Ort
+
   // ── Leave blank — office fills these ───────────────────────────
   // fam_bev, vorname_bev, geb_bev, fam_vg, vorname_vg, geb_vg
   // Datum, Datum1 (signing date), Ort, Ort1 (signing place)
-  // anschr5, anschr5a, anschrift_bev (non-moving spouse address)
-  // fam5, vorn5, gebdat5, gebort5, gr5, name5, geschl6 (non-moving spouse)
-  // getrennt1 (separation status), zuzug (last German address if from abroad)
+  // anschrift_bev (Meldebehörde address), gr5 (Doktorgrad NMS)
+  // zuzug (last German address if from abroad)
   // vertrieb1-4, drucken1, Druckbereich, zurücksetzen1
 } as const;
 
@@ -149,6 +159,11 @@ interface MunichForm {
   marriageDate: string;
   marriagePlace: string;
   marriageCountry: string;
+  nonMovingSpouse: {
+    firstName: string; lastName: string; birthDate: string;
+    birthPlace: string; birthCountry: string; gender: string;
+    separated: boolean; street: string; postalCity: string;
+  } | null;
   people: Person[];
   // New address
   newStreet: string;
@@ -174,9 +189,15 @@ const EMPTY_PERSON: Person = {
   relationship: "primary", fillHandwritten: false,
 };
 
+const EMPTY_NMS = {
+  firstName: "", lastName: "", birthDate: "", birthPlace: "", birthCountry: "",
+  gender: "", separated: false, street: "", postalCity: "",
+};
+
 const EMPTY: MunichForm = {
   originCountry: "", isEU: true,
   maritalStatus: "", marriageDate: "", marriagePlace: "", marriageCountry: "",
+  nonMovingSpouse: null,
   people: [{ ...EMPTY_PERSON }],
   newStreet: "", newNumber: "", newAddExtra: "", newPostalCode: "", moveInDate: "",
   newResType: "alleinig",
@@ -480,6 +501,19 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
   // Legal representative (for minors)
   if (legalRepNeeded && legalRepName) {
     txt(MF.GESETZLVER, safe(legalRepName));
+  }
+
+  // Non-moving spouse / registered partner
+  const nms = d.nonMovingSpouse;
+  if (nms && (nms.firstName || nms.lastName)) {
+    txt(MF.NMS_FAM,    safe(nms.lastName.toUpperCase()));
+    txt(MF.NMS_VORN,   safe(nms.firstName));
+    txt(MF.NMS_GEBDAT, fmtDate(nms.birthDate));
+    txt(MF.NMS_GEBORT, safe([nms.birthPlace, toGermanCountry(nms.birthCountry)].filter(Boolean).join(", ")));
+    rdo(MF.NMS_GESCHL,  GESCHL_VALS[nms.gender] ?? "ohne Angabe");
+    rdo(MF.NMS_GETRENNT, nms.separated ? "Ja" : "Nein");
+    txt(MF.NMS_ANSCHR,  safe(nms.street));
+    txt(MF.NMS_ANSCHR_A, safe(nms.postalCity));
   }
 
   form.flatten();
@@ -855,6 +889,12 @@ function StepStatus({ f, upd, set_ }: {
   set_: (k: keyof MunichForm, v: any) => void;
 }) {
   const showMarriage = ["verheiratet","partnerschaft"].includes(f.maritalStatus);
+  const showNMS = ["verheiratet","partnerschaft","getrennt"].includes(f.maritalStatus);
+  const hasSpouseInPeople = f.people.some(p => p.relationship === "spouse");
+
+  const updNms = (k: keyof NonNullable<MunichForm["nonMovingSpouse"]>, v: any) =>
+    set_("nonMovingSpouse", { ...(f.nonMovingSpouse ?? EMPTY_NMS), [k]: v });
+
   return (
     <div>
       <h2 style={{ fontSize: 22, fontWeight: 700, color: NAVY, marginBottom: 4 }}>Civil status</h2>
@@ -898,6 +938,109 @@ function StepStatus({ f, upd, set_ }: {
             This fills the &ldquo;Datum und Ort der Eheschließung&rdquo; field on the form.
           </p>
         </>
+      )}
+
+      {showNMS && !hasSpouseInPeople && (
+        <div style={{ marginTop: 24, borderTop: BORDER, paddingTop: 20 }}>
+          <p style={{ fontWeight: 700, color: NAVY, marginBottom: 4, fontSize: 15 }}>
+            Nicht mitziehende/r Ehe-/Lebenspartner*in
+          </p>
+          <p style={{ color: MUTED, fontSize: 13, marginBottom: 14 }}>
+            Is your spouse / partner staying behind (not moving to Munich with you)?
+          </p>
+          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+            <button
+              type="button"
+              onClick={() => set_("nonMovingSpouse", f.nonMovingSpouse ? null : { ...EMPTY_NMS })}
+              style={{
+                padding: "8px 18px", borderRadius: 6, border: BORDER, cursor: "pointer",
+                background: f.nonMovingSpouse ? BLUE : "#fff",
+                color: f.nonMovingSpouse ? "#fff" : NAVY, fontWeight: 600, fontSize: 14,
+              }}
+            >
+              {f.nonMovingSpouse ? "Yes — fill their details" : "Yes — fill their details"}
+            </button>
+            <button
+              type="button"
+              onClick={() => set_("nonMovingSpouse", null)}
+              style={{
+                padding: "8px 18px", borderRadius: 6, border: BORDER, cursor: "pointer",
+                background: f.nonMovingSpouse === null ? "#f1f5f9" : "#fff",
+                color: NAVY, fontWeight: 600, fontSize: 14,
+              }}
+            >
+              No / leave blank
+            </button>
+          </div>
+
+          {f.nonMovingSpouse && (
+            <div style={{ background: "#f8fafc", border: BORDER, borderRadius: 8, padding: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+                <div>
+                  <label style={labelStyle}>First name</label>
+                  <input value={f.nonMovingSpouse.firstName}
+                    onChange={e => updNms("firstName", e.target.value)} style={inputStyle} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Last name</label>
+                  <input value={f.nonMovingSpouse.lastName}
+                    onChange={e => updNms("lastName", e.target.value)} style={inputStyle} />
+                </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
+                <div>
+                  <label style={labelStyle}>Date of birth</label>
+                  <input type="date" value={f.nonMovingSpouse.birthDate}
+                    onChange={e => updNms("birthDate", e.target.value)} style={inputStyle} />
+                </div>
+                <div>
+                  <label style={labelStyle}>City of birth</label>
+                  <input value={f.nonMovingSpouse.birthPlace}
+                    onChange={e => updNms("birthPlace", e.target.value)} style={inputStyle} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Country of birth</label>
+                  <SearchableSelect value={f.nonMovingSpouse.birthCountry}
+                    onChange={v => updNms("birthCountry", v)}
+                    options={ALL_COUNTRIES} placeholder="Search…" />
+                </div>
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <label style={labelStyle}>Gender</label>
+                <select value={f.nonMovingSpouse.gender}
+                  onChange={e => updNms("gender", e.target.value)} style={inputStyle}>
+                  <option value="">Select…</option>
+                  <option value="m">Male (männlich)</option>
+                  <option value="f">Female (weiblich)</option>
+                  <option value="d">Divers</option>
+                  <option value="x">No entry (ohne Angabe)</option>
+                </select>
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <label style={labelStyle}>Current street + house number</label>
+                <input value={f.nonMovingSpouse.street}
+                  onChange={e => updNms("street", e.target.value)}
+                  placeholder="e.g. Hauptstraße 12" style={inputStyle} />
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <label style={labelStyle}>Postal code + city</label>
+                <input value={f.nonMovingSpouse.postalCity}
+                  onChange={e => updNms("postalCity", e.target.value)}
+                  placeholder="e.g. 10115 Berlin" style={inputStyle} />
+              </div>
+              <div>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, cursor: "pointer" }}>
+                  <input type="checkbox" checked={f.nonMovingSpouse.separated}
+                    onChange={e => updNms("separated", e.target.checked)} />
+                  <span style={{ color: NAVY }}>Living permanently separated (dauerhaft getrennt)?</span>
+                </label>
+                <p style={{ color: MUTED, fontSize: 12, marginTop: 4, marginLeft: 22 }}>
+                  Affects how the Meldebehörde classifies your new dwelling.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
