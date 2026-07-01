@@ -359,34 +359,32 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
   };
 
   // Radio button helper — getRadioGroup().select() silently fails on this PDF (same issue as Berlin checkboxes).
-  // Directly set AS on each kid widget and V on the parent.
+  // Kids() returns PDFAcroField[], not raw refs — access kid.dict directly (same as pdf-lib's getOptions()).
   const rdo = (fieldName: string, exportVal: string) => {
     if (!exportVal) return;
     try {
       const radioGroup = form.getRadioGroup(fieldName);
       const acroField = (radioGroup as any).acroField;
       acroField.dict.set(PDFName.of("V"), PDFName.of(exportVal));
-      const kids = acroField.Kids();
-      if (!kids) return;
-      kids.forEach((kidRef: any) => {
+      const kids: any[] = acroField.Kids() ?? [];
+      for (const kid of kids) {
         try {
-          const kid = doc.context.lookup(kidRef) as any;
-          const ap = kid.get(PDFName.of("AP"));
-          const nDict = ap?.get(PDFName.of("N"));
-          // Find this widget's own export value from its AP/N keys
+          const kidDict = (kid as any).dict;
+          if (!kidDict) continue;
+          // Read AP.N keys to find this widget's own export value (same logic as pdf-lib getOptions())
+          const ap = kidDict.get(PDFName.of("AP"));
+          const nDict = ap?.get ? ap.get(PDFName.of("N")) : null;
           let widgetExport: string | null = null;
-          if (nDict?.entries) {
-            for (const [k] of nDict.entries()) {
-              const kName = k.asString ? k.asString() : String(k);
-              if (kName !== "/Off" && kName !== "Off") {
-                widgetExport = kName.startsWith("/") ? kName.slice(1) : kName;
-                break;
-              }
+          if (nDict?.keys) {
+            for (const k of nDict.keys()) {
+              // PDFName.asString() returns name WITHOUT leading slash
+              const name: string = k.asString ? k.asString() : String(k);
+              if (name !== "Off") { widgetExport = name; break; }
             }
           }
-          kid.set(PDFName.of("AS"), PDFName.of(widgetExport === exportVal ? exportVal : "Off"));
+          kidDict.set(PDFName.of("AS"), PDFName.of(widgetExport === exportVal ? exportVal : "Off"));
         } catch {}
-      });
+      }
     } catch {}
   };
 
