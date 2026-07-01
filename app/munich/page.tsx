@@ -431,9 +431,10 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
     txt(MF.BISHWO_STRASSE, safe(`${d.prevStreet} ${d.prevNumber}`.trim()));
     txt(MF.BISHWO_PLZ,     safe(d.prevPostalCode));
     txt(MF.BISHWO_ORT,     safe(d.prevCity));
+  } else if (!prevIsGerman && d.prevCountry) {
+    // Foreign previous address: put country name in the Ort field
+    txt(MF.BISHWO_ORT, safe(toGermanCountry(d.prevCountry)));
   }
-  // If from abroad: bishwo fields stay blank — Munich form handles via zuzug
-  // (zuzug = last German address before going abroad; most expats leave blank)
 
   // ── People (up to 4) ────────────────────────────────────────────
   const today = new Date();
