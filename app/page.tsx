@@ -568,6 +568,35 @@ async function loadPdfLib(): Promise<any> {
   });
 }
 
+// Loads @pdf-lib/fontkit (needed to embed the real brand TTFs into the Guide PDF)
+async function loadFontkit(): Promise<any> {
+  if ((window as any).fontkit) return (window as any).fontkit;
+  return new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = "https://unpkg.com/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js";
+    s.onload = () => res((window as any).fontkit);
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+// Fetches the real brand TTFs (same source as the site's @fontsource-variable/plus-jakarta-sans)
+async function loadBrandFonts(doc: any) {
+  const fontkit = await loadFontkit();
+  doc.registerFontkit(fontkit);
+  const [regBytes, boldBytes, italicBytes] = await Promise.all([
+    fetch("/fonts/PlusJakartaSans-Regular.ttf").then(r => r.arrayBuffer()),
+    fetch("/fonts/PlusJakartaSans-Bold.ttf").then(r => r.arrayBuffer()),
+    fetch("/fonts/PlusJakartaSans-Italic.ttf").then(r => r.arrayBuffer()),
+  ]);
+  const [HV, HB, HI] = await Promise.all([
+    doc.embedFont(regBytes),
+    doc.embedFont(boldBytes),
+    doc.embedFont(italicBytes),
+  ]);
+  return { HV, HB, HI };
+}
+
 function savePDF(bytes: Uint8Array, name: string) {
   const url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
   const a = document.createElement("a");
@@ -1106,11 +1135,9 @@ async function buildChecklistePDF(d: FormData): Promise<Uint8Array> {
 // Y cursor is always the TOP of the current drawing area (pdf-lib origin = bottom-left,
 // so we subtract from PH to get "top-down" y values, then pass PH - y to drawText).
 async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
-  const { PDFDocument, rgb, StandardFonts, PageSizes } = await loadPdfLib();
+  const { PDFDocument, rgb, degrees } = await loadPdfLib();
   const doc = await PDFDocument.create();
-  const HV = await doc.embedFont(StandardFonts.Helvetica);
-  const HB = await doc.embedFont(StandardFonts.HelveticaBold);
-  const HI = await doc.embedFont(StandardFonts.HelveticaOblique);
+  const { HV, HB, HI } = await loadBrandFonts(doc);
 
   // ── Palette ──────────────────────────────────────────────────────────────
   const NAVY  = rgb(0.08, 0.14, 0.38);
@@ -1182,14 +1209,16 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   // Section header — full-width tinted bar with left accent stripe
   // Returns new cursor after the block
   const secBlock = (page: any, title: string, cursor: number): number => {
-    const H = 26;
+    const H = 28;
     const barY = PH - cursor - H;
-    page.drawRectangle({ x: ML, y: barY, width: CW, height: H, color: BLUEL });
-    page.drawRectangle({ x: ML, y: barY, width: 4,  height: H, color: NAVY });
+    page.drawRectangle({ x: ML, y: barY, width: CW, height: H, color: BLUEL, borderRadius: 8 });
+    page.drawCircle({ x: ML + 18, y: barY + H / 2, size: 8, color: NAVY });
+    page.drawLine({ start: { x: ML + 15, y: barY + H / 2 }, end: { x: ML + 17, y: barY + H / 2 - 2.5 }, thickness: 1.4, color: WHITE });
+    page.drawLine({ start: { x: ML + 17, y: barY + H / 2 - 2.5 }, end: { x: ML + 21.5, y: barY + H / 2 + 3.5 }, thickness: 1.4, color: WHITE });
     page.drawText(title.toUpperCase(), {
-      x: ML + 12, y: barY + 8, size: 8.5, font: HB, color: NAVY,
+      x: ML + 34, y: barY + 10, size: 9, font: HB, color: NAVY,
     });
-    return cursor + H + 10; // 10pt gap after header
+    return cursor + H + 12; // 12pt gap after header
   };
 
   // Separator line
@@ -1361,6 +1390,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
   // ── Header bar ──────────────────────────────────────────────────────────
   const HDR_H = 82;
   p1pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+  p1pg.drawRectangle({ x: PW * 0.35, y: PH - HDR_H, width: PW, height: HDR_H, color: BLUE, opacity: 0.12, rotate: degrees(-8) });
 
   // Brand mark — top right
   const LOGO_X = PW - ML - 22;
@@ -1579,6 +1609,7 @@ async function buildGuidePDF(d: FormData): Promise<Uint8Array> {
 
   // ── Header — personalised ─────────────────────────────────────────────────
   p2pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+  p2pg.drawRectangle({ x: PW * 0.35, y: PH - HDR_H, width: PW, height: HDR_H, color: BLUE, opacity: 0.12, rotate: degrees(-8) });
 
   // Brand mark — top right
   p2pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });

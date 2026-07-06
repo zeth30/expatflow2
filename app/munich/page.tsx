@@ -350,6 +350,35 @@ async function loadPdfLib(): Promise<any> {
   });
 }
 
+// Loads @pdf-lib/fontkit (needed to embed the real brand TTFs into the Guide PDF)
+async function loadFontkit(): Promise<any> {
+  if ((window as any).fontkit) return (window as any).fontkit;
+  return new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = "https://unpkg.com/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js";
+    s.onload = () => res((window as any).fontkit);
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+// Fetches the real brand TTFs (same source as the site's @fontsource-variable/plus-jakarta-sans)
+async function loadBrandFonts(doc: any) {
+  const fontkit = await loadFontkit();
+  doc.registerFontkit(fontkit);
+  const [regBytes, boldBytes, italicBytes] = await Promise.all([
+    fetch("/fonts/PlusJakartaSans-Regular.ttf").then(r => r.arrayBuffer()),
+    fetch("/fonts/PlusJakartaSans-Bold.ttf").then(r => r.arrayBuffer()),
+    fetch("/fonts/PlusJakartaSans-Italic.ttf").then(r => r.arrayBuffer()),
+  ]);
+  const [HV, HB, HI] = await Promise.all([
+    doc.embedFont(regBytes),
+    doc.embedFont(boldBytes),
+    doc.embedFont(italicBytes),
+  ]);
+  return { HV, HB, HI };
+}
+
 // Strips non-latin-1 characters (identical to Berlin safe())
 const safe = (s: string) => (s || "").replace(/[^ -ÿ]/g, "");
 
@@ -549,11 +578,9 @@ async function buildMunichPDF(d: MunichForm): Promise<{ bytes: Uint8Array; name:
 
 // ─── Munich Guide PDF (personalised checklist + guide, 2 pages) ───
 async function buildMunichGuidePDF(d: MunichForm): Promise<Uint8Array> {
-  const { PDFDocument, rgb, StandardFonts } = await loadPdfLib();
+  const { PDFDocument, rgb, degrees } = await loadPdfLib();
   const doc = await PDFDocument.create();
-  const HV = await doc.embedFont(StandardFonts.Helvetica);
-  const HB = await doc.embedFont(StandardFonts.HelveticaBold);
-  const HI = await doc.embedFont(StandardFonts.HelveticaOblique);
+  const { HV, HB, HI } = await loadBrandFonts(doc);
 
   const NAVY  = rgb(0.08, 0.14, 0.38);
   const BLUE  = rgb(0.14, 0.35, 0.82);
@@ -604,12 +631,14 @@ async function buildMunichGuidePDF(d: MunichForm): Promise<Uint8Array> {
   const PW = 595.28, PH = 841.89, ML = 50, MR = 50, CW = PW - ML - MR, LH = 15.4, FOOTER_H = 40;
 
   const secBlock = (page: any, title: string, cursor: number): number => {
-    const H = 26;
+    const H = 28;
     const barY = PH - cursor - H;
-    page.drawRectangle({ x: ML, y: barY, width: CW, height: H, color: BLUEL });
-    page.drawRectangle({ x: ML, y: barY, width: 4, height: H, color: NAVY });
-    page.drawText(title.toUpperCase(), { x: ML + 12, y: barY + 8, size: 8.5, font: HB, color: NAVY });
-    return cursor + H + 10;
+    page.drawRectangle({ x: ML, y: barY, width: CW, height: H, color: BLUEL, borderRadius: 8 });
+    page.drawCircle({ x: ML + 18, y: barY + H / 2, size: 8, color: NAVY });
+    page.drawLine({ start: { x: ML + 15, y: barY + H / 2 }, end: { x: ML + 17, y: barY + H / 2 - 2.5 }, thickness: 1.4, color: WHITE });
+    page.drawLine({ start: { x: ML + 17, y: barY + H / 2 - 2.5 }, end: { x: ML + 21.5, y: barY + H / 2 + 3.5 }, thickness: 1.4, color: WHITE });
+    page.drawText(title.toUpperCase(), { x: ML + 34, y: barY + 10, size: 9, font: HB, color: NAVY });
+    return cursor + H + 12;
   };
 
   const checkItem = (page: any, text: string, cursor: number, tag: "required"|"recommended", note?: string, warn?: string): number => {
@@ -689,6 +718,7 @@ async function buildMunichGuidePDF(d: MunichForm): Promise<Uint8Array> {
   const p1pg = doc.addPage([PW, PH] as [number, number]);
   const HDR_H = 82;
   p1pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+  p1pg.drawRectangle({ x: PW * 0.35, y: PH - HDR_H, width: PW, height: HDR_H, color: BLUE, opacity: 0.12, rotate: degrees(-8) });
   const LOGO_X = PW - ML - 22;
   p1pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
   p1pg.drawText("R", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
@@ -806,6 +836,7 @@ async function buildMunichGuidePDF(d: MunichForm): Promise<Uint8Array> {
   // ═══ PAGE 2 — MUNICH GUIDE ═══
   const p2pg = doc.addPage([PW, PH] as [number, number]);
   p2pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+  p2pg.drawRectangle({ x: PW * 0.35, y: PH - HDR_H, width: PW, height: HDR_H, color: BLUE, opacity: 0.12, rotate: degrees(-8) });
   p2pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
   p2pg.drawText("R", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
   p2pg.drawText("readyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
