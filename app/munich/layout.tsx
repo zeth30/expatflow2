@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     title: "Anmeldung München in English",
     description: "Munich Anmeldung for expats and foreigners. No German required.",
   },
+  robots: { index: false, follow: false },
 };
 
 export default function MunichLayout({ children }: { children: React.ReactNode }) {

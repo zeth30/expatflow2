@@ -547,6 +547,333 @@ async function buildMunichPDF(d: MunichForm): Promise<{ bytes: Uint8Array; name:
   return { bytes, name: `anmeldung-muenchen-${lastName}.pdf` };
 }
 
+// ─── Munich Guide PDF (personalised checklist + guide, 2 pages) ───
+async function buildMunichGuidePDF(d: MunichForm): Promise<Uint8Array> {
+  const { PDFDocument, rgb, StandardFonts } = await loadPdfLib();
+  const doc = await PDFDocument.create();
+  const HV = await doc.embedFont(StandardFonts.Helvetica);
+  const HB = await doc.embedFont(StandardFonts.HelveticaBold);
+  const HI = await doc.embedFont(StandardFonts.HelveticaOblique);
+
+  const NAVY  = rgb(0.08, 0.14, 0.38);
+  const BLUE  = rgb(0.14, 0.35, 0.82);
+  const BLUEL = rgb(0.93, 0.96, 1.00);
+  const GRN   = rgb(0.04, 0.44, 0.24);
+  const GRNL  = rgb(0.93, 0.99, 0.95);
+  const AMB   = rgb(0.54, 0.28, 0.00);
+  const AMBL  = rgb(1.00, 0.97, 0.88);
+  const RED   = rgb(0.60, 0.07, 0.07);
+  const REDL  = rgb(1.00, 0.93, 0.93);
+  const DARK  = rgb(0.13, 0.16, 0.22);
+  const MID   = rgb(0.32, 0.37, 0.47);
+  const MUTE  = rgb(0.52, 0.57, 0.65);
+  const WHITE = rgb(1, 1, 1);
+  const BGROW = rgb(0.97, 0.975, 0.988);
+  const LNCLR = rgb(0.88, 0.90, 0.94);
+
+  const fmtToday = (): string => {
+    const t = new Date();
+    return `${String(t.getDate()).padStart(2,"0")}.${String(t.getMonth()+1).padStart(2,"0")}.${t.getFullYear()}`;
+  };
+
+  const p1        = d.people[0] ?? EMPTY_PERSON;
+  const isEU       = d.isEU;
+  const isMarried  = ["verheiratet","partnerschaft","getrennt"].includes(d.maritalStatus);
+  const isDivorced = d.maritalStatus === "geschieden";
+  const isWidowed  = d.maritalStatus === "verwitwet";
+  const hasForeignBirth    = d.people.some(p => p.birthCountry && !["germany","deutschland"].includes(p.birthCountry.toLowerCase()));
+  const hasForeignMarriage = isMarried && d.marriageCountry && !["germany","deutschland"].includes(d.marriageCountry.toLowerCase());
+  const maritalLabel: Record<string,string> = { verheiratet:"Married", partnerschaft:"Partnership", geschieden:"Divorced", verwitwet:"Widowed", ledig:"Single", getrennt:"Separated" };
+
+  const wrapPx = (text: string, maxPx: number, fs: number): string[] => {
+    if (!text?.trim()) return [];
+    const charW = fs * 0.52;
+    const maxCh = Math.floor(maxPx / charW);
+    const words = safe(text).split(" ");
+    const lines: string[] = [];
+    let cur = "";
+    for (const w of words) {
+      const candidate = cur ? cur + " " + w : w;
+      if (candidate.length > maxCh) { if (cur) lines.push(cur); cur = w; }
+      else cur = candidate;
+    }
+    if (cur) lines.push(cur);
+    return lines.length ? lines : [""];
+  };
+
+  const PW = 595.28, PH = 841.89, ML = 50, MR = 50, CW = PW - ML - MR, LH = 15.4, FOOTER_H = 40;
+
+  const secBlock = (page: any, title: string, cursor: number): number => {
+    const H = 26;
+    const barY = PH - cursor - H;
+    page.drawRectangle({ x: ML, y: barY, width: CW, height: H, color: BLUEL });
+    page.drawRectangle({ x: ML, y: barY, width: 4, height: H, color: NAVY });
+    page.drawText(title.toUpperCase(), { x: ML + 12, y: barY + 8, size: 8.5, font: HB, color: NAVY });
+    return cursor + H + 10;
+  };
+
+  const checkItem = (page: any, text: string, cursor: number, tag: "required"|"recommended", note?: string, warn?: string): number => {
+    const FS = 11, NOTE_FS = 9.5, WARN_FS = 9.5, PAD_T = 9, PAD_B = 9;
+    const TX_X = ML + 28, TX_W = CW - 30;
+    const mainLines = wrapPx(text, TX_W, FS);
+    const noteLines = note ? wrapPx("Note: " + note, TX_W - 4, NOTE_FS) : [];
+    const warnLines = warn ? wrapPx(warn, TX_W - 4, WARN_FS) : [];
+    const mainH = mainLines.length * LH;
+    const noteH = noteLines.length > 0 ? noteLines.length * (NOTE_FS * 1.45) + 5 : 0;
+    const warnH = warnLines.length > 0 ? warnLines.length * (WARN_FS * 1.45) + 12 : 0;
+    const totalH = PAD_T + mainH + noteH + warnH + PAD_B;
+    if (cursor + totalH > PH - FOOTER_H - 10) return cursor;
+    const tagC = tag === "required"
+      ? { bg: REDL, dot: RED, pill: "Required" }
+      : { bg: GRNL, dot: GRN, pill: "Recommended" };
+    const cardY = PH - cursor - totalH;
+    page.drawRectangle({ x: ML, y: cardY, width: CW, height: totalH, color: tagC.bg, borderRadius: 5 });
+    page.drawRectangle({ x: ML, y: cardY, width: 4, height: totalH, color: tagC.dot, borderRadius: 5 });
+    const cbY = PH - cursor - PAD_T - FS;
+    page.drawRectangle({ x: ML + 10, y: cbY + 1, width: 10, height: 10, color: WHITE, borderColor: tagC.dot, borderWidth: 1.3 });
+    let ty = cursor + PAD_T;
+    for (let i = 0; i < mainLines.length; i++) {
+      page.drawText(mainLines[i], { x: TX_X, y: PH - ty - FS, size: FS, font: i === 0 ? HB : HV, color: DARK });
+      ty += LH;
+    }
+    const pillW = tagC.pill.length * 5.2 + 10;
+    const pillY = PH - cursor - PAD_T - NOTE_FS;
+    page.drawRectangle({ x: ML + CW - pillW - 2, y: pillY + 1, width: pillW, height: 13, color: tagC.dot, borderRadius: 3 });
+    page.drawText(tagC.pill, { x: ML + CW - pillW + 2, y: pillY + 3.5, size: 7.5, font: HB, color: WHITE });
+    if (noteLines.length > 0) {
+      ty += 4;
+      for (const nl of noteLines) { page.drawText(nl, { x: TX_X + 2, y: PH - ty - NOTE_FS, size: NOTE_FS, font: HI, color: MID }); ty += NOTE_FS * 1.45; }
+    }
+    if (warnLines.length > 0) {
+      ty += 6;
+      const warnBoxH = warnLines.length * (WARN_FS * 1.45) + 8;
+      const warnBoxY = PH - ty - warnBoxH;
+      page.drawRectangle({ x: TX_X - 2, y: warnBoxY, width: TX_W - 4, height: warnBoxH, color: rgb(1, 0.91, 0.91), borderRadius: 3 });
+      for (const wl of warnLines) { page.drawText(wl, { x: TX_X + 4, y: PH - ty - WARN_FS, size: WARN_FS, font: HB, color: RED }); ty += WARN_FS * 1.45; }
+    }
+    return cursor + totalH + 7;
+  };
+
+  const calloutBlock = (page: any, text: string, cursor: number, bgC: any, stripeC: any): number => {
+    const FS = 10, PAD = 10;
+    const lines = wrapPx(text, CW - 20, FS);
+    const blockH = lines.length * (FS * 1.45) + PAD * 2;
+    if (cursor + blockH > PH - FOOTER_H) return cursor;
+    const boxY = PH - cursor - blockH;
+    page.drawRectangle({ x: ML, y: boxY, width: CW, height: blockH, color: bgC, borderRadius: 6 });
+    page.drawRectangle({ x: ML, y: boxY, width: 4, height: blockH, color: stripeC, borderRadius: 6 });
+    let ty = cursor + PAD;
+    for (let i = 0; i < lines.length; i++) {
+      page.drawText(lines[i], { x: ML + 14, y: PH - ty - FS, size: FS, font: i === 0 ? HB : HV, color: DARK });
+      ty += FS * 1.45;
+    }
+    return cursor + blockH + 8;
+  };
+
+  const bulletBlock = (page: any, label: string, body: string, cursor: number, dotC = BLUE): number => {
+    const FS = 10.5, DOT = ML + 8, TX = ML + 18, TW = CW - 20;
+    const labelW = label.length * FS * 0.55;
+    const bodyLines = wrapPx(body, TW - labelW - 4, FS);
+    const blockH = bodyLines.length * (FS * 1.4);
+    if (cursor + blockH > PH - FOOTER_H) return cursor;
+    page.drawRectangle({ x: DOT, y: PH - cursor - FS - 1, width: 4, height: 4, color: dotC, borderRadius: 2 });
+    page.drawText(safe(label), { x: TX, y: PH - cursor - FS, size: FS, font: HB, color: dotC });
+    for (let i = 0; i < bodyLines.length; i++) {
+      const lineX = i === 0 ? TX + labelW + 4 : TX;
+      page.drawText(safe(bodyLines[i]), { x: lineX, y: PH - cursor - FS - i * FS * 1.4, size: FS, font: HV, color: DARK });
+    }
+    return cursor + blockH + 4;
+  };
+
+  // ═══ PAGE 1 — PERSONALISED CHECKLIST ═══
+  const p1pg = doc.addPage([PW, PH] as [number, number]);
+  const HDR_H = 82;
+  p1pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+  const LOGO_X = PW - ML - 22;
+  p1pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
+  p1pg.drawText("R", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
+  p1pg.drawText("readyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
+  p1pg.drawText("Your Personalised Munich Anmeldung Checklist", { x: ML, y: PH - 34, size: 18, font: HB, color: WHITE });
+  p1pg.drawText(safe("ReadyExpat München  ·  Anmeldung  ·  " + (p1.firstName + " " + p1.lastName).trim() + "  ·  " + fmtToday()), {
+    x: ML, y: PH - 52, size: 9, font: HV, color: rgb(0.70, 0.82, 1.00),
+  });
+
+  const situBadges: [string, any][] = [
+    [isEU ? "EU Citizen" : "Non-EU Citizen", isEU ? GRN : AMB],
+    [maritalLabel[d.maritalStatus] ?? "Single", BLUE],
+    [`${d.people.length} person${d.people.length > 1 ? "s" : ""}`, NAVY],
+  ];
+  let bx = ML;
+  for (const [t, c] of situBadges) {
+    if (!t.trim()) continue;
+    const bw = t.length * 5.8 + 14;
+    p1pg.drawRectangle({ x: bx, y: PH - 73, width: bw, height: 14, color: c, borderRadius: 3 });
+    p1pg.drawText(safe(t), { x: bx + 6, y: PH - 68, size: 7.5, font: HB, color: WHITE });
+    bx += bw + 8;
+  }
+
+  let cur1 = HDR_H + 16;
+  type CItem = { text: string; tag: "required"|"recommended"; note?: string; warn?: string };
+  const items: CItem[] = [];
+
+  items.push({ text: "Munich Anmeldung form (printed on paper) — do NOT bring a phone screen", tag: "required" });
+  items.push({
+    text: "Wohnungsgeberbestätigung — signed original from your landlord",
+    tag: "required",
+    note: "Check your move-in documents and email first — many landlords include it automatically. Under §19 BMG they are legally required to provide it (refusal = fine up to €1,000 for the landlord).",
+  });
+
+  for (const p of d.people) {
+    if (p.firstName || p.lastName) {
+      if (isEU) {
+        items.push({ text: `Passport or national ID card: ${safe(p.firstName)} ${safe(p.lastName)}`.trim(), tag: "required", note: "EU/EEA citizen — passport or national ID card accepted." });
+      } else {
+        items.push({ text: `Passport (original, valid): ${safe(p.firstName)} ${safe(p.lastName)}`.trim(), tag: "required", note: "Non-EU citizen — passport only, national ID cards are not accepted." });
+      }
+    }
+  }
+
+  for (const p of d.people) {
+    if ((p.firstName || p.lastName) && p.birthCountry && !["germany","deutschland"].includes(p.birthCountry.toLowerCase())) {
+      items.push({
+        text: `Birth certificate: ${safe(p.firstName)} ${safe(p.lastName)}`.trim(),
+        tag: "required",
+        note: `Born in ${p.birthCountry}. Original required. CERTIFIED TRANSLATION REQUIRED — beglaubigte Übersetzung by a sworn translator (approx. €50–150).`,
+      });
+    }
+  }
+
+  items.push({ text: "Appointment confirmation — email printout or screenshot", tag: "required" });
+
+  if (!isEU) {
+    items.push({
+      text: "Aufenthaltstitel or Visa — ONLY if you already have one",
+      tag: "required",
+      note: "You do NOT need a visa before registering. If you have none yet, go without — register first.",
+      warn: "Do NOT delay your Anmeldung waiting for a visa. Register first.",
+    });
+  }
+
+  if (isMarried) {
+    items.push({
+      text: "Marriage or civil partnership certificate — original document",
+      tag: "required",
+      warn: hasForeignMarriage ? "TRANSLATION REQUIRED: bring a certified German translation (beglaubigte Übersetzung) by a sworn translator." : undefined,
+    });
+  }
+  if (isDivorced) items.push({ text: "Divorce decree — NOT required for Anmeldung", tag: "recommended", note: "Marital status is self-declared on the form." });
+  if (isWidowed)  items.push({ text: "Death certificate — NOT required for Anmeldung", tag: "recommended", note: "Marital status is self-declared." });
+
+  if (d.nonMovingSpouse) {
+    items.push({
+      text: `Non-moving spouse/partner details: ${safe(d.nonMovingSpouse.firstName)} ${safe(d.nonMovingSpouse.lastName)}`.trim(),
+      tag: "recommended",
+      note: "Their details were filled in the form's non-moving spouse section. They do not need to be present at your appointment.",
+    });
+  }
+
+  items.push({ text: "Rental contract (Mietvertrag) — a copy, not original", tag: "recommended", note: "Not mandatory, but useful if the clerk has questions about your address." });
+
+  cur1 = secBlock(p1pg, "Documents to bring to the Bürgerbüro", cur1);
+  let curPage1 = p1pg;
+  const overflowToNextPage = () => {
+    curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
+    curPage1.drawText("ReadyExpat München  ·  Your personalised checklist  ·  continued", { x: ML, y: 14, size: 7.5, font: HV, color: MUTE });
+    curPage1 = doc.addPage([PW, PH] as [number, number]);
+    curPage1.drawRectangle({ x: 0, y: PH - 38, width: PW, height: 38, color: NAVY });
+    curPage1.drawText("Your Personalised Munich Anmeldung Checklist (continued)", { x: ML, y: PH - 25, size: 13, font: HB, color: WHITE });
+    cur1 = 52;
+  };
+  for (const item of items) {
+    const prevCur = cur1;
+    cur1 = checkItem(curPage1, item.text, cur1, item.tag, item.note, item.warn);
+    if (cur1 === prevCur) {
+      overflowToNextPage();
+      cur1 = checkItem(curPage1, item.text, cur1, item.tag, item.note, item.warn);
+    }
+  }
+
+  if (cur1 < PH - FOOTER_H - 50) {
+    cur1 = calloutBlock(curPage1,
+      "Letterbox (Briefkasten): After moving in, add your surname to your letterbox immediately. Official German mail is NOT delivered to unlabelled mailboxes. Your Steuer-ID (tax ID) arrives by post 2–4 weeks after registration.",
+      cur1, GRNL, GRN);
+  }
+
+  curPage1.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
+  curPage1.drawText("readyexpat.de  ·  Your personalised checklist  ·  Page 1 of 2", { x: ML, y: 14, size: 7.5, font: HV, color: MUTE });
+  curPage1.drawText("muenchen.de", { x: ML + CW - 90, y: 14, size: 7.5, font: HV, color: BLUE });
+
+  // ═══ PAGE 2 — MUNICH GUIDE ═══
+  const p2pg = doc.addPage([PW, PH] as [number, number]);
+  p2pg.drawRectangle({ x: 0, y: PH - HDR_H, width: PW, height: HDR_H, color: NAVY });
+  p2pg.drawRectangle({ x: LOGO_X, y: PH - HDR_H + 46, width: 22, height: 22, color: BLUE, borderRadius: 4 });
+  p2pg.drawText("R", { x: LOGO_X + 6, y: PH - HDR_H + 53, size: 14, font: HB, color: WHITE });
+  p2pg.drawText("readyexpat.de", { x: LOGO_X - 52, y: PH - HDR_H + 47, size: 7, font: HV, color: rgb(0.60, 0.76, 1.00) });
+  p2pg.drawText("Your Munich Anmeldung Guide", { x: ML, y: PH - 34, size: 20, font: HB, color: WHITE });
+  const situStr = [
+    isEU ? "EU/EEA citizen" : "Non-EU citizen",
+    d.people.length > 1 ? `${d.people.length} people` : null,
+    isMarried ? "married" : null,
+    hasForeignBirth ? "foreign birth docs" : null,
+  ].filter(Boolean).join(" · ");
+  p2pg.drawText(safe("Prepared for " + (p1.firstName + " " + p1.lastName).trim() + " · " + situStr), {
+    x: ML, y: PH - 55, size: 8.5, font: HI, color: rgb(0.60, 0.76, 1.00),
+  });
+
+  let cur2 = HDR_H + 12;
+  if (isEU) {
+    cur2 = calloutBlock(p2pg, "As an EU/EEA citizen, you can use a passport or national ID card — both are accepted. You must still appear in person at your local Bürgerbüro.", cur2, GRNL, GRN);
+  } else {
+    cur2 = calloutBlock(p2pg, "As a non-EU citizen, you must appear in person — online registration is not available. Bring your passport (national ID is NOT accepted for Anmeldung).", cur2, AMBL, AMB);
+  }
+  if (d.people.length > 1) {
+    cur2 = calloutBlock(p2pg, safe(`You are registering ${d.people.length} people. Munich's Anmeldung form fits up to 4 people on one sheet — hand it in at the counter together.`), cur2, BLUEL, BLUE);
+  }
+  if (hasForeignBirth || hasForeignMarriage) {
+    cur2 = calloutBlock(p2pg, "You have foreign documents. These must be accompanied by a certified German translation (beglaubigte Übersetzung). Cost: approx. €50–150 per document. Do not attend the appointment without these.", cur2, REDL, RED);
+  }
+  if (d.nonMovingSpouse) {
+    cur2 = calloutBlock(p2pg, safe(`Your spouse/partner (${d.nonMovingSpouse.firstName} ${d.nonMovingSpouse.lastName}) is not moving with you. Their details were already filled into the form's non-moving spouse section — they do not need to attend your appointment.`), cur2, BLUEL, BLUE);
+  }
+  cur2 += 4;
+
+  cur2 = secBlock(p2pg, "Booking your Bürgerbüro appointment", cur2);
+  cur2 = bulletBlock(p2pg, "Book early:", "Munich Anmeldung appointments are booked through muenchen.de. Slots can be limited, especially during peak relocation months — book as early as possible after moving in.", cur2);
+  cur2 = bulletBlock(p2pg, "Registering for others:", "As in many German cities, one person can often register the household with a written Vollmacht (power of attorney) plus the absent person's ID/passport copy — confirm this is accepted at your specific Bürgerbüro before relying on it.", cur2);
+  cur2 = bulletBlock(p2pg, "14-day deadline:", "You must register within 14 days of moving in (§17 BMG). If no appointment is available in time, book the earliest one you can find and keep it as evidence.", cur2);
+  cur2 += 4;
+
+  cur2 = secBlock(p2pg, "Before you go — printing", cur2);
+  cur2 = calloutBlock(p2pg, "Print on paper — the Bürgerbüro will NOT accept a phone screen. Sign the form in pen after printing (at the bottom: Datum, Unterschrift). Bring it in a folder, unfolded.", cur2, REDL, RED);
+  cur2 = bulletBlock(p2pg, "DM / Rossmann:", "Self-service print kiosks are available at most branches. Approx. €0.10–0.15 per page.", cur2);
+  cur2 += 4;
+
+  cur2 = secBlock(p2pg, "After your appointment", cur2);
+  cur2 = bulletBlock(p2pg, "Meldebestätigung:", "You receive your registration confirmation the same day. Keep it — you need it for banks, employers, and government services.", cur2);
+  cur2 = bulletBlock(p2pg, "Steuer-ID:", "Your German tax ID arrives by post within a few weeks at your new address. Keep it permanently.", cur2);
+  cur2 = bulletBlock(p2pg, "Letterbox (Briefkasten):", "Put your surname on your letterbox immediately after moving in. Official German mail is NOT delivered to unlabelled mailboxes.", cur2, GRN);
+  if (isMarried) {
+    const kirchStr = d.people.some(p => ["rk","ev"].includes(p.religion))
+      ? "You registered a church affiliation — approx. 8–9% Kirchensteuer (church tax) applies on your income tax. To leave (Kirchenaustritt), visit the Amtsgericht (district court) — approx. €30–40 fee."
+      : "You did not register a church affiliation — no church tax applies.";
+    cur2 = bulletBlock(p2pg, "Kirchensteuer:", kirchStr, cur2);
+  } else {
+    cur2 = bulletBlock(p2pg, "Kirchensteuer:", "If you declared Catholic or Protestant membership, approx. 8–9% church tax on your income tax applies automatically. To leave: you must formally exit (Kirchenaustritt) at the Amtsgericht — approx. €30–40 fee.", cur2);
+  }
+  cur2 += 4;
+
+  const tipH = 40, tipY = FOOTER_H + 10;
+  p2pg.drawRectangle({ x: ML, y: tipY, width: CW, height: tipH, color: NAVY, borderRadius: 6 });
+  p2pg.drawText(safe("Good luck, " + (p1.firstName || "expat") + ". Bring a pen. Arrive calm. The form does the talking."), { x: ML + 14, y: tipY + tipH - 16, size: 9.5, font: HB, color: WHITE });
+  p2pg.drawText("Next step: book your Bürgerbüro appointment at muenchen.de.", { x: ML + 14, y: tipY + tipH - 29, size: 9, font: HV, color: rgb(0.80, 0.89, 1.00) });
+
+  p2pg.drawLine({ start:{x:ML,y:28}, end:{x:ML+CW,y:28}, thickness:0.5, color:LNCLR });
+  p2pg.drawText("readyexpat.de  ·  Munich Guide  ·  Page 2 of 2  ·  Information without guarantee", { x: ML, y: 14, size: 7.5, font: HV, color: MUTE });
+  p2pg.drawText("muenchen.de", { x: ML + CW - 90, y: 14, size: 7.5, font: HV, color: BLUE });
+
+  return doc.save();
+}
+
 // ─── Validation ───────────────────────────────────────────────────
 const STEPS: WizardStep[] = ["origin","new-address","prev-address","people","status","documents","review"];
 
@@ -1260,8 +1587,9 @@ function MunichPaymentPage({ form, onDevSkip }: { form: MunichForm; onDevSkip: (
             {[
               { label: "Official Munich Anmeldung PDF", desc: "All 105 fields · filled in correct German" },
               { label: "Fits your whole household", desc: "Up to 4 people on one sheet" },
+              { label: "Personalised checklist + guide", desc: "What to bring, printing tips, after your appointment" },
             ].map(({ label, desc }, i) => (
-              <div key={label} style={{ display: "flex", alignItems: "center", gap: 14, paddingBottom: i === 0 ? 12 : 0, borderBottom: i === 0 ? "1px solid #f8fafc" : "none", marginBottom: i === 0 ? 12 : 0 }}>
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: 14, paddingBottom: i < 2 ? 12 : 0, borderBottom: i < 2 ? "1px solid #f8fafc" : "none", marginBottom: i < 2 ? 12 : 0 }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <FileText size={14} color={BLUE} />
                 </div>
@@ -1310,11 +1638,20 @@ function MunichDonePage({
 }) {
   const p1 = form.people[0] ?? EMPTY_PERSON;
   const [dlA, setDlA] = useState(false);
+  const [dlG, setDlG] = useState(false);
   const handleDownload = () => {
     if (!pdfBytes) return;
     setDlA(true);
     savePDF(pdfBytes, pdfName);
     setTimeout(() => setDlA(false), 400);
+  };
+  const handleDownloadGuide = async () => {
+    setDlG(true);
+    try {
+      const bytes = await buildMunichGuidePDF(form);
+      savePDF(bytes, `Munich_Anmeldung_Guide_${p1.lastName || "guide"}.pdf`);
+    } catch (e) { console.error(e); }
+    setDlG(false);
   };
 
   const isMarried = ["verheiratet", "partnerschaft", "getrennt"].includes(form.maritalStatus);
@@ -1426,6 +1763,11 @@ function MunichDonePage({
         </div>
       </div>
 
+      {/* In-development notice */}
+      <div style={{ background: "#fffbeb", borderBottom: "1px solid #fde68a", padding: "7px 20px", textAlign: "center" }}>
+        <span style={{ fontSize: 12, color: "#92400e" }}><strong>Munich support is still in development</strong> — free to use while we finish testing.</span>
+      </div>
+
       <div className="m-done-layout">
         {/* Desktop sidebar */}
         <div className="m-done-sidebar">
@@ -1512,6 +1854,21 @@ function MunichDonePage({
             </button>
           )}
 
+          {/* Guide download */}
+          <button onClick={handleDownloadGuide} disabled={dlG}
+            style={{ width: "100%", display: "flex", alignItems: "center", gap: 16, padding: "18px 22px", borderRadius: 18, background: dlG ? "#64748b" : "linear-gradient(135deg,#134e4a,#0f766e)", color: "white", border: "none", cursor: dlG ? "not-allowed" : "pointer", fontFamily: "inherit", marginBottom: 20, boxShadow: dlG ? "none" : "0 8px 24px rgba(15,118,110,0.3)", transition: "all 0.2s", textAlign: "left" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <Layers size={24} color="white" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontWeight: 900, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 3 }}>
+                {dlG ? "Generating..." : "Download Checklist + Munich Guide"}
+              </div>
+              <div style={{ fontSize: 12.5, opacity: 0.8 }}>Your personalised checklist + Munich appointment guide</div>
+            </div>
+            <Download size={20} style={{ flexShrink: 0, opacity: 0.8 }} />
+          </button>
+
           {/* Next step — book appointment */}
           <div style={{ background: "linear-gradient(135deg,#0f172a,#1e3a8a)", borderRadius: 18, padding: "20px 22px", marginBottom: 24, color: "white" }}>
             <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 6 }}>Next step: book your Bürgerbüro appointment</div>
@@ -1578,6 +1935,13 @@ function MunichLandingPage({ onStart }: { onStart: () => void }) {
         }
       `}</style>
       <SharedNav onStart={onStart} />
+
+      {/* ══ IN-DEVELOPMENT NOTICE ══ */}
+      <div style={{ background: "#fffbeb", borderBottom: "1px solid #fde68a", padding: "10px 20px", textAlign: "center" }}>
+        <span style={{ fontSize: 13, color: "#92400e" }}>
+          <strong>Munich support is still in development.</strong> Some features may be incomplete or change — it&apos;s <strong>free</strong> to use while we finish testing.
+        </span>
+      </div>
 
       {/* ══ HERO ══ */}
       <div style={{ background: "#fbfcff", borderBottom: "1px solid #e8ecf4" }}>
@@ -1795,6 +2159,11 @@ function MunichWizardShell({
           </div>
         </div>
       )}
+
+      {/* In-development notice */}
+      <div style={{ background: "#fffbeb", borderBottom: "1px solid #fde68a", padding: "7px 20px", textAlign: "center" }}>
+        <span style={{ fontSize: 12, color: "#92400e" }}><strong>Munich support is still in development</strong> — free to use while we finish testing.</span>
+      </div>
 
       {/* Slim reminder bar */}
       <div className="m-mob-hide" style={{ background: "#f8fafc", borderBottom: "1px solid #e8ecf4", padding: "7px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
