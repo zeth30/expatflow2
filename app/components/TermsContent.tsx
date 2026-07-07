@@ -45,10 +45,15 @@ export function TermsContent() {
       <h2 style={s.h2}>7. Limitation of Liability</h2>
       <p style={s.p}>To the maximum extent permitted by applicable law, ReadyExpat's total liability to you for any claim arising from or relating to these Terms or the service shall not exceed the amount you paid for the service (€15). We are not liable for indirect, incidental, or consequential damages, including any administrative fees, fines, or costs arising from a rejected Anmeldung.</p>
 
-      <h2 style={s.h2}>8. Governing Law</h2>
+      <h2 style={s.h2}>8. Tax Form Assistant (Easy Fragebogen zur steuerlichen Erfassung)</h2>
+      <p style={s.p}>The tax form assistant translates and explains the fields of the official ELSTER questionnaire (&quot;Fragebogen zur steuerlichen Erfassung&quot;) in English and formats the answers you yourself provide. This constitutes mechanical assistance based on your individual instructions (§6 Nr. 3 StBerG). ReadyExpat is <strong>not a tax consultancy (Steuerberatung)</strong> within the meaning of the Steuerberatungsgesetz, is not admitted to provide tax advice, and does not provide individual tax advice, tax planning, or recommendations of any kind.</p>
+      <p style={s.p}>All entries, estimates, and elections (including whether to apply the Kleinunternehmer-Regelung under §19 UStG) are made exclusively by you. You are responsible for reviewing your entries in ELSTER before submission. We do not submit the questionnaire on your behalf — submission happens exclusively in your own ELSTER account. For advice on your individual tax situation, consult a licensed Steuerberater or lawyer.</p>
+      <p style={s.p}>All form data you enter into the tax form assistant is processed locally in your browser and stored only in your browser&apos;s localStorage. It is not transmitted to or stored on ReadyExpat&apos;s servers. Payment processing is handled by Stripe.</p>
+
+      <h2 style={s.h2}>9. Governing Law</h2>
       <p style={s.p}>These Terms are governed by the laws of the Federal Republic of Germany. The exclusive place of jurisdiction for all disputes is Berlin, Germany, to the extent permitted by applicable consumer protection law.</p>
 
-      <h2 style={s.h2}>9. Changes to Terms</h2>
+      <h2 style={s.h2}>10. Changes to Terms</h2>
       <p style={s.p}>We may update these Terms from time to time and will communicate material changes via the website. If you do not agree with updated Terms, please contact us at info@readyexpat.de before your next use.</p>
 
       <p style={{ color: "#94a3b8", fontSize: 12, marginTop: 24 }}>Contact: info@readyexpat.de · ReadyExpat, Berlin, Germany</p>
