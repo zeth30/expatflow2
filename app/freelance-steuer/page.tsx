@@ -174,6 +174,33 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
               <strong style={{ color: "#dcfce7" }}>Your data never touches our servers.</strong> Everything you type — your tax ID, IBAN, income estimates — stays in your browser and is processed there. We receive only your Stripe payment confirmation. Clear it anytime with one click.
             </p>
           </div>
+
+          {/* Answer-sheet preview — stacked-paper mock of the actual product UI */}
+          <div style={{ maxWidth: 440, margin: "40px auto 0", position: "relative", textAlign: "left" }}>
+            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.06)", borderRadius: 14, transform: "rotate(-2.2deg)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.1)", borderRadius: 14, transform: "rotate(1.4deg)" }} />
+            <div style={{ position: "relative", background: "white", borderRadius: 14, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.45)" }}>
+              <div style={{ background: NAVY, padding: "12px 16px" }}>
+                <div style={{ color: "white", fontWeight: 800, fontSize: 13 }}>Anmeldung und Abführung der Umsatzsteuer</div>
+                <div style={{ color: "#93c5fd", fontSize: 10.5, marginTop: 1 }}>VAT registration · Section 8 of 8</div>
+              </div>
+              {[
+                { nr: "21", label: "Art der Tätigkeit", val: "Softwareentwicklung" },
+                { nr: "69", label: "Beginn der Tätigkeit", val: "01.08.2026" },
+                { nr: "130", label: "Summe der Umsätze (geschätzt)", val: "24.000" },
+              ].map((r, i) => (
+                <div key={r.nr} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderBottom: i < 2 ? "1px solid #f1f5f9" : "none" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 28, height: 20, borderRadius: 6, background: "#eff6ff", color: BLUE, fontWeight: 800, fontSize: 10 }}>{r.nr}</span>
+                  <span style={{ color: MUTED, fontSize: 11.5, flex: 1 }}>{r.label}</span>
+                  <span style={{ color: NAVY, fontWeight: 800, fontSize: 12, background: "#f8fafc", border: "1px solid #eef2f7", borderRadius: 6, padding: "4px 9px" }}>{r.val}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, color: BLUE, fontWeight: 700, fontSize: 10.5, border: "1px solid #e2e8f0", borderRadius: 6, padding: "4px 8px" }}><CopyIcon size={10} /> Copy</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ position: "absolute", top: -14, right: -8, background: "#16a34a", color: "white", fontWeight: 800, fontSize: 11, borderRadius: 999, padding: "6px 13px", boxShadow: "0 6px 20px rgba(22,163,74,0.5)" }}>
+              ✓ Field numbers match ELSTER
+            </div>
+          </div>
         </div>
       </div>
 
@@ -529,6 +556,54 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
   );
 }
 
+// ─── Email opt-in (done page) ─────────────────────────────────────
+// Privacy model: only first name + email leave the browser (Art. 6(1)(a)
+// DSGVO consent via the field itself) — no form data attached.
+function SteuerEmailOptIn({ firstName }: { firstName: string }) {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  if (state === "sent") {
+    return (
+      <div style={{ padding: "14px 16px", borderRadius: 12, background: "#f0fdf4", border: "1px solid #bbf7d0", marginBottom: 26, display: "flex", gap: 9 }}>
+        <Check size={14} color="#16a34a" style={{ flexShrink: 0, marginTop: 2 }} />
+        <p style={{ color: "#166534", fontSize: 13, lineHeight: 1.6 }}>Sent. Check your inbox for your ELSTER next steps.</p>
+      </div>
+    );
+  }
+  return (
+    <div style={{ padding: "16px 18px", borderRadius: 12, background: "white", border: "1px solid #e8ecf4", marginBottom: 26 }}>
+      <div style={{ fontWeight: 800, color: NAVY, fontSize: 13.5, marginBottom: 4 }}>Email yourself the next steps</div>
+      <p style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.6, marginBottom: 10 }}>
+        The ELSTER activation letter can take up to two weeks — get the 3 next steps in your inbox so nothing slips. Only your first name and email are transmitted; never your form data.
+      </p>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <input
+          type="email" value={email} placeholder="you@example.com"
+          onChange={e => setEmail(e.target.value)}
+          style={{ flex: "1 1 200px", padding: "10px 12px", borderRadius: 9, border: "1px solid #e2e8f0", fontSize: 13.5, fontFamily: "inherit", color: NAVY }}
+        />
+        <button
+          disabled={state === "sending" || !email.includes("@")}
+          onClick={async () => {
+            setState("sending");
+            try {
+              const res = await fetch("/api/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ to: email, firstName, product: "steuer" }),
+              });
+              setState(res.ok ? "sent" : "error");
+            } catch { setState("error"); }
+          }}
+          style={{ padding: "10px 18px", borderRadius: 9, border: "none", background: email.includes("@") ? `linear-gradient(135deg,${BLUE},#2563eb)` : "#e2e8f0", color: email.includes("@") ? "white" : "#94a3b8", fontWeight: 800, fontSize: 13, cursor: email.includes("@") ? "pointer" : "not-allowed", fontFamily: "inherit" }}>
+          {state === "sending" ? "Sending…" : "Send"}
+        </button>
+      </div>
+      {state === "error" && <p style={{ color: "#dc2626", fontSize: 12, marginTop: 8 }}>Could not send — please try again or email info@readyexpat.de.</p>}
+    </div>
+  );
+}
+
 // ─── Done page ────────────────────────────────────────────────────
 function SteuerDone({
   form, pdfBytes, pdfName, sessionError, pdfError, onRestart,
@@ -594,6 +669,8 @@ function SteuerDone({
                 This sheet was generated locally in your browser. Your data was never sent to our servers — it stays here until you clear it.
               </p>
             </div>
+
+            <SteuerEmailOptIn firstName={form.firstName} />
 
             {sections.map((sec, si) => (
               <div key={sec.title} style={{ marginBottom: 26 }}>

@@ -14,12 +14,12 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { sendReminderEmail } from "@/lib/resend";
+import { sendReminderEmail, sendSteuerNextStepsEmail } from "@/lib/resend";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { to, firstName, sheets } = body;
+    const { to, firstName, sheets, product } = body;
 
     // Validate — minimal data only
     if (!to || typeof to !== "string" || !to.includes("@")) {
@@ -30,11 +30,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email service not configured." }, { status: 500 });
     }
 
-    const result = await sendReminderEmail({
-      to,
-      firstName: typeof firstName === "string" ? firstName : "there",
-      sheets: Number(sheets) || 1,
-    });
+    const safeName = typeof firstName === "string" && firstName ? firstName : "there";
+    const result = product === "steuer"
+      ? await sendSteuerNextStepsEmail({ to, firstName: safeName })
+      : await sendReminderEmail({
+          to,
+          firstName: safeName,
+          sheets: Number(sheets) || 1,
+        });
 
     if (!result.success) {
       return NextResponse.json({ error: result.error ?? "Send failed." }, { status: 500 });

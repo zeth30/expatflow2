@@ -107,6 +107,111 @@ function buildReminderHtml(firstName: string, sheets: number): string {
 </html>`;
 }
 
+// ── Steuer product: ELSTER next-steps email ─────────────────────────
+// Same Option-A privacy model: only first name + email pass through.
+function buildSteuerHtml(firstName: string): string {
+  const steps = [
+    ["1", "Register at elster.de today", "The activation letter arrives by post and can take up to two weeks — starting now keeps you inside your deadline."],
+    ["2", "Open your answer sheet next to ELSTER", "It stays in your browser (plus your PDF download). Copy each German entry — the field numbers match."],
+    ["3", "Submit within one month of starting", "§138 AO: the Fragebogen is due within one month of beginning your activity, including preparation work."],
+  ];
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Your ELSTER next steps</title></head>
+<body style="margin:0;padding:0;background:#f8f9fb;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fb;padding:40px 16px;">
+<tr><td align="center">
+<table width="100%" style="max-width:540px;">
+
+  <tr><td style="padding-bottom:20px;" align="center">
+    <span style="font-size:15px;font-weight:800;color:#0f172a;">ReadyExpat </span>
+    <span style="font-size:15px;font-weight:800;color:#0075FF;">Steuer</span>
+  </td></tr>
+
+  <tr><td style="background:white;border-radius:20px;border:1px solid #e8ecf4;box-shadow:0 4px 24px rgba(0,0,0,0.06);overflow:hidden;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr><td style="background:linear-gradient(135deg,#0f172a,#0075FF);padding:28px 32px 24px;border-radius:20px 20px 0 0;">
+        <p style="margin:0 0 4px;font-size:10px;font-weight:700;color:rgba(191,219,254,0.8);letter-spacing:0.1em;text-transform:uppercase;">Answer sheet ready</p>
+        <h1 style="margin:0;font-size:22px;font-weight:900;color:white;line-height:1.2;letter-spacing:-0.02em;">
+          ${firstName}, your German tax answers are ready.<br/>Here's what happens next.
+        </h1>
+      </td></tr>
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr><td style="padding:24px 32px;">
+        ${steps.map(([n, title, desc]) => `
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
+          <tr>
+            <td width="30" valign="top">
+              <div style="width:22px;height:22px;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:6px;text-align:center;line-height:22px;font-size:10px;font-weight:800;color:#0075FF;">${n}</div>
+            </td>
+            <td style="padding-left:10px;">
+              <p style="margin:0 0 2px;font-size:13px;font-weight:700;color:#0f172a;">${title}</p>
+              <p style="margin:0;font-size:12px;color:#64748b;line-height:1.5;">${desc}</p>
+            </td>
+          </tr>
+        </table>`).join("")}
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+          <tr><td align="center">
+            <a href="https://readyexpat.de/freelance-steuer"
+               style="display:inline-block;padding:13px 28px;background:linear-gradient(135deg,#0f172a,#0075FF);color:white;font-size:13.5px;font-weight:800;text-decoration:none;border-radius:11px;">
+              Open your answer sheet →
+            </a>
+          </td></tr>
+        </table>
+      </td></tr>
+    </table>
+
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr><td style="background:#f8fafc;border-top:1px solid #e8ecf4;padding:14px 32px;border-radius:0 0 20px 20px;">
+        <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.6;">
+          🔒 Your answer sheet was generated in your browser. We never received your tax ID, IBAN, or any other form data. Only your first name and email address were used to send this message. Not tax advice.
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:20px 0 0;" align="center">
+    <p style="margin:0;font-size:11px;color:#94a3b8;line-height:1.6;">
+      ReadyExpat · info@readyexpat.de<br/>
+      You received this because you entered your email on the results page.<br/>
+      <a href="https://readyexpat.de/privacy" style="color:#94a3b8;">Privacy Policy</a>
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+}
+
+export async function sendSteuerNextStepsEmail({
+  to,
+  firstName,
+}: { to: string; firstName: string }): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM,
+      to,
+      subject: `Your ELSTER next steps, ${firstName}`,
+      html: buildSteuerHtml(firstName),
+    });
+    if (error) {
+      console.error("[ReadyExpat] Resend error (steuer):", error);
+      return { success: false, error: error.message };
+    }
+    console.log("[ReadyExpat] Steuer next-steps sent:", data?.id);
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message ?? "Unknown error" };
+  }
+}
+
 export async function sendReminderEmail({
   to,
   firstName,
