@@ -23,6 +23,24 @@ export async function POST(req: NextRequest) {
     const domain = process.env.NEXT_PUBLIC_DOMAIN ?? "http://localhost:3000";
     const body = await req.json().catch(() => ({}));
     const returnPath: string = body.returnPath ?? "/";
+    const productKey: "anmeldung" | "steuer" =
+      body.product === "steuer" ? "steuer" : "anmeldung";
+
+    const PRODUCTS = {
+      anmeldung: {
+        name: "ReadyExpat Berlin — Anmeldung Preparation",
+        description:
+          "Official Anmeldung form (all 54 fields filled), personalised checklist, and expert appointment guide. One-time digital service.",
+        service: "anmeldung-preparation",
+      },
+      steuer: {
+        name: "ReadyExpat — Easy Fragebogen zur steuerlichen Erfassung",
+        description:
+          "English field-by-field answer sheet for the ELSTER tax registration questionnaire (solo freelancers), on screen and as PDF. One-time digital service. Not tax advice.",
+        service: "steuer-fragebogen-copilot",
+      },
+    } as const;
+    const product = PRODUCTS[productKey];
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -33,9 +51,8 @@ export async function POST(req: NextRequest) {
             currency: "eur",
             unit_amount: 1500, // €15.00 in cents
             product_data: {
-              name: "ReadyExpat Berlin — Anmeldung Preparation",
-              description:
-                "Official Anmeldung form (all 54 fields filled), personalised checklist, and expert appointment guide. One-time digital service.",
+              name: product.name,
+              description: product.description,
               images: [`${domain}/og-image.png`],
             },
           },
@@ -44,10 +61,10 @@ export async function POST(req: NextRequest) {
       ],
       // IMPORTANT: session_id in success_url is how we verify payment
       success_url: `${domain}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${domain}/#payment`,
+      cancel_url: `${domain}${returnPath === "/" ? "/#payment" : returnPath}`,
       // Metadata — not personal data, just for Stripe dashboard
       metadata: {
-        service: "anmeldung-preparation",
+        service: product.service,
         version: "1.0",
         returnPath,
       },
