@@ -162,7 +162,10 @@ export const validateSteuerId = (raw: string): boolean =>
 // exactly where they are. `de` = the value to type/select (in German).
 // `enHint` = short English reminder of what the field is.
 
-export type AnswerRow = { nr: string; label: string; de: string; enHint: string };
+// `instruction: true` = the de-value is a to-do ("tick the box", "leave
+// empty"), not text to type — the done page renders it without a copy button
+// so nobody pastes "Felder leer lassen" into a tax form.
+export type AnswerRow = { nr: string; label: string; de: string; enHint: string; instruction?: boolean };
 export type AnswerSection = { title: string; titleEn: string; rows: AnswerRow[] };
 
 export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
@@ -182,6 +185,7 @@ export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
         de: f.hasIncomeTaxNumber ? f.incomeTaxNumber : "wird neu beantragt",
         enHint: f.hasIncomeTaxNumber ? "Your existing income-tax number" : "= “will be newly requested”" },
       { nr: "5", label: "Religion", de: RELIGION_STEUER[f.religion],
+        instruction: f.religion === "other" || undefined,
         enHint: f.religion === "other"
           ? "You belong to another church-tax-collecting community — pick it from ELSTER's own list for this field"
           : "Church-tax status — see explanation in the wizard" },
@@ -242,12 +246,12 @@ export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
       { nr: "50", label: "Wohnort", de: f.prevCity, enHint: "Previous city (and country if abroad)" },
     );
   } else {
-    prevRows.push({ nr: "47–50", label: "Zugezogen innerhalb der letzten 12 Monate / bisherige Adresse", de: "Felder leer lassen", enHint: "You didn't move within the last 12 months — leave these fields empty" });
+    prevRows.push({ nr: "47–50", label: "Zugezogen innerhalb der letzten 12 Monate / bisherige Adresse", de: "Felder leer lassen", instruction: true, enHint: "You didn't move within the last 12 months — leave these fields empty" });
   }
   if (f.taxRegisteredBefore) {
     prevRows.push({ nr: "52", label: "Steuernummer (falls in den letzten 3 Jahren steuerlich erfasst)", de: f.prevTaxNumber, enHint: "Your previous German tax number" });
   } else {
-    prevRows.push({ nr: "52", label: "Steuernummer (falls in den letzten 3 Jahren steuerlich erfasst)", de: "Feld leer lassen", enHint: "You weren't registered for German income tax in the last 3 years — leave empty" });
+    prevRows.push({ nr: "52", label: "Steuernummer (falls in den letzten 3 Jahren steuerlich erfasst)", de: "Feld leer lassen", instruction: true, enHint: "You weren't registered for German income tax in the last 3 years — leave empty" });
   }
   sections.push({ title: "Bisherige persönliche Verhältnisse", titleEn: "Previous circumstances", rows: prevRows });
 
@@ -257,7 +261,7 @@ export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
     rows: [
       f.businessAddrIsHome === false
         ? { nr: "56", label: "Anschrift des Unternehmens", de: `${f.bizStreet} ${f.bizHouseNo}, ${f.bizPlz} ${f.bizCity}`, enHint: "Separate business address" }
-        : { nr: "56", label: "Anschrift des Unternehmens", de: "Die Anschrift des Unternehmens entspricht meiner Wohnanschrift. (Häkchen setzen)", enHint: "Tick: business address = home address" },
+        : { nr: "56", label: "Anschrift des Unternehmens", de: "Häkchen setzen: „Die Anschrift des Unternehmens entspricht meiner Wohnanschrift.“", instruction: true, enHint: "Tick the checkbox: business address = home address" },
       { nr: "69", label: "Beginn der Tätigkeit (inklusive Vorbereitungshandlungen)", de: fmtDateDE(f.activityStart), enHint: "Start date, incl. preparation (e.g. buying equipment)" },
       { nr: "85", label: "Gründungsart", de: "Neugründung", enHint: "= “new founding” — you confirmed in the wizard that this is a brand-new activity" },
       { nr: "85", label: "Gründungsdatum", de: fmtDateDE(f.foundingDate || f.activityStart), enHint: "Founding date" },
@@ -296,10 +300,10 @@ export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
     { nr: "130", label: "Summe der Umsätze (geschätzt) — Folgejahr", de: fmtEuro(f.revenueY2), enHint: "Estimated revenue, year 2" },
   ];
   if (f.kleinunternehmer === true) {
-    vatRows.push({ nr: "131", label: "Kleinunternehmer-Regelung", de: "Häkchen setzen (Kleinunternehmer-Regelung nach § 19 UStG in Anspruch nehmen)", enHint: "Tick the box — YOUR choice from the wizard" });
+    vatRows.push({ nr: "131", label: "Kleinunternehmer-Regelung", de: "Häkchen setzen (Kleinunternehmer-Regelung nach § 19 UStG in Anspruch nehmen)", instruction: true, enHint: "Tick the box — YOUR choice from the wizard" });
   } else if (f.kleinunternehmer === false) {
     vatRows.push(
-      { nr: "131", label: "Kleinunternehmer-Regelung", de: "Häkchen NICHT setzen", enHint: "Leave unticked — YOUR choice from the wizard" },
+      { nr: "131", label: "Kleinunternehmer-Regelung", de: "Häkchen NICHT setzen", instruction: true, enHint: "Leave unticked — YOUR choice from the wizard" },
       { nr: "133", label: "Voraussichtliche Umsatzsteuer-Zahllast (geschätzt)", de: fmtEuro(f.vatBalance) || "0", enHint: "Estimated VAT payable (VAT charged minus input VAT)" },
     );
   }
@@ -339,6 +343,11 @@ export const STEUER_STEPS: StepDef[] = [
         explain: "ELSTER displays dates as DD.MM.YYYY — your answer sheet already formats it that way." },
       { key: "profession", label: "Your occupation", deLabel: "Ausgeübter Beruf", type: "text", required: true, placeholder: "e.g. Softwareentwickler, Grafikdesignerin",
         explain: "Your job title, in German if possible. Short and factual — e.g. “Softwareentwickler”, “Fotografin”, “Übersetzer”. If you do several things, name the main one or write “mehrere” (several)." },
+    ],
+  },
+  {
+    id: "identity", title: "Your tax identity", sub: "The numbers and statuses the Finanzamt already knows you by.",
+    fields: [
       { key: "steuerId", label: "Tax ID (Steuerliche Identifikationsnummer)", deLabel: "Identifikationsnummer", type: "text", required: true, placeholder: "11 digits, e.g. 12345678995",
         explain: "The 11-digit number you received by post a few weeks after your Anmeldung. It is on the letter from the Bundeszentralamt für Steuern and on every income-tax document. It is NOT the same as a Steuernummer. If you never received it, you can request it at bzst.de — you cannot submit the Fragebogen without it." },
       { key: "hasIncomeTaxNumber", label: "Have you ever had a German income-tax number (Steuernummer)?", deLabel: "Einkommensteuernummer", type: "boolean", required: true,
@@ -445,7 +454,7 @@ export const STEUER_STEPS: StepDef[] = [
     ],
   },
   {
-    id: "vat", title: "VAT (Umsatzsteuer)", sub: "The most consequential section — read the explanations carefully. We explain, you decide.",
+    id: "vat", title: "VAT (Umsatzsteuer)", sub: "The section people worry about most. We explain every option in plain English — you decide.",
     fields: [
       { key: "currentlyVatRegistered", label: "Are you currently VAT-registered at a German Finanzamt?", deLabel: "Aktuell umsatzsteuerlich geführt", type: "boolean", required: true,
         explain: "Yes only if a German Finanzamt already manages VAT for you (you'd have an existing USt file and tax number for it). If yes: ELSTER asks follow-up questions about that existing registration which this assistant doesn't cover — have those documents ready." },
@@ -457,7 +466,7 @@ export const STEUER_STEPS: StepDef[] = [
           { value: "yes", label: "Use it — I will NOT charge VAT" },
           { value: "no",  label: "Don't use it — I WILL charge VAT" },
         ],
-        explain: "The small-business scheme (§ 19 UStG). The legal limits are fixed: previous calendar year ≤ €25,000 and current year ≤ €100,000. In your founding year there is no previous year — the €25,000 limit then applies to your actual founding-year revenue, and the sale that crosses it is already subject to regular VAT from that moment. Using the scheme means: no VAT on your invoices, no VAT returns for these sales — and no reclaiming the VAT you pay on business purchases. Not using it means: you add VAT (usually 19%) to invoices, file VAT returns, and reclaim input VAT. Which is better depends on who your clients are, your costs, and your plans — that judgement is exactly what we are not allowed to make for you, and we don't. If you are unsure, read ELSTER's help text for field 131 or ask a Steuerberater. Whatever you choose here, your answer sheet shows the exact entry." },
+        explain: "The small-business scheme (§ 19 UStG). The legal limits are fixed: previous calendar year ≤ €25,000 and current year ≤ €100,000. In your founding year there is no previous year — the €25,000 limit then applies to your actual founding-year revenue, and the sale that crosses it is already subject to regular VAT from that moment.\nUsing it means: no VAT on your invoices · no VAT returns for these sales · no reclaiming the VAT you pay on business purchases.\nNot using it means: you add VAT (usually 19%) to invoices · file VAT returns · reclaim input VAT.\nWhich is better depends on who your clients are, your costs, and your plans — that judgement is exactly what we are not allowed to make for you, and we don't. If you are unsure, read ELSTER's help text for field 131 or ask a Steuerberater. Whatever you choose here, your answer sheet shows the exact entry." },
       { key: "vatBalance", label: "Estimated VAT payable this year (€)", deLabel: "Voraussichtliche Umsatzsteuer-Zahllast", type: "euro", showIf: f => f.kleinunternehmer === false, required: f => f.kleinunternehmer === false,
         explain: "Rough estimate: the VAT you will charge minus the VAT you pay on purchases. Your own estimate — the final amount is always settled through your VAT returns." },
     ],
@@ -482,10 +491,10 @@ export function stepError(stepId: string, f: SteuerForm): string {
   if (stepId === "estimates" && f.confirmEuer === false) {
     return "This assistant covers cash-basis accounting (EÜR) only. If you plan double-entry accounting (Bilanzierung), please use ELSTER directly or a Steuerberater.";
   }
-  if (stepId === "personal" && f.steuerId && !validateSteuerId(f.steuerId)) {
+  if (stepId === "identity" && f.steuerId && !validateSteuerId(f.steuerId)) {
     return "The tax ID (Identifikationsnummer) must be exactly 11 digits.";
   }
-  if (stepId === "personal" && f.married && f.spouseSteuerId && !validateSteuerId(f.spouseSteuerId)) {
+  if (stepId === "identity" && f.married && f.spouseSteuerId && !validateSteuerId(f.spouseSteuerId)) {
     return "Your spouse's tax ID must be exactly 11 digits (or leave it empty).";
   }
   if (stepId === "bank" && f.iban && !validateIBAN(f.iban)) {

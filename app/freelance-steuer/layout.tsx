@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Fragebogen zur steuerlichen Erfassung in English — Freelancer Tax Registration Help",
+  title: "Fragebogen zur steuerlichen Erfassung in English — ELSTER Tax Registration for Expat Freelancers, No German Required",
   description:
-    "Fill Germany's freelancer tax registration (Fragebogen zur steuerlichen Erfassung) via ELSTER with confidence. Every field explained in English. Your answers stay in your browser — nothing stored on our servers. Not tax advice.",
+    "Register as a freelancer in Germany without speaking German. The ELSTER Fragebogen zur steuerlichen Erfassung explained field by field in English — copy-ready German answers, free ELSTER account guide, your data stays in your browser.",
   metadataBase: new URL(DOMAIN),
   alternates: {
     canonical: "/freelance-steuer",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The German Freelancer Tax Form, in English — ReadyExpat",
     description:
-      "Every field of the ELSTER Fragebogen zur steuerlichen Erfassung explained in plain English. Answer in English, get every German entry ready to copy. Not tax advice.",
+      "Every field of the ELSTER Fragebogen zur steuerlichen Erfassung explained in plain English. Answer in English, get every German entry ready to copy. For expats — no German required.",
     url: `${DOMAIN}/freelance-steuer`,
     siteName: "ReadyExpat",
     type: "website",

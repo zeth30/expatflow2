@@ -61,7 +61,9 @@ function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; set
         {fd.label}
         <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12, marginLeft: 8 }}>{fd.deLabel}</span>
       </label>
-      {fd.explain && <p style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.55, margin: "4px 0 8px" }}>{fd.explain}</p>}
+      {fd.explain && fd.explain.split("\n").map((para, i) => (
+        <p key={i} style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.55, margin: i === 0 ? "4px 0 6px" : "0 0 6px" }}>{para}</p>
+      ))}
       {fd.decision && (
         <div style={{ padding: "8px 12px", borderRadius: 8, background: "#fffbeb", border: "1px solid #fde68a", marginBottom: 8 }}>
           <p style={{ fontSize: 11.5, color: "#92400e", lineHeight: 1.5 }}>
@@ -104,6 +106,9 @@ function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; set
 // ─── Landing page ─────────────────────────────────────────────────
 function SteuerLanding({ onStart }: { onStart: () => void }) {
   const FAQ = [
+    { q: "Can I fill in the Fragebogen zur steuerlichen Erfassung in English?", a: "The official ELSTER form exists only in German — there is no English version. That's exactly what this tool solves: you answer every question in plain English, and you get each German entry ready to copy into ELSTER, matched to ELSTER's own field numbers." },
+    { q: "What's the difference between Steuer-ID and Steuernummer?", a: "The Steuer-ID (steuerliche Identifikationsnummer) is the 11-digit number every resident gets by post after their Anmeldung — it never changes. The Steuernummer is a separate number the Finanzamt assigns for your tax file; as a new freelancer you receive it AFTER submitting this Fragebogen. You need the Steuer-ID to fill the form, and you get the Steuernummer as the result." },
+    { q: "Am I a Freiberufler or do I have a Gewerbe?", a: "That classification is made by the Finanzamt based on what your activity actually is — liberal professions like software development, design, writing, teaching or consulting are typically freiberuflich, while trading and most commercial activities are gewerblich. The form asks you to describe your activity precisely; the Finanzamt decides the category. If your case is unclear, ask your Finanzamt or a Steuerberater." },
     { q: "Is this tax advice?", a: "No. We translate and explain what each field of the official form means, in plain English. Every entry and every choice is yours — this is mechanical assistance based on your own instructions (§ 6 Nr. 3 StBerG). For advice on what is right for your personal situation, consult a licensed Steuerberater." },
     { q: "Do I need an ELSTER account first?", a: "Yes. The form can only be submitted through your personal ELSTER account. Our free step-by-step guide on this page shows exactly how to get one as a new arrival — plan for the activation letter, which arrives by post and typically takes a few days up to two weeks." },
     { q: "What if my income estimates turn out wrong?", a: "Estimates are expected to be estimates. You can correct them later by writing to your Finanzamt, and your actual tax is always settled with your annual tax return — the estimates only affect advance payments." },
@@ -154,12 +159,13 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
             The German freelancer tax form,<br /><span style={{ color: "#60a5fa" }}>in English.</span>
           </h1>
           <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 16.5, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 28px" }}>
-            Every new freelancer in Germany must submit the <strong style={{ color: "white" }}>Fragebogen zur steuerlichen Erfassung</strong> — online, via ELSTER, in German, within one month of starting. We translate every field into plain English. You answer in English; we hand you every German entry.
+            Starting freelance work in Germany shouldn&apos;t require a law degree in German. But every new freelancer must submit the <strong style={{ color: "white" }}>Fragebogen zur steuerlichen Erfassung</strong> — online, via ELSTER, in German, within one month of starting. That&apos;s where we come in: you answer in plain English, and we hand you every German entry, ready to copy.
           </p>
           <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 34px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.45)", cursor: "pointer", fontFamily: "inherit" }}>
             Start in English <ArrowRight size={18} />
           </button>
           <p style={{ color: "rgba(147,197,253,0.7)", fontSize: 12.5, marginTop: 12 }}>€15 · One-time · No account needed</p>
+          <p style={{ color: "rgba(147,197,253,0.55)", fontSize: 12, marginTop: 4 }}>From the team behind the ReadyExpat Anmeldung form filler</p>
 
           {/* Privacy trust block */}
           <div style={{ maxWidth: 560, margin: "28px auto 0", padding: "14px 18px", borderRadius: 12, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.35)", display: "flex", gap: 12, textAlign: "left" }}>
@@ -252,7 +258,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
 
       {/* ── FAQ ── */}
       <div style={{ maxWidth: 780, margin: "0 auto", padding: "56px 20px 16px" }}>
-        <h2 style={{ fontSize: 26, fontWeight: 900, color: NAVY, letterSpacing: "-0.02em", marginBottom: 22, textAlign: "center" }}>Questions</h2>
+        <h2 style={{ fontSize: 26, fontWeight: 900, color: NAVY, letterSpacing: "-0.02em", marginBottom: 22, textAlign: "center" }}>Frequently asked questions</h2>
         {FAQ.map(f => (
           <details key={f.q} style={{ background: "white", borderRadius: 12, border: "1px solid #e8ecf4", padding: "16px 20px", marginBottom: 10 }}>
             <summary style={{ fontWeight: 700, color: NAVY, fontSize: 14.5, cursor: "pointer" }}>{f.q}</summary>
@@ -277,7 +283,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
 
 // ─── Wizard ───────────────────────────────────────────────────────
 const WIZ_LABELS: Record<string, string> = {
-  personal: "About you", address: "Address", activity: "Activity",
+  personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
   bank: "Bank", estimates: "Estimates", vat: "VAT", review: "Review",
 };
 const WIZ_IDS = [...STEUER_STEPS.map(s => s.id), "review"];
@@ -311,10 +317,19 @@ function SteuerWizard({
 
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+      {/* The .wizard-aside media rules live only on the Anmeldung route, so
+          this page ships its own (critique finding: sidebar crushed mobile). */}
+      <style>{`
+        .steuer-mobile-progress { display: none; }
+        @media (max-width: 860px) {
+          .steuer-aside { display: none !important; }
+          .steuer-mobile-progress { display: block !important; }
+        }
+      `}</style>
       <SharedNav />
       <div style={{ display: "flex", maxWidth: 1080, margin: "0 auto", gap: 0 }}>
         {/* Sidebar */}
-        <aside className="wizard-aside" style={{ width: 260, flexShrink: 0, padding: "36px 24px", borderRight: "1px solid #e8ecf4", background: "white", minHeight: "calc(100vh - 60px)" }}>
+        <aside className="steuer-aside" style={{ width: 260, flexShrink: 0, padding: "36px 24px", borderRight: "1px solid #e8ecf4", background: "white", minHeight: "calc(100vh - 60px)" }}>
           <div style={{ fontWeight: 900, color: NAVY, fontSize: 15, marginBottom: 4 }}>Easy Fragebogen</div>
           <div style={{ color: "#94a3b8", fontSize: 12, marginBottom: 24 }}>zur steuerlichen Erfassung</div>
           {WIZ_IDS.map((id, i) => (
@@ -336,6 +351,12 @@ function SteuerWizard({
 
         {/* Main */}
         <main style={{ flex: 1, padding: "40px 32px 80px", maxWidth: 640 }}>
+          <div className="steuer-mobile-progress" style={{ marginBottom: 16 }}>
+            <div style={{ color: MUTED, fontSize: 12, fontWeight: 700, marginBottom: 6 }}>Step {idx + 1} of {WIZ_IDS.length} · {WIZ_LABELS[stepId]}</div>
+            <div style={{ height: 4, borderRadius: 2, background: "#e8ecf4" }}>
+              <div style={{ height: 4, borderRadius: 2, background: BLUE, width: `${Math.round(((idx + 1) / WIZ_IDS.length) * 100)}%`, transition: "width 0.3s" }} />
+            </div>
+          </div>
           {stepDef ? (
             <>
               <h2 style={{ fontSize: 23, fontWeight: 800, color: NAVY, marginBottom: 4 }}>{stepDef.title}</h2>
@@ -344,8 +365,8 @@ function SteuerWizard({
             </>
           ) : (
             <>
-              <h2 style={{ fontSize: 23, fontWeight: 800, color: NAVY, marginBottom: 4 }}>Review your answers</h2>
-              <p style={{ color: MUTED, marginBottom: 26, fontSize: 14 }}>This is what your answer sheet will contain — mapped to ELSTER&apos;s sections and field numbers. Check everything; you can go back to change any answer.</p>
+              <h2 style={{ fontSize: 23, fontWeight: 800, color: NAVY, marginBottom: 4 }}>Almost done — here&apos;s your sheet</h2>
+              <p style={{ color: MUTED, marginBottom: 26, fontSize: 14 }}>This is the structure of your answer sheet — every ELSTER section and field number, matched to your answers. The finished German entries unlock right after checkout. Use Back anytime to change an answer.</p>
               {buildAnswerRows(form).map(sec => (
                 <div key={sec.title} style={{ marginBottom: 22 }}>
                   <div style={{ fontWeight: 800, color: NAVY, fontSize: 13.5, padding: "8px 12px", background: "#f1f5f9", borderRadius: 8, marginBottom: 8 }}>{sec.title}</div>
@@ -353,7 +374,9 @@ function SteuerWizard({
                     <div key={i} style={{ display: "flex", gap: 10, padding: "7px 12px", borderBottom: "1px solid #f1f5f9", alignItems: "baseline" }}>
                       <span style={{ color: BLUE, fontWeight: 800, fontSize: 11, width: 26, flexShrink: 0 }}>{r.nr}</span>
                       <span style={{ color: MUTED, fontSize: 12, flex: 1 }}>{r.label}</span>
-                      <span style={{ color: NAVY, fontWeight: 700, fontSize: 12.5, textAlign: "right", maxWidth: 220, overflowWrap: "break-word" }}>{r.de || "—"}</span>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "#94a3b8", fontWeight: 700, fontSize: 11, background: "#f8fafc", border: "1px dashed #cbd5e1", borderRadius: 6, padding: "3px 9px", flexShrink: 0 }}>
+                        <Lock size={10} /> After checkout
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -397,7 +420,7 @@ function SteuerWizard({
 }
 
 // ─── Payment ──────────────────────────────────────────────────────
-function SteuerPayment({ form, onDevSkip }: { form: SteuerForm; onDevSkip: () => void }) {
+function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSkip: () => void; onBack: () => void }) {
   const [isDevTest, setIsDevTest] = useState(false);
   useEffect(() => {
     const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
@@ -425,6 +448,9 @@ function SteuerPayment({ form, onDevSkip }: { form: SteuerForm; onDevSkip: () =>
       </div>
 
       <div style={{ maxWidth: 560, margin: "-60px auto 0", padding: "0 20px 80px", position: "relative", zIndex: 1 }}>
+        <button onClick={onBack} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", padding: "0 0 12px", textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}>
+          <ArrowLeft size={14} /> Back to review
+        </button>
         <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.12)", border: "1px solid #e2e8f0", marginBottom: 12 }}>
           <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #f1f5f9" }}>
             <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Easy Fragebogen — solo freelancer</div>
@@ -451,7 +477,7 @@ function SteuerPayment({ form, onDevSkip }: { form: SteuerForm; onDevSkip: () =>
           <div style={{ margin: "0 16px 16px", padding: "11px 14px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4", display: "flex", gap: 9 }}>
             <Shield size={13} color="#94a3b8" style={{ flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12, color: MUTED, lineHeight: 1.6 }}>
-              Not tax advice. We translate and format the answers you provided; all entries and choices are yours (§ 6 Nr. 3 StBerG). We do not submit the form for you — you submit it in your own ELSTER account.
+              We translate and format the answers you provided; all entries and choices are yours. We do not submit the form for you — you submit it in your own ELSTER account.
             </p>
           </div>
         </div>
@@ -584,8 +610,14 @@ function SteuerDone({
                         {r.enHint && <div style={{ color: "#b6c2d1", fontSize: 11, marginTop: 1 }}>{r.enHint}</div>}
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 220px", justifyContent: "flex-end", minWidth: 200 }}>
-                        <span style={{ color: NAVY, fontWeight: 800, fontSize: 13.5, background: "#f8fafc", border: "1px solid #eef2f7", borderRadius: 8, padding: "7px 12px", overflowWrap: "anywhere", textAlign: "right" }}>{r.de || "—"}</span>
-                        {r.de && <CopyValue value={r.de} />}
+                        <span style={{
+                          color: r.instruction ? "#92400e" : NAVY, fontWeight: r.instruction ? 700 : 800, fontSize: 13.5,
+                          fontStyle: r.instruction ? "italic" : "normal",
+                          background: r.instruction ? "#fffbeb" : "#f8fafc",
+                          border: r.instruction ? "1px solid #fde68a" : "1px solid #eef2f7",
+                          borderRadius: 8, padding: "7px 12px", overflowWrap: "anywhere", textAlign: "right",
+                        }}>{r.de || "—"}</span>
+                        {r.de && !r.instruction && <CopyValue value={r.de} />}
                       </div>
                     </div>
                   ))}
@@ -730,7 +762,7 @@ export default function FreelanceSteuerPage() {
   }
 
   if (phase === "payment") {
-    return <SteuerPayment form={form} onDevSkip={() => setPhase("generating")} />;
+    return <SteuerPayment form={form} onDevSkip={() => setPhase("generating")} onBack={() => { setPhase("wizard"); setStepId("review"); window.scrollTo(0, 0); }} />;
   }
 
   if (phase === "generating") {
