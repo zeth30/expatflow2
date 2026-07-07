@@ -8,6 +8,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Changelog
 
+### 2026-07-07
+- **NEW PRODUCT: Easy Fragebogen zur steuerlichen Erfassung** — `/freelance-steuer` (staging, Munich pattern: not in nav/sitemap). English copilot for the ELSTER FsE EUn tax registration form (solo freelancers). Free ELSTER account guide + €15 wizard → answer sheet on screen (copy button per field, ELSTER field numbers) + PDF download. Since 2021 the form is ELSTER-online-only, so the product is an answer sheet, NOT a filled PDF form.
+  - Files: `app/freelance-steuer/steuer-data.ts` (single source of truth: types, ELSTER field map verified against a real 2026-03 fseeun submission, wizard step defs with neutral English explanations, validation), `steuer-pdf.ts` (pdf-lib answer sheet drawn from scratch), `page.tsx` (phases landing→wizard→payment→generating→done), `layout.tsx`.
+  - **LEGAL HARD RULE (§6 Nr. 3 StBerG):** copy explains, never recommends. No "should/we recommend/better" on discretionary fields (Kleinunternehmerregelung, estimates). Discretionary fields carry `decision: true` → yellow "Your decision" banner. Verified facts (with sources) in the header comment of `steuer-data.ts`: §19 UStG €25,000/€100,000, §138 AO one month, ELSTER activation letter up to 2 weeks. Terms section 8 added in `TermsContent.tsx`.
+  - localStorage keys: `simplyexpat-steuer-v1`, `simplyexpat-steuer-done-v1` (separate from Anmeldung).
+  - `/api/checkout` now accepts `{ product: "steuer" | "anmeldung", returnPath }` — selects Stripe line item; verify-session/success flow unchanged.
+
 ### 2026-06-04
 - **SEO: pillar page `/anmeldung-berlin-guide` added** — 4,000-word hub page targeting "anmeldung berlin guide". Full JSON-LD (Article + HowTo + FAQPage + BreadcrumbList), product CTA, interlinks to all sub-guides. Uses the same design system as all other guides (kf-grid, darkbox, callouts, timeline, faq classes).
 - **SEO: `GuideByline` + `RelatedGuides` components added** — `app/components/guides/GuideByline.tsx` (author + "Last updated" badge) and `app/components/guides/RelatedGuides.tsx` (crosslink grid) added to all 11 guide pages. Wires the full topical cluster together.
