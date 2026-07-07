@@ -185,7 +185,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
             Within <strong>one month</strong> of starting your activity (§ 138 AO) — and &quot;starting&quot; includes preparation like buying equipment or signing contracts.
           </Card>
           <Card icon={<Mail size={17} color={BLUE} />} title="What happens after">
-            The Finanzamt processes your answers and sends your Steuernummer by post, typically within a few weeks. With it, you can invoice correctly.
+            The Finanzamt processes your answers and sends your Steuernummer by post — processing times vary by Finanzamt. With it, you can invoice correctly.
           </Card>
         </div>
       </div>
@@ -204,7 +204,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
         {[
           { n: 1, t: "Have your Steuer-ID ready", d: <>Your 11-digit tax ID (Steuerliche Identifikationsnummer) arrives by post 2–4 weeks after your Anmeldung (up to 6–8 weeks in peak season). You need it to register. Lost it? Request it again at bzst.de.</> },
           { n: 2, t: "Register at elster.de", d: <>Go to elster.de → &quot;Benutzerkonto erstellen&quot; (create account). Choose the standard login method <strong>&quot;Zertifikatsdatei&quot;</strong> (certificate file), select &quot;Für mich (und gemeinsam veranlagte Partner)&quot; — for yourself — and identify with your Steuer-ID (&quot;Mit steuerlicher Identifikationsnummer&quot;).</> },
-          { n: 3, t: "Wait for two codes", d: <>ELSTER sends an <strong>activation ID by email</strong> immediately and an <strong>activation code by post</strong> — the letter typically takes a few days up to two weeks. This letter is why you should register early.</> },
+          { n: 3, t: "Wait for two codes", d: <>ELSTER sends an <strong>activation ID by email</strong> immediately and an <strong>activation code by post</strong> — the letter typically takes a few days up to two weeks. This letter is why registering early matters.</> },
           { n: 4, t: "Activate and download your certificate file", d: <>Enter both codes on the link from the email. ELSTER then generates your <strong>.pfx certificate file</strong> — this file plus your password IS your login. Save it somewhere safe (and back it up).</> },
           { n: 5, t: "Open the questionnaire", d: <>Log in to Mein ELSTER → &quot;Alle Formulare&quot; → search &quot;Fragebogen zur steuerlichen Erfassung&quot; → choose <strong>&quot;Aufnahme einer gewerblichen, selbständigen (freiberuflichen) oder land- und forstwirtschaftlichen Tätigkeit&quot;</strong> (Einzelunternehmen). That&apos;s the form our answer sheet mirrors, field by field.</> },
         ].map(s => (
@@ -505,10 +505,10 @@ function SteuerPayment({ form, onDevSkip }: { form: SteuerForm; onDevSkip: () =>
 
 // ─── Done page ────────────────────────────────────────────────────
 function SteuerDone({
-  form, pdfBytes, pdfName, sessionError, onRestart,
+  form, pdfBytes, pdfName, sessionError, pdfError, onRestart,
 }: {
   form: SteuerForm; pdfBytes: Uint8Array | null; pdfName: string;
-  sessionError: boolean; onRestart: () => void;
+  sessionError: boolean; pdfError: boolean; onRestart: () => void;
 }) {
   const sections = buildAnswerRows(form);
   const download = () => {
@@ -551,6 +551,15 @@ function SteuerDone({
           </div>
         )}
 
+        {!sessionError && pdfError && (
+          <div style={{ padding: "14px 16px", borderRadius: 12, background: "#fffbeb", border: "1px solid #fde68a", marginBottom: 22, display: "flex", gap: 10 }}>
+            <AlertCircle size={15} color="#d97706" style={{ flexShrink: 0, marginTop: 2 }} />
+            <p style={{ color: "#92400e", fontSize: 13, lineHeight: 1.6 }}>
+              <strong>The PDF could not be generated in this browser</strong> — but your complete answer sheet is below and every value can be copied directly. If you need the PDF, try reloading this page, or email <strong>info@readyexpat.de</strong>.
+            </p>
+          </div>
+        )}
+
         {!sessionError && (
           <>
             <div style={{ padding: "12px 16px", borderRadius: 11, background: "#f0fdf4", border: "1px solid #bbf7d0", marginBottom: 22, display: "flex", gap: 9 }}>
@@ -587,7 +596,7 @@ function SteuerDone({
             <div style={{ padding: "16px 18px", borderRadius: 12, background: "white", border: "1px solid #e8ecf4", display: "flex", gap: 10 }}>
               <Landmark size={15} color="#94a3b8" style={{ flexShrink: 0, marginTop: 2 }} />
               <p style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.7 }}>
-                <strong style={{ color: NAVY }}>Before you submit in ELSTER:</strong> review every value on ELSTER&apos;s summary screen — you are responsible for your entries. After submitting, ELSTER stores a transmission protocol under &quot;Meine Formulare&quot;; save it. Your Steuernummer arrives by post, typically within a few weeks.<br />
+                <strong style={{ color: NAVY }}>Before you submit in ELSTER:</strong> review every value on ELSTER&apos;s summary screen — you are responsible for your entries. After submitting, ELSTER stores a transmission protocol under &quot;Meine Formulare&quot;; save it. The Finanzamt sends your Steuernummer by post after processing.<br />
                 <span style={{ fontSize: 11.5 }}>Not tax advice — you entered every value yourself; ReadyExpat translated and formatted your own answers (§ 6 Nr. 3 StBerG).</span>
               </p>
             </div>
@@ -611,6 +620,7 @@ export default function FreelanceSteuerPage() {
   const [pdfBytes, setPdfBytes] = useState<Uint8Array | null>(null);
   const [pdfName, setPdfName] = useState("readyexpat-steuer-answer-sheet.pdf");
   const [sessionError, setSessionError] = useState(false);
+  const [pdfError, setPdfError] = useState(false);
   const [confirmRestart, setConfirmRestart] = useState(false);
 
   // Restore from localStorage + handle Stripe return + devtest flag
@@ -621,12 +631,22 @@ export default function FreelanceSteuerPage() {
       sessionStorage.setItem("devtest", devToken);
     }
     if (localStorage.getItem(DONE_KEY) === "1") {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        try { setForm({ ...EMPTY_STEUER, ...JSON.parse(raw).form }); } catch {}
+      // Returning paid user. If the form data is still here, rebuild the PDF
+      // locally and show the full sheet again (audit E1 — the deliverable must
+      // survive a tab close). Only when the data is truly gone show the
+      // support banner.
+      let saved: any = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        saved = raw ? JSON.parse(raw).form : null;
+      } catch {}
+      if (saved?.firstName && saved?.activityDesc) {
+        setForm({ ...EMPTY_STEUER, ...saved });
+        setPhase("generating"); // re-generates the PDF from local data
+      } else {
+        setSessionError(true);
+        setPhase("done");
       }
-      setSessionError(true); // pdfBytes are gone after tab close — banner + re-copy still works from restored form
-      setPhase("done");
       return;
     }
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -686,8 +706,10 @@ export default function FreelanceSteuerPage() {
       setSessionError(false);
       setPhase("done");
     }).catch(() => {
-      // PDF failed — the on-screen sheet still works; mark done, offer support path
+      // PDF failed — the on-screen sheet still works. Surface it (audit E5).
+      setPdfError(true);
       localStorage.setItem(DONE_KEY, "1");
+      setSessionError(false);
       setPhase("done");
     });
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -727,7 +749,7 @@ export default function FreelanceSteuerPage() {
   if (phase === "done") {
     return (
       <>
-        <SteuerDone form={form} pdfBytes={pdfBytes} pdfName={pdfName} sessionError={sessionError} onRestart={() => setConfirmRestart(true)} />
+        <SteuerDone form={form} pdfBytes={pdfBytes} pdfName={pdfName} sessionError={sessionError} pdfError={pdfError} onRestart={() => setConfirmRestart(true)} />
         {confirmRestart && (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ background: "#fff", borderRadius: 12, padding: 28, maxWidth: 380, width: "90%" }}>

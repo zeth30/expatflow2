@@ -11,6 +11,10 @@ async function loadPdfLib(): Promise<any> {
   return new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js";
+    // SRI pin: this script runs in the page holding tax ID/IBAN data, so a
+    // compromised CDN must not be able to serve altered code (audit D1).
+    s.integrity = "sha384-weMABwrltA6jWR8DDe9Jp5blk+tZQh7ugpCsF3JwSA53WZM9/14PjS5LAJNHNjAI";
+    s.crossOrigin = "anonymous";
     s.onload = () => resolve((window as any).PDFLib);
     s.onerror = () => reject(new Error("Could not load PDF library"));
     document.head.appendChild(s);
@@ -22,7 +26,10 @@ const fmtToday = (): string => {
   return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
 };
 
-// pdf-lib's standard fonts are WinAnsi — strip characters they can't encode.
+// pdf-lib's standard fonts are WinAnsi-only. Replace non-encodable characters
+// with "?" instead of deleting them, so a Cyrillic/Greek/Arabic name is
+// visibly incomplete rather than silently vanishing (audit E6) — the
+// on-screen sheet always shows the exact value.
 const safe = (s: string): string =>
   (s || "")
     .replace(/[“”„]/g, '"')
@@ -31,7 +38,11 @@ const safe = (s: string): string =>
     .replace(/–/g, "-")
     .replace(/≥/g, ">=")
     .replace(/→/g, "->")
-    .replace(/[^\x00-\xFF]/g, "");
+    .replace(/[^\x00-\xFF]/g, "?");
+
+// Truncate with visible ellipsis instead of a silent cut (audit E6).
+const clip = (s: string, max: number): string =>
+  s.length > max ? s.slice(0, max - 3) + "..." : s;
 
 export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Array; name: string }> {
   const { PDFDocument, StandardFonts, rgb } = await loadPdfLib();
@@ -98,10 +109,10 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
     for (const row of section.rows) {
       newPageIfNeeded(34);
       page.drawText(safe(row.nr), { x: ML, y, size: 8, font: HB, color: BLUE });
-      page.drawText(safe(row.label).slice(0, 62), { x: ML + 24, y, size: 8.5, font: HR, color: MUTED, maxWidth: 255 });
-      page.drawText(safe(row.de || "-").slice(0, 60), { x: ML + 288, y, size: 9.5, font: HB, color: NAVY, maxWidth: CW - 292 });
+      page.drawText(clip(safe(row.label), 62), { x: ML + 24, y, size: 8.5, font: HR, color: MUTED, maxWidth: 255 });
+      page.drawText(clip(safe(row.de || "-"), 60), { x: ML + 288, y, size: 9.5, font: HB, color: NAVY, maxWidth: CW - 292 });
       if (row.enHint) {
-        page.drawText(safe(row.enHint).slice(0, 110), { x: ML + 24, y: y - 11, size: 7, font: HO, color: MUTED, maxWidth: CW - 32 });
+        page.drawText(clip(safe(row.enHint), 110), { x: ML + 24, y: y - 11, size: 7, font: HO, color: MUTED, maxWidth: CW - 32 });
       }
       page.drawLine({ start: { x: ML, y: y - 17 }, end: { x: ML + CW, y: y - 17 }, thickness: 0.5, color: LINE });
       y -= 27;
@@ -116,7 +127,7 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
   for (const line of [
     "Review every value on the ELSTER summary screen - you are responsible for your entries.",
     "ELSTER shows a transmission protocol after submitting. Save it.",
-    "Your Steuernummer arrives by post, typically within a few weeks.",
+    "The Finanzamt sends your Steuernummer by post after processing.",
   ]) {
     page.drawText(safe("-  " + line), { x: ML + 6, y, size: 8.5, font: HR, color: MUTED, maxWidth: CW - 12 });
     y -= 13;
