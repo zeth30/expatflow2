@@ -249,6 +249,11 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
             </div>
           </div>
         ))}
+        <p style={{ textAlign: "center", marginTop: 16 }}>
+          <a href="/elster-account-english" style={{ color: BLUE, fontWeight: 700, fontSize: 13.5, textDecoration: "none" }}>
+            Want more detail on each screen? Read the full ELSTER account guide →
+          </a>
+        </p>
       </div>
 
       {/* ── How the product works ── */}
