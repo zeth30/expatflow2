@@ -50,6 +50,25 @@ function CopyValue({ value }: { value: string }) {
   );
 }
 
+// ─── Deep-dive expander (click, no hover — user preference) ────────
+function MoreInfo({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ margin: "2px 0 10px" }}>
+      <button onClick={() => setOpen(o => !o)} style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "none", border: "none", padding: 0, color: BLUE, fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>
+        {open ? "Close" : "Tell me more"} <span style={{ fontSize: 10, transform: open ? "rotate(180deg)" : "none", display: "inline-block", transition: "transform 0.15s" }}>▾</span>
+      </button>
+      {open && (
+        <div style={{ marginTop: 8, padding: "12px 14px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4", borderLeft: `3px solid ${BLUE}` }}>
+          {text.split("\n").map((para, i) => (
+            <p key={i} style={{ color: "#475569", fontSize: 12.5, lineHeight: 1.65, margin: i === 0 ? 0 : "8px 0 0" }}>{para}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Generic field renderer ───────────────────────────────────────
 function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; setForm: (f: SteuerForm) => void }) {
   if (fd.showIf && !fd.showIf(form)) return null;
@@ -64,6 +83,7 @@ function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; set
       {fd.explain && fd.explain.split("\n").map((para, i) => (
         <p key={i} style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.55, margin: i === 0 ? "4px 0 6px" : "0 0 6px" }}>{para}</p>
       ))}
+      {fd.more && <MoreInfo text={fd.more} />}
       {fd.decision && (
         <div style={{ padding: "8px 12px", borderRadius: 8, background: "#fffbeb", border: "1px solid #fde68a", marginBottom: 8 }}>
           <p style={{ fontSize: 11.5, color: "#92400e", lineHeight: 1.5 }}>
