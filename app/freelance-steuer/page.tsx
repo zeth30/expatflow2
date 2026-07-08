@@ -50,6 +50,92 @@ function CopyValue({ value }: { value: string }) {
   );
 }
 
+// ─── Deep-dive block renderer ──────────────────────────────────────
+// Turns the plain-text `more` paragraphs into guide-style visual blocks:
+// "What Yes…" → green card · "What No…" → slate card · "1. …" → numbered
+// chip rows · "· …" → bullet rows · ALL-CAPS prefix → mini headline.
+function MoreBlock({ para, first }: { para: string; first: boolean }) {
+  const mt = first ? 0 : 10;
+
+  // YES / NO cards
+  const yesMatch = para.match(/^(What (?:counts as )?Yes[^:]*):\s*(.*)$/i);
+  const noMatch = para.match(/^(What No[^:]*):\s*(.*)$/i);
+  if (yesMatch || noMatch) {
+    const isYes = !!yesMatch;
+    const m = (yesMatch ?? noMatch)!;
+    return (
+      <div style={{
+        marginTop: mt, padding: "12px 14px", borderRadius: 12,
+        background: isYes ? "#f0fdf4" : "#f8fafc",
+        border: isYes ? "1px solid #bbf7d0" : "1px solid #e2e8f0",
+        borderLeft: isYes ? "3px solid #16a34a" : "3px solid #94a3b8",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 999,
+            background: isYes ? "#16a34a" : "#64748b", color: "white", fontSize: 10, fontWeight: 900, letterSpacing: "0.06em",
+          }}>
+            {isYes ? (
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+            ) : (
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+            )}
+            {isYes ? "YES" : "NO"}
+          </span>
+          <span style={{ color: isYes ? "#166534" : "#475569", fontSize: 11, fontWeight: 700 }}>{m[1]}</span>
+        </div>
+        <p style={{ color: isYes ? "#14532d" : "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{m[2]}</p>
+      </div>
+    );
+  }
+
+  // Numbered rows: "1. Steuer-ID — …"
+  const numMatch = para.match(/^(\d+)\.\s+(.*)$/);
+  if (numMatch) {
+    return (
+      <div style={{ marginTop: first ? 0 : 8, display: "flex", gap: 10, alignItems: "flex-start" }}>
+        <span style={{ width: 22, height: 22, borderRadius: "50%", background: NAVY, color: "white", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11, flexShrink: 0, marginTop: 1 }}>{numMatch[1]}</span>
+        <p style={{ color: "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{numMatch[2]}</p>
+      </div>
+    );
+  }
+
+  // Bullet rows: "· …"
+  if (para.startsWith("·")) {
+    return (
+      <div style={{ marginTop: first ? 0 : 7, display: "flex", gap: 10, alignItems: "flex-start" }}>
+        <span style={{ width: 6, height: 6, borderRadius: "50%", background: BLUE, flexShrink: 0, marginTop: 7 }} />
+        <p style={{ color: "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{para.replace(/^·\s*/, "")}</p>
+      </div>
+    );
+  }
+
+  // ALL-CAPS mini headline: "THE LIMITS (…): body" / "OPTION 1 — use it (…): body"
+  const capsMatch = para.match(/^([A-Z][A-Z0-9 ]{3,}(?:\d)?)(\s*[—(:].*)$/);
+  if (capsMatch && capsMatch[1] === capsMatch[1].toUpperCase()) {
+    const rest = capsMatch[2].replace(/^[\s:—]+/, "");
+    return (
+      <div style={{ marginTop: mt, paddingTop: first ? 0 : 10, borderTop: first ? "none" : "1px solid #f1f5f9" }}>
+        <div style={{ color: "#1d4ed8", fontSize: 10.5, fontWeight: 900, letterSpacing: "0.1em", marginBottom: 4 }}>{capsMatch[1]}</div>
+        <p style={{ color: "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{rest}</p>
+      </div>
+    );
+  }
+
+  // Default paragraph — first one reads as a lede
+  return (
+    <p style={{
+      color: first ? "#1e293b" : "#3f4c63",
+      fontSize: first ? 13.5 : 12.5,
+      fontWeight: first ? 600 : 400,
+      lineHeight: 1.68,
+      margin: `${mt}px 0 0`,
+      paddingTop: first ? 0 : 10,
+      borderTop: first ? "none" : "1px solid #f1f5f9",
+    }}>{para}</p>
+  );
+}
+
 // ─── Deep-dive expander (click, no hover — user preference) ────────
 function MoreInfo({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
@@ -98,18 +184,11 @@ function MoreInfo({ text }: { text: string }) {
             transform: open ? "translateY(0)" : "translateY(-4px)",
             transition: "opacity 0.28s ease 0.06s, transform 0.28s ease 0.06s",
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
               <span style={{ width: 16, height: 2.5, borderRadius: 2, background: `linear-gradient(90deg,${BLUE},#60a5fa)` }} />
               <span style={{ color: "#64748b", fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>In plain English</span>
             </div>
-            {paras.map((para, i) => (
-              <p key={i} style={{
-                color: "#3f4c63", fontSize: 13, lineHeight: 1.7,
-                margin: i === 0 ? 0 : "10px 0 0",
-                paddingTop: i === 0 ? 0 : 10,
-                borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
-              }}>{para}</p>
-            ))}
+            {paras.map((para, i) => <MoreBlock key={i} para={para} first={i === 0} />)}
           </div>
         </div>
       </div>
