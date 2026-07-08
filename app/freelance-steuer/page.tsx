@@ -53,18 +53,66 @@ function CopyValue({ value }: { value: string }) {
 // ─── Deep-dive expander (click, no hover — user preference) ────────
 function MoreInfo({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
+  const paras = text.split("\n");
   return (
-    <div style={{ margin: "2px 0 10px" }}>
-      <button onClick={() => setOpen(o => !o)} style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "none", border: "none", padding: 0, color: BLUE, fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit" }}>
-        {open ? "Close" : "Tell me more"} <span style={{ fontSize: 10, transform: open ? "rotate(180deg)" : "none", display: "inline-block", transition: "transform 0.15s" }}>▾</span>
+    <div style={{ margin: "4px 0 12px" }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        style={{
+          display: "inline-flex", alignItems: "center", gap: 8,
+          padding: "7px 14px 7px 9px", borderRadius: 999,
+          border: open ? "1px solid rgba(0,117,255,0.35)" : "1px solid #e6ebf5",
+          background: open ? "linear-gradient(135deg,#eff6ff,#e0edff)" : "white",
+          boxShadow: open ? "inset 0 1px 2px rgba(0,64,255,0.06)" : "0 1px 2px rgba(15,23,42,0.05)",
+          color: open ? "#1d4ed8" : "#334155",
+          fontWeight: 700, fontSize: 12, cursor: "pointer", fontFamily: "inherit",
+          transition: "all 0.18s ease",
+        }}>
+        <span style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: 19, height: 19, borderRadius: "50%",
+          background: open ? BLUE : "#eff6ff",
+          color: open ? "white" : BLUE,
+          fontSize: 11, fontWeight: 800, fontStyle: "italic", fontFamily: "Georgia, serif",
+          transition: "all 0.18s ease",
+        }}>i</span>
+        {open ? "Got it" : "Tell me more"}
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)", opacity: 0.7 }}>
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
       </button>
-      {open && (
-        <div style={{ marginTop: 8, padding: "12px 14px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e8ecf4", borderLeft: `3px solid ${BLUE}` }}>
-          {text.split("\n").map((para, i) => (
-            <p key={i} style={{ color: "#475569", fontSize: 12.5, lineHeight: 1.65, margin: i === 0 ? 0 : "8px 0 0" }}>{para}</p>
-          ))}
+      <div style={{
+        display: "grid",
+        gridTemplateRows: open ? "1fr" : "0fr",
+        transition: "grid-template-rows 0.32s cubic-bezier(0.4,0,0.2,1)",
+      }}>
+        <div style={{ overflow: "hidden" }}>
+          <div style={{
+            marginTop: 10, padding: "16px 18px", borderRadius: 14,
+            background: "linear-gradient(180deg,#ffffff 0%,#fafcff 100%)",
+            border: "1px solid #e6ebf5",
+            boxShadow: "0 10px 30px rgba(15,23,42,0.07), 0 1px 2px rgba(15,23,42,0.04)",
+            opacity: open ? 1 : 0,
+            transform: open ? "translateY(0)" : "translateY(-4px)",
+            transition: "opacity 0.28s ease 0.06s, transform 0.28s ease 0.06s",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 10 }}>
+              <span style={{ width: 16, height: 2.5, borderRadius: 2, background: `linear-gradient(90deg,${BLUE},#60a5fa)` }} />
+              <span style={{ color: "#64748b", fontSize: 10, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase" }}>In plain English</span>
+            </div>
+            {paras.map((para, i) => (
+              <p key={i} style={{
+                color: "#3f4c63", fontSize: 13, lineHeight: 1.7,
+                margin: i === 0 ? 0 : "10px 0 0",
+                paddingTop: i === 0 ? 0 : 10,
+                borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
+              }}>{para}</p>
+            ))}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
