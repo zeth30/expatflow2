@@ -453,12 +453,6 @@ function SteuerWizard({
 
 // ─── Payment ──────────────────────────────────────────────────────
 function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSkip: () => void; onBack: () => void }) {
-  const [isDevTest, setIsDevTest] = useState(false);
-  useEffect(() => {
-    const devToken = process.env.NEXT_PUBLIC_DEV_TOKEN;
-    if (devToken && sessionStorage.getItem("devtest") === devToken) setIsDevTest(true);
-  }, []);
-
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
       <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -521,6 +515,15 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
           </p>
         </div>
 
+        {/* Beta: free access button (primary) — Munich beta pattern */}
+        <button
+          onClick={onDevSkip}
+          style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: "linear-gradient(135deg,#16a34a,#15803d)", color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(22,163,74,0.35)", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
+          <Download size={18} /> Get my answer sheet — Free (beta)
+        </button>
+        <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 12, marginTop: 10 }}>
+          Free while we&apos;re in beta — no card required
+        </p>
         <button
           id="steuer-pay-btn"
           onClick={async (e) => {
@@ -535,26 +538,18 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
               });
               const data = await res.json();
               if (data.url) { window.location.href = data.url; }
-              else { btn.disabled = false; btn.textContent = "Pay €15 — Secure Checkout"; alert("Could not start checkout. Please try again."); }
+              else { btn.disabled = false; btn.textContent = "Or support the beta — pay €15"; alert("Could not start checkout. Please try again."); }
             } catch {
-              btn.disabled = false; btn.textContent = "Pay €15 — Secure Checkout"; alert("Network error. Please try again.");
+              btn.disabled = false; btn.textContent = "Or support the beta — pay €15"; alert("Network error. Please try again.");
             }
           }}
-          style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.5)", cursor: "pointer", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
-          <CreditCard size={18} /> Pay €15 — Secure Checkout
+          style={{ width: "100%", marginTop: 12, display: "flex", alignItems: "center", justifyContent: "center", gap: 9, padding: "13px", borderRadius: 12, background: "transparent", color: BLUE, fontWeight: 800, fontSize: 13.5, border: "1.5px solid #bfdbfe", cursor: "pointer", fontFamily: "inherit" }}>
+          <CreditCard size={15} /> Or support the beta — pay €15
         </button>
-        <script dangerouslySetInnerHTML={{ __html: `window.addEventListener('pageshow',function(){var b=document.getElementById('steuer-pay-btn');if(b){b.disabled=false;b.textContent='Pay €15 — Secure Checkout';}});` }} />
-        <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 11.5, marginTop: 10 }}>
-          Powered by Stripe · Secure · No card stored
+        <script dangerouslySetInnerHTML={{ __html: `window.addEventListener('pageshow',function(){var b=document.getElementById('steuer-pay-btn');if(b){b.disabled=false;b.textContent='Or support the beta — pay €15';}});` }} />
+        <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 10.5, lineHeight: 1.5, marginTop: 8 }}>
+          Payments via Stripe · Secure · No card stored. By paying you consent to immediate service delivery and acknowledge the loss of your 14-day right of withdrawal (§ 356 Abs. 5 BGB).
         </p>
-        <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 10.5, lineHeight: 1.5, marginTop: 6 }}>
-          By paying you consent to immediate service delivery and acknowledge the loss of your 14-day right of withdrawal (§ 356 Abs. 5 BGB).
-        </p>
-        {isDevTest && (
-          <button onClick={onDevSkip} style={{ width: "100%", marginTop: 8, padding: "12px", borderRadius: 11, border: "2px dashed #60a5fa", background: "transparent", color: "#60a5fa", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-            [DEV] Skip payment &amp; generate answer sheet
-          </button>
-        )}
       </div>
       <AppFooter />
     </div>
