@@ -37,6 +37,8 @@
 // ═══════════════════════════════════════════════════════════════════
 
 export type SteuerForm = {
+  // ── Meta: ELSTER readiness (wizard step 1, not an ELSTER form field) ──
+  hasElsterAccount: boolean | null;
   // ── Allgemeine Angaben ──
   anrede: "" | "Frau" | "Herr" | "keine Angabe";
   firstName: string;
@@ -93,6 +95,7 @@ export type SteuerForm = {
 };
 
 export const EMPTY_STEUER: SteuerForm = {
+  hasElsterAccount: null,
   anrede: "", firstName: "", lastName: "", birthDate: "", profession: "",
   steuerId: "", hasIncomeTaxNumber: null, incomeTaxNumber: "", religion: "",
   married: null, spouseFirstName: "", spouseLastName: "", spouseBirthDate: "",
@@ -331,6 +334,15 @@ export type FieldDef = {
 export type StepDef = { id: string; title: string; sub: string; fields: FieldDef[] };
 
 export const STEUER_STEPS: StepDef[] = [
+  {
+    id: "elster", title: "First things first: your ELSTER account",
+    sub: "The finished form can only be submitted through Mein ELSTER, Germany's official tax portal. Everything in this wizard works without it — but the account takes up to two weeks (thanks to a letter), so let's check now.",
+    fields: [
+      { key: "hasElsterAccount", label: "Do you already have access to Mein ELSTER?", deLabel: "Mein ELSTER — Zertifikatsdatei", type: "boolean", required: true,
+        explain: "Both answers are fine — you can prepare all your answers here either way.",
+        more: "What Yes means: you can log in at elster.de with your certificate file (.pfx) and password. You're ready to transfer your answers the moment your sheet is done.\nWhat No means: no problem at all. Register today at elster.de (about 10 minutes online — the steps above show you every screen), and Germany mails you an activation code. The letter typically takes a few days up to two weeks. Yes, the digital tax portal starts with a physical letter — we don't make the rules.\nThe good news: you don't have to wait. Prepare your entire answer sheet here now; it stays saved in your browser (plus your PDF), and when the letter arrives you'll transfer everything in ten minutes." },
+    ],
+  },
   {
     id: "personal", title: "About you", sub: "Exactly as in your passport and Anmeldung.",
     fields: [

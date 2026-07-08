@@ -335,9 +335,18 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
 
 // ─── Wizard ───────────────────────────────────────────────────────
 const WIZ_LABELS: Record<string, string> = {
-  personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
+  elster: "ELSTER account", personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
   bank: "Bank", estimates: "Estimates", vat: "VAT", review: "Review",
 };
+
+// Condensed ELSTER registration steps (full guide: /elster-account-english)
+const ELSTER_MINI = [
+  { n: "1", t: "Have your Steuer-ID ready", d: "The 11-digit number that arrived by post after your Anmeldung. Lost? Request at bzst.de." },
+  { n: "2", t: "Register at elster.de", d: "“Benutzerkonto erstellen” → login method “Zertifikatsdatei” → “Für mich” → identify with your Steuer-ID." },
+  { n: "3", t: "Wait for two codes", d: "Activation ID by email (instant) + activation code by post — typically a few days up to two weeks." },
+  { n: "4", t: "Activate & save your certificate file", d: "Enter both codes, download the .pfx file, set a password. File + password = your login. Back it up." },
+  { n: "5", t: "Open the form", d: "Log in → “Alle Formulare” → “Fragebogen zur steuerlichen Erfassung” → Einzelunternehmen." },
+];
 const WIZ_IDS = [...STEUER_STEPS.map(s => s.id), "review"];
 
 function SteuerWizard({
@@ -413,7 +422,33 @@ function SteuerWizard({
             <>
               <h2 style={{ fontSize: 23, fontWeight: 800, color: NAVY, marginBottom: 4 }}>{stepDef.title}</h2>
               <p style={{ color: MUTED, marginBottom: 26, fontSize: 14 }}>{stepDef.sub}</p>
+              {stepId === "elster" && (
+                <div style={{ marginBottom: 26 }}>
+                  {ELSTER_MINI.map(s => (
+                    <div key={s.n} style={{ display: "flex", gap: 12, background: "white", borderRadius: 12, border: "1px solid #e8ecf4", padding: "13px 16px", marginBottom: 8 }}>
+                      <div style={{ width: 26, height: 26, borderRadius: "50%", background: NAVY, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12, flexShrink: 0 }}>{s.n}</div>
+                      <div>
+                        <div style={{ fontWeight: 800, color: NAVY, fontSize: 13 }}>{s.t}</div>
+                        <p style={{ color: MUTED, fontSize: 12, lineHeight: 1.55, marginTop: 2 }}>{s.d}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <p style={{ fontSize: 12.5, marginTop: 10 }}>
+                    <a href="/elster-account-english" target="_blank" rel="noopener noreferrer" style={{ color: BLUE, fontWeight: 700, textDecoration: "none" }}>
+                      Full screen-by-screen guide (opens in new tab) →
+                    </a>
+                  </p>
+                </div>
+              )}
               {stepDef.fields.map(fd => <FieldInput key={String(fd.key)} fd={fd} form={form} setForm={setForm} />)}
+              {stepId === "elster" && form.hasElsterAccount === false && (
+                <div style={{ padding: "12px 15px", borderRadius: 10, background: "#f0fdf4", border: "1px solid #bbf7d0", marginBottom: 16, display: "flex", gap: 9 }}>
+                  <CheckCircle2 size={14} color="#16a34a" style={{ flexShrink: 0, marginTop: 2 }} />
+                  <p style={{ color: "#166534", fontSize: 12.5, lineHeight: 1.6 }}>
+                    <strong>You can still do everything today.</strong> Start the ELSTER registration in a new tab (step 2 above), then keep going here — your answers are saved in this browser, and the sheet plus PDF will be waiting when your activation letter arrives.
+                  </p>
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -744,7 +779,7 @@ function SteuerDone({
 // ─── Main component ───────────────────────────────────────────────
 export default function FreelanceSteuerPage() {
   const [phase, setPhase] = useState<AppPhase>("landing");
-  const [stepId, setStepId] = useState<string>("personal");
+  const [stepId, setStepId] = useState<string>("elster");
   const [form, setForm] = useState<SteuerForm>(EMPTY_STEUER);
   const [pdfBytes, setPdfBytes] = useState<Uint8Array | null>(null);
   const [pdfName, setPdfName] = useState("readyexpat-steuer-answer-sheet.pdf");
@@ -851,11 +886,11 @@ export default function FreelanceSteuerPage() {
     setSessionError(false);
     setConfirmRestart(false);
     setPhase("landing");
-    setStepId("personal");
+    setStepId("elster");
   }, []);
 
   if (phase === "landing") {
-    return <SteuerLanding onStart={() => { setPhase("wizard"); setStepId("personal"); window.scrollTo(0, 0); }} />;
+    return <SteuerLanding onStart={() => { setPhase("wizard"); setStepId("elster"); window.scrollTo(0, 0); }} />;
   }
 
   if (phase === "payment") {
