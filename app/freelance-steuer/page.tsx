@@ -888,6 +888,7 @@ function SteuerDone({
               <Landmark size={15} color="#94a3b8" style={{ flexShrink: 0, marginTop: 2 }} />
               <p style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.7 }}>
                 <strong style={{ color: NAVY }}>Before you submit in ELSTER:</strong> review every value on ELSTER&apos;s summary screen — you are responsible for your entries. After submitting, ELSTER stores a transmission protocol under &quot;Meine Formulare&quot;; save it. The Finanzamt sends your Steuernummer by post after processing.<br />
+                <span style={{ fontSize: 11.5 }}>Field numbers verified against the 2026 form version (fseeun-202401). If ELSTER ever shows a different number, match by the German label next to it — the labels don&apos;t change.</span><br />
                 <span style={{ fontSize: 11.5 }}>Not tax advice — you entered every value yourself; ReadyExpat translated and formatted your own answers (§ 6 Nr. 3 StBerG).</span>
               </p>
             </div>

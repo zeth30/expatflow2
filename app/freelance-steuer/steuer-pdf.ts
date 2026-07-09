@@ -93,11 +93,13 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
   };
 
   // Intro box
-  page.drawRectangle({ x: ML, y: y - 48, width: CW, height: 58, color: rgb(0.94, 0.97, 1), borderColor: rgb(0.73, 0.9, 1), borderWidth: 1 });
+  page.drawRectangle({ x: ML, y: y - 61, width: CW, height: 71, color: rgb(0.94, 0.97, 1), borderColor: rgb(0.73, 0.9, 1), borderWidth: 1 });
   page.drawText(safe("How to use this sheet: open Mein ELSTER (elster.de) in one window and this sheet next to it."), { x: ML + 10, y: y - 6, size: 8.5, font: HB, color: NAVY });
   page.drawText(safe("The small numbers match the field numbers ELSTER shows next to each input. Work top to bottom -"), { x: ML + 10, y: y - 19, size: 8.5, font: HR, color: NAVY });
   page.drawText(safe("every value below is one of YOUR answers, formatted in German. Review each entry before submitting."), { x: ML + 10, y: y - 32, size: 8.5, font: HR, color: NAVY });
-  y -= 70;
+  page.drawText(safe("Field numbers verified against the 2026 form version (fseeun-202401). If ELSTER ever shows a"), { x: ML + 10, y: y - 45, size: 7.5, font: HO, color: MUTED });
+  page.drawText(safe("different number, match by the German label printed next to it - the labels don't change."), { x: ML + 10, y: y - 55, size: 7.5, font: HO, color: MUTED });
+  y -= 83;
 
   for (const section of buildAnswerRows(form)) {
     newPageIfNeeded(56);
