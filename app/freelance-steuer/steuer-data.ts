@@ -191,8 +191,9 @@ export const validateSteuerId = (raw: string): boolean =>
 // `instruction: true` = the de-value is a to-do ("tick the box", "leave
 // empty"), not text to type — the done page renders it without a copy button
 // so nobody pastes "Felder leer lassen" into a tax form.
-export type AnswerRow = { nr: string; label: string; de: string; enHint: string; instruction?: boolean };
-export type AnswerSection = { title: string; titleEn: string; rows: AnswerRow[] };
+// Types live in the shared form engine; re-exported for existing imports.
+export type { AnswerRow, AnswerSection, FieldDef as EngineFieldDef } from "../components/form-engine/types";
+import type { AnswerRow, AnswerSection } from "../components/form-engine/types";
 
 export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
   const sections: AnswerSection[] = [];
@@ -339,22 +340,12 @@ export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
 }
 
 // ── Wizard step definitions ─────────────────────────────────────────
-export type FieldDef = {
-  key: keyof SteuerForm;
-  label: string;              // English label shown in wizard
-  deLabel: string;            // German original (shown small, builds recognition for ELSTER)
-  type: "text" | "date" | "select" | "boolean" | "euro";
-  options?: { value: string; label: string }[]; // for select
-  placeholder?: string;
-  explain: string;            // neutral English explanation (short, always visible)
-  more?: string;              // deep-dive: opens on click ("Tell me more"), \n = paragraph.
-                              // Easy English, honest about the German system, still NEVER a recommendation.
-  decision?: boolean;         // renders the your-decision banner
-  showIf?: (f: SteuerForm) => boolean;
-  required?: boolean | ((f: SteuerForm) => boolean);
-};
-
-export type StepDef = { id: string; title: string; sub: string; fields: FieldDef[] };
+// FieldDef/StepDef come from the shared form engine; aliased to the
+// steuer form type so all copy in this file stays strongly typed.
+import type { FieldDef as GenericFieldDef, StepDef as GenericStepDef } from "../components/form-engine/types";
+import { requiredError } from "../components/form-engine/validation";
+export type FieldDef = GenericFieldDef<SteuerForm>;
+export type StepDef = GenericStepDef<SteuerForm>;
 
 export const STEUER_STEPS: StepDef[] = [
   {
@@ -519,6 +510,10 @@ export const STEUER_STEPS: StepDef[] = [
         more: "Third number the form wants, and yes, it's different from the last two. Revenue (Umsatz) = the total of everything you will invoice this year, before subtracting a single cost. Profit was income MINUS expenses; revenue is the raw top line.\nWhy it matters twice: (1) it feeds the VAT section's math, and (2) it determines whether you're even ELIGIBLE for the Kleinunternehmer option below — the €25,000 founding-year limit is measured against exactly this number.\nSame estimate rules as before: honest guess, correctable later, and the sale that actually happens always beats the forecast." },
       { key: "revenueY2", label: "Estimated revenue next year (€)", deLabel: "Summe der Umsätze, Folgejahr", type: "euro", required: true, decision: true, explain: "" },
       { key: "kleinunternehmer", label: "Kleinunternehmer-Regelung (§ 19 UStG) — use it or not?", deLabel: "Kleinunternehmer-Regelung", type: "select", required: true, decision: true,
+        selectMap: {
+          fromValue: (v: any) => (v === true ? "yes" : v === false ? "no" : ""),
+          toValue: (s: string) => (s === "yes" ? true : s === "no" ? false : null),
+        },
         options: [
           { value: "yes", label: "Use it — I will NOT charge VAT" },
           { value: "no",  label: "Don't use it — I WILL charge VAT" },
@@ -534,16 +529,9 @@ export const STEUER_STEPS: StepDef[] = [
 
 // ── Validation ──────────────────────────────────────────────────────
 export function stepError(stepId: string, f: SteuerForm): string {
-  const step = STEUER_STEPS.find(s => s.id === stepId);
-  if (!step) return "";
-  for (const fd of step.fields) {
-    if (fd.showIf && !fd.showIf(f)) continue;
-    const req = typeof fd.required === "function" ? fd.required(f) : fd.required;
-    const val = f[fd.key];
-    if (req && (val === "" || val === null || val === undefined)) {
-      return `Please fill in “${fd.label}”.`;
-    }
-  }
+  // Generic required-check from the engine, then steuer-specific rules.
+  const missing = requiredError(STEUER_STEPS, stepId, f);
+  if (missing) return missing;
   if (stepId === "activity" && f.isNewFounding === false) {
     return "This assistant currently covers new foundings (Neugründung) only. For a business takeover (Übernahme) or relocation (Verlegung), please use ELSTER's own help or a Steuerberater.";
   }
