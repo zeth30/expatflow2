@@ -20,10 +20,11 @@ import { SharedNav } from "../components/SharedNav";
 import { AppFooter } from "../components/AppFooter";
 import { CookieBanner } from "../components/LegalModals";
 import {
-  type SteuerForm, type FieldDef, EMPTY_STEUER, STORAGE_KEY, DONE_KEY,
+  type SteuerForm, type FieldDef, EMPTY_STEUER, DEMO_STEUER, STORAGE_KEY, DONE_KEY,
   STEUER_STEPS, stepError, buildAnswerRows,
 } from "./steuer-data";
 import { buildSteuerPDF } from "./steuer-pdf";
+import { SteuerSimulator } from "./SteuerSimulator";
 
 const NAVY  = "#0f172a";
 const BLUE  = "#0075FF";
@@ -252,6 +253,7 @@ function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; set
 
 // ─── Landing page ─────────────────────────────────────────────────
 function SteuerLanding({ onStart }: { onStart: () => void }) {
+  const [showSim, setShowSim] = useState(false);
   const FAQ = [
     { q: "Can I fill in the Fragebogen zur steuerlichen Erfassung in English?", a: "The official ELSTER form exists only in German — there is no English version. That's exactly what this tool solves: you answer every question in plain English, and you get each German entry ready to copy into ELSTER, matched to ELSTER's own field numbers." },
     { q: "What's the difference between Steuer-ID and Steuernummer?", a: "The Steuer-ID (steuerliche Identifikationsnummer) is the 11-digit number every resident gets by post after their Anmeldung — it never changes. The Steuernummer is a separate number the Finanzamt assigns for your tax file; as a new freelancer you receive it AFTER submitting this Fragebogen. You need the Steuer-ID to fill the form, and you get the Steuernummer as the result." },
@@ -348,8 +350,15 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
               ✓ Field numbers match ELSTER
             </div>
           </div>
+
+          {/* Simulator teaser */}
+          <button onClick={() => setShowSim(true)} style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 22, padding: "11px 22px", borderRadius: 12, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.28)", color: "white", fontWeight: 800, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit" }}>
+            ▶ Try the practice simulator with sample data
+          </button>
+          <p style={{ color: "rgba(147,197,253,0.55)", fontSize: 11.5, marginTop: 6 }}>Rehearse every screen of the form — free, nothing transmitted</p>
         </div>
       </div>
+      {showSim && <SteuerSimulator form={DEMO_STEUER} onClose={() => setShowSim(false)} />}
 
       {/* ── What is this form ── */}
       <div style={{ maxWidth: 940, margin: "0 auto", padding: "56px 20px 8px" }}>
@@ -794,6 +803,7 @@ function SteuerDone({
   sessionError: boolean; pdfError: boolean; onRestart: () => void;
 }) {
   const sections = buildAnswerRows(form);
+  const [showSim, setShowSim] = useState(false);
   const download = () => {
     if (!pdfBytes) return;
     const blob = new Blob([pdfBytes as any], { type: "application/pdf" });
@@ -818,11 +828,15 @@ function SteuerDone({
           <button onClick={download} disabled={!pdfBytes} style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "14px 26px", borderRadius: 12, background: pdfBytes ? "linear-gradient(135deg,#16a34a,#15803d)" : "#334155", color: "white", fontWeight: 800, fontSize: 14.5, border: "none", cursor: pdfBytes ? "pointer" : "not-allowed", fontFamily: "inherit", boxShadow: pdfBytes ? "0 6px 24px rgba(22,163,74,0.4)" : "none" }}>
             <Download size={16} /> Download PDF
           </button>
+          <button onClick={() => setShowSim(true)} style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "14px 26px", borderRadius: 12, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 800, fontSize: 14.5, border: "none", cursor: "pointer", fontFamily: "inherit", boxShadow: "0 6px 24px rgba(0,117,255,0.4)" }}>
+            ▶ Practice in the simulator
+          </button>
           <a href="https://www.elster.de/eportal/login" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 9, padding: "14px 26px", borderRadius: 12, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.25)", color: "white", fontWeight: 800, fontSize: 14.5, textDecoration: "none", fontFamily: "inherit" }}>
             Open Mein ELSTER <ExternalLink size={15} />
           </a>
         </div>
       </div>
+      {showSim && <SteuerSimulator form={form} onClose={() => setShowSim(false)} />}
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 20px 80px" }}>
         {sessionError && (

@@ -115,6 +115,29 @@ export const EMPTY_STEUER: SteuerForm = {
   kleinunternehmer: null, vatBalance: "",
 };
 
+// Sample persona for the simulator's demo mode (mirrors the captured
+// fseeun-202401 sample in the design spec — no real person).
+export const DEMO_STEUER: SteuerForm = {
+  ...EMPTY_STEUER,
+  hasElsterAccount: true,
+  anrede: "Frau", firstName: "Lisa", lastName: "Meyer",
+  birthDate: "2000-03-19", profession: "Schwimmtrainerin",
+  steuerId: "12345678995", hasIncomeTaxNumber: false, religion: "none",
+  married: false,
+  street: "Melanchthonstraße", houseNo: "31", houseNoSuffix: "a", plz: "33615", city: "Bielefeld",
+  movedWithin12Months: true, movedDate: "2025-12-01",
+  prevStreet: "Uwe-Seeler-Allee", prevHouseNo: "9", prevPlz: "22525", prevCity: "Hamburg",
+  taxRegisteredBefore: true, prevTaxNumber: "49/099/01230",
+  activityDesc: "Schwimmtraining in Vereinen", isNewFounding: true, businessAddrIsHome: true,
+  activityStart: "2026-03-01", foundingDate: "2026-03-01", priorBusiness: false,
+  iban: "DE03200000000020001530", accountHolderIsSelf: true,
+  profitY1: "1500", profitY2: "3900", employmentY1: "10800", employmentY2: "10800",
+  sonderausgabenY1: "2500", sonderausgabenY2: "2500",
+  confirmEuer: true, deviatingFiscalYear: false,
+  currentlyVatRegistered: false, revenueY1: "4800", revenueY2: "7200",
+  kleinunternehmer: true, vatBalance: "",
+};
+
 export const STORAGE_KEY = "simplyexpat-steuer-v1";
 export const DONE_KEY    = "simplyexpat-steuer-done-v1";
 
