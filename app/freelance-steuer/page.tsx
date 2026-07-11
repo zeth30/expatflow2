@@ -277,9 +277,46 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
 
 // ─── Wizard ───────────────────────────────────────────────────────
 const WIZ_LABELS: Record<string, string> = {
-  elster: "ELSTER account", personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
+  elster: "ELSTER account", form: "The form", personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
   bank: "Bank", estimates: "Estimates", vat: "VAT", review: "Review",
 };
+
+// Step 2 content: the form at a glance + attachments, in easy English.
+// Facts from the captured fseeun-202401 protocol: the SEPA-mandate request
+// sentence and the Belege-nachreichen mechanism appear verbatim in it.
+const FORM_SECTIONS_MAP = [
+  { n: "1", t: "About you", d: "Name, birth date, tax ID, church tax — who you are." },
+  { n: "2", t: "Your address", d: "Where you live now (and before, if you just moved)." },
+  { n: "3", t: "Your activity", d: "What your freelance work actually is, in one line." },
+  { n: "4", t: "Bank account", d: "Where tax refunds go." },
+  { n: "5", t: "Your history", d: "Earlier tax files or businesses, if any." },
+  { n: "6", t: "Business details", d: "Start date, founding, work address." },
+  { n: "7", t: "Income estimates", d: "Your honest guesses — Germany asks everyone to predict the future." },
+  { n: "8", t: "Profit method", d: "How you'll count your money (simple cash-basis for most freelancers)." },
+  { n: "9", t: "VAT", d: "The one real decision in the form. We explain it slowly when we get there." },
+];
+const FORM_ATTACHMENTS = [
+  {
+    t: "Files to upload with the form: none",
+    d: "The online form has no file upload for you. You type answers, you press send — that's the whole submission. Certificates, contracts, diplomas: nothing gets attached.",
+    tone: "green" as const,
+  },
+  {
+    t: "SEPA-Lastschriftmandat — one piece of paper, only if you want it",
+    d: "The bank section of the form says: “Bitte übermitteln Sie das ausgefüllte SEPA-Lastschriftmandat” — please send the direct-debit mandate. That's a separate one-page paper form allowing the Finanzamt to collect what you owe automatically instead of you transferring manually. Whether you want direct debit is your choice; if yes, the paper goes to your Finanzamt by post, separate from this online form.",
+    tone: "amber" as const,
+  },
+  {
+    t: "Receipts & proof — only if they ask, and there's a button for it",
+    d: "If the Finanzamt wants to see documents later, they write to you. And if you want to send something after submitting, ELSTER has a built-in way: “Meine Formulare” → “Übermittelte Formulare” → create an “Anschreiben” (cover letter) to your Finanzamt. No stress now.",
+    tone: "blue" as const,
+  },
+  {
+    t: "Your proof of submission — automatic",
+    d: "After you press send, ELSTER stores a transmission protocol (Übertragungsprotokoll) with every answer under “Meine Formulare”. Save it as PDF — that's your receipt that you filed on time.",
+    tone: "blue" as const,
+  },
+];
 
 // Condensed ELSTER registration steps (full guide: /elster-account-english)
 const ELSTER_MINI = [
@@ -380,6 +417,33 @@ function SteuerWizard({
                       Full screen-by-screen guide (opens in new tab) →
                     </a>
                   </p>
+                </div>
+              )}
+              {stepId === "form" && (
+                <div style={{ marginBottom: 10 }}>
+                  <div style={{ fontWeight: 800, color: NAVY, fontSize: 13.5, marginBottom: 10 }}>The 9 sections, in order</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8, marginBottom: 24 }}>
+                    {FORM_SECTIONS_MAP.map(s => (
+                      <div key={s.n} style={{ background: "white", borderRadius: 11, border: "1px solid #e8ecf4", padding: "11px 13px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                          <span style={{ width: 20, height: 20, borderRadius: "50%", background: NAVY, color: "white", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 10.5, flexShrink: 0 }}>{s.n}</span>
+                          <span style={{ fontWeight: 800, color: NAVY, fontSize: 12.5 }}>{s.t}</span>
+                        </div>
+                        <p style={{ color: MUTED, fontSize: 11.5, lineHeight: 1.5 }}>{s.d}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ fontWeight: 800, color: NAVY, fontSize: 13.5, marginBottom: 10 }}>Attachments &amp; paperwork — the honest list</div>
+                  {FORM_ATTACHMENTS.map(a => (
+                    <div key={a.t} style={{
+                      marginBottom: 10, padding: "13px 15px", borderRadius: 12,
+                      background: a.tone === "green" ? "#f0fdf4" : a.tone === "amber" ? "#fffbeb" : "#eff6ff",
+                      border: a.tone === "green" ? "1px solid #bbf7d0" : a.tone === "amber" ? "1px solid #fde68a" : "1px solid #bfdbfe",
+                    }}>
+                      <div style={{ fontWeight: 800, fontSize: 13, color: a.tone === "green" ? "#166534" : a.tone === "amber" ? "#92400e" : "#1e40af", marginBottom: 4 }}>{a.t}</div>
+                      <p style={{ fontSize: 12.5, lineHeight: 1.65, color: a.tone === "green" ? "#14532d" : a.tone === "amber" ? "#78350f" : "#1e3a8a" }}>{a.d}</p>
+                    </div>
+                  ))}
                 </div>
               )}
               {stepDef.fields.map(fd => <FieldInput key={String(fd.key)} fd={fd} form={form} setForm={setForm} />)}
@@ -674,30 +738,37 @@ function SteuerDone({
 
             <SteuerEmailOptIn firstName={form.firstName} />
 
+            {/* Filled-form view: your values sitting inside the form layout,
+                like the screen you'll see in ELSTER — not a list. */}
             {sections.map((sec, si) => (
-              <div key={sec.title} style={{ marginBottom: 26 }}>
-                <div style={{ background: NAVY, borderRadius: "10px 10px 0 0", padding: "12px 16px" }}>
-                  <div style={{ color: "white", fontWeight: 800, fontSize: 14 }}>{sec.title}</div>
-                  <div style={{ color: "#93c5fd", fontSize: 11.5, marginTop: 2 }}>{sec.titleEn} · Section {si + 1} of {sections.length}</div>
+              <div key={sec.title} style={{ marginBottom: 26, background: "white", border: "1px solid #cdd5df", borderRadius: 8, overflow: "hidden", boxShadow: "0 2px 10px rgba(15,23,42,0.06)" }}>
+                <div style={{ borderBottom: "3px solid #37424f", padding: "13px 18px", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+                  <div>
+                    <div style={{ color: "#1f2937", fontWeight: 700, fontSize: 14 }}>{sec.title}</div>
+                    <div style={{ color: BLUE, fontSize: 11.5, fontWeight: 600, marginTop: 1 }}>{sec.titleEn}</div>
+                  </div>
+                  <span style={{ color: "#6b7280", fontSize: 11 }}>Seite {si + 1} von {sections.length}</span>
                 </div>
-                <div style={{ background: "white", border: "1px solid #e8ecf4", borderTop: "none", borderRadius: "0 0 10px 10px" }}>
+                <div style={{ padding: "16px 18px" }}>
                   {sec.rows.map((r, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderBottom: i < sec.rows.length - 1 ? "1px solid #f1f5f9" : "none", flexWrap: "wrap" }}>
-                      <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 30, height: 22, borderRadius: 6, background: "#eff6ff", color: BLUE, fontWeight: 800, fontSize: 11, flexShrink: 0, padding: "0 6px" }}>{r.nr}</span>
-                      <div style={{ flex: "1 1 200px", minWidth: 160 }}>
-                        <div style={{ color: MUTED, fontSize: 12, lineHeight: 1.4 }}>{r.label}</div>
-                        {r.enHint && <div style={{ color: "#b6c2d1", fontSize: 11, marginTop: 1 }}>{r.enHint}</div>}
+                    <div key={i} style={{ marginBottom: i < sec.rows.length - 1 ? 14 : 0 }}>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: 11.5, color: "#4b5563", marginBottom: 4 }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minWidth: 24, height: 16, borderRadius: 3, background: "#eef1f5", border: "1px solid #d5dbe3", color: "#374151", fontWeight: 700, fontSize: 9.5, padding: "0 4px", flexShrink: 0 }}>{r.nr}</span>
+                        <span style={{ fontWeight: 600 }}>{r.label}</span>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10, flex: "1 1 220px", justifyContent: "flex-end", minWidth: 200 }}>
-                        <span style={{
-                          color: r.instruction ? "#92400e" : NAVY, fontWeight: r.instruction ? 700 : 800, fontSize: 13.5,
-                          fontStyle: r.instruction ? "italic" : "normal",
-                          background: r.instruction ? "#fffbeb" : "#f8fafc",
-                          border: r.instruction ? "1px solid #fde68a" : "1px solid #eef2f7",
-                          borderRadius: 8, padding: "7px 12px", overflowWrap: "anywhere", textAlign: "right",
-                        }}>{r.de || "—"}</span>
-                        {r.de && !r.instruction && <CopyValue value={r.de} />}
-                      </div>
+                      {r.instruction ? (
+                        <div style={{ padding: "9px 12px", borderRadius: 4, background: "#fffbeb", border: "1px dashed #f0c948", color: "#92400e", fontSize: 12.5, fontStyle: "italic" }}>
+                          ☐ {r.de}
+                        </div>
+                      ) : (
+                        <div style={{ display: "flex", gap: 8, alignItems: "stretch" }}>
+                          <div style={{ flex: 1, padding: "9px 12px", borderRadius: 4, border: "1px solid #aeb8c4", background: r.de ? "#fbfdff" : "#f5f7fa", color: r.de ? "#111827" : "#9aa5b1", fontSize: 13.5, fontWeight: 600, overflowWrap: "anywhere" }}>
+                            {r.de || "— leave empty —"}
+                          </div>
+                          {r.de && <CopyValue value={r.de} />}
+                        </div>
+                      )}
+                      {r.enHint && <div style={{ fontSize: 10.5, color: "#8b96a5", marginTop: 3 }}>{r.enHint}</div>}
                     </div>
                   ))}
                 </div>

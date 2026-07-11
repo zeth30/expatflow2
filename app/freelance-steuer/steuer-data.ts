@@ -358,6 +358,12 @@ export const STEUER_STEPS: StepDef[] = [
     ],
   },
   {
+    id: "form", title: "What you're about to fill out",
+    sub: "Nine short sections, all in German. Here's the map — and what Germany may ask you to send along with it. Two minutes, then we start.",
+    // Content is rendered by the page (FORM_INTRO) — this step has no inputs.
+    fields: [],
+  },
+  {
     id: "personal", title: "About you", sub: "Exactly as in your passport and Anmeldung.",
     fields: [
       { key: "anrede", label: "Salutation", deLabel: "Anrede", type: "select", required: true,

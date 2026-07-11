@@ -101,26 +101,49 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
   page.drawText(safe("different number, match by the German label printed next to it - the labels don't change."), { x: ML + 10, y: y - 55, size: 7.5, font: HO, color: MUTED });
   y -= 83;
 
-  for (const section of buildAnswerRows(form)) {
-    newPageIfNeeded(56);
-    page.drawRectangle({ x: ML, y: y - 6, width: CW, height: 22, color: NAVY });
-    page.drawText(safe(section.title), { x: ML + 8, y: y, size: 9.5, font: HB, color: rgb(1, 1, 1) });
-    y -= 20;
-    page.drawText(safe(section.titleEn), { x: ML + 8, y, size: 8, font: HO, color: MUTED });
-    y -= 18;
-    for (const row of section.rows) {
-      newPageIfNeeded(34);
-      page.drawText(safe(row.nr), { x: ML, y, size: 8, font: HB, color: BLUE });
-      page.drawText(clip(safe(row.label), 62), { x: ML + 24, y, size: 8.5, font: HR, color: MUTED, maxWidth: 255 });
-      page.drawText(clip(safe(row.de || "-"), 60), { x: ML + 288, y, size: 9.5, font: HB, color: NAVY, maxWidth: CW - 292 });
-      if (row.enHint) {
-        page.drawText(clip(safe(row.enHint), 110), { x: ML + 24, y: y - 11, size: 7, font: HO, color: MUTED, maxWidth: CW - 32 });
-      }
-      page.drawLine({ start: { x: ML, y: y - 17 }, end: { x: ML + CW, y: y - 17 }, thickness: 0.5, color: LINE });
-      y -= 27;
-    }
+  // Filled-form layout: every field drawn as a labelled input box with the
+  // user's value inside — visually like the screen they'll see, not a list.
+  const GOV = rgb(0.22, 0.26, 0.31);      // form chrome
+  const BOXLINE = rgb(0.68, 0.72, 0.77);  // input borders
+  const AMBER_BG = rgb(1, 0.984, 0.92);
+  const AMBER_BD = rgb(0.94, 0.79, 0.28);
+  const AMBER_TX = rgb(0.57, 0.25, 0.05);
+  const allSections = buildAnswerRows(form);
+  allSections.forEach((section, si) => {
+    newPageIfNeeded(70);
+    // Section header: title + underline bar, like the portal chrome
+    page.drawText(safe(section.title), { x: ML, y, size: 11, font: HB, color: GOV });
+    page.drawText(`Seite ${si + 1} von ${allSections.length}`, { x: PW - ML - 70, y, size: 7.5, font: HR, color: MUTED });
     y -= 12;
-  }
+    page.drawText(safe(section.titleEn), { x: ML, y, size: 8, font: HO, color: BLUE });
+    y -= 8;
+    page.drawRectangle({ x: ML, y: y - 2, width: CW, height: 2.2, color: GOV });
+    y -= 18;
+
+    for (const row of section.rows) {
+      newPageIfNeeded(48);
+      // Label line: number chip + label
+      page.drawRectangle({ x: ML, y: y - 3, width: 22, height: 11, color: rgb(0.93, 0.945, 0.96), borderColor: BOXLINE, borderWidth: 0.5 });
+      page.drawText(safe(row.nr).slice(0, 6), { x: ML + 3, y, size: 7, font: HB, color: GOV });
+      page.drawText(clip(safe(row.label), 88), { x: ML + 28, y, size: 8, font: HR, color: rgb(0.29, 0.33, 0.39) });
+      y -= 8;
+      // Input box with the value inside
+      if (row.instruction) {
+        page.drawRectangle({ x: ML, y: y - 15, width: CW, height: 20, color: AMBER_BG, borderColor: AMBER_BD, borderWidth: 0.8, borderDashArray: [3, 2] });
+        page.drawText(clip("[ ] " + safe(row.de), 100), { x: ML + 8, y: y - 9, size: 9, font: HO, color: AMBER_TX });
+      } else {
+        page.drawRectangle({ x: ML, y: y - 15, width: CW, height: 20, color: row.de ? rgb(0.984, 0.99, 1) : rgb(0.96, 0.97, 0.98), borderColor: BOXLINE, borderWidth: 0.8 });
+        page.drawText(row.de ? clip(safe(row.de), 92) : "- leave empty -", { x: ML + 8, y: y - 9, size: 9.5, font: row.de ? HB : HO, color: row.de ? NAVY : MUTED });
+      }
+      y -= 20;
+      if (row.enHint) {
+        page.drawText(clip(safe(row.enHint), 120), { x: ML, y: y - 5, size: 6.5, font: HO, color: MUTED });
+        y -= 9;
+      }
+      y -= 8;
+    }
+    y -= 14;
+  });
 
   // Closing note
   newPageIfNeeded(80);
