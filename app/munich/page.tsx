@@ -415,9 +415,18 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
   const form = doc.getForm();
 
   // Text field helper — identical guard to Berlin
+  // Some template fields (e.g. ausstellb4) have a hard maxLength; pdf-lib's setText()
+  // throws if the value is longer, which was previously swallowed by the catch below,
+  // silently dropping the value. Truncate to the field's own maxLength first so long
+  // values (e.g. a long issuing-authority name) still print instead of vanishing.
   const txt = (n: string, v: string) => {
     if (!v?.trim()) return;
-    try { form.getTextField(n).setText(safe(v)); } catch {}
+    try {
+      const field = form.getTextField(n);
+      const max = field.getMaxLength();
+      const value = safe(v);
+      field.setText(max != null && value.length > max ? value.slice(0, max) : value);
+    } catch {}
   };
 
   // Direct dict setter for fields with /Kids + /AA JavaScript validation (e.g. einzug)
@@ -438,17 +447,12 @@ async function fillMunichSheet(d: MunichForm): Promise<Uint8Array> {
 
   // Radio button helper — draw filled circle directly on page (bypasses form API entirely).
   // Coordinates come from RADIO_DOTS (hardcoded from template via pypdf).
-  // Also sets V on the parent field so interactive PDF viewers show selection too.
+  // Do NOT also set V on the parent field: form.flatten() below bakes each widget's own
+  // "on" appearance stream onto the page based on V, which then overlaps this manually-drawn
+  // dot and renders as a doubled/crescent-shaped blob. The drawn dot alone is the mark.
   const page0 = doc.getPages()[0];
   const rdo = (fieldName: string, exportVal: string) => {
     if (!exportVal) return;
-    // Set V on parent for completeness
-    try {
-      const fields = form.getFields();
-      const field = fields.find((f: any) => { try { return f.getName() === fieldName; } catch { return false; } });
-      if (field) (field as any).acroField.dict.set(PDFName.of("V"), PDFName.of(exportVal));
-    } catch {}
-    // Draw dot
     const pos = (RADIO_DOTS[fieldName] as any)?.[exportVal] as [number, number] | undefined;
     if (!pos) return;
     page0.drawCircle({ x: pos[0], y: pos[1], size: 3, color: rgb(0, 0, 0) });
