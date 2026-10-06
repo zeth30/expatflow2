@@ -3737,7 +3737,7 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
           <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #f1f5f9" }}>
             <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>One-time payment · No subscription</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-              <span style={{ fontSize: 52, fontWeight: 900, color: "#0f172a", lineHeight: 1, letterSpacing: "-0.04em" }}>€15</span>
+              <span style={{ fontSize: 52, fontWeight: 900, color: "#0f172a", lineHeight: 1, letterSpacing: "-0.04em" }}>€10</span>
               <span style={{ color: "#94a3b8", fontSize: 13 }}>one time</span>
             </div>
             <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
@@ -3835,15 +3835,15 @@ function PaymentPage({ paid, genStatus, onGenerate, allDone, sheets, form, downl
                   const res = await fetch("/api/checkout", { method: "POST" });
                   const data = await res.json();
                   if (data.url) { window.location.href = data.url; }
-                  else { btn.disabled = false; btn.innerHTML = "Pay €15 — Secure Stripe Checkout"; alert("Could not start checkout. Please try again."); }
-                } catch { btn.disabled = false; btn.innerHTML = "Pay €15 — Secure Stripe Checkout"; alert("Network error. Please try again."); }
+                  else { btn.disabled = false; btn.innerHTML = "Pay €10 — Secure Stripe Checkout"; alert("Could not start checkout. Please try again."); }
+                } catch { btn.disabled = false; btn.innerHTML = "Pay €10 — Secure Stripe Checkout"; alert("Network error. Please try again."); }
               }}
               id="stripe-pay-btn"
               disabled={form.isBerlin !== true}
               style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "18px", borderRadius: 14, background: form.isBerlin === true ? "linear-gradient(135deg,#0075FF,#2563eb)" : "#334155", color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: form.isBerlin === true ? "0 8px 32px rgba(0,117,255,0.5)" : "none", cursor: form.isBerlin === true ? "pointer" : "not-allowed", fontFamily: "inherit", letterSpacing: "-0.01em" }}>
-              <CreditCard size={18} /> Pay €15 — Secure Checkout
+              <CreditCard size={18} /> Pay €10 — Secure Checkout
             </button>
-            <script dangerouslySetInnerHTML={{ __html: `window.addEventListener('pageshow',function(){var b=document.getElementById('stripe-pay-btn');if(b){b.disabled=false;b.textContent='Pay €15 — Secure Checkout';}});` }} />
+            <script dangerouslySetInnerHTML={{ __html: `window.addEventListener('pageshow',function(){var b=document.getElementById('stripe-pay-btn');if(b){b.disabled=false;b.textContent='Pay €10 — Secure Checkout';}});` }} />
             <p style={{ textAlign: "center", color: "rgba(147,197,253,0.6)", fontSize: 11.5 }}>
               🔒 Powered by Stripe · Secure · No card stored
             </p>

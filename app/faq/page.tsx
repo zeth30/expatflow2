@@ -151,8 +151,8 @@ const SECTIONS = [
     color: "var(--ink)",
     faqs: [
       {
-        q: "Why would I pay €15 to fill out a form?",
-        a: "The Anmeldung form is in German with no official English version. One wrong field — wrong date format, wrong marital status code, wrong religion entry — means your appointment fails and you start over, sometimes weeks later. ReadyExpat guides you through every field in plain English, formats everything correctly for German authorities, and generates a print-ready PDF in 5 minutes. The €15 buys you certainty and saves you weeks of potential delay.",
+        q: "Why would I pay €10 to fill out a form?",
+        a: "The Anmeldung form is in German with no official English version. One wrong field — wrong date format, wrong marital status code, wrong religion entry — means your appointment fails and you start over, sometimes weeks later. ReadyExpat guides you through every field in plain English, formats everything correctly for German authorities, and generates a print-ready PDF in 5 minutes. The €10 buys you certainty and saves you weeks of potential delay.",
       },
       {
         q: "What exactly does ReadyExpat do?",
@@ -160,7 +160,7 @@ const SECTIONS = [
       },
       {
         q: "How much does ReadyExpat cost?",
-        a: "A one-time fee of €15. No subscription, no account required, no hidden costs. Pay once and download your completed Anmeldung PDF immediately.",
+        a: "A one-time fee of €10. No subscription, no account required, no hidden costs. Pay once and download your completed Anmeldung PDF immediately.",
       },
       {
         q: "Is my personal data safe?",
@@ -218,7 +218,7 @@ export default function FAQPage() {
     name: "How to complete the Anmeldung in Berlin (address registration)",
     description: "Step-by-step guide to registering your address at a Berlin Bürgeramt. Required by law within 14 days of moving in (§17 BMG).",
     totalTime: "P14D",
-    estimatedCost: { "@type": "MonetaryAmount", currency: "EUR", value: "15" },
+    estimatedCost: { "@type": "MonetaryAmount", currency: "EUR", value: "10" },
     supply: [
       { "@type": "HowToSupply", name: "Valid passport or national ID card" },
       { "@type": "HowToSupply", name: "Wohnungsgeberbestätigung (landlord confirmation form, signed)" },
@@ -227,7 +227,7 @@ export default function FAQPage() {
     ],
     step: [
       { "@type": "HowToStep", position: 1, name: "Get the Wohnungsgeberbestätigung from your landlord", text: "Request the landlord confirmation form (Wohnungsgeberbestätigung) on your move-in day. Your landlord is legally required to provide it under §19 BMG. Email them in writing so you have a paper trail. Without this form the Bürgeramt cannot register you — your rental contract alone is not accepted." },
-      { "@type": "HowToStep", position: 2, name: "Fill in the Anmeldung form in English", text: "Go to readyexpat.de and answer the guided questions in plain English. ReadyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €15." },
+      { "@type": "HowToStep", position: 2, name: "Fill in the Anmeldung form in English", text: "Go to readyexpat.de and answer the guided questions in plain English. ReadyExpat translates everything into correct German and generates an official PDF with all 54 fields completed. This takes about 5 minutes and costs €10." },
       { "@type": "HowToStep", position: 3, name: "Book a Bürgeramt appointment as early as possible", text: "Book at service.berlin.de. Check early in the morning for the best slot availability — new slots are released in batches and go quickly. Outer districts like Marzahn and Lichtenberg have more availability than central offices. Keep a screenshot of your booking as evidence you tried within the 14-day window." },
       { "@type": "HowToStep", position: 4, name: "Print your completed form", text: "Print the PDF on plain white paper. DM or Rossmann self-service kiosks charge approximately €0.10–0.15 per page. The Bürgeramt does not accept digital forms shown on a phone screen." },
       { "@type": "HowToStep", position: 5, name: "Attend your Bürgeramt appointment", text: "Bring your printed form, passport or ID, Wohnungsgeberbestätigung, and any additional documents. The appointment takes 5–10 minutes. Sign the form at the office after printing — do not sign before. Check your Anmeldebestätigung/Meldebestätigung for errors before leaving." },
@@ -321,12 +321,12 @@ export default function FAQPage() {
             <div className="cta-box reveal">
               <div className="eye">Form ready in 5 minutes</div>
               <h2>Fill your Anmeldung in English. <span className="b">We handle the German.</span></h2>
-              <p>Answer in English. We generate your completed Anmeldeformular — all 54 fields in correct German — ready to print and bring to your appointment. €15, one time.</p>
+              <p>Answer in English. We generate your completed Anmeldeformular — all 54 fields in correct German — ready to print and bring to your appointment. €10, one time.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no subscription · no account needed</div>
+              <div className="micro">€10 one-time · no subscription · no account needed</div>
             </div>
             <div className="legal">This page is for general information only. Appointment availability and slot release schedules change regularly. Always verify at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a> or the city you are registering at.</div>
           </div>

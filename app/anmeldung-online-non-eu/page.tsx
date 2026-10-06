@@ -309,12 +309,12 @@ export default function OnlineNonEU() {
             <div className="cta-box reveal">
               <div className="eye">For expats moving to Germany</div>
               <h2>We handle the German form <span className="b">for you.</span></h2>
-              <p>Answer in English. We generate your completed Anmeldeformular — all 54 fields in correct German — ready to print and bring to your appointment. €15, one time.</p>
+              <p>Answer in English. We generate your completed Anmeldeformular — all 54 fields in correct German — ready to print and bring to your appointment. €10, one time.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no subscription · no account needed</div>
+              <div className="micro">€10 one-time · no subscription · no account needed</div>
             </div>
             <GuidePageNav activeId="noneu" />
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 0" }}>

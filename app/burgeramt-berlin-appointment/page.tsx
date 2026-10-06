@@ -368,7 +368,7 @@ export default function BurgeramtBerlinAppointment() {
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no subscription · no account needed</div>
+              <div className="micro">€10 one-time · no subscription · no account needed</div>
             </div>
             <GuidePageNav activeId="termin" />
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", margin: "16px 0 0" }}>

@@ -191,12 +191,12 @@ export default function AnmeldungCoupleBerlin() {
             <div className="cta-box reveal">
               <div className="eye">Couples and families — up to 6 people.</div>
               <h2>One order. All sheets. <span className="b">Everyone registered.</span></h2>
-              <p>ReadyExpat generates the right number of form sheets for your household — all 54 fields filled correctly in German. €15 flat, all sheets included.</p>
+              <p>ReadyExpat generates the right number of form sheets for your household — all 54 fields filled correctly in German. €10 flat, all sheets included.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no account needed · all sheets included</div>
+              <div className="micro">€10 one-time · no account needed · all sheets included</div>
             </div>
             <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>

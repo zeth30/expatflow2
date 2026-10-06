@@ -155,12 +155,12 @@ export default function AnmeldungBerlinEnglish() {
             <div className="cta-box reveal">
               <div className="eye">Answer in English. Get a correct German PDF.</div>
               <h2>No German required. <span className="b">No mistakes.</span></h2>
-              <p>ReadyExpat handles all 54 fields — Staatsangehörigkeit, Familienstand, Religionsgesellschaft, date formats — all correct German values throughout. 5 minutes. €15.</p>
+              <p>ReadyExpat handles all 54 fields — Staatsangehörigkeit, Familienstand, Religionsgesellschaft, date formats — all correct German values throughout. 5 minutes. €10.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Start My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no subscription · no account needed</div>
+              <div className="micro">€10 one-time · no subscription · no account needed</div>
             </div>
             <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>

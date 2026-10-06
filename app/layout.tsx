@@ -9,7 +9,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 export const metadata: Metadata = {
   title: "Anmeldung Berlin in English — Expat Form Filler, No German Required",
   description:
-    "Fill your Berlin Anmeldung in English. No German required. ReadyExpat translates all 54 fields correctly and generates a ready-to-print PDF for expats, foreigners, and new Berlin residents. €15, done in 5 minutes.",
+    "Fill your Berlin Anmeldung in English. No German required. ReadyExpat translates all 54 fields correctly and generates a ready-to-print PDF for expats, foreigners, and new Berlin residents. €10, done in 5 minutes.",
   keywords: [
     "Anmeldung Berlin English",
     "Anmeldung Berlin PDF",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
       "Fill your Berlin Anmeldung in English. No German required. ReadyExpat fills all 54 fields correctly for expats and generates a ready-to-print German PDF in 5 minutes.",
     url: DOMAIN,
     siteName: "ReadyExpat Berlin",
-    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "ReadyExpat Berlin — Anmeldung PDF in English" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ReadyExpat Berlin — Anmeldung PDF in English" }],
     locale: "en_US",
     type: "website",
   },
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Anmeldung Berlin in English — Fill All 54 Fields Correctly",
     description: "Official Berlin registration PDF, filled in English. No data stored. Expert expat relocation help.",
-    images: ["/og-image.svg"],
+    images: ["/opengraph-image"],
   },
   icons: {
     icon: [
@@ -96,7 +96,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         "description": "Generate your official Berlin Anmeldung PDF in English. All 54 fields filled in perfect German. No data stored. Expert relocation paperwork for expats.",
         "offers": {
           "@type": "Offer",
-          "price": "15",
+          "price": "10",
           "priceCurrency": "EUR",
           "priceValidUntil": "2027-12-31",
           "availability": "https://schema.org/InStock",

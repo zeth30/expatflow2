@@ -173,12 +173,12 @@ export default function MovingToBerlinRegistration() {
             <div className="cta-box reveal">
               <div className="eye">The Anmeldung form — done in 5 minutes.</div>
               <h2>Answer in English. <span className="b">Get a correct German PDF.</span></h2>
-              <p>ReadyExpat fills all 54 Anmeldeformular fields correctly in German. All translations, dates, and formats handled. €15 once.</p>
+              <p>ReadyExpat fills all 54 Anmeldeformular fields correctly in German. All translations, dates, and formats handled. €10 once.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no subscription · no account needed</div>
+              <div className="micro">€10 one-time · no subscription · no account needed</div>
             </div>
             <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>

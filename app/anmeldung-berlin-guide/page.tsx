@@ -274,7 +274,7 @@ export default function AnmeldungBerlinGuide() {
               <div className="glyph"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
               <div>
                 <div className="h">ReadyExpat fills all 54 fields correctly in German.</div>
-                <div className="p">Answer 7 questions in English. We handle every translation — citizenship adjectives, date format, marital status — and generate a ready-to-print PDF. €15 one-time. <a href="/" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Prepare My Anmeldung →</a></div>
+                <div className="p">Answer 7 questions in English. We handle every translation — citizenship adjectives, date format, marital status — and generate a ready-to-print PDF. €10 one-time. <a href="/" style={{ color: "var(--blue)", fontWeight: 600, textDecoration: "none" }}>Prepare My Anmeldung →</a></div>
               </div>
             </div>
           </div>
@@ -428,7 +428,7 @@ export default function AnmeldungBerlinGuide() {
             </div>
             <div style={{ marginTop: 32, padding: "24px 28px", borderRadius: 18, background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)", color: "#fff" }}>
               <div style={{ fontWeight: 700, fontSize: "1.05rem", marginBottom: 8 }}>Skip the translation headache</div>
-              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.6, margin: "0 0 14px" }}>Answer 7 questions in English. ReadyExpat fills all 54 fields correctly in German and generates a ready-to-print PDF. Takes 5 minutes. €15 one-time — no subscription, no account needed.</p>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.6, margin: "0 0 14px" }}>Answer 7 questions in English. ReadyExpat fills all 54 fields correctly in German and generates a ready-to-print PDF. Takes 5 minutes. €10 one-time — no subscription, no account needed.</p>
               <a href="/" style={{ display: "inline-block", background: "#0075FF", color: "#fff", fontWeight: 700, padding: "0.6rem 1.3rem", borderRadius: 8, textDecoration: "none", fontSize: "0.9rem" }}>Prepare My Anmeldung →</a>
             </div>
             <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>

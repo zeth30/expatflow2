@@ -184,12 +184,12 @@ export default function AnmeldungDeadlineBerlin() {
             <div className="cta-box reveal">
               <div className="eye">Don't let a wrong form waste your appointment slot.</div>
               <h2>Ready for your appointment. <span className="b">Nothing left to chance.</span></h2>
-              <p>ReadyExpat fills all 54 Anmeldeformular fields correctly in German — translations, dates, format. Done in 5 minutes. €15.</p>
+              <p>ReadyExpat fills all 54 Anmeldeformular fields correctly in German — translations, dates, format. Done in 5 minutes. €10.</p>
               <Link href="/#wizard/origin" className="cta-btn">
                 Prepare My Anmeldung
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </Link>
-              <div className="micro">€15 one-time · no subscription · no account needed</div>
+              <div className="micro">€10 one-time · no subscription · no account needed</div>
             </div>
             <div className="legal">This guide is for general information only. Always verify current requirements at <a href="https://service.berlin.de" target="_blank" rel="noopener">service.berlin.de</a>.</div>
           </div>

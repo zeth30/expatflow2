@@ -3,7 +3,7 @@
  * app/api/checkout/route.ts
  *
  * POST /api/checkout
- * Creates a one-time Stripe Checkout session for €15.
+ * Creates a one-time Stripe Checkout session (price depends on product: €10 Anmeldung / €15 Steuer).
  * Returns { url } — frontend redirects to Stripe hosted page.
  *
  * Environment variables required:
@@ -32,12 +32,14 @@ export async function POST(req: NextRequest) {
         description:
           "Official Anmeldung form (all 54 fields filled), personalised checklist, and expert appointment guide. One-time digital service.",
         service: "anmeldung-preparation",
+        priceCents: 1000, // €10.00
       },
       steuer: {
         name: "ReadyExpat — Easy Fragebogen zur steuerlichen Erfassung",
         description:
           "English field-by-field answer sheet for the ELSTER tax registration questionnaire (solo freelancers), on screen and as PDF. One-time digital service. Not tax advice.",
         service: "steuer-fragebogen-copilot",
+        priceCents: 1500, // €15.00
       },
     } as const;
     const product = PRODUCTS[productKey];
@@ -49,7 +51,7 @@ export async function POST(req: NextRequest) {
         {
           price_data: {
             currency: "eur",
-            unit_amount: 1500, // €15.00 in cents
+            unit_amount: product.priceCents,
             product_data: {
               name: product.name,
               description: product.description,
