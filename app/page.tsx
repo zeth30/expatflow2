@@ -1798,8 +1798,6 @@ function getError(step: WizardStep, f: FormData): string {
 // ═══════════════════════════════════════════════════════════════════
 export default function BerlinButler() {
   const [phase, setPhase] = useState<AppPhase>("landing");
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
   const [form, setForm] = useState<FormData>(EMPTY);
   const [step, setStep] = useState<WizardStep>("origin");
   const [paid, setPaid] = useState(false);
@@ -2168,18 +2166,8 @@ export default function BerlinButler() {
         </div>
       )}
 
-      {!mounted ? (
-        <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg,#0f172a,#0075FF)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ color: "white", fontSize: 14, fontWeight: 900, letterSpacing: "-0.05em" }}>R</span>
-            </div>
-            <div style={{ width: 80, height: 4, borderRadius: 99, background: "#e8ecf4", margin: "0 auto", overflow: "hidden", position: "relative" }}>
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,transparent,#0075FF,transparent)", animation: "shimmer 1.2s ease-in-out infinite" }} />
-            </div>
-          </div>
-        </div>
-      ) : phase === "landing" ? (
+      {/* Landing renders on the server too, so crawlers without JS see real content */}
+      {phase === "landing" ? (
         <>
           <LandingPage onStart={() => { setPhase("wizard"); pushNav("wizard", "origin"); }} onDownloadWG={downloadWG} />
           <AppFooter />

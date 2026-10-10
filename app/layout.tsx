@@ -7,9 +7,9 @@ import "./globals.css";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin in English — Expat Form Filler, No German Required",
+  title: "Anmeldung Berlin in English — Expat Form Filler",
   description:
-    "Fill your Berlin Anmeldung in English. No German required. ReadyExpat translates all 54 fields correctly and generates a ready-to-print PDF for expats, foreigners, and new Berlin residents. €10, done in 5 minutes.",
+    "Fill your Berlin Anmeldung in English, no German required. ReadyExpat fills all 54 fields and creates a ready-to-print PDF. €10, done in 5 minutes.",
   keywords: [
     "Anmeldung Berlin English",
     "Anmeldung Berlin PDF",
