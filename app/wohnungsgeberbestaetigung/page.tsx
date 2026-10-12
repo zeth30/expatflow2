@@ -12,7 +12,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 export const metadata: Metadata = {
   title: "Wohnungsgeberbestätigung Berlin: Expat Landlord Guide 2026",
   description:
-    "Expats in Berlin need the Wohnungsgeberbestätigung signed by their landlord before Anmeldung. What it is, the official template, who can sign in a WG, and what to do if your landlord refuses.",
+    "The landlord form you need before your Berlin Anmeldung: what it is, the official template, who signs in a WG, and what to do if your landlord refuses.",
   alternates: { canonical: `${DOMAIN}/wohnungsgeberbestaetigung` },
   robots: { index: true, follow: true },
   openGraph: {

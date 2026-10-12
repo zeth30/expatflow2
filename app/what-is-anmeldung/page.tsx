@@ -10,9 +10,9 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "What is the Anmeldung? Berlin Address Registration for Expats 2026",
+  title: "What is the Anmeldung? Berlin Registration Guide 2026",
   description:
-    "The Anmeldung is Germany's mandatory address registration. Every expat moving to Berlin must register within 14 days. Required for your Steuer-ID, bank account, health insurance, and residence permit.",
+    "The Anmeldung is Germany's mandatory address registration — within 14 days of moving in. Needed for your Steuer-ID, bank account and residence permit.",
   alternates: { canonical: `${DOMAIN}/what-is-anmeldung` },
   robots: { index: true, follow: true },
   openGraph: {

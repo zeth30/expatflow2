@@ -11,7 +11,7 @@ const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 export const metadata: Metadata = {
   title: "Bürgeramt Berlin Appointment: Expat Guide to Booking (2026)",
   description:
-    "Berlin Bürgeramt appointment slots vanish in 60 seconds. Expat guide: Tuesday 8 AM trick, outer districts, 115 hotline, and what to do when there are no slots before your 14-day Anmeldung deadline.",
+    "Berlin Bürgeramt slots vanish in 60 seconds. Tuesday 8 AM trick, outer districts, 115 hotline — and what to do with no slot before your 14-day deadline.",
   alternates: { canonical: `${DOMAIN}/burgeramt-berlin-appointment` },
   robots: { index: true, follow: true },
   openGraph: {

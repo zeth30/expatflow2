@@ -10,9 +10,9 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Online Anmeldung Berlin: Why Expats Cannot Register Online (2026)",
+  title: "Online Anmeldung Berlin: Why Expats Can't (2026)",
   description:
-    "Non-EU expats in Berlin cannot use the online Anmeldung — it requires an EU eID chip. Guide for US, UK, Indian, Australian, and Brazilian expats: the in-person path that actually works.",
+    "Berlin's online Anmeldung needs an EU eID chip. For US, UK, Indian and other non-EU expats: the in-person path that actually works.",
   alternates: { canonical: `${DOMAIN}/anmeldung-online-non-eu` },
   robots: { index: true, follow: true },
   openGraph: {

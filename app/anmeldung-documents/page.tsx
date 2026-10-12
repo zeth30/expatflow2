@@ -10,9 +10,9 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung Berlin Documents: Expat Checklist for Bürgeramt 2026",
+  title: "Anmeldung Berlin Documents: Expat Checklist 2026",
   description:
-    "Complete Anmeldung document checklist for expats in Berlin. Passport, Wohnungsgeberbestätigung, German form — missing one item gets you sent home. What to bring, by nationality and situation.",
+    "Anmeldung document checklist for Berlin expats: passport, Wohnungsgeberbestätigung, German form. Missing one item gets you sent home.",
   alternates: { canonical: `${DOMAIN}/anmeldung-documents` },
   robots: { index: true, follow: true },
   openGraph: {
