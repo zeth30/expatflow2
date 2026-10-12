@@ -9,8 +9,8 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "Anmeldung for Expat Couples and Families in Berlin 2026 | ReadyExpat",
-  description: "Expat couples and families in Berlin use one Anmeldung appointment but need 2 people per form sheet. Here's exactly how multi-person registration works, what each person needs, and how to prepare.",
+  title: "Anmeldung for Couples & Families in Berlin | ReadyExpat",
+  description: "One Anmeldung appointment for the whole household, 2 people per form sheet. How multi-person registration works in Berlin and what each person needs.",
   alternates: { canonical: `${DOMAIN}/anmeldung-couple-berlin` },
   robots: { index: true, follow: true },
   openGraph: {

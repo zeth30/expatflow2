@@ -9,8 +9,8 @@ import { RelatedGuides } from "../components/guides/RelatedGuides";
 const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN ?? "https://readyexpat.de";
 
 export const metadata: Metadata = {
-  title: "6 Anmeldung Mistakes That Get You Turned Away in Berlin | ReadyExpat",
-  description: "Getting turned away at the Bürgeramt means losing your appointment slot and waiting weeks for another one. Here are the 6 most common Anmeldung mistakes expats make — and how to avoid every one of them.",
+  title: "6 Anmeldung Mistakes Berlin Expats Make | ReadyExpat",
+  description: "Turned away at the Bürgeramt? You lose your slot and wait weeks for another. The 6 most common Anmeldung mistakes expats make in Berlin — and how to avoid them.",
   alternates: { canonical: `${DOMAIN}/anmeldung-mistakes-berlin` },
   robots: { index: true, follow: true },
   openGraph: {
