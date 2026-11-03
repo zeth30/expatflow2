@@ -22,6 +22,7 @@ import { CookieBanner } from "../components/LegalModals";
 import {
   type SteuerForm, type FieldDef, EMPTY_STEUER, DEMO_STEUER, STORAGE_KEY, DONE_KEY,
   STEUER_STEPS, stepError, buildAnswerRows, fmtDateDE,
+  needsGewerbe,
 } from "./steuer-data";
 import { buildSteuerPDF } from "./steuer-pdf";
 import { SteuerSimulator } from "./SteuerSimulator";
@@ -223,7 +224,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
         <h2 style={{ fontSize: 26, fontWeight: 900, color: NAVY, letterSpacing: "-0.02em", marginBottom: 26, textAlign: "center" }}>Then: fill it with confidence</h2>
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
           <Card icon={<FileText size={17} color={BLUE} />} title="1 · Answer in English">
-            10–15 minutes. Every question of the real form, in plain English, with an explanation of what it means and why the Finanzamt asks.
+            15–25 minutes (a bit longer if you also register a Gewerbe). Every question of the real form, in plain English, with an explanation of what it means and why the Finanzamt asks.
           </Card>
           <Card icon={<CreditCard size={17} color={BLUE} />} title="2 · Pay €15 once">
             Secure Stripe checkout. No account, no subscription — same as our Anmeldung service.
@@ -245,7 +246,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
         <div style={{ marginTop: 12, padding: "18px 20px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4", display: "flex", gap: 12 }}>
           <Shield size={17} color="#94a3b8" style={{ flexShrink: 0, marginTop: 2 }} />
           <p style={{ color: MUTED, fontSize: 13, lineHeight: 1.7 }}>
-            <strong style={{ color: NAVY }}>We are not a Steuerberatung and give no individual tax advice.</strong> We explain what each field means in plain English; every entry and every choice is yours. Where the form asks for a genuine decision — like the Kleinunternehmer-Regelung — we explain the mechanics neutrally and point you to ELSTER&apos;s official help or a Steuerberater.
+            <strong style={{ color: NAVY }}>Personal version, not tax advice.</strong> The tips are rules of thumb based on your answers, not individual advice from a Steuerberater (tax adviser). Every entry and every choice is yours — when in doubt, check ELSTER&apos;s official help.
           </p>
         </div>
       </div>
@@ -328,7 +329,7 @@ const GEWERBE_ROUTE = [
   { n: "5", t: "Letters you'll get anyway", d: "IHK (or Handwerkskammer for crafts): membership is automatic. Berufsgenossenschaft: your Gewerbeanmeldung already counts as the required notice to this accident insurer — they'll write to you. Neither needs action before they write." },
 ];
 const GEWERBE_MONEY = [
-  { t: "IHK contribution", d: "Sole traders not in the Handelsregister pay no IHK contribution while their trade profit stays at or below €5,200 a year. Founders with no business income in the 5 years before are free for the first two years if profit stays at or below €25,000." },
+  { t: "IHK contribution", d: "Sole traders not in the Handelsregister pay no IHK contribution while their trade profit stays at or below €5,200 a year. Founders with no business income in the 5 years before pay nothing in their first two years and only the basic fee in years three and four, as long as profit stays at or below €25,000." },
   { t: "Trade tax (Gewerbesteuer)", d: "Sole traders get a €24,500 yearly allowance on their trade profit — below that, no trade tax at all. Above it, much of the trade tax is credited against your income tax." },
   { t: "Bring along", d: "ID card or passport, residence permit (non-EU), and any permit or Handwerkskarte your trade needs. For online registration: a way to pay the fee and to identify yourself (often the online ID function of your ID card or a scan)." },
 ];
@@ -585,7 +586,7 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
         </button>
         <div style={{ background: "white", borderRadius: 16, overflow: "hidden", boxShadow: "0 4px 32px rgba(0,0,0,0.12)", border: "1px solid #e2e8f0", marginBottom: 12 }}>
           <div style={{ padding: "24px 24px 20px", borderBottom: "1px solid #f1f5f9" }}>
-            <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Easy Fragebogen — solo freelancer</div>
+            <div style={{ color: "#94a3b8", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Easy Fragebogen — self-employed</div>
             <div style={{ fontWeight: 700, color: NAVY, fontSize: 16 }}>{form.firstName} {form.lastName}</div>
             <div style={{ color: MUTED, fontSize: 13, marginTop: 2 }}>{form.activityDesc}</div>
           </div>
@@ -786,11 +787,12 @@ function SteuerDone({
             <div style={{ marginBottom: 26, padding: "18px 20px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4" }}>
               <div style={{ fontWeight: 900, color: NAVY, fontSize: 18, marginBottom: 12 }}>Your to-do list, in order</div>
               {[
-                ...(form.workType === "trade" ? [`Gewerbeanmeldung at your Gewerbeamt (online in most cities) — use the GewA 1 section below. Do it on or before ${fmtDateDE(form.activityStart) || "your start date"}.`] : []),
+                ...(form.needsResidencePermit ? ["Check your residence permit: it must allow self-employment (“Selbständige Tätigkeit gestattet”). If not, get permission from your Ausländerbehörde before you start."] : []),
+                ...(needsGewerbe(form) ? [`Gewerbeanmeldung at your Gewerbeamt (online in most cities) — use the GewA 1 section below. Do it on or before ${fmtDateDE(form.activityStart) || "your start date"}.`] : []),
                 form.hasElsterAccount ? "Log in to Mein ELSTER and open “Fragebogen zur steuerlichen Erfassung” → Einzelunternehmen." : "Register at elster.de today — the activation letter takes up to two weeks.",
                 `Copy the tax-form answers below into ELSTER, top to bottom, and send it${form.activityStart ? ` — deadline about one month after ${fmtDateDE(form.activityStart)}` : ""}. Save the transmission protocol as PDF.`,
                 "Wait for your Steuernummer by post — it goes on every invoice.",
-                ...(form.workType === "trade" ? ["Answer the letters from the IHK/Handwerkskammer and the Berufsgenossenschaft when they arrive."] : []),
+                ...(needsGewerbe(form) ? ["Answer the letters from the IHK/Handwerkskammer and the Berufsgenossenschaft when they arrive."] : []),
                 "From your first payment on: put a share aside for tax and keep every receipt.",
               ].map((t, i) => (
                 <div key={i} style={{ display: "flex", gap: 12, marginBottom: 10 }}>

@@ -72,9 +72,9 @@ export function FieldInput<TForm extends Record<string, any>>({
       {fd.type === "choice" ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
           {fd.options!.map(o => {
-            const on = val === o.value;
+            const on = (fd.selectMap ? fd.selectMap.fromValue(val) : val) === o.value;
             return (
-              <button key={o.value} onClick={() => set(o.value)} style={{
+              <button key={o.value} onClick={() => set(fd.selectMap ? fd.selectMap.toValue(o.value) : o.value)} style={{
                 textAlign: "left", padding: "14px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit",
                 border: on ? `2px solid ${BLUE}` : "1px solid #e2e8f0", background: on ? "#eff6ff" : "white",
                 boxShadow: on ? "0 4px 14px rgba(0,117,255,0.15)" : "0 1px 2px rgba(15,23,42,0.04)",
