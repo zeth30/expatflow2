@@ -12,6 +12,16 @@ const NAVY = "#0f172a";
 const BLUE = "#0075FF";
 const MUTED = "#64748b";
 
+// Personalised tip, shown under a field once earlier answers make it relevant
+export function TipBox({ text }: { text: string }) {
+  return (
+    <div style={{ display: "flex", gap: 10, marginTop: 10, padding: "11px 14px", borderRadius: 12, background: "linear-gradient(135deg,#f0f9ff,#eef6ff)", border: "1px solid #bfdbfe" }}>
+      <span style={{ fontSize: 15, lineHeight: 1.3, flexShrink: 0 }} aria-hidden>💡</span>
+      <p style={{ color: "#1e3a8a", fontSize: 12.5, lineHeight: 1.6, margin: 0 }}>{text}</p>
+    </div>
+  );
+}
+
 export function FieldInput<TForm extends Record<string, any>>({
   fd, form, setForm, decisionHelp,
 }: {
@@ -42,7 +52,23 @@ export function FieldInput<TForm extends Record<string, any>>({
           </p>
         </div>
       )}
-      {fd.type === "boolean" ? (
+      {fd.type === "choice" ? (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10 }}>
+          {fd.options!.map(o => {
+            const on = val === o.value;
+            return (
+              <button key={o.value} onClick={() => set(o.value)} style={{
+                textAlign: "left", padding: "14px 16px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit",
+                border: on ? `2px solid ${BLUE}` : "1px solid #e2e8f0", background: on ? "#eff6ff" : "white",
+                boxShadow: on ? "0 4px 14px rgba(0,117,255,0.15)" : "0 1px 2px rgba(15,23,42,0.04)",
+              }}>
+                <div style={{ fontWeight: 800, fontSize: 14, color: on ? BLUE : NAVY }}>{o.label}</div>
+                {o.desc && <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.5, marginTop: 3 }}>{o.desc}</div>}
+              </button>
+            );
+          })}
+        </div>
+      ) : fd.type === "boolean" ? (
         <div style={{ display: "flex", gap: 10 }}>
           {[{ v: true, l: "Yes" }, { v: false, l: "No" }].map(({ v, l }) => (
             <button key={l} onClick={() => set(v)} style={{
@@ -70,6 +96,10 @@ export function FieldInput<TForm extends Record<string, any>>({
           style={{ width: "100%", padding: "11px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 14, fontFamily: "inherit", color: NAVY, boxSizing: "border-box" }}
         />
       )}
+      {(() => {
+        const tip = fd.tip?.(form);
+        return tip ? <TipBox text={tip} /> : null;
+      })()}
     </div>
   );
 }

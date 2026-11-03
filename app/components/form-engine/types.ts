@@ -9,12 +9,13 @@ export type FieldDef<TForm> = {
   key: keyof TForm & string;
   label: string;              // English label shown in wizard
   deLabel: string;            // German original (small, builds recognition for the real form)
-  type: "text" | "date" | "select" | "boolean" | "euro";
-  options?: { value: string; label: string }[]; // for select
+  type: "text" | "date" | "select" | "boolean" | "euro" | "choice";
+  options?: { value: string; label: string; desc?: string }[]; // for select / choice (cards)
   placeholder?: string;
   explain: string;            // short neutral explanation, always visible
   more?: string;              // deep dive, opens on click; \n = block (see MoreInfo parser)
   decision?: boolean;         // renders the neutral your-decision banner
+  tip?: (f: TForm) => string | null | undefined; // personalised tip box, based on earlier answers
   showIf?: (f: TForm) => boolean;
   required?: boolean | ((f: TForm) => boolean);
   // For selects whose form value is not a plain string (e.g. boolean | null):
@@ -29,6 +30,7 @@ export type StepDef<TForm> = {
   title: string;
   sub: string;
   fields: FieldDef<TForm>[];
+  tips?: (f: TForm) => string[];  // "for your situation" panel under the fields
 };
 
 // One row of the final answer sheet. `nr` = the official field number the

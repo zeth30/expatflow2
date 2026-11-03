@@ -30,14 +30,23 @@
 //    (e.g. jüdische Kultusgemeinden, altkatholisch) also levy it. "Other"
 //    must NEVER auto-map to "nicht kirchensteuerpflichtig".
 //
-//  LEGAL DESIGN RULE (spec §2): every `explain` explains, NEVER recommends.
-//  Words like "should", "we recommend", "better", "most people pick"
-//  are FORBIDDEN in field copy. Discretionary fields carry `decision: true`
-//  which renders the neutral your-decision banner in the wizard.
+//  PERSONAL-USE VERSION (2026-11): this route sits behind a password and is
+//  used only by the founder, so fields may carry personalised `tip`s and
+//  step `tips` that do recommend. Before any public launch, the
+//  explain-never-recommend rule (spec §2, StBerG) must be re-applied.
+//  Facts in tips still have to be correct — they are acted on.
 // ═══════════════════════════════════════════════════════════════════
 
+export type Goal = "" | "fulltime" | "side" | "explore";
+export type WorkType = "" | "liberal" | "trade" | "unsure";
+export type Clients = "" | "business" | "private" | "abroad" | "mixed";
+
 export type SteuerForm = {
-  // ── Meta: ELSTER readiness (wizard step 1, not an ELSTER form field) ──
+  // ── Meta: your plan (wizard step 1, not ELSTER fields — drive the tips) ──
+  goal: Goal;
+  workType: WorkType;
+  clients: Clients;
+  // ── Meta: ELSTER readiness (not an ELSTER form field) ──
   hasElsterAccount: boolean | null;
   // ── Allgemeine Angaben ──
   anrede: "" | "Frau" | "Herr" | "keine Angabe";
@@ -95,6 +104,7 @@ export type SteuerForm = {
 };
 
 export const EMPTY_STEUER: SteuerForm = {
+  goal: "", workType: "", clients: "",
   hasElsterAccount: null,
   anrede: "", firstName: "", lastName: "", birthDate: "", profession: "",
   steuerId: "", hasIncomeTaxNumber: null, incomeTaxNumber: "", religion: "",
@@ -119,6 +129,7 @@ export const EMPTY_STEUER: SteuerForm = {
 // fseeun-202401 sample in the design spec — no real person).
 export const DEMO_STEUER: SteuerForm = {
   ...EMPTY_STEUER,
+  goal: "side", workType: "liberal", clients: "mixed",
   hasElsterAccount: true,
   anrede: "Frau", firstName: "Lisa", lastName: "Meyer",
   birthDate: "2000-03-19", profession: "Schwimmtrainerin",
@@ -296,12 +307,18 @@ export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
     ],
   });
 
+  // Trade (Gewerbe): ELSTER has a separate line "Einkünfte aus Gewerbebetrieb".
+  // Its field number was NOT in the captured freelancer protocol — no guessing.
+  const trade = f.workType === "trade";
+  const profitNr = trade ? "—" : "107";
+  const profitLabel = trade ? "Einkünfte aus Gewerbebetrieb" : "Einkünfte aus selbständiger Arbeit";
+  const tradeHint = trade ? " — trade income: use ELSTER's line labelled “Gewerbebetrieb” (field number not verified)" : "";
   sections.push({
     title: "Festsetzung der Vorauszahlungen",
     titleEn: "Advance tax payments — your estimates",
     rows: [
-      { nr: "107", label: "Einkünfte aus selbständiger Arbeit — Jahr der Betriebseröffnung", de: fmtEuro(f.profitY1), enHint: "Estimated freelance PROFIT (income minus expenses), year 1" },
-      { nr: "107", label: "Einkünfte aus selbständiger Arbeit — Folgejahr", de: fmtEuro(f.profitY2), enHint: "Estimated freelance profit, year 2" },
+      { nr: profitNr, label: `${profitLabel} — Jahr der Betriebseröffnung`, de: fmtEuro(f.profitY1), enHint: "Estimated PROFIT (income minus expenses), year 1" + tradeHint },
+      { nr: profitNr, label: `${profitLabel} — Folgejahr`, de: fmtEuro(f.profitY2), enHint: "Estimated profit, year 2" + tradeHint },
       { nr: "108", label: "Einkünfte aus nichtselbständiger Arbeit — Jahr der Betriebseröffnung", de: fmtEuro(f.employmentY1) || "0", enHint: "Estimated gross employment income (if you also have a job), year 1" },
       { nr: "108", label: "Einkünfte aus nichtselbständiger Arbeit — Folgejahr", de: fmtEuro(f.employmentY2) || "0", enHint: "Employment income, year 2" },
       { nr: "112", label: "Sonderausgaben — Jahr der Betriebseröffnung", de: fmtEuro(f.sonderausgabenY1) || "0", enHint: "Special expenses (e.g. health insurance contributions), year 1" },
@@ -347,13 +364,80 @@ import { requiredError } from "../components/form-engine/validation";
 export type FieldDef = GenericFieldDef<SteuerForm>;
 export type StepDef = GenericStepDef<SteuerForm>;
 
+// ── Tip helpers ─────────────────────────────────────────────────────
+const num = (raw: string) => parseInt((raw || "").replace(/[^\d]/g, ""), 10) || 0;
+const eur = (n: number) => "€" + Math.round(n).toLocaleString("de-DE");
+const daysSince = (iso: string) => iso ? Math.floor((Date.now() - new Date(iso + "T12:00:00").getTime()) / 86400000) : 0;
+
+function planTips(f: SteuerForm): string[] {
+  const t: string[] = [];
+  if (f.goal === "fulltime") {
+    t.push("Health insurance is now your own job. Full-time freelancers pay their public (or private) health insurance themselves — sort it out before your start date, because Germany doesn't allow gaps.");
+    t.push("Put roughly 30% of every payment you receive on a separate account for tax. The advance payments the Finanzamt sets from your estimates rarely cover everything, and the first annual return can bring a back-payment.");
+    if (f.workType !== "trade") t.push("Creative or publishing work (design, writing, journalism, music, photography as art…)? Check the Künstlersozialkasse (KSK): if accepted, it pays about half of your health and pension contributions — like an employer would. Apply early, it takes a while.");
+    t.push("Teaching, training or coaching without employees of your own? Those freelancers are usually obliged to pay into the public pension insurance (Deutsche Rentenversicherung) and must register there within three months of starting.");
+  }
+  if (f.goal === "side") {
+    t.push("Look at your employment contract for a side-job clause (Nebentätigkeit). Many contracts require you to tell your employer — and working for a direct competitor is usually off-limits.");
+    t.push("Your salary and your freelance profit are taxed together, so every freelance euro is taxed at your personal top rate. Put a generous share (30–40%) aside until your first annual return is through.");
+    t.push("Your health insurance normally keeps running through your job as long as the freelancing stays clearly secondary — less time and less income than the job.");
+  }
+  if (f.goal === "explore") {
+    t.push("Nothing here is sent anywhere. You can fill in everything, look at the result, and only submit in ELSTER once you've really started.");
+    t.push("Once you do start (preparation counts — buying equipment, signing a first contract), you have one month to submit this form (§138 AO).");
+  }
+  if (f.workType === "liberal") t.push("Sounds like a liberal profession (Freiberuf): no trade registration, no trade tax, and this form is the only registration you need. The Finanzamt makes the final call from your activity description — so describe the work precisely.");
+  if (f.workType === "trade") t.push("Sounds like a trade (Gewerbe): register at your local Gewerbeamt first (Gewerbeanmeldung, small fee, often online). The Gewerbeamt informs the Finanzamt, but you still submit this form yourself in ELSTER. Trade tax (Gewerbesteuer) only applies to yearly profit above the €24,500 allowance for sole traders.");
+  if (f.workType === "unsure") t.push("Rule of thumb: creative, academic, teaching, consulting and most IT work is freiberuflich; buying and selling goods, brokering and most crafts are Gewerbe. If you're in between, describe what you really do and let the Finanzamt classify it.");
+  if (f.clients === "abroad" || f.clients === "mixed") t.push("Clients outside Germany follow their own VAT rules (for business clients often “reverse charge”, meaning no German VAT on your invoice). Check how to invoice them before your first cross-border invoice.");
+  return t;
+}
+
+function kleinunternehmerTip(f: SteuerForm): string | null {
+  const r1 = num(f.revenueY1);
+  if (r1 > 25000) return `Your founding-year revenue estimate (${eur(r1)}) is above the €25,000 limit — the Kleinunternehmer scheme won't carry you through this year. Plan with charging VAT: “Don't use it”.`;
+  if (f.clients === "business") return "Your clients are businesses: they get any VAT you charge refunded, so it costs them almost nothing — while you reclaim the 19% on your own laptop, software and equipment. Unless you want to avoid VAT returns at all costs, “Don't use it” is usually the better deal.";
+  if (f.clients === "private") return `Your customers are private people, who can't reclaim VAT — 19% on top would simply make you more expensive. With revenue under €25,000, “Use it” keeps your prices lower and saves you the monthly or quarterly VAT returns.`;
+  return "If you're under €25,000 and unsure: “Use it” is the simpler start (no VAT returns), and you can switch to regular VAT in any later year. Choosing “Don't use it” binds you for 5 years — so only pick it if your clients are mainly businesses or you have big equipment costs.";
+}
+
 export const STEUER_STEPS: StepDef[] = [
+  {
+    id: "goal", title: "First: what's your plan?",
+    sub: "Three quick questions about you — they don't go into the form, but they let this wizard give you tips that fit your situation all the way through.",
+    tips: planTips,
+    fields: [
+      { key: "goal", label: "What do you want to do?", deLabel: "Ihr Vorhaben", type: "choice", required: true,
+        options: [
+          { value: "fulltime", label: "Go freelance full-time", desc: "Freelancing becomes your main income." },
+          { value: "side", label: "Freelance next to my job", desc: "You keep your employment and add freelance work." },
+          { value: "explore", label: "Just exploring", desc: "Not started yet — you want to see what's involved." },
+        ],
+        explain: "Changes which tips you get — and which numbers matter most later." },
+      { key: "workType", label: "What kind of work is it?", deLabel: "Art der Tätigkeit", type: "choice", required: true,
+        options: [
+          { value: "liberal", label: "Creative, IT, consulting, teaching", desc: "Design, software, writing, translating, coaching, photography…" },
+          { value: "trade", label: "Selling, trading, crafts", desc: "Shop or e-commerce, reselling, brokering, gastronomy, crafts…" },
+          { value: "unsure", label: "Not sure", desc: "A mix, or something that doesn't fit neatly." },
+        ],
+        explain: "Germany splits self-employment into Freiberuf and Gewerbe — the difference decides whether you also need a trade registration." },
+      { key: "clients", label: "Who will pay you?", deLabel: "Ihre Kunden", type: "choice", required: true,
+        options: [
+          { value: "business", label: "Businesses in Germany", desc: "Companies, agencies, startups." },
+          { value: "private", label: "Private people", desc: "Consumers, students, families." },
+          { value: "abroad", label: "Mostly clients abroad", desc: "Companies or people outside Germany." },
+          { value: "mixed", label: "A mix", desc: "Some of everything." },
+        ],
+        explain: "Matters most for the VAT decision at the end — businesses get VAT back, private people don't." },
+    ],
+  },
   {
     id: "elster", title: "First things first: your ELSTER account",
     sub: "The finished form can only be submitted through Mein ELSTER, Germany's official tax portal. Everything in this wizard works without it — but the account takes up to two weeks (thanks to a letter), so let's check now.",
     fields: [
       { key: "hasElsterAccount", label: "Do you already have access to Mein ELSTER?", deLabel: "Mein ELSTER — Zertifikatsdatei", type: "boolean", required: true,
         explain: "Both answers are fine — you can prepare all your answers here either way.",
+        tip: f => f.hasElsterAccount === false ? "Register at elster.de today, even before you finish here — the activation letter is the slowest part of the whole process (up to two weeks by post)." : null,
         more: "What Yes means: you can log in at elster.de with your certificate file (.pfx) and password. You're ready to transfer your answers the moment your sheet is done.\nWhat No means: no problem at all. Register today at elster.de (about 10 minutes online — the steps above show you every screen), and Germany mails you an activation code. The letter typically takes a few days up to two weeks. Yes, the digital tax portal starts with a physical letter — we don't make the rules.\nThe good news: you don't have to wait. Prepare your entire answer sheet here now; it stays saved in your browser (plus your PDF), and when the letter arrives you'll transfer everything in ten minutes." },
     ],
   },
@@ -449,6 +533,9 @@ export const STEUER_STEPS: StepDef[] = [
     fields: [
       { key: "activityDesc", label: "Describe your activity (in German)", deLabel: "Art der Tätigkeit — genaue Bezeichnung", type: "text", required: true, placeholder: "e.g. Softwareentwicklung für Webanwendungen",
         explain: "One precise line, in German. Describe what you really do: “Entwicklung von Websoftware” is more precise than “IT”.",
+        tip: f => f.workType === "trade"
+          ? "Use the same wording as on your Gewerbeanmeldung, e.g. “Onlinehandel mit Kosmetikartikeln” or “Vermittlung von Ferienwohnungen”."
+          : "Good examples: “Softwareentwicklung für Webanwendungen”, “Grafikdesign und Illustration”, “Übersetzungen Englisch–Deutsch”, “Online-Sprachunterricht”. Name the activity, not your job title.",
         more: "This one line matters more than it looks. The Finanzamt reads it to classify your work as either freiberuflich (liberal profession — e.g. software development, design, writing, teaching, consulting) or gewerblich (trade/commerce). The difference decides whether you'll also deal with Gewerbe registration and Gewerbesteuer later.\nThe classification is the Finanzamt's call, based on what you actually do — not on which word you'd prefer. So the best strategy is simply precision: describe the real work. “Entwicklung und Wartung von Websoftware für Agenturen” tells them everything; “IT-Services” tells them nothing and invites follow-up questions.\nWriting it in German is expected. A clean dictionary translation of your honest description is completely fine — this is a description, not literature." },
       { key: "isNewFounding", label: "Is this a brand-new activity you are founding yourself?", deLabel: "Gründungsart — Neugründung", type: "boolean", required: true,
         explain: "This assistant covers new foundings (Neugründung) only. Taking over an existing business (Übernahme) or relocating one (Verlegung) triggers different ELSTER questions that this wizard doesn't cover.",
@@ -462,6 +549,12 @@ export const STEUER_STEPS: StepDef[] = [
       { key: "bizCity", label: "Business city", deLabel: "Ort", type: "text", showIf: f => f.businessAddrIsHome === false, explain: "" },
       { key: "activityStart", label: "When did/will your activity start?", deLabel: "Beginn der Tätigkeit (inklusive Vorbereitungshandlungen)", type: "date", required: true,
         explain: "Including preparation: the day you started setting things up counts, not just your first invoice. You must submit this Fragebogen within ONE MONTH of this date (§138 AO).",
+        tip: f => {
+          const d = daysSince(f.activityStart);
+          if (d > 31) return `That's ${d} days ago — past the one-month deadline. Don't change the date; just submit soon. A slightly late Fragebogen is routine, a wrong date is not.`;
+          if (d > 21) return "Your one-month deadline is close — aim to submit in ELSTER this week.";
+          return null;
+        },
         more: "Germany starts the clock earlier than you'd think. “Beginn der Tätigkeit” includes Vorbereitungshandlungen — preparation acts: buying your work laptop, signing a client contract, setting up the website you'll sell through. Not just the glamorous first invoice.\nWhy it matters: the one-month filing deadline (§138 AO) runs from this date. If your honest start date is further back than a month, don't panic and don't “adjust” the date — file now. A slightly late Fragebogen is routine; a false date on a tax form is not.\nThis date also tells the Finanzamt from when your business expenses can count — which is exactly why the definition includes preparation." },
       { key: "foundingDate", label: "Founding date (usually the same)", deLabel: "Gründungsdatum", type: "date",
         explain: "For a simple solo start this is normally the same date as above. If you leave it empty, your answer sheet repeats the start date." },
@@ -475,6 +568,7 @@ export const STEUER_STEPS: StepDef[] = [
     fields: [
       { key: "iban", label: "Your IBAN (German bank account)", deLabel: "IBAN (inländisches Geldinstitut)", type: "text", required: true, placeholder: "DE00 0000 0000 0000 0000 00",
         explain: "This field of the form expects a German (DE) IBAN for refunds. We validate the checksum locally in your browser — the number is never sent to us.",
+        tip: () => "Not required, but worth it: a separate account just for your freelance money. It makes bookkeeping and the annual return far easier — and the tax money you put aside doesn't get spent by accident.",
         more: "Why the Finanzamt wants this: tax refunds and any SEPA direct debits go through this account. Good news first: this is how you get money BACK.\nThe form field is labelled “inländisches Geldinstitut” — domestic bank. Modern German online banks (N26, DKB, ING…) all give DE IBANs and are fine. If you only have a foreign account so far, ELSTER has a separate variant for foreign IBANs — but for this assistant we stick to the standard DE case, which is also the path of least friction with the Finanzamt.\nAbout the checksum: every IBAN contains a built-in error check (that's the two digits after DE). We verify it mathematically in your browser so a typo can't slip onto your sheet — the number itself never leaves your device." },
       { key: "accountHolderIsSelf", label: "Is the account in your name?", deLabel: "Kontoinhaber(in)", type: "boolean", required: true,
         explain: "If yes, ELSTER's option “der/die Steuerpflichtige” (the taxpayer) applies." },
@@ -484,21 +578,29 @@ export const STEUER_STEPS: StepDef[] = [
   {
     id: "estimates", title: "Income estimates", sub: "Honest guesses are expected — nobody can predict a first year exactly.",
     fields: [
-      { key: "profitY1", label: "Estimated freelance PROFIT — this year (€)", deLabel: "Einkünfte aus selbständiger Arbeit, Jahr der Betriebseröffnung", type: "euro", required: true, decision: true,
-        explain: "Profit = income minus business expenses, NOT your revenue. Your own honest estimate — we cannot advise you on the amount.",
+      { key: "profitY1", label: "Estimated freelance PROFIT — this year (€)", deLabel: "Einkünfte aus selbständiger Arbeit, Jahr der Betriebseröffnung", type: "euro", required: true,
+        explain: "Profit = income minus business expenses, NOT your revenue. Only count the months from your start date until 31 December.",
+        tip: f => f.goal === "explore"
+          ? "Still exploring? Make a realistic guess — you can correct it with a short letter to the Finanzamt later."
+          : "Aim realistic, not optimistic: a lower estimate keeps your quarterly advance payments low, but then the difference comes due with your annual return — so keep putting money aside.",
         more: "Yes, Germany asks you to predict the future. Nobody knows their first-year profit — the Finanzamt knows that nobody knows, and asks anyway. What they want is your honest current guess, not a promise.\nWhat the number does: it sets your quarterly advance income-tax payments (Vorauszahlungen). Mechanically: a higher estimate → higher advance payments now, refunded later if you earn less. A lower estimate → lower advance payments now, with a back-payment later if you earn more. Either way, your FINAL tax is settled by your annual tax return — the estimate only changes the timing of cash, not the total.\nGot it wrong later? Write to your Finanzamt and have the advance payments adjusted — that's a normal letter, not a confession.\nRemember: profit, not revenue. €40,000 invoiced minus €10,000 costs = €30,000 goes here." },
-      { key: "profitY2", label: "Estimated profit — next year (€)", deLabel: "Einkünfte aus selbständiger Arbeit, Folgejahr", type: "euro", required: true, decision: true,
+      { key: "profitY2", label: "Estimated profit — next year (€)", deLabel: "Einkünfte aus selbständiger Arbeit, Folgejahr", type: "euro", required: true,
         explain: "Same logic for the first full calendar year." },
       { key: "employmentY1", label: "Employment income this year, if any (€, gross)", deLabel: "Einkünfte aus nichtselbständiger Arbeit", type: "euro",
         explain: "Only if you also have (or had) a salaried job this calendar year. 0 if none.",
+        tip: f => f.goal === "side" ? "You're employed — enter your gross yearly salary here. Leaving it at 0 makes the Finanzamt calculate your advance payments far too low, and the back-payment arrives later." : null,
         more: "Why a freelance form asks about your day job: income tax in Germany is calculated on your TOTAL income. If you employ-and-freelance in parallel (very common), the Finanzamt combines both to set fair advance payments — otherwise you'd get a nasty surprise at your first tax return.\nEnter the gross yearly amount (before taxes) from your employment this calendar year — your Brutto from the work contract, roughly. An estimate is fine here too.\nPure freelancer with no job? Enter 0 and move on." },
       { key: "employmentY2", label: "Employment income next year (€, gross)", deLabel: "Einkünfte aus nichtselbständiger Arbeit, Folgejahr", type: "euro", explain: "0 if none." },
       { key: "sonderausgabenY1", label: "Special expenses this year (€) — e.g. health insurance", deLabel: "Sonderausgaben", type: "euro",
-        explain: "Mainly your own health and pension insurance contributions. Your own estimate — we can't advise on the amount.",
+        explain: "Mainly your own health and pension insurance contributions per year.",
+        tip: f => f.goal === "fulltime"
+          ? "Full-time freelancer: enter your yearly health + long-term care insurance (monthly amount × 12), plus pension contributions if you pay any. Your insurer's confirmation letter shows the monthly figure."
+          : f.goal === "side" ? "Employed: your share of health and pension insurance is on your payslip (“Sozialversicherung”). A rough yearly total is enough." : null,
         more: "Sonderausgaben is bureaucratic German for “special expenses” — mainly what you pay for your own health insurance and pension contributions per year.\nMechanically: amounts here reduce the income your advance payments are calculated on. Whatever you enter now, the real numbers get sorted out in your annual tax return — this field only tunes the advance-payment estimate.\nAs a rough orientation of what belongs here: freelancers pay their health insurance themselves (public insurers often charge several hundred euros a month), and that yearly total is exactly the kind of number this field is about. If you genuinely don't know yet, the field tolerates that too — it changes timing, not your final tax." },
       { key: "sonderausgabenY2", label: "Special expenses next year (€)", deLabel: "Sonderausgaben, Folgejahr", type: "euro", explain: "" },
-      { key: "confirmEuer", label: "Profit method: will you use simple cash-basis accounting (EÜR)?", deLabel: "Gewinnermittlungsart — Einnahmenüberschussrechnung", type: "boolean", required: true, decision: true,
-        explain: "EÜR means you record income and expenses when money actually flows — no double-entry bookkeeping, no balance sheet. Which method fits your business is your choice.",
+      { key: "confirmEuer", label: "Profit method: will you use simple cash-basis accounting (EÜR)?", deLabel: "Gewinnermittlungsart — Einnahmenüberschussrechnung", type: "boolean", required: true,
+        explain: "EÜR means you record income and expenses when money actually flows — no double-entry bookkeeping, no balance sheet.",
+        tip: () => "Choose Yes. For a solo freelancer or small trader, EÜR is the standard — the alternative (balance sheets) only makes sense for much bigger businesses.",
         more: "Einnahmenüberschussrechnung — 30 letters for “money in minus money out”. German bureaucracy has a gift for names.\nWhat Yes (EÜR) means: you track income when it arrives and expenses when you pay them. One list, once a year, done. It's the simple method open to freelancers without commercial bookkeeping duties, and the one the famous Excel sheet was invented for.\nWhat No (Bilanzierung) means: voluntary double-entry accounting with balance sheets — a setup that usually involves accounting software and often a Steuerberater. Some businesses choose it deliberately (e.g. for investor reporting); it's a different world, and this assistant honestly doesn't cover it.\nThis is your call to make — we describe the mechanics, you know your business." },
       { key: "deviatingFiscalYear", label: "Does your business year differ from the calendar year?", deLabel: "Abweichendes Wirtschaftsjahr", type: "boolean", required: true,
         explain: "Only relevant if you have (or will request) a business year that differs from the calendar year — this requires Finanzamt approval. If you haven't arranged anything like that, the factual answer is no.",
@@ -511,11 +613,16 @@ export const STEUER_STEPS: StepDef[] = [
       { key: "currentlyVatRegistered", label: "Are you currently VAT-registered at a German Finanzamt?", deLabel: "Aktuell umsatzsteuerlich geführt", type: "boolean", required: true,
         explain: "Yes only if a German Finanzamt already manages VAT for you (you'd have an existing USt file and tax number for it).",
         more: "What Yes means: somewhere in Germany a Finanzamt already runs a VAT (Umsatzsteuer) file under your name — from an earlier business, for example. ELSTER will then ask follow-up questions about that existing registration (which office, which number) that this assistant doesn't cover — have those old documents ready.\nWhat No means: you're VAT-new. The standard case for a first-time founder.\nNot the same thing: having paid VAT as a CUSTOMER (everyone does, it's in every supermarket receipt) or having had VAT deducted on invoices you received. The question is whether you were registered as a BUSINESS for VAT." },
-      { key: "revenueY1", label: "Estimated total REVENUE this year (€)", deLabel: "Summe der Umsätze, Jahr der Betriebseröffnung", type: "euro", required: true, decision: true,
+      { key: "revenueY1", label: "Estimated total REVENUE this year (€)", deLabel: "Summe der Umsätze, Jahr der Betriebseröffnung", type: "euro", required: true,
         explain: "Revenue = everything you invoice, before any expenses. This is a different number from the profit you entered earlier.",
+        tip: f => {
+          const r = num(f.revenueY1), p = num(f.profitY1);
+          if (r && p && r < p) return `Your revenue (${eur(r)}) is lower than your profit (${eur(p)}) — that can't be right. Revenue is before expenses, so it's always at least as high as profit.`;
+          return null;
+        },
         more: "Third number the form wants, and yes, it's different from the last two. Revenue (Umsatz) = the total of everything you will invoice this year, before subtracting a single cost. Profit was income MINUS expenses; revenue is the raw top line.\nWhy it matters twice: (1) it feeds the VAT section's math, and (2) it determines whether you're even ELIGIBLE for the Kleinunternehmer option below — the €25,000 founding-year limit is measured against exactly this number.\nSame estimate rules as before: honest guess, correctable later, and the sale that actually happens always beats the forecast." },
-      { key: "revenueY2", label: "Estimated revenue next year (€)", deLabel: "Summe der Umsätze, Folgejahr", type: "euro", required: true, decision: true, explain: "" },
-      { key: "kleinunternehmer", label: "Kleinunternehmer-Regelung (§ 19 UStG) — use it or not?", deLabel: "Kleinunternehmer-Regelung", type: "select", required: true, decision: true,
+      { key: "revenueY2", label: "Estimated revenue next year (€)", deLabel: "Summe der Umsätze, Folgejahr", type: "euro", required: true, explain: "" },
+      { key: "kleinunternehmer", label: "Kleinunternehmer-Regelung (§ 19 UStG) — use it or not?", deLabel: "Kleinunternehmer-Regelung", type: "select", required: true,
         selectMap: {
           fromValue: (v: any) => (v === true ? "yes" : v === false ? "no" : ""),
           toValue: (s: string) => (s === "yes" ? true : s === "no" ? false : null),
@@ -525,9 +632,11 @@ export const STEUER_STEPS: StepDef[] = [
           { value: "no",  label: "Don't use it — I WILL charge VAT" },
         ],
         explain: "The small-business scheme (§ 19 UStG) — the one genuine decision in this form. Read the full explanation before choosing.",
-        more: "This is the question everyone googles at 1am, so let's take it slowly.\nTHE LIMITS (fixed by law, § 19 UStG): previous calendar year ≤ €25,000 revenue and current year ≤ €100,000. In your founding year there IS no previous year — so the €25,000 limit applies to your actual founding-year revenue, and the sale that crosses it is already subject to regular VAT from that moment on.\nOPTION 1 — use it (“I will NOT charge VAT”): your invoices carry no VAT and a small note citing §19 UStG · no VAT returns for these sales · but you also CANNOT reclaim the VAT you pay on business purchases (laptop, software, desk — the 19% inside those prices stays your cost).\nOPTION 2 — don't use it (“I WILL charge VAT”): you add VAT (usually 19%) to every invoice · you file VAT returns (Umsatzsteuer-Voranmeldungen — more paperwork, welcome to Germany) · and you reclaim the VAT on your business purchases.\nTHE HONEST PART: which option wins depends on who your clients are (businesses reclaim your VAT anyway; private customers feel it as a price increase), how big your costs are, and your plans. That judgement is exactly the individual tax advice we are legally not allowed to give — and we take that seriously, so we don't. If you're unsure, ELSTER's help text for field 131 and a Steuerberater exist for precisely this moment.\nOne mechanical note on reversibility: staying a Kleinunternehmer has no lock-in — you can switch to regular VAT taxation in any later year. Opting out (“I WILL charge VAT”) is different: under § 19 Abs. 3 UStG that election binds you to regular taxation for 5 years before you can return to the small-business scheme. Whatever you choose, your answer sheet shows the exact ELSTER entry for it." },
+        tip: kleinunternehmerTip,
+        more: "This is the question everyone googles at 1am, so let's take it slowly.\nTHE LIMITS (fixed by law, § 19 UStG): previous calendar year ≤ €25,000 revenue and current year ≤ €100,000. In your founding year there IS no previous year — so the €25,000 limit applies to your actual founding-year revenue, and the sale that crosses it is already subject to regular VAT from that moment on.\nOPTION 1 — use it (“I will NOT charge VAT”): your invoices carry no VAT and a small note citing §19 UStG · no VAT returns for these sales · but you also CANNOT reclaim the VAT you pay on business purchases (laptop, software, desk — the 19% inside those prices stays your cost).\nOPTION 2 — don't use it (“I WILL charge VAT”): you add VAT (usually 19%) to every invoice · you file VAT returns (Umsatzsteuer-Voranmeldungen — more paperwork, welcome to Germany) · and you reclaim the VAT on your business purchases.\nWHICH ONE WINS: it mostly depends on who pays you. Business clients reclaim your VAT anyway, so charging it costs them nothing and you get VAT back on your purchases. Private customers can't reclaim it, so for them VAT is simply a 19% price increase. Big equipment costs at the start also favour charging VAT. The tip below is based on your answers in step 1.\nOne mechanical note on reversibility: staying a Kleinunternehmer has no lock-in — you can switch to regular VAT taxation in any later year. Opting out (“I WILL charge VAT”) is different: under § 19 Abs. 3 UStG that election binds you to regular taxation for 5 years before you can return to the small-business scheme. Whatever you choose, your answer sheet shows the exact ELSTER entry for it." },
       { key: "vatBalance", label: "Estimated VAT payable this year (€)", deLabel: "Voraussichtliche Umsatzsteuer-Zahllast", type: "euro", showIf: f => f.kleinunternehmer === false, required: f => f.kleinunternehmer === false,
-        explain: "Rough estimate: the VAT you will charge minus the VAT you pay on purchases. Your own estimate — the final amount is always settled through your VAT returns.",
+        explain: "Rough estimate: the VAT you will charge minus the VAT you pay on purchases. The final amount is always settled through your VAT returns.",
+        tip: f => num(f.revenueY1) ? `Quick estimate: 19% of your revenue is ${eur(num(f.revenueY1) * 0.19)} — subtract the VAT inside your planned business purchases (about 16% of their gross price) and you have your number.` : null,
         more: "The math behind it: you'll collect VAT on your invoices (19% of revenue, usually) and pay VAT inside your business purchases. Zahllast = collected minus paid — what you expect to forward to the state this year.\nA back-of-envelope version is genuinely enough: 19% of your revenue estimate, minus roughly 19% of your expected purchases. The real amounts get settled through your regular VAT returns anyway — this field just gives the Finanzamt a first idea of scale." },
     ],
   },

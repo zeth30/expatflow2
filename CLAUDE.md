@@ -8,6 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Changelog
 
+### 2026-11-03
+- **Steuer → personal use behind a password.** `/freelance-steuer` is gated by `proxy.ts` (cookie check) → `/steuer-login` form → `/api/steuer-login` (SHA-256 compare, hash in `lib/preview.ts`). Low security on purpose. `/elster-account-english` stays public.
+- **Steuer wizard:** new first step "Your plan" (goal / work type / clients, choice cards) drives personalised `tip`s per field and a "Your game plan" panel (form engine: `type: "choice"`, `tip`, step `tips`, `TipBox`). Tips DO recommend — allowed only while personal-use; re-apply explain-never-recommend before any launch. Review goes straight to the sheet (no payment). Trade (Gewerbe) prints "Einkünfte aus Gewerbebetrieb" with field nr "—" (not verified). The non-existent "§ 6 Nr. 3 StBerG" citation was removed everywhere.
+
 ### 2026-07-07
 - **NEW PRODUCT: Easy Fragebogen zur steuerlichen Erfassung** — `/freelance-steuer` (staging, Munich pattern: not in nav/sitemap). English copilot for the ELSTER FsE EUn tax registration form (solo freelancers). Free ELSTER account guide + €15 wizard → answer sheet on screen (copy button per field, ELSTER field numbers) + PDF download. Since 2021 the form is ELSTER-online-only, so the product is an answer sheet, NOT a filled PDF form.
   - Files: `app/freelance-steuer/steuer-data.ts` (single source of truth: types, ELSTER field map verified against a real 2026-03 fseeun submission, wizard step defs with neutral English explanations, validation), `steuer-pdf.ts` (pdf-lib answer sheet drawn from scratch), `page.tsx` (phases landing→wizard→payment→generating→done), `layout.tsx`.

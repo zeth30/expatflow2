@@ -6,8 +6,8 @@
 //
 //  Phases: landing → wizard → payment → generating → done
 //  Data:   localStorage only (simplyexpat-steuer-v1) — never sent to server
-//  Legal:  explains, never recommends —
-//          see docs/superpowers/specs/2026-07-06-…-design.md §2
+//  Access: personal use only, password gate in proxy.ts (lib/preview.ts).
+//          Tips may recommend — see header of steuer-data.ts before launching.
 // ═══════════════════════════════════════════════════════════════════
 
 import React, { useState, useCallback, useEffect } from "react";
@@ -25,7 +25,7 @@ import {
 } from "./steuer-data";
 import { buildSteuerPDF } from "./steuer-pdf";
 import { SteuerSimulator } from "./SteuerSimulator";
-import { FieldInput as EngineFieldInput } from "../components/form-engine/FieldInput";
+import { FieldInput as EngineFieldInput, TipBox } from "../components/form-engine/FieldInput";
 
 const NAVY  = "#0f172a";
 const BLUE  = "#0075FF";
@@ -58,24 +58,8 @@ function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; set
 }
 
 // ─── Landing page ─────────────────────────────────────────────────
-function SteuerLanding({ onStart: startWizard }: { onStart: () => void }) {
+function SteuerLanding({ onStart }: { onStart: () => void }) {
   const [showSim, setShowSim] = useState(false);
-  // Test-version acceptance: required before the wizard opens
-  const [accepted, setAccepted] = useState(false);
-  const [nudge, setNudge] = useState(false);
-  const onStart = () => {
-    if (accepted) { startWizard(); return; }
-    setNudge(true);
-    document.getElementById("steuer-accept")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
-  const acceptBox = (id?: string) => (
-    <label id={id} style={{ display: "flex", alignItems: "flex-start", gap: 10, maxWidth: 520, margin: "0 auto 16px", padding: "12px 14px", borderRadius: 12, background: nudge && !accepted ? "#fef3c7" : "#fffbeb", border: `1.5px solid ${nudge && !accepted ? "#f59e0b" : "#fde68a"}`, textAlign: "left", cursor: "pointer" }}>
-      <input type="checkbox" checked={accepted} onChange={(e) => { setAccepted(e.target.checked); setNudge(false); }} style={{ width: 18, height: 18, marginTop: 1, flexShrink: 0, accentColor: BLUE, cursor: "pointer" }} />
-      <span style={{ color: "#78350f", fontSize: 13, lineHeight: 1.55 }}>
-        <strong>I accept that this service is a test version and may not work.</strong> It is not tax advice. I check every entry myself before I submit anything in ELSTER.
-      </span>
-    </label>
-  );
   const FAQ = [
     { q: "Can I fill in the Fragebogen zur steuerlichen Erfassung in English?", a: "The official ELSTER form exists only in German — there is no English version. That's exactly what this tool solves: you answer every question in plain English, and you get each German entry ready to copy into ELSTER, matched to ELSTER's own field numbers." },
     { q: "What's the difference between Steuer-ID and Steuernummer?", a: "The Steuer-ID (steuerliche Identifikationsnummer) is the 11-digit number every resident gets by post after their Anmeldung — it never changes. The Steuernummer is a separate number the Finanzamt assigns for your tax file; as a new freelancer you receive it AFTER submitting this Fragebogen. You need the Steuer-ID to fill the form, and you get the Steuernummer as the result." },
@@ -132,7 +116,6 @@ function SteuerLanding({ onStart: startWizard }: { onStart: () => void }) {
           <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 16.5, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 28px" }}>
             Starting freelance work in Germany shouldn&apos;t require a law degree in German. But every new freelancer must submit the <strong style={{ color: "white" }}>Fragebogen zur steuerlichen Erfassung</strong> — online, via ELSTER, in German, within one month of starting. That&apos;s where we come in: you answer in plain English, and we hand you every German entry, ready to copy.
           </p>
-          {acceptBox("steuer-accept")}
           <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 34px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.45)", cursor: "pointer", fontFamily: "inherit" }}>
             Start in English <ArrowRight size={18} />
           </button>
@@ -280,7 +263,6 @@ function SteuerLanding({ onStart: startWizard }: { onStart: () => void }) {
 
       {/* ── Bottom CTA ── */}
       <div style={{ textAlign: "center", padding: "24px 20px 72px" }}>
-        {acceptBox()}
         <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 34px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.35)", cursor: "pointer", fontFamily: "inherit" }}>
           Start in English <ArrowRight size={18} />
         </button>
@@ -295,7 +277,7 @@ function SteuerLanding({ onStart: startWizard }: { onStart: () => void }) {
 
 // ─── Wizard ───────────────────────────────────────────────────────
 const WIZ_LABELS: Record<string, string> = {
-  elster: "ELSTER account", form: "The form", personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
+  goal: "Your plan", elster: "ELSTER account", form: "The form", personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
   bank: "Bank", estimates: "Estimates", vat: "VAT", review: "Review",
 };
 
@@ -465,6 +447,13 @@ function SteuerWizard({
                 </div>
               )}
               {stepDef.fields.map(fd => <FieldInput key={String(fd.key)} fd={fd} form={form} setForm={setForm} />)}
+              {stepDef.tips && stepDef.tips(form).length > 0 && (
+                <div style={{ marginTop: 8, marginBottom: 8 }}>
+                  <div style={{ fontWeight: 900, color: NAVY, fontSize: 15, marginBottom: 2 }}>Your game plan</div>
+                  <p style={{ color: MUTED, fontSize: 12.5, marginBottom: 4 }}>Based on your answers — worth reading before you continue.</p>
+                  {stepDef.tips(form).map((t, i) => <TipBox key={i} text={t} />)}
+                </div>
+              )}
               {stepId === "elster" && form.hasElsterAccount === false && (
                 <div style={{ padding: "12px 15px", borderRadius: 10, background: "#f0fdf4", border: "1px solid #bbf7d0", marginBottom: 16, display: "flex", gap: 9 }}>
                   <CheckCircle2 size={14} color="#16a34a" style={{ flexShrink: 0, marginTop: 2 }} />
@@ -477,7 +466,7 @@ function SteuerWizard({
           ) : (
             <>
               <h2 style={{ fontSize: 23, fontWeight: 800, color: NAVY, marginBottom: 4 }}>Almost done — here&apos;s your sheet</h2>
-              <p style={{ color: MUTED, marginBottom: 26, fontSize: 14 }}>This is the structure of your answer sheet — every ELSTER section and field number, matched to your answers. The finished German entries unlock right after checkout. Use Back anytime to change an answer.</p>
+              <p style={{ color: MUTED, marginBottom: 26, fontSize: 14 }}>This is the structure of your answer sheet — every ELSTER section and field number, matched to your answers. Click below to get the finished German entries with copy buttons and the PDF. Use Back anytime to change an answer.</p>
               {buildAnswerRows(form).map(sec => (
                 <div key={sec.title} style={{ marginBottom: 22 }}>
                   <div style={{ fontWeight: 800, color: NAVY, fontSize: 13.5, padding: "8px 12px", background: "#f1f5f9", borderRadius: 8, marginBottom: 8 }}>{sec.title}</div>
@@ -486,7 +475,7 @@ function SteuerWizard({
                       <span style={{ color: BLUE, fontWeight: 800, fontSize: 11, width: 26, flexShrink: 0 }}>{r.nr}</span>
                       <span style={{ color: MUTED, fontSize: 12, flex: 1 }}>{r.label}</span>
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: "#94a3b8", fontWeight: 700, fontSize: 11, background: "#f8fafc", border: "1px dashed #cbd5e1", borderRadius: 6, padding: "3px 9px", flexShrink: 0 }}>
-                        <Lock size={10} /> After checkout
+                        <Lock size={10} /> Next step
                       </span>
                     </div>
                   ))}
@@ -507,7 +496,7 @@ function SteuerWizard({
               <ArrowLeft size={15} /> Back
             </button>
             <button onClick={next} style={{ display: "flex", alignItems: "center", gap: 8, padding: "13px 28px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 800, fontSize: 14, cursor: "pointer", fontFamily: "inherit", boxShadow: "0 4px 16px rgba(0,117,255,0.3)" }}>
-              {stepId === "review" ? "Continue to payment" : "Next"} <ArrowRight size={15} />
+              {stepId === "review" ? "Create my answer sheet" : "Next"} <ArrowRight size={15} />
             </button>
           </div>
         </main>
@@ -816,7 +805,7 @@ function SteuerDone({
 // ─── Main component ───────────────────────────────────────────────
 export default function FreelanceSteuerPage() {
   const [phase, setPhase] = useState<AppPhase>("landing");
-  const [stepId, setStepId] = useState<string>("elster");
+  const [stepId, setStepId] = useState<string>("goal");
   const [form, setForm] = useState<SteuerForm>(EMPTY_STEUER);
   const [pdfBytes, setPdfBytes] = useState<Uint8Array | null>(null);
   const [pdfName, setPdfName] = useState("readyexpat-steuer-answer-sheet.pdf");
@@ -923,11 +912,11 @@ export default function FreelanceSteuerPage() {
     setSessionError(false);
     setConfirmRestart(false);
     setPhase("landing");
-    setStepId("elster");
+    setStepId("goal");
   }, []);
 
   if (phase === "landing") {
-    return <SteuerLanding onStart={() => { setPhase("wizard"); setStepId("elster"); window.scrollTo(0, 0); }} />;
+    return <SteuerLanding onStart={() => { setPhase("wizard"); setStepId("goal"); window.scrollTo(0, 0); }} />;
   }
 
   if (phase === "payment") {
@@ -971,7 +960,7 @@ export default function FreelanceSteuerPage() {
     <SteuerWizard
       form={form} setForm={setForm}
       stepId={stepId} setStepId={setStepId}
-      onDone={() => { setPhase("payment"); window.scrollTo(0, 0); }}
+      onDone={() => { setPhase("generating"); window.scrollTo(0, 0); }}
       onHome={() => setPhase("landing")}
       onRestart={handleRestart}
     />
