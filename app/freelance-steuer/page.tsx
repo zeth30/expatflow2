@@ -21,7 +21,7 @@ import { AppFooter } from "../components/AppFooter";
 import { CookieBanner } from "../components/LegalModals";
 import {
   type SteuerForm, type FieldDef, EMPTY_STEUER, DEMO_STEUER, STORAGE_KEY, DONE_KEY,
-  STEUER_STEPS, stepError, buildAnswerRows,
+  STEUER_STEPS, stepError, buildAnswerRows, fmtDateDE,
 } from "./steuer-data";
 import { buildSteuerPDF } from "./steuer-pdf";
 import { SteuerSimulator } from "./SteuerSimulator";
@@ -108,13 +108,13 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 60% 30%, rgba(0,117,255,0.2) 0%, transparent 65%)", pointerEvents: "none" }} />
         <div style={{ position: "relative", maxWidth: 680, margin: "0 auto" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(0,117,255,0.18)", border: "1px solid rgba(96,165,250,0.4)", borderRadius: 999, padding: "5px 14px", marginBottom: 22 }}>
-            <span style={{ color: "#93c5fd", fontSize: 11.5, fontWeight: 700 }}>New · Freelancer tax registration · Beta</span>
+            <span style={{ color: "#93c5fd", fontSize: 11.5, fontWeight: 700 }}>Gewerbe &amp; freelance · A to Z · in English</span>
           </div>
           <h1 style={{ fontSize: "clamp(30px,5vw,44px)", fontWeight: 900, color: "white", letterSpacing: "-0.03em", lineHeight: 1.12, marginBottom: 16 }}>
-            The German freelancer tax form,<br /><span style={{ color: "#60a5fa" }}>in English.</span>
+            Start your business in Germany,<br /><span style={{ color: "#60a5fa" }}>in English.</span>
           </h1>
           <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 16.5, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 28px" }}>
-            Starting freelance work in Germany shouldn&apos;t require a law degree in German. But every new freelancer must submit the <strong style={{ color: "white" }}>Fragebogen zur steuerlichen Erfassung</strong> — online, via ELSTER, in German, within one month of starting. That&apos;s where we come in: you answer in plain English, and we hand you every German entry, ready to copy.
+            Freelancer or trader — every new business in Germany ends at the same form: the <strong style={{ color: "white" }}>Fragebogen zur steuerlichen Erfassung</strong>, in German, via ELSTER, within one month. Traders need the <strong style={{ color: "white" }}>Gewerbeanmeldung</strong> first. You answer in plain English, get tips for your situation, and receive every German entry for both forms, ready to copy.
           </p>
           <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 34px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.45)", cursor: "pointer", fontFamily: "inherit" }}>
             Start in English <ArrowRight size={18} />
@@ -278,6 +278,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
 // ─── Wizard ───────────────────────────────────────────────────────
 const WIZ_LABELS: Record<string, string> = {
   goal: "Your plan", elster: "ELSTER account", form: "The form", personal: "About you", identity: "Tax identity", address: "Address", activity: "Activity",
+  "gewerbe-intro": "Gewerbe: how it works", "gewerbe-person": "Gewerbe: about you", "gewerbe-business": "Gewerbe: business",
   bank: "Bank", estimates: "Estimates", vat: "VAT", review: "Review",
 };
 
@@ -318,6 +319,20 @@ const FORM_ATTACHMENTS = [
   },
 ];
 
+// Gewerbe A–Z (facts verified 2026-11-03, sources in steuer-data.ts header)
+const GEWERBE_ROUTE = [
+  { n: "1", t: "Check the two blockers first", d: "Non-EU citizen? Your residence permit must allow self-employment. Regulated trade (gastronomy with alcohol, brokering, security, licensed crafts)? You need the permit or Handwerkskarte before you start." },
+  { n: "2", t: "Gewerbeanmeldung at the Gewerbeamt", d: "Form GewA 1, at the town where your business sits — most cities do it online (Berlin: service.berlin.de). Due at the latest on the day you start (§14 GewO). Small fee, set by your city. You get a confirmation, the “Gewerbeschein”." },
+  { n: "3", t: "Fragebogen zur steuerlichen Erfassung in ELSTER", d: "The Gewerbeamt tells the Finanzamt about you, but you still send this tax form yourself — within one month of starting. This is the main part of this wizard." },
+  { n: "4", t: "Steuernummer by post", d: "The Finanzamt processes the Fragebogen and mails your Steuernummer. That number goes on every invoice." },
+  { n: "5", t: "Letters you'll get anyway", d: "IHK (or Handwerkskammer for crafts): membership is automatic. Berufsgenossenschaft: your Gewerbeanmeldung already counts as the required notice to this accident insurer — they'll write to you. Neither needs action before they write." },
+];
+const GEWERBE_MONEY = [
+  { t: "IHK contribution", d: "Sole traders not in the Handelsregister pay no IHK contribution while their trade profit stays at or below €5,200 a year. Founders with no business income in the 5 years before are free for the first two years if profit stays at or below €25,000." },
+  { t: "Trade tax (Gewerbesteuer)", d: "Sole traders get a €24,500 yearly allowance on their trade profit — below that, no trade tax at all. Above it, much of the trade tax is credited against your income tax." },
+  { t: "Bring along", d: "ID card or passport, residence permit (non-EU), and any permit or Handwerkskarte your trade needs. For online registration: a way to pay the fee and to identify yourself (often the online ID function of your ID card or a scan)." },
+];
+
 // Condensed ELSTER registration steps (full guide: /elster-account-english)
 const ELSTER_MINI = [
   { n: "1", t: "Have your Steuer-ID ready", d: "The 11-digit number that arrived by post after your Anmeldung. Lost? Request at bzst.de." },
@@ -326,7 +341,8 @@ const ELSTER_MINI = [
   { n: "4", t: "Activate & save your certificate file", d: "Enter both codes, download the .pfx file, set a password. File + password = your login. Back it up." },
   { n: "5", t: "Open the form", d: "Log in → “Alle Formulare” → “Fragebogen zur steuerlichen Erfassung” → Einzelunternehmen." },
 ];
-const WIZ_IDS = [...STEUER_STEPS.map(s => s.id), "review"];
+// Steps with showIf (Gewerbe) appear only for the answers that need them
+const wizIds = (f: SteuerForm) => [...STEUER_STEPS.filter(s => !s.showIf || s.showIf(f)).map(s => s.id), "review"];
 
 function SteuerWizard({
   form, setForm, stepId, setStepId, onDone, onHome, onRestart,
@@ -337,7 +353,8 @@ function SteuerWizard({
 }) {
   const [err, setErr] = useState("");
   const [confirmRestart, setConfirmRestart] = useState(false);
-  const idx = WIZ_IDS.indexOf(stepId);
+  const WIZ_IDS = wizIds(form);
+  const idx = Math.max(0, WIZ_IDS.indexOf(stepId));
   const stepDef = STEUER_STEPS.find(s => s.id === stepId);
 
   const next = () => {
@@ -399,8 +416,8 @@ function SteuerWizard({
           </div>
           {stepDef ? (
             <>
-              <h2 style={{ fontSize: 23, fontWeight: 800, color: NAVY, marginBottom: 4 }}>{stepDef.title}</h2>
-              <p style={{ color: MUTED, marginBottom: 26, fontSize: 14 }}>{stepDef.sub}</p>
+              <h2 style={{ fontSize: 30, fontWeight: 900, color: NAVY, letterSpacing: "-0.025em", lineHeight: 1.15, marginBottom: 8 }}>{stepDef.title}</h2>
+              <p style={{ color: "#475569", marginBottom: 30, fontSize: 16, lineHeight: 1.6 }}>{stepDef.sub}</p>
               {stepId === "elster" && (
                 <div style={{ marginBottom: 26 }}>
                   {ELSTER_MINI.map(s => (
@@ -417,6 +434,27 @@ function SteuerWizard({
                       Full screen-by-screen guide (opens in new tab) →
                     </a>
                   </p>
+                </div>
+              )}
+              {stepId === "gewerbe-intro" && (
+                <div style={{ marginBottom: 10 }}>
+                  <div style={{ fontWeight: 800, color: NAVY, fontSize: 17, marginBottom: 12 }}>Your route, A to Z</div>
+                  {GEWERBE_ROUTE.map(s => (
+                    <div key={s.n} style={{ display: "flex", gap: 14, background: "white", borderRadius: 14, border: "1px solid #e8ecf4", padding: "15px 18px", marginBottom: 10 }}>
+                      <div style={{ width: 30, height: 30, borderRadius: "50%", background: s.n === "3" ? BLUE : NAVY, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, flexShrink: 0 }}>{s.n}</div>
+                      <div>
+                        <div style={{ fontWeight: 800, color: NAVY, fontSize: 15.5 }}>{s.t}</div>
+                        <p style={{ color: "#475569", fontSize: 14, lineHeight: 1.6, marginTop: 3 }}>{s.d}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ fontWeight: 800, color: NAVY, fontSize: 17, margin: "24px 0 12px" }}>Money &amp; paperwork, honestly</div>
+                  {GEWERBE_MONEY.map(m => (
+                    <div key={m.t} style={{ marginBottom: 10, padding: "14px 16px", borderRadius: 12, background: "#eff6ff", border: "1px solid #bfdbfe" }}>
+                      <div style={{ fontWeight: 800, fontSize: 15, color: "#1e40af", marginBottom: 4 }}>{m.t}</div>
+                      <p style={{ fontSize: 14, lineHeight: 1.6, color: "#1e3a8a" }}>{m.d}</p>
+                    </div>
+                  ))}
                 </div>
               )}
               {stepId === "form" && (
@@ -744,6 +782,23 @@ function SteuerDone({
             </div>
 
             <SteuerEmailOptIn firstName={form.firstName} />
+
+            <div style={{ marginBottom: 26, padding: "18px 20px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4" }}>
+              <div style={{ fontWeight: 900, color: NAVY, fontSize: 18, marginBottom: 12 }}>Your to-do list, in order</div>
+              {[
+                ...(form.workType === "trade" ? [`Gewerbeanmeldung at your Gewerbeamt (online in most cities) — use the GewA 1 section below. Do it on or before ${fmtDateDE(form.activityStart) || "your start date"}.`] : []),
+                form.hasElsterAccount ? "Log in to Mein ELSTER and open “Fragebogen zur steuerlichen Erfassung” → Einzelunternehmen." : "Register at elster.de today — the activation letter takes up to two weeks.",
+                `Copy the tax-form answers below into ELSTER, top to bottom, and send it${form.activityStart ? ` — deadline about one month after ${fmtDateDE(form.activityStart)}` : ""}. Save the transmission protocol as PDF.`,
+                "Wait for your Steuernummer by post — it goes on every invoice.",
+                ...(form.workType === "trade" ? ["Answer the letters from the IHK/Handwerkskammer and the Berufsgenossenschaft when they arrive."] : []),
+                "From your first payment on: put a share aside for tax and keep every receipt.",
+              ].map((t, i) => (
+                <div key={i} style={{ display: "flex", gap: 12, marginBottom: 10 }}>
+                  <span style={{ width: 26, height: 26, borderRadius: "50%", background: NAVY, color: "white", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, flexShrink: 0 }}>{i + 1}</span>
+                  <p style={{ color: "#334155", fontSize: 14.5, lineHeight: 1.6, margin: 0 }}>{t}</p>
+                </div>
+              ))}
+            </div>
 
             {/* Filled-form view: your values sitting inside the form layout,
                 like the screen you'll see in ELSTER — not a list. */}

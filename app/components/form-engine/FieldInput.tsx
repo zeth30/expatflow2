@@ -17,7 +17,24 @@ export function TipBox({ text }: { text: string }) {
   return (
     <div style={{ display: "flex", gap: 10, marginTop: 10, padding: "11px 14px", borderRadius: 12, background: "linear-gradient(135deg,#f0f9ff,#eef6ff)", border: "1px solid #bfdbfe" }}>
       <span style={{ fontSize: 15, lineHeight: 1.3, flexShrink: 0 }} aria-hidden>💡</span>
-      <p style={{ color: "#1e3a8a", fontSize: 12.5, lineHeight: 1.6, margin: 0 }}>{text}</p>
+      <p style={{ color: "#1e3a8a", fontSize: 14, lineHeight: 1.6, margin: 0 }}>{text}</p>
+    </div>
+  );
+}
+
+// "Suggested for you" — fills the field in one click, based on earlier answers
+function SuggestBox({ label, matches, onUse }: { label: string; matches: boolean; onUse: () => void }) {
+  if (matches) {
+    return <p style={{ color: "#15803d", fontSize: 13, fontWeight: 700, margin: "8px 0 0" }}>✓ Matches the suggestion for you: {label}</p>;
+  }
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginTop: 10, padding: "11px 14px", borderRadius: 12, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
+      <p style={{ flex: 1, minWidth: 180, color: "#14532d", fontSize: 14, lineHeight: 1.5, margin: 0 }}>
+        <span style={{ fontWeight: 800 }}>Suggested for you:</span> {label}
+      </p>
+      <button onClick={onUse} style={{ padding: "8px 16px", borderRadius: 9, border: "none", background: "#16a34a", color: "white", fontWeight: 800, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit" }}>
+        Use this
+      </button>
     </div>
   );
 }
@@ -36,13 +53,13 @@ export function FieldInput<TForm extends Record<string, any>>({
   const val = form[fd.key];
   const set = (v: any) => setForm({ ...form, [fd.key]: v });
   return (
-    <div style={{ marginBottom: 24 }}>
-      <label style={{ display: "block", fontWeight: 700, color: NAVY, fontSize: 14, marginBottom: 2 }}>
+    <div style={{ marginBottom: 30 }}>
+      <label style={{ display: "block", fontWeight: 800, color: NAVY, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 2 }}>
         {fd.label}
-        <span style={{ fontWeight: 400, color: "#94a3b8", fontSize: 12, marginLeft: 8 }}>{fd.deLabel}</span>
+        <span style={{ fontWeight: 500, color: "#94a3b8", fontSize: 12.5, marginLeft: 8 }}>{fd.deLabel}</span>
       </label>
       {fd.explain && fd.explain.split("\n").map((para, i) => (
-        <p key={i} style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.55, margin: i === 0 ? "4px 0 6px" : "0 0 6px" }}>{para}</p>
+        <p key={i} style={{ color: "#475569", fontSize: 14, lineHeight: 1.6, margin: i === 0 ? "4px 0 8px" : "0 0 8px" }}>{para}</p>
       ))}
       {fd.more && <MoreInfo text={fd.more} />}
       {fd.decision && (
@@ -62,8 +79,8 @@ export function FieldInput<TForm extends Record<string, any>>({
                 border: on ? `2px solid ${BLUE}` : "1px solid #e2e8f0", background: on ? "#eff6ff" : "white",
                 boxShadow: on ? "0 4px 14px rgba(0,117,255,0.15)" : "0 1px 2px rgba(15,23,42,0.04)",
               }}>
-                <div style={{ fontWeight: 800, fontSize: 14, color: on ? BLUE : NAVY }}>{o.label}</div>
-                {o.desc && <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.5, marginTop: 3 }}>{o.desc}</div>}
+                <div style={{ fontWeight: 800, fontSize: 15, color: on ? BLUE : NAVY }}>{o.label}</div>
+                {o.desc && <div style={{ fontSize: 13, color: MUTED, lineHeight: 1.5, marginTop: 3 }}>{o.desc}</div>}
               </button>
             );
           })}
@@ -72,7 +89,7 @@ export function FieldInput<TForm extends Record<string, any>>({
         <div style={{ display: "flex", gap: 10 }}>
           {[{ v: true, l: "Yes" }, { v: false, l: "No" }].map(({ v, l }) => (
             <button key={l} onClick={() => set(v)} style={{
-              flex: 1, padding: "11px", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontFamily: "inherit", fontSize: 14,
+              flex: 1, padding: "11px", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontFamily: "inherit", fontSize: 15,
               border: val === v ? `2px solid ${BLUE}` : "1px solid #e2e8f0",
               background: val === v ? "#eff6ff" : "white", color: val === v ? BLUE : MUTED,
             }}>{l}</button>
@@ -82,7 +99,7 @@ export function FieldInput<TForm extends Record<string, any>>({
         <select
           value={fd.selectMap ? fd.selectMap.fromValue(val) : String(val ?? "")}
           onChange={e => set(fd.selectMap ? fd.selectMap.toValue(e.target.value) : e.target.value)}
-          style={{ width: "100%", padding: "11px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 14, fontFamily: "inherit", background: "white", color: NAVY }}>
+          style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 15, fontFamily: "inherit", background: "white", color: NAVY }}>
           <option value="">— select —</option>
           {fd.options!.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
@@ -93,9 +110,13 @@ export function FieldInput<TForm extends Record<string, any>>({
           value={String(val ?? "")}
           placeholder={fd.placeholder}
           onChange={e => set(fd.type === "euro" ? e.target.value.replace(/[^\d]/g, "") : e.target.value)}
-          style={{ width: "100%", padding: "11px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 14, fontFamily: "inherit", color: NAVY, boxSizing: "border-box" }}
+          style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 15, fontFamily: "inherit", color: NAVY, boxSizing: "border-box" }}
         />
       )}
+      {(() => {
+        const sug = fd.suggest?.(form);
+        return sug ? <SuggestBox label={sug.label} matches={val === sug.value} onUse={() => set(sug.value)} /> : null;
+      })()}
       {(() => {
         const tip = fd.tip?.(form);
         return tip ? <TipBox text={tip} /> : null;

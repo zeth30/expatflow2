@@ -40,7 +40,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
           </span>
           <span style={{ color: isYes ? "#166534" : "#475569", fontSize: 11, fontWeight: 700 }}>{m[1]}</span>
         </div>
-        <p style={{ color: isYes ? "#14532d" : "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{m[2]}</p>
+        <p style={{ color: isYes ? "#14532d" : "#3f4c63", fontSize: 14, lineHeight: 1.65, margin: 0 }}>{m[2]}</p>
       </div>
     );
   }
@@ -51,7 +51,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
     return (
       <div style={{ marginTop: first ? 0 : 8, display: "flex", gap: 10, alignItems: "flex-start" }}>
         <span style={{ width: 22, height: 22, borderRadius: "50%", background: NAVY, color: "white", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11, flexShrink: 0, marginTop: 1 }}>{numMatch[1]}</span>
-        <p style={{ color: "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{numMatch[2]}</p>
+        <p style={{ color: "#3f4c63", fontSize: 14, lineHeight: 1.65, margin: 0 }}>{numMatch[2]}</p>
       </div>
     );
   }
@@ -61,7 +61,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
     return (
       <div style={{ marginTop: first ? 0 : 7, display: "flex", gap: 10, alignItems: "flex-start" }}>
         <span style={{ width: 6, height: 6, borderRadius: "50%", background: BLUE, flexShrink: 0, marginTop: 7 }} />
-        <p style={{ color: "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{para.replace(/^·\s*/, "")}</p>
+        <p style={{ color: "#3f4c63", fontSize: 14, lineHeight: 1.65, margin: 0 }}>{para.replace(/^·\s*/, "")}</p>
       </div>
     );
   }
@@ -73,7 +73,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
     return (
       <div style={{ marginTop: mt, paddingTop: first ? 0 : 10, borderTop: first ? "none" : "1px solid #f1f5f9" }}>
         <div style={{ color: "#1d4ed8", fontSize: 10.5, fontWeight: 900, letterSpacing: "0.1em", marginBottom: 4 }}>{capsMatch[1]}</div>
-        <p style={{ color: "#3f4c63", fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>{rest}</p>
+        <p style={{ color: "#3f4c63", fontSize: 14, lineHeight: 1.65, margin: 0 }}>{rest}</p>
       </div>
     );
   }
@@ -82,7 +82,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
   return (
     <p style={{
       color: first ? "#1e293b" : "#3f4c63",
-      fontSize: first ? 13.5 : 12.5,
+      fontSize: first ? 15 : 14,
       fontWeight: first ? 600 : 400,
       lineHeight: 1.68,
       margin: `${mt}px 0 0`,

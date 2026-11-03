@@ -16,6 +16,7 @@ export type FieldDef<TForm> = {
   more?: string;              // deep dive, opens on click; \n = block (see MoreInfo parser)
   decision?: boolean;         // renders the neutral your-decision banner
   tip?: (f: TForm) => string | null | undefined; // personalised tip box, based on earlier answers
+  suggest?: (f: TForm) => { value: any; label: string } | null | undefined; // one-click "Use this" value
   showIf?: (f: TForm) => boolean;
   required?: boolean | ((f: TForm) => boolean);
   // For selects whose form value is not a plain string (e.g. boolean | null):
@@ -31,6 +32,7 @@ export type StepDef<TForm> = {
   sub: string;
   fields: FieldDef<TForm>[];
   tips?: (f: TForm) => string[];  // "for your situation" panel under the fields
+  showIf?: (f: TForm) => boolean; // whole step only for some answers (e.g. Gewerbe)
 };
 
 // One row of the final answer sheet. `nr` = the official field number the

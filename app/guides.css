@@ -26,7 +26,7 @@
   --sb-w: 300px;
 }
 * { box-sizing: border-box; }
-.shell { margin: 0; background: var(--bg); color: var(--ink); font-family: "Plus Jakarta Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.shell { margin: 0; background: var(--bg); color: var(--ink); font-family: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
 .shell * { box-sizing: border-box; }
 .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
 .shell a { color: inherit; }

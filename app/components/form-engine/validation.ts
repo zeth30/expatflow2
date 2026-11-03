@@ -6,7 +6,7 @@ import type { StepDef } from "./types";
 // government form is a silent wrong answer).
 export function requiredError<TForm>(steps: StepDef<TForm>[], stepId: string, f: TForm): string {
   const step = steps.find(s => s.id === stepId);
-  if (!step) return "";
+  if (!step || (step.showIf && !step.showIf(f))) return "";
   for (const fd of step.fields) {
     if (fd.showIf && !fd.showIf(f)) continue;
     const req = typeof fd.required === "function" ? fd.required(f) : fd.required;

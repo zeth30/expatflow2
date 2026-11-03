@@ -35,6 +35,18 @@
 //  step `tips` that do recommend. Before any public launch, the
 //  explain-never-recommend rule (spec §2, StBerG) must be re-applied.
 //  Facts in tips still have to be correct — they are acted on.
+//
+//  GEWERBE (trade) extension, verified 2026-11-03:
+//  - GewA 1 field numbers 1–33: official form, Anlage 1 GewAnzV
+//    (gesetze-im-internet.de/gewanzv_2014/anlage_1.html, BGBl. I 2024 version)
+//  - §14 Abs. 1 GewO: register the trade "gleichzeitig" with starting it
+//  - §192 Abs. 1 SGB VII: the Gewerbeanzeige counts as the notification to
+//    the accident insurer (Berufsgenossenschaft) — no separate one-week duty
+//  - §3 Abs. 3 IHKG: sole traders not in the Handelsregister with trade
+//    profit ≤ €5,200 pay no IHK contribution; founders without business
+//    income in the 5 prior years: first 2 years free if profit ≤ €25,000
+//  - §11 Abs. 1 GewStG: €24,500 trade-tax allowance for natural persons
+//  - Gewerbe fees vary by city: state NO amount.
 // ═══════════════════════════════════════════════════════════════════
 
 export type Goal = "" | "fulltime" | "side" | "explore";
@@ -46,6 +58,21 @@ export type SteuerForm = {
   goal: Goal;
   workType: WorkType;
   clients: Clients;
+  // ── Gewerbe-Anmeldung (GewA 1) — only when workType === "trade" ──
+  businessName: string;         // Feld 3 (optional trading name)
+  gender: "" | "männlich" | "weiblich" | "divers" | "ohne Angabe"; // Feld 6
+  birthName: string;            // Feld 7 (only if different)
+  birthPlace: string;           // Feld 9 Geburtsort und -land
+  citizenship: string;          // Feld 10 — "deutsch" or other, in German
+  phone: string; email: string; website: string; // Feld 11/15 contact
+  gewActivity: string;          // Feld 18 Angemeldete Tätigkeit
+  nebenerwerb: boolean | null;  // Feld 19
+  gewArt: "" | "Industrie" | "Handwerk" | "Handel" | "Sonstiges"; // Feld 21
+  staffFull: string; staffPart: string; // Feld 22 (empty = keine)
+  permitNeeded: boolean | null; permitDetails: string;      // Feld 28
+  handwerkA: boolean | null; handwerkDetails: string;       // Feld 29
+  needsResidencePermit: boolean | null; residenceDetails: string; // Feld 30
+  residenceRestriction: boolean | null; residenceRestrictionText: string; // Feld 31
   // ── Meta: ELSTER readiness (not an ELSTER form field) ──
   hasElsterAccount: boolean | null;
   // ── Allgemeine Angaben ──
@@ -105,6 +132,11 @@ export type SteuerForm = {
 
 export const EMPTY_STEUER: SteuerForm = {
   goal: "", workType: "", clients: "",
+  businessName: "", gender: "", birthName: "", birthPlace: "", citizenship: "",
+  phone: "", email: "", website: "", gewActivity: "", nebenerwerb: null, gewArt: "",
+  staffFull: "", staffPart: "", permitNeeded: null, permitDetails: "",
+  handwerkA: null, handwerkDetails: "", needsResidencePermit: null, residenceDetails: "",
+  residenceRestriction: null, residenceRestrictionText: "",
   hasElsterAccount: null,
   anrede: "", firstName: "", lastName: "", birthDate: "", profession: "",
   steuerId: "", hasIncomeTaxNumber: null, incomeTaxNumber: "", religion: "",
@@ -206,8 +238,48 @@ export const validateSteuerId = (raw: string): boolean =>
 export type { AnswerRow, AnswerSection, FieldDef as EngineFieldDef } from "../components/form-engine/types";
 import type { AnswerRow, AnswerSection } from "../components/form-engine/types";
 
+export function buildGewerbeRows(f: SteuerForm): AnswerSection {
+  const empty = (nr: string, label: string, en: string): AnswerRow => ({ nr, label, de: "leer lassen", instruction: true, enHint: en });
+  const addr = `${f.street} ${f.houseNo}${f.houseNoSuffix}, ${f.plz} ${f.city}`;
+  const contact = [f.phone && `Tel. ${f.phone}`, f.email, f.website].filter(Boolean).join(" · ");
+  const yesNo = (v: boolean | null, details: string) => v ? `ja — ${details}` : "nein";
+  const rows: AnswerRow[] = [
+    empty("1–2", "Registereintrag (Handelsregister o. ä.)", "Only for registered companies — as a sole trader not in the Handelsregister, leave empty"),
+    f.businessName ? { nr: "3", label: "Name des Geschäfts", de: f.businessName, enHint: "Your trading name" } : empty("3", "Name des Geschäfts", "No separate trading name — leave empty"),
+    { nr: "4", label: "Name", de: f.lastName, enHint: "Last name" },
+    { nr: "5", label: "Vornamen", de: f.firstName, enHint: "First name(s)" },
+    { nr: "6", label: "Geschlecht", de: `Kästchen „${f.gender}“ ankreuzen`, instruction: true, enHint: "Tick the matching box (as in your birth certificate)" },
+    f.birthName ? { nr: "7", label: "Geburtsname", de: f.birthName, enHint: "Birth name" } : empty("7", "Geburtsname", "Same as your name — leave empty"),
+    { nr: "8", label: "Geburtsdatum", de: fmtDateDE(f.birthDate), enHint: "Date of birth" },
+    { nr: "9", label: "Geburtsort und -land", de: f.birthPlace, enHint: "Place and country of birth" },
+    f.citizenship.trim().toLowerCase() === "deutsch"
+      ? { nr: "10", label: "Staatsangehörigkeit(en)", de: "Kästchen „deutsch“ ankreuzen", instruction: true, enHint: "Tick “deutsch”" }
+      : { nr: "10", label: "Staatsangehörigkeit(en) — andere", de: f.citizenship, enHint: "Your citizenship, in German" },
+    { nr: "11", label: "Anschrift der Wohnung", de: addr, enHint: "Home address" },
+    ...(contact ? [{ nr: "11", label: "Telefon / E-Mail / Internet", de: contact, enHint: "Contact details (optional)" }] : []),
+    empty("12–14", "Gesellschafter / öffentliche Hand / Betriebsleiter", "Only for companies — leave empty"),
+    { nr: "15", label: "Betriebsstätte", de: f.businessAddrIsHome === false ? `${f.bizStreet} ${f.bizHouseNo}, ${f.bizPlz} ${f.bizCity}` : addr, enHint: f.businessAddrIsHome === false ? "Business premises" : "Business premises = your home address" },
+    empty("16–17", "Hauptniederlassung / frühere Betriebsstätte", "Only for branches or relocations — leave empty"),
+    { nr: "18", label: "Angemeldete Tätigkeit", de: f.gewActivity, enHint: "Registered activity — precise description" },
+    { nr: "19", label: "Im Nebenerwerb?", de: f.nebenerwerb ? "ja" : "nein", enHint: f.nebenerwerb ? "Yes — side business" : "No — main occupation" },
+    { nr: "20", label: "Datum des Beginns", de: fmtDateDE(f.activityStart), enHint: "Start date" },
+    { nr: "21", label: "Art des angemeldeten Betriebes", de: `Kästchen „${f.gewArt}“ ankreuzen`, instruction: true, enHint: "Type of business" },
+    { nr: "22", label: "Zahl der tätigen Personen (ohne Inhaber)", de: (f.staffFull || f.staffPart) ? `Vollzeit ${f.staffFull || 0}, Teilzeit ${f.staffPart || 0}` : "Kästchen „keine“ ankreuzen", instruction: !(f.staffFull || f.staffPart) || undefined, enHint: "People working with you, not counting yourself" },
+    { nr: "23", label: "Die Anmeldung wird erstattet für", de: "Kästchen „eine Hauptniederlassung“ ankreuzen", instruction: true, enHint: "Your main (and only) establishment" },
+    { nr: "25", label: "Grund", de: "Kästchen „Neugründung“ ankreuzen", instruction: true, enHint: "New founding" },
+    empty("24, 26–27", "Reisegewerbe / früherer Inhaber / Unfallversicherung", "Only for travelling trades or takeovers — leave empty"),
+    { nr: "28", label: "Liegt eine Erlaubnis vor?", de: f.permitNeeded ? yesNo(true, f.permitDetails) : "leer lassen (keine Erlaubnis nötig)", instruction: !f.permitNeeded || undefined, enHint: "Trade permit (only for regulated trades)" },
+    ...(f.gewArt === "Handwerk" ? [{ nr: "29", label: "Handwerkskarte (Anlage A)", de: f.handwerkA ? yesNo(true, f.handwerkDetails) : "leer lassen (kein Anlage-A-Handwerk)", instruction: !f.handwerkA || undefined, enHint: "Craft card — only for licensed crafts (Anlage A)" }] : []),
+    { nr: "30", label: "Liegt ein Aufenthaltstitel vor?", de: f.needsResidencePermit ? yesNo(true, f.residenceDetails) : "leer lassen (kein Aufenthaltstitel nötig)", instruction: !f.needsResidencePermit || undefined, enHint: "Residence permit — only for people who need one" },
+    ...(f.needsResidencePermit ? [{ nr: "31", label: "Auflage zur Erwerbstätigkeit?", de: f.residenceRestriction ? `ja — ${f.residenceRestrictionText}` : "nein", enHint: "Any work-related condition in your permit" }] : []),
+    { nr: "32–33", label: "Datum, Unterschrift", de: "beim Absenden / auf Papier unterschreiben", instruction: true, enHint: "Date and signature" },
+  ];
+  return { title: "Gewerbe-Anmeldung (GewA 1) — beim Gewerbeamt, ZUERST", titleEn: "Trade registration at your Gewerbeamt — do this first", rows };
+}
+
 export function buildAnswerRows(f: SteuerForm): AnswerSection[] {
   const sections: AnswerSection[] = [];
+  if (f.workType === "trade") sections.push(buildGewerbeRows(f));
 
   sections.push({
     title: "Allgemeine Angaben — Steuerpflichtige(r)",
@@ -367,6 +439,12 @@ export type StepDef = GenericStepDef<SteuerForm>;
 // ── Tip helpers ─────────────────────────────────────────────────────
 const num = (raw: string) => parseInt((raw || "").replace(/[^\d]/g, ""), 10) || 0;
 const eur = (n: number) => "€" + Math.round(n).toLocaleString("de-DE");
+// Months covered in the founding year (start month to December, inclusive)
+const monthsLeft = (iso: string) => iso ? 12 - (parseInt(iso.slice(5, 7), 10) || 1) + 1 : 12;
+const fullYear = (y1: string, start: string) => {
+  const v = num(y1), m = monthsLeft(start);
+  return v && m < 12 ? String(Math.round(v / m * 12 / 100) * 100) : "";
+};
 const daysSince = (iso: string) => iso ? Math.floor((Date.now() - new Date(iso + "T12:00:00").getTime()) / 86400000) : 0;
 
 function planTips(f: SteuerForm): string[] {
@@ -541,6 +619,7 @@ export const STEUER_STEPS: StepDef[] = [
         explain: "This assistant covers new foundings (Neugründung) only. Taking over an existing business (Übernahme) or relocating one (Verlegung) triggers different ELSTER questions that this wizard doesn't cover.",
         more: "What Yes means: you're starting something of your own from scratch — the standard case for a new freelancer, and what ELSTER calls “Neugründung”.\nWhat No means: you're taking over an existing business (Übernahme), converting one (Umwandlung), or moving one from another town (Verlegung). Those unlock extra ELSTER sections about the previous business that we'd rather not half-explain — so this wizard honestly stops and points you to ELSTER's help or a Steuerberater instead of guessing.\nStarting the same kind of work you did as an employee still counts as a new founding — what matters is that the BUSINESS is new, not the skill." },
       { key: "businessAddrIsHome", label: "Do you work from your home address?", deLabel: "Anschrift des Unternehmens entspricht Wohnanschrift", type: "boolean", required: true,
+        tip: f => f.workType === "trade" && f.businessAddrIsHome === false ? "A separate shop or workshop may need its own permissions under building law — the Gewerbeanmeldung itself doesn't cover that." : null,
         explain: "If yes, ELSTER has a checkbox for “business address equals home address” — no extra typing.",
         more: "What Yes means: your desk is at home. Completely normal for freelancers — most start exactly like this, and it doesn't create any special obligations by itself.\nWhat No means: you rent a separate office, co-working desk with a fixed address, or studio — ELSTER wants that address as your business address.\nDon't confuse this with the home-office tax deduction debate — that's a topic for your future tax returns, not for this registration. Here the Finanzamt only wants to know where your business physically sits, mostly to confirm which Finanzamt is responsible for you." },
       { key: "bizStreet", label: "Business street", deLabel: "Straße", type: "text", showIf: f => f.businessAddrIsHome === false, required: f => f.businessAddrIsHome === false, explain: "" },
@@ -557,10 +636,82 @@ export const STEUER_STEPS: StepDef[] = [
         },
         more: "Germany starts the clock earlier than you'd think. “Beginn der Tätigkeit” includes Vorbereitungshandlungen — preparation acts: buying your work laptop, signing a client contract, setting up the website you'll sell through. Not just the glamorous first invoice.\nWhy it matters: the one-month filing deadline (§138 AO) runs from this date. If your honest start date is further back than a month, don't panic and don't “adjust” the date — file now. A slightly late Fragebogen is routine; a false date on a tax form is not.\nThis date also tells the Finanzamt from when your business expenses can count — which is exactly why the definition includes preparation." },
       { key: "foundingDate", label: "Founding date (usually the same)", deLabel: "Gründungsdatum", type: "date",
+        suggest: f => f.activityStart ? { value: f.activityStart, label: `same as your start date (${fmtDateDE(f.activityStart)})` } : null,
         explain: "For a simple solo start this is normally the same date as above. If you leave it empty, your answer sheet repeats the start date." },
       { key: "priorBusiness", label: "In the last 5 years: any business, freelance work, or ≥1% company shareholding — in Germany or abroad?", deLabel: "Bisherige betriebliche Verhältnisse", type: "boolean", required: true,
         explain: "A factual yes/no. Yes does not block anything — the Finanzamt just wants the history.",
         more: "What counts as Yes: any self-employment, business, or farm you ran in the last 5 years — in Germany OR abroad — and also owning 1% or more of a company (shares in your own Ltd/LLC back home count; a handful of publicly traded stocks doesn't reach 1% and doesn't).\nWhat Yes triggers: nothing scary. It's context for the Finanzamt, and being a serial founder is not a crime.\nWhat No means: clean slate, nothing to declare here.\nThe honest answer is the only good answer — this is a declaration to a tax authority, and the sheet will print exactly what you choose." },
+    ],
+  },
+  {
+    id: "gewerbe-intro", title: "Gewerbeanmeldung — the trade registration",
+    sub: "Because you trade, there's a second form before the tax one: the Gewerbe-Anmeldung (form GewA 1) at your town's Gewerbeamt. Same data you've already given, plus a few trade questions. Here's how it works.",
+    showIf: f => f.workType === "trade",
+    fields: [],
+  },
+  {
+    id: "gewerbe-person", title: "Gewerbe: about you", sub: "The person questions of GewA 1 that the tax form doesn't ask. Your name, birth date and address are reused from earlier steps.",
+    showIf: f => f.workType === "trade",
+    fields: [
+      { key: "gender", label: "Gender", deLabel: "Feld 6 — Geschlecht", type: "select", required: true,
+        options: [ { value: "männlich", label: "male (männlich)" }, { value: "weiblich", label: "female (weiblich)" }, { value: "divers", label: "diverse (divers)" }, { value: "ohne Angabe", label: "not stated (ohne Angabe)" } ],
+        explain: "The form says: as entered in your birth certificate.",
+        suggest: f => f.anrede === "Herr" ? { value: "männlich", label: "männlich (from your salutation)" } : f.anrede === "Frau" ? { value: "weiblich", label: "weiblich (from your salutation)" } : null },
+      { key: "birthName", label: "Birth name (only if different)", deLabel: "Feld 7 — Geburtsname", type: "text",
+        explain: "Only if your name today differs from your name at birth, e.g. after marriage. Otherwise leave empty." },
+      { key: "birthPlace", label: "Place and country of birth", deLabel: "Feld 9 — Geburtsort und -land", type: "text", required: true, placeholder: "e.g. Manchester, Vereinigtes Königreich",
+        explain: "City plus country, ideally with the country in German (e.g. “Vereinigte Staaten”, “Indien”, “Brasilien”)." },
+      { key: "citizenship", label: "Citizenship(s)", deLabel: "Feld 10 — Staatsangehörigkeit(en)", type: "text", required: true, placeholder: "e.g. britisch, indisch, deutsch",
+        explain: "The adjective in German, lowercase: “britisch”, “amerikanisch”, “indisch”, “italienisch”. Type “deutsch” if you're German — the sheet then tells you to tick the box." },
+      { key: "phone", label: "Phone (optional)", deLabel: "Feld 11 — (Mobil-)Telefonnummer", type: "text", explain: "Optional, but makes follow-up questions faster." },
+      { key: "email", label: "Email (optional)", deLabel: "Feld 11 — E-Mail-Adresse", type: "text", explain: "" },
+      { key: "website", label: "Website (optional)", deLabel: "Feld 11 — Internetadresse", type: "text", explain: "" },
+      { key: "businessName", label: "Trading name (optional)", deLabel: "Feld 3 — Name des Geschäfts", type: "text", placeholder: "e.g. Kaffeerösterei Bohnenglück",
+        explain: "Only if you'll trade under a shop or brand name. Sole traders must still show their full personal name on invoices.",
+        tip: f => f.businessName ? "A trading name is fine, but it isn't a protected company name and can't contain “GmbH” or similar. Check it's not someone else's trademark before you print anything." : null },
+    ],
+  },
+  {
+    id: "gewerbe-business", title: "Gewerbe: your business", sub: "What you register, how big it is, and any permits.",
+    showIf: f => f.workType === "trade",
+    fields: [
+      { key: "gewActivity", label: "Registered activity, in German", deLabel: "Feld 18 — Angemeldete Tätigkeit", type: "text", required: true, placeholder: "e.g. Onlinehandel mit Bekleidung",
+        explain: "As precise as possible — the form's own examples are “Herstellung von Möbeln”, “Elektroinstallationen und Elektroeinzelhandel”, “Großhandel mit Lebensmitteln”. With several activities, underline the main one.",
+        more: "This line decides a lot: which chamber you belong to (IHK or Handwerkskammer), whether a permit is needed, and whether a future expansion counts as a change you must report.\nWrite slightly broader than today's exact product so you don't have to re-register for every new idea — “Onlinehandel mit Bekleidung und Accessoires” rather than “Verkauf von T-Shirts”. But stay honest: activities that need a permit must be named as such.\nChanging or extending the activity later means a short Gewerbe-Ummeldung (§14 GewO).",
+        suggest: f => f.activityDesc ? { value: f.activityDesc, label: `“${f.activityDesc}” — same as your tax-form description` } : null },
+      { key: "nebenerwerb", label: "Is it (for now) a side business?", deLabel: "Feld 19 — Im Nebenerwerb?", type: "boolean", required: true,
+        explain: "Yes if you mainly do something else (a job, studies) and the trade comes on top.",
+        suggest: f => f.goal === "side" ? { value: true, label: "Yes — next to your job" } : f.goal === "fulltime" ? { value: false, label: "No — it's your main income" } : null },
+      { key: "gewArt", label: "Type of business", deLabel: "Feld 21 — Art des angemeldeten Betriebes", type: "choice", required: true,
+        options: [
+          { value: "Handel", label: "Handel", desc: "Buying and selling goods — shops, e-commerce, resale." },
+          { value: "Handwerk", label: "Handwerk", desc: "Crafts and repairs — e.g. carpenter, hairdresser, electrician." },
+          { value: "Industrie", label: "Industrie", desc: "Industrial production — rare for solo founders." },
+          { value: "Sonstiges", label: "Sonstiges", desc: "Services and everything else — agencies, brokering, events, cleaning…" },
+        ],
+        explain: "Pick the one that fits your main activity.",
+        tip: f => f.gewArt === "Handwerk" ? "Crafts are split in two: the licensed crafts of Anlage A of the Handwerksordnung (e.g. electrician, hairdresser, roofer) need a master's qualification or exception and a Handwerkskarte from the Handwerkskammer before you start. Other crafts (Anlage B, e.g. tailoring, cosmetics) only need to be entered with the Handwerkskammer." : null },
+      { key: "staffFull", label: "People working with you full-time (not counting you)", deLabel: "Feld 22 — Vollzeit", type: "euro",
+        explain: "Including temporary helpers and your spouse/partner if they work in the business. Leave empty if it's just you.",
+        tip: f => !f.staffFull && !f.staffPart ? "Just you? Leave both empty — the sheet then says to tick “keine”." : "Employees bring their own duties (payroll, social insurance registration, an employer number from the Arbeitsagentur) — plan those before the first working day." },
+      { key: "staffPart", label: "People working with you part-time", deLabel: "Feld 22 — Teilzeit", type: "euro", explain: "" },
+      { key: "permitNeeded", label: "Does your trade need a permit?", deLabel: "Feld 28 — Liegt eine Erlaubnis vor?", type: "boolean", required: true,
+        explain: "Only regulated trades — e.g. selling alcohol in a restaurant (Gaststättenerlaubnis), real-estate or loan brokering (§34c GewO), insurance brokering (§34d), security services (§34a), finance advice (§34f).",
+        more: "Most trades need NO permit: online shops, resale, events, most services.\nIf yours does, you need the permit BEFORE you start — the form itself warns that the registration doesn't allow you to begin without it. You then enter the issue date and the authority that granted it.\nNot sure? Your Gewerbeamt tells you during registration — ask before you pay for anything.",
+        suggest: f => f.permitNeeded === null && f.gewArt === "Handel" ? { value: false, label: "No — normal retail needs no permit" } : null },
+      { key: "permitDetails", label: "Permit: issue date and authority", deLabel: "Feld 28 — Ausstellungsdatum und erteilende Behörde", type: "text", showIf: f => f.permitNeeded === true, required: f => f.permitNeeded === true, explain: "" },
+      { key: "handwerkA", label: "Licensed craft (Anlage A) — do you have a Handwerkskarte?", deLabel: "Feld 29 — Handwerkskarte", type: "boolean", showIf: f => f.gewArt === "Handwerk", required: f => f.gewArt === "Handwerk",
+        explain: "Yes only if your craft is on Anlage A and the Handwerkskammer has issued your card. For Anlage B crafts answer No." },
+      { key: "handwerkDetails", label: "Handwerkskarte: date and Handwerkskammer", deLabel: "Feld 29 — Ausstellungsdatum, Handwerkskammer", type: "text", showIf: f => f.handwerkA === true, required: f => f.handwerkA === true, explain: "" },
+      { key: "needsResidencePermit", label: "Do you need a residence permit to live in Germany?", deLabel: "Feld 30 — Aufenthaltstitel", type: "boolean", required: true,
+        explain: "EU, EEA and Swiss citizens: No. Everyone else: Yes — enter the issue date and the authority (usually your Ausländerbehörde / Landesamt für Einwanderung).",
+        more: "This is the expat trap: the permit must ALLOW self-employment. Check the “Nebenbestimmungen” on your card or the extra sheet — phrases like “Selbständige Tätigkeit gestattet” are what you want; “Selbständige Tätigkeit nicht gestattet” means you need to ask the immigration office first.\nA job-bound work permit or a Blue Card tied to employment usually does NOT cover running your own trade without permission.",
+        suggest: f => f.citizenship.trim().toLowerCase() === "deutsch" ? { value: false, label: "No — you're German" } : null },
+      { key: "residenceDetails", label: "Permit: issue date and authority", deLabel: "Feld 30 — Ausstellungsdatum und erteilende Behörde", type: "text", showIf: f => f.needsResidencePermit === true, required: f => f.needsResidencePermit === true, placeholder: "e.g. 12.03.2026, Landesamt für Einwanderung Berlin", explain: "" },
+      { key: "residenceRestriction", label: "Does your permit have a condition about work?", deLabel: "Feld 31 — Auflage zur Erwerbstätigkeit", type: "boolean", showIf: f => f.needsResidencePermit === true, required: f => f.needsResidencePermit === true,
+        explain: "Look at the conditions (Nebenbestimmungen) on your permit and copy the work-related one exactly.",
+        tip: f => f.residenceRestriction === true ? "If the condition says self-employment is not allowed, don't register yet — apply to your immigration office for permission first." : null },
+      { key: "residenceRestrictionText", label: "The condition, word for word", deLabel: "Feld 31 — Angabe der Auflage", type: "text", showIf: f => f.residenceRestriction === true, required: f => f.residenceRestriction === true, placeholder: "e.g. Selbständige Tätigkeit gestattet", explain: "" },
     ],
   },
   {
@@ -571,6 +722,7 @@ export const STEUER_STEPS: StepDef[] = [
         tip: () => "Not required, but worth it: a separate account just for your freelance money. It makes bookkeeping and the annual return far easier — and the tax money you put aside doesn't get spent by accident.",
         more: "Why the Finanzamt wants this: tax refunds and any SEPA direct debits go through this account. Good news first: this is how you get money BACK.\nThe form field is labelled “inländisches Geldinstitut” — domestic bank. Modern German online banks (N26, DKB, ING…) all give DE IBANs and are fine. If you only have a foreign account so far, ELSTER has a separate variant for foreign IBANs — but for this assistant we stick to the standard DE case, which is also the path of least friction with the Finanzamt.\nAbout the checksum: every IBAN contains a built-in error check (that's the two digits after DE). We verify it mathematically in your browser so a typo can't slip onto your sheet — the number itself never leaves your device." },
       { key: "accountHolderIsSelf", label: "Is the account in your name?", deLabel: "Kontoinhaber(in)", type: "boolean", required: true,
+        suggest: () => ({ value: true, label: "Yes — your own account" }),
         explain: "If yes, ELSTER's option “der/die Steuerpflichtige” (the taxpayer) applies." },
       { key: "accountHolderName", label: "Account holder's name", deLabel: "Kontoinhaber(in)", type: "text", showIf: f => f.accountHolderIsSelf === false, required: f => f.accountHolderIsSelf === false, explain: "" },
     ],
@@ -585,24 +737,29 @@ export const STEUER_STEPS: StepDef[] = [
           : "Aim realistic, not optimistic: a lower estimate keeps your quarterly advance payments low, but then the difference comes due with your annual return — so keep putting money aside.",
         more: "Yes, Germany asks you to predict the future. Nobody knows their first-year profit — the Finanzamt knows that nobody knows, and asks anyway. What they want is your honest current guess, not a promise.\nWhat the number does: it sets your quarterly advance income-tax payments (Vorauszahlungen). Mechanically: a higher estimate → higher advance payments now, refunded later if you earn less. A lower estimate → lower advance payments now, with a back-payment later if you earn more. Either way, your FINAL tax is settled by your annual tax return — the estimate only changes the timing of cash, not the total.\nGot it wrong later? Write to your Finanzamt and have the advance payments adjusted — that's a normal letter, not a confession.\nRemember: profit, not revenue. €40,000 invoiced minus €10,000 costs = €30,000 goes here." },
       { key: "profitY2", label: "Estimated profit — next year (€)", deLabel: "Einkünfte aus selbständiger Arbeit, Folgejahr", type: "euro", required: true,
+        suggest: f => { const v = fullYear(f.profitY1, f.activityStart); return v ? { value: v, label: `€${fmtEuro(v)} — your year-1 profit scaled from ${monthsLeft(f.activityStart)} months to a full year` } : null; },
         explain: "Same logic for the first full calendar year." },
       { key: "employmentY1", label: "Employment income this year, if any (€, gross)", deLabel: "Einkünfte aus nichtselbständiger Arbeit", type: "euro",
         explain: "Only if you also have (or had) a salaried job this calendar year. 0 if none.",
         tip: f => f.goal === "side" ? "You're employed — enter your gross yearly salary here. Leaving it at 0 makes the Finanzamt calculate your advance payments far too low, and the back-payment arrives later." : null,
         more: "Why a freelance form asks about your day job: income tax in Germany is calculated on your TOTAL income. If you employ-and-freelance in parallel (very common), the Finanzamt combines both to set fair advance payments — otherwise you'd get a nasty surprise at your first tax return.\nEnter the gross yearly amount (before taxes) from your employment this calendar year — your Brutto from the work contract, roughly. An estimate is fine here too.\nPure freelancer with no job? Enter 0 and move on." },
-      { key: "employmentY2", label: "Employment income next year (€, gross)", deLabel: "Einkünfte aus nichtselbständiger Arbeit, Folgejahr", type: "euro", explain: "0 if none." },
+      { key: "employmentY2", label: "Employment income next year (€, gross)", deLabel: "Einkünfte aus nichtselbständiger Arbeit, Folgejahr", type: "euro",
+        suggest: f => f.goal === "fulltime" ? { value: "0", label: "0 — you're going full-time freelance" } : f.goal === "side" && f.employmentY1 ? { value: f.employmentY1, label: `€${fmtEuro(f.employmentY1)} — same salary as this year` } : null, explain: "0 if none." },
       { key: "sonderausgabenY1", label: "Special expenses this year (€) — e.g. health insurance", deLabel: "Sonderausgaben", type: "euro",
         explain: "Mainly your own health and pension insurance contributions per year.",
         tip: f => f.goal === "fulltime"
           ? "Full-time freelancer: enter your yearly health + long-term care insurance (monthly amount × 12), plus pension contributions if you pay any. Your insurer's confirmation letter shows the monthly figure."
           : f.goal === "side" ? "Employed: your share of health and pension insurance is on your payslip (“Sozialversicherung”). A rough yearly total is enough." : null,
         more: "Sonderausgaben is bureaucratic German for “special expenses” — mainly what you pay for your own health insurance and pension contributions per year.\nMechanically: amounts here reduce the income your advance payments are calculated on. Whatever you enter now, the real numbers get sorted out in your annual tax return — this field only tunes the advance-payment estimate.\nAs a rough orientation of what belongs here: freelancers pay their health insurance themselves (public insurers often charge several hundred euros a month), and that yearly total is exactly the kind of number this field is about. If you genuinely don't know yet, the field tolerates that too — it changes timing, not your final tax." },
-      { key: "sonderausgabenY2", label: "Special expenses next year (€)", deLabel: "Sonderausgaben, Folgejahr", type: "euro", explain: "" },
+      { key: "sonderausgabenY2", label: "Special expenses next year (€)", deLabel: "Sonderausgaben, Folgejahr", type: "euro",
+        suggest: f => f.sonderausgabenY1 ? { value: f.sonderausgabenY1, label: `€${fmtEuro(f.sonderausgabenY1)} — same as this year` } : null, explain: "" },
       { key: "confirmEuer", label: "Profit method: will you use simple cash-basis accounting (EÜR)?", deLabel: "Gewinnermittlungsart — Einnahmenüberschussrechnung", type: "boolean", required: true,
+        suggest: () => ({ value: true, label: "Yes — EÜR, the standard for solo businesses" }),
         explain: "EÜR means you record income and expenses when money actually flows — no double-entry bookkeeping, no balance sheet.",
         tip: () => "Choose Yes. For a solo freelancer or small trader, EÜR is the standard — the alternative (balance sheets) only makes sense for much bigger businesses.",
         more: "Einnahmenüberschussrechnung — 30 letters for “money in minus money out”. German bureaucracy has a gift for names.\nWhat Yes (EÜR) means: you track income when it arrives and expenses when you pay them. One list, once a year, done. It's the simple method open to freelancers without commercial bookkeeping duties, and the one the famous Excel sheet was invented for.\nWhat No (Bilanzierung) means: voluntary double-entry accounting with balance sheets — a setup that usually involves accounting software and often a Steuerberater. Some businesses choose it deliberately (e.g. for investor reporting); it's a different world, and this assistant honestly doesn't cover it.\nThis is your call to make — we describe the mechanics, you know your business." },
       { key: "deviatingFiscalYear", label: "Does your business year differ from the calendar year?", deLabel: "Abweichendes Wirtschaftsjahr", type: "boolean", required: true,
+        suggest: () => ({ value: false, label: "No — calendar year" }),
         explain: "Only relevant if you have (or will request) a business year that differs from the calendar year — this requires Finanzamt approval. If you haven't arranged anything like that, the factual answer is no.",
         more: "What this even is: some businesses close their books on, say, June 30 instead of December 31 — a “deviating fiscal year”. It requires explicit Finanzamt approval and exists mainly for certain trades and agricultural businesses.\nWhat Yes means: you already have (or are formally requesting) such an approved arrangement. You'd know — there'd be paperwork.\nWhat No means: your business year is the calendar year, like the January-to-December world the rest of us live in.\nIf this is the first time you've heard the phrase “abweichendes Wirtschaftsjahr”, the factual answer to this question is no." },
     ],
@@ -611,6 +768,7 @@ export const STEUER_STEPS: StepDef[] = [
     id: "vat", title: "VAT (Umsatzsteuer)", sub: "The section people worry about most. We explain every option in plain English — you decide.",
     fields: [
       { key: "currentlyVatRegistered", label: "Are you currently VAT-registered at a German Finanzamt?", deLabel: "Aktuell umsatzsteuerlich geführt", type: "boolean", required: true,
+        suggest: f => f.priorBusiness === false && f.taxRegisteredBefore === false ? { value: false, label: "No — you've never had a business or tax file here" } : null,
         explain: "Yes only if a German Finanzamt already manages VAT for you (you'd have an existing USt file and tax number for it).",
         more: "What Yes means: somewhere in Germany a Finanzamt already runs a VAT (Umsatzsteuer) file under your name — from an earlier business, for example. ELSTER will then ask follow-up questions about that existing registration (which office, which number) that this assistant doesn't cover — have those old documents ready.\nWhat No means: you're VAT-new. The standard case for a first-time founder.\nNot the same thing: having paid VAT as a CUSTOMER (everyone does, it's in every supermarket receipt) or having had VAT deducted on invoices you received. The question is whether you were registered as a BUSINESS for VAT." },
       { key: "revenueY1", label: "Estimated total REVENUE this year (€)", deLabel: "Summe der Umsätze, Jahr der Betriebseröffnung", type: "euro", required: true,
@@ -621,8 +779,15 @@ export const STEUER_STEPS: StepDef[] = [
           return null;
         },
         more: "Third number the form wants, and yes, it's different from the last two. Revenue (Umsatz) = the total of everything you will invoice this year, before subtracting a single cost. Profit was income MINUS expenses; revenue is the raw top line.\nWhy it matters twice: (1) it feeds the VAT section's math, and (2) it determines whether you're even ELIGIBLE for the Kleinunternehmer option below — the €25,000 founding-year limit is measured against exactly this number.\nSame estimate rules as before: honest guess, correctable later, and the sale that actually happens always beats the forecast." },
-      { key: "revenueY2", label: "Estimated revenue next year (€)", deLabel: "Summe der Umsätze, Folgejahr", type: "euro", required: true, explain: "" },
+      { key: "revenueY2", label: "Estimated revenue next year (€)", deLabel: "Summe der Umsätze, Folgejahr", type: "euro", required: true,
+        suggest: f => { const v = fullYear(f.revenueY1, f.activityStart); return v ? { value: v, label: `€${fmtEuro(v)} — your year-1 revenue scaled to a full year` } : null; }, explain: "" },
       { key: "kleinunternehmer", label: "Kleinunternehmer-Regelung (§ 19 UStG) — use it or not?", deLabel: "Kleinunternehmer-Regelung", type: "select", required: true,
+        suggest: f => {
+          if (num(f.revenueY1) > 25000) return { value: false, label: "Don't use it — your revenue is above €25,000" };
+          if (f.clients === "business") return { value: false, label: "Don't use it — business clients, VAT back on purchases" };
+          if (f.clients === "private" || num(f.revenueY1)) return { value: true, label: "Use it — simpler, and no VAT on your prices" };
+          return null;
+        },
         selectMap: {
           fromValue: (v: any) => (v === true ? "yes" : v === false ? "no" : ""),
           toValue: (s: string) => (s === "yes" ? true : s === "no" ? false : null),
@@ -635,6 +800,7 @@ export const STEUER_STEPS: StepDef[] = [
         tip: kleinunternehmerTip,
         more: "This is the question everyone googles at 1am, so let's take it slowly.\nTHE LIMITS (fixed by law, § 19 UStG): previous calendar year ≤ €25,000 revenue and current year ≤ €100,000. In your founding year there IS no previous year — so the €25,000 limit applies to your actual founding-year revenue, and the sale that crosses it is already subject to regular VAT from that moment on.\nOPTION 1 — use it (“I will NOT charge VAT”): your invoices carry no VAT and a small note citing §19 UStG · no VAT returns for these sales · but you also CANNOT reclaim the VAT you pay on business purchases (laptop, software, desk — the 19% inside those prices stays your cost).\nOPTION 2 — don't use it (“I WILL charge VAT”): you add VAT (usually 19%) to every invoice · you file VAT returns (Umsatzsteuer-Voranmeldungen — more paperwork, welcome to Germany) · and you reclaim the VAT on your business purchases.\nWHICH ONE WINS: it mostly depends on who pays you. Business clients reclaim your VAT anyway, so charging it costs them nothing and you get VAT back on your purchases. Private customers can't reclaim it, so for them VAT is simply a 19% price increase. Big equipment costs at the start also favour charging VAT. The tip below is based on your answers in step 1.\nOne mechanical note on reversibility: staying a Kleinunternehmer has no lock-in — you can switch to regular VAT taxation in any later year. Opting out (“I WILL charge VAT”) is different: under § 19 Abs. 3 UStG that election binds you to regular taxation for 5 years before you can return to the small-business scheme. Whatever you choose, your answer sheet shows the exact ELSTER entry for it." },
       { key: "vatBalance", label: "Estimated VAT payable this year (€)", deLabel: "Voraussichtliche Umsatzsteuer-Zahllast", type: "euro", showIf: f => f.kleinunternehmer === false, required: f => f.kleinunternehmer === false,
+        suggest: f => num(f.revenueY1) ? { value: String(Math.round(num(f.revenueY1) * 0.19 * 0.8 / 10) * 10), label: `€${fmtEuro(String(Math.round(num(f.revenueY1) * 0.19 * 0.8 / 10) * 10))} — 19% of your revenue, minus ~20% for VAT on your purchases` } : null,
         explain: "Rough estimate: the VAT you will charge minus the VAT you pay on purchases. The final amount is always settled through your VAT returns.",
         tip: f => num(f.revenueY1) ? `Quick estimate: 19% of your revenue is ${eur(num(f.revenueY1) * 0.19)} — subtract the VAT inside your planned business purchases (about 16% of their gross price) and you have your number.` : null,
         more: "The math behind it: you'll collect VAT on your invoices (19% of revenue, usually) and pay VAT inside your business purchases. Zahllast = collected minus paid — what you expect to forward to the state this year.\nA back-of-envelope version is genuinely enough: 19% of your revenue estimate, minus roughly 19% of your expected purchases. The real amounts get settled through your regular VAT returns anyway — this field just gives the Finanzamt a first idea of scale." },
