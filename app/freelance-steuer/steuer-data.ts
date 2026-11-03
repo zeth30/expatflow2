@@ -924,18 +924,12 @@ export function afterRegistration(f: SteuerForm): AfterGroup[] {
       "Marktplätze melden Verkäufer ab 30 Verkäufen oder 2.000 € im Jahr ans Finanzamt (DAC7) — ein Grund mehr für saubere Aufzeichnungen."));
   if (f.salesChannel === "dropship") web.push(L("Dropshipping: towards your customers YOU are the seller — warranty (2 years), returns and delivery problems are yours, whatever the supplier does. Put that in your contract with the supplier.",
       "Dropshipping: Gegenüber deinen Kunden bist DU der Verkäufer — Gewährleistung (2 Jahre), Rücksendungen und Lieferprobleme liegen bei dir, egal was der Lieferant macht. Regle das im Vertrag mit dem Lieferanten."));
-  if (/shirt|textil|bekleidung|kleidung|mode|hoodie|merch/i.test(what)) web.push(L(
-    "Clothing: every textile product sold in the EU needs a label with its fibre composition, e.g. “100 % Baumwolle” (EU Textile Regulation 1007/2011). Blank shirts from a wholesaler usually have it — if you sew or re-label, it's your job. Using someone else's logos or characters on shirts needs a licence.",
-    "Kleidung: Jedes in der EU verkaufte Textil braucht ein Etikett mit der Faserzusammensetzung, z. B. „100 % Baumwolle“ (EU-Textilkennzeichnungsverordnung 1007/2011). Rohlinge vom Großhändler haben das meist — wenn du selbst nähst oder umlabelst, ist es deine Aufgabe. Fremde Logos oder Figuren auf Shirts brauchen eine Lizenz."));
   if (web.length) g.push({ title: L("Shop", "Shop"), items: web });
 
   const extra: string[] = [];
   if (/\b(ki|ai)\b|künstliche intelligenz|artificial intelligence/i.test(what)) extra.push(L(
     "AI work: the EU AI Act applies step by step. Since February 2025 anyone who provides or uses AI systems professionally must ensure sufficient AI literacy (Art. 4) — document how you and your clients' staff are trained. Strict duties apply only to high-risk uses (e.g. hiring, credit scoring).",
     "KI-Arbeit: Der EU AI Act gilt schrittweise. Seit Februar 2025 muss jeder, der KI-Systeme beruflich anbietet oder einsetzt, für ausreichende KI-Kompetenz sorgen (Art. 4) — dokumentiere, wie du und die Mitarbeitenden deiner Kunden geschult werden. Strenge Pflichten gelten nur für Hochrisiko-Anwendungen (z. B. Bewerberauswahl, Kreditprüfung)."));
-  if (trade) extra.push(L(
-    "Changing what you do later (new products, new services) or moving: report it to the Gewerbeamt with a short Gewerbe-Ummeldung.",
-    "Wenn sich später deine Tätigkeit ändert (neue Produkte, neue Leistungen) oder du umziehst: kurz beim Gewerbeamt ummelden (Gewerbe-Ummeldung)."));
   if (trade && f.businessAddrIsHome !== false && f.gewArt && f.gewArt !== "Sonstiges") extra.push(L(
     "Working from home (flat, basement, garage)? Without customer visits that is usually fine. For storage, machines or customers coming by, a rented flat needs your landlord's consent — check your rental contract.",
     "Du arbeitest von zu Hause (Wohnung, Keller, Garage)? Ohne Kundenverkehr ist das meist in Ordnung. Für Lager, Maschinen oder Kundenbesuche brauchst du in einer Mietwohnung die Zustimmung des Vermieters — schau in deinen Mietvertrag."));

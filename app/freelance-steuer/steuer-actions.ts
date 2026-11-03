@@ -200,7 +200,7 @@ export function actionPlan(f: SteuerForm): Action[] {
       L("Register in LUCID as “Hersteller” and confirm the email.", "In LUCID als „Hersteller“ registrieren und die E-Mail bestätigen."),
       L("Sign a contract with a dual system online (several offer small-shop packages) with your kg estimate.", "Online einen Vertrag mit einem dualen System abschließen (mehrere bieten Pakete für kleine Shops) mit deiner kg-Schätzung."),
       L("Enter the system's name and the same kg in LUCID (“Datenmeldung”).", "Den Namen des Systems und dieselben kg in LUCID eintragen („Datenmeldung“)."),
-      L("Put the LUCID number into your marketplace seller account.", "Die LUCID-Nummer im Verkäuferkonto des Marktplatzes eintragen."),
+      ...(mp ? [L("Put the LUCID number into your marketplace seller account.", "Die LUCID-Nummer im Verkäuferkonto des Marktplatzes eintragen.")] : []),
       ...(drop ? [L("Dropshipping: if your supplier confirms in writing that he licenses the packaging for Germany, keep that confirmation — otherwise you license it.", "Dropshipping: Bestätigt dein Lieferant schriftlich, dass er die Verpackung für Deutschland lizenziert, heb das auf — sonst lizenzierst du sie.")] : []),
     ],
     cost: L("Registration free; licence for small amounts usually a low two-digit amount per year", "Registrierung kostenlos; Lizenz für kleine Mengen meist niedriger zweistelliger Betrag im Jahr"),
@@ -233,6 +233,18 @@ export function actionPlan(f: SteuerForm): Action[] {
       L("Download every monthly invoice into one folder “Ausland”.", "Jede Monatsrechnung in einen Ordner „Ausland“ herunterladen."),
       ku ? L(`Plan ad budgets with +19 %: €500 ads = ${eur(595)} real cost.`, `Werbebudget mit +19 % planen: 500 € Werbung = ${eur(595)} echte Kosten.`)
          : L("The VAT nets out to €0 in your VAT return — see “Every month”.", "Die Umsatzsteuer gleicht sich in der Voranmeldung auf 0 € aus — siehe „Jeden Monat“."),
+    ],
+  });
+
+  if (/shirt|textil|bekleidung|kleidung|mode|hoodie|merch/i.test(`${f.gewActivity} ${f.activityDesc}`)) a.push({
+    phase: "beforeSale",
+    title: L("Check the labels on your shirts", "Etiketten deiner Shirts prüfen"),
+    why: L("Every piece of clothing sold in the EU needs a fibre label (EU Regulation 1007/2011) — missing labels are a classic reason for warning letters.", "Jedes in der EU verkaufte Kleidungsstück braucht ein Etikett mit der Faserzusammensetzung (EU-Verordnung 1007/2011) — fehlende Etiketten sind ein klassischer Abmahngrund."),
+    steps: [
+      L("Buying blanks (e.g. from a textile wholesaler): check that every shirt has a sewn-in label like “100 % Baumwolle”. Keep the wholesaler's product sheet.", "Rohlinge kaufen (z. B. beim Textilgroßhändler): prüfen, dass jedes Shirt ein eingenähtes Etikett wie „100 % Baumwolle“ hat. Das Produktdatenblatt des Händlers aufheben."),
+      L("Cutting out the label or sewing your own: your new label must show the fibre composition in German.", "Etikett rausschneiden oder selbst nähen: Dein neues Etikett muss die Faserzusammensetzung auf Deutsch zeigen."),
+      L("Write the same fibre composition into every listing.", "Dieselbe Faserangabe in jedes Angebot schreiben."),
+      L("Only print your own designs. Logos, band names, film or game characters need a licence from the rights holder.", "Nur eigene Motive drucken. Logos, Bandnamen, Film- oder Spielfiguren brauchen eine Lizenz vom Rechteinhaber."),
     ],
   });
 
@@ -275,6 +287,7 @@ export function actionPlan(f: SteuerForm): Action[] {
       L("Net sales at 19 % → Kennzahl 81. VAT on your purchase invoices → Kennzahl 66.", "Netto-Umsätze zu 19 % → Kennzahl 81. Umsatzsteuer aus deinen Eingangsrechnungen → Kennzahl 66."),
       ...(trade && (handel || f.website) ? [L("Meta/Google/Shopify (EU): net sum → Kennzahl 46; the same tax again as input VAT → Kennzahl 67. Nets to €0.", "Meta/Google/Shopify (EU): Nettosumme → Kennzahl 46; dieselbe Steuer nochmal als Vorsteuer → Kennzahl 67. Ergibt 0 €.")] : []),
       ...(imp ? [L("Import VAT from customs notices → Kennzahl 62.", "Einfuhrumsatzsteuer aus Zollbescheiden → Kennzahl 62.")] : []),
+      ...(imp && drop && own ? [L("Sales that run through IOSS do NOT go here — they only go into the IOSS return.", "Verkäufe, die über IOSS laufen, kommen NICHT hierher — die stehen nur in der IOSS-Meldung.")] : []),
       ...(euSup ? [L("Goods bought VAT-free from EU suppliers: net → Kennzahl 89; the tax again as input VAT → Kennzahl 61.", "Steuerfrei eingekaufte Ware von EU-Lieferanten: netto → Kennzahl 89; die Steuer nochmal als Vorsteuer → Kennzahl 61.")] : []),
       L("Send, then pay the result to the Finanzamt by the 10th — or get the refund.", "Absenden, dann das Ergebnis bis zum 10. ans Finanzamt zahlen — oder die Erstattung bekommen."),
       L("ELSTER shows the text next to every Kennzahl — if unsure, read the line text, not just the number.", "ELSTER zeigt neben jeder Kennzahl den Text — im Zweifel die Zeile lesen, nicht nur die Nummer."),
@@ -305,7 +318,7 @@ export function actionPlan(f: SteuerForm): Action[] {
   a.push({
     phase: "quarterly",
     title: L("Advance tax payments", "Steuer-Vorauszahlungen"),
-    why: L("Due on 10 March, June, September and December — the amounts are on your Vorauszahlungsbescheid.", "Fällig am 10. März, Juni, September und Dezember — die Beträge stehen in deinem Vorauszahlungsbescheid."),
+    why: L("Only if the Finanzamt sets them (with small profits it often doesn't). Due on 10 March, June, September and December — the amounts are on your Vorauszahlungsbescheid.", "Nur wenn das Finanzamt welche festsetzt (bei kleinen Gewinnen oft nicht). Fällig am 10. März, Juni, September und Dezember — die Beträge stehen in deinem Vorauszahlungsbescheid."),
     where: { label: L("Your Finanzamt — SEPA direct debit form on its website", "Dein Finanzamt — SEPA-Lastschriftmandat auf seiner Website") },
     steps: [
       L("As soon as the first notice arrives: send the Finanzamt a SEPA direct debit mandate for your business account.", "Sobald der erste Bescheid kommt: dem Finanzamt ein SEPA-Lastschriftmandat für dein Geschäftskonto schicken."),
