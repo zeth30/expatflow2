@@ -72,7 +72,7 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
   };
   const drawFooter = (pg: any, n: number) => {
     pg.drawText(
-      safe("Not tax advice. You entered every value yourself; ReadyExpat translated and formatted your own answers (mechanical assistance, § 6 Nr. 3 StBerG)."),
+      safe("Not tax advice. You entered every value yourself; ReadyExpat translated and formatted your own answers."),
       { x: ML, y: 34, size: 7, font: HO, color: MUTED, maxWidth: CW - 40 }
     );
     pg.drawText("Generated locally in your browser - readyexpat.de", { x: ML, y: 24, size: 7, font: HO, color: MUTED });

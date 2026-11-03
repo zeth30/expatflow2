@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Step-by-step ELSTER registration guide for expats and freelancers in Germany. Certificate file, activation letter timing, Steuer-ID — every German screen explained in English. Free.",
   alternates: { canonical: `${DOMAIN}/elster-account-english` },
-  robots: { index: false, follow: false }, // private preview, see lib/preview.ts
+  robots: { index: true, follow: true },
   openGraph: {
     title: "How to Create an ELSTER Account in English (2026)",
     description:

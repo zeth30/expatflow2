@@ -1,15 +1,14 @@
 /**
- * Private preview gate for unlaunched products (currently: Steuer).
+ * Owner access for the unlaunched Steuer product.
  *
- * Open once with ?key=<STEUER_PREVIEW_KEY> → an httpOnly cookie is set and the
- * pages stay reachable in that browser. Everyone else gets a 404.
- * If STEUER_PREVIEW_KEY is not set, the pages are locked for everyone.
+ * The pages are public (free beta). Opening them once with ?key=<STEUER_PREVIEW_KEY>
+ * (or via the hidden button bottom right on /freelance-steuer) sets an httpOnly cookie;
+ * only that browser can start the paid Steuer checkout.
  */
 import type { NextRequest } from "next/server";
 
 export const PREVIEW_COOKIE = "rx_preview";
-
-export const PREVIEW_PATHS = ["/freelance-steuer", "/elster-account-english"];
+export const OWNER_FLAG_COOKIE = "rx_owner";
 
 export function previewKey(): string | undefined {
   return process.env.STEUER_PREVIEW_KEY || undefined;

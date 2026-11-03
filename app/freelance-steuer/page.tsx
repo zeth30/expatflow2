@@ -6,7 +6,7 @@
 //
 //  Phases: landing → wizard → payment → generating → done
 //  Data:   localStorage only (simplyexpat-steuer-v1) — never sent to server
-//  Legal:  explains, never recommends (§ 6 Nr. 3 StBerG pattern) —
+//  Legal:  explains, never recommends —
 //          see docs/superpowers/specs/2026-07-06-…-design.md §2
 // ═══════════════════════════════════════════════════════════════════
 
@@ -58,13 +58,29 @@ function FieldInput({ fd, form, setForm }: { fd: FieldDef; form: SteuerForm; set
 }
 
 // ─── Landing page ─────────────────────────────────────────────────
-function SteuerLanding({ onStart }: { onStart: () => void }) {
+function SteuerLanding({ onStart: startWizard }: { onStart: () => void }) {
   const [showSim, setShowSim] = useState(false);
+  // Test-version acceptance: required before the wizard opens
+  const [accepted, setAccepted] = useState(false);
+  const [nudge, setNudge] = useState(false);
+  const onStart = () => {
+    if (accepted) { startWizard(); return; }
+    setNudge(true);
+    document.getElementById("steuer-accept")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+  const acceptBox = (id?: string) => (
+    <label id={id} style={{ display: "flex", alignItems: "flex-start", gap: 10, maxWidth: 520, margin: "0 auto 16px", padding: "12px 14px", borderRadius: 12, background: nudge && !accepted ? "#fef3c7" : "#fffbeb", border: `1.5px solid ${nudge && !accepted ? "#f59e0b" : "#fde68a"}`, textAlign: "left", cursor: "pointer" }}>
+      <input type="checkbox" checked={accepted} onChange={(e) => { setAccepted(e.target.checked); setNudge(false); }} style={{ width: 18, height: 18, marginTop: 1, flexShrink: 0, accentColor: BLUE, cursor: "pointer" }} />
+      <span style={{ color: "#78350f", fontSize: 13, lineHeight: 1.55 }}>
+        <strong>I accept that this service is a test version and may not work.</strong> It is not tax advice. I check every entry myself before I submit anything in ELSTER.
+      </span>
+    </label>
+  );
   const FAQ = [
     { q: "Can I fill in the Fragebogen zur steuerlichen Erfassung in English?", a: "The official ELSTER form exists only in German — there is no English version. That's exactly what this tool solves: you answer every question in plain English, and you get each German entry ready to copy into ELSTER, matched to ELSTER's own field numbers." },
     { q: "What's the difference between Steuer-ID and Steuernummer?", a: "The Steuer-ID (steuerliche Identifikationsnummer) is the 11-digit number every resident gets by post after their Anmeldung — it never changes. The Steuernummer is a separate number the Finanzamt assigns for your tax file; as a new freelancer you receive it AFTER submitting this Fragebogen. You need the Steuer-ID to fill the form, and you get the Steuernummer as the result." },
     { q: "Am I a Freiberufler or do I have a Gewerbe?", a: "That classification is made by the Finanzamt based on what your activity actually is — liberal professions like software development, design, writing, teaching or consulting are typically freiberuflich, while trading and most commercial activities are gewerblich. The form asks you to describe your activity precisely; the Finanzamt decides the category. If your case is unclear, ask your Finanzamt or a Steuerberater." },
-    { q: "Is this tax advice?", a: "No. We translate and explain what each field of the official form means, in plain English. Every entry and every choice is yours — this is mechanical assistance based on your own instructions (§ 6 Nr. 3 StBerG). For advice on what is right for your personal situation, consult a licensed Steuerberater." },
+    { q: "Is this tax advice?", a: "No. We translate and explain what each field of the official form means, in plain English. Every entry and every choice is yours. For advice on what is right for your personal situation, consult a licensed Steuerberater." },
     { q: "Do I need an ELSTER account first?", a: "Yes. The form can only be submitted through your personal ELSTER account. Our free step-by-step guide on this page shows exactly how to get one as a new arrival — plan for the activation letter, which arrives by post and typically takes a few days up to two weeks." },
     { q: "What if my income estimates turn out wrong?", a: "Estimates are expected to be estimates. You can correct them later by writing to your Finanzamt, and your actual tax is always settled with your annual tax return — the estimates only affect advance payments." },
     { q: "I'm employed AND starting freelance work on the side. Does this work for me?", a: "Yes. The form has fields for both freelance profit and employment income — the wizard asks for both." },
@@ -116,6 +132,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
           <p style={{ color: "rgba(191,219,254,0.85)", fontSize: 16.5, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 28px" }}>
             Starting freelance work in Germany shouldn&apos;t require a law degree in German. But every new freelancer must submit the <strong style={{ color: "white" }}>Fragebogen zur steuerlichen Erfassung</strong> — online, via ELSTER, in German, within one month of starting. That&apos;s where we come in: you answer in plain English, and we hand you every German entry, ready to copy.
           </p>
+          {acceptBox("steuer-accept")}
           <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 34px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.45)", cursor: "pointer", fontFamily: "inherit" }}>
             Start in English <ArrowRight size={18} />
           </button>
@@ -245,7 +262,7 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
         <div style={{ marginTop: 12, padding: "18px 20px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4", display: "flex", gap: 12 }}>
           <Shield size={17} color="#94a3b8" style={{ flexShrink: 0, marginTop: 2 }} />
           <p style={{ color: MUTED, fontSize: 13, lineHeight: 1.7 }}>
-            <strong style={{ color: NAVY }}>We are not a Steuerberatung and give no individual tax advice.</strong> We explain what each field means in plain English; every entry and every choice is yours (mechanical assistance per § 6 Nr. 3 StBerG). Where the form asks for a genuine decision — like the Kleinunternehmer-Regelung — we explain the mechanics neutrally and point you to ELSTER&apos;s official help or a Steuerberater.
+            <strong style={{ color: NAVY }}>We are not a Steuerberatung and give no individual tax advice.</strong> We explain what each field means in plain English; every entry and every choice is yours. Where the form asks for a genuine decision — like the Kleinunternehmer-Regelung — we explain the mechanics neutrally and point you to ELSTER&apos;s official help or a Steuerberater.
           </p>
         </div>
       </div>
@@ -263,12 +280,16 @@ function SteuerLanding({ onStart }: { onStart: () => void }) {
 
       {/* ── Bottom CTA ── */}
       <div style={{ textAlign: "center", padding: "24px 20px 72px" }}>
+        {acceptBox()}
         <button onClick={onStart} style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 34px", borderRadius: 14, background: `linear-gradient(135deg,${BLUE},#2563eb)`, color: "white", fontWeight: 900, fontSize: 16, border: "none", boxShadow: "0 8px 32px rgba(0,117,255,0.35)", cursor: "pointer", fontFamily: "inherit" }}>
           Start in English <ArrowRight size={18} />
         </button>
         <p style={{ color: "#94a3b8", fontSize: 12.5, marginTop: 12 }}>€15 · One-time · Your data stays in your browser</p>
       </div>
 
+      {/* Hidden owner button (bottom right): asks for the preview key, unlocks paid checkout in this browser */}
+      <button aria-hidden="true" tabIndex={-1} title="" onClick={() => { const k = window.prompt("Key"); if (k) window.location.href = `/freelance-steuer?key=${encodeURIComponent(k.trim())}`; }}
+        style={{ position: "fixed", right: 0, bottom: 0, width: 28, height: 28, opacity: 0, border: "none", background: "transparent", cursor: "default", zIndex: 60 }} />
       <AppFooter />
       <CookieBanner />
     </div>
@@ -514,6 +535,8 @@ function SteuerWizard({
 
 // ─── Payment ──────────────────────────────────────────────────────
 function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSkip: () => void; onBack: () => void }) {
+  const [isOwner, setIsOwner] = useState(false);
+  useEffect(() => { setIsOwner(document.cookie.split("; ").includes("rx_owner=1")); }, []);
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
       <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -585,6 +608,7 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
         <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 12, marginTop: 10 }}>
           Free while we&apos;re in beta — no card required
         </p>
+        {isOwner && (<>
         <button
           id="steuer-pay-btn"
           onClick={async (e) => {
@@ -611,6 +635,7 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
         <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 10.5, lineHeight: 1.5, marginTop: 8 }}>
           Payments via Stripe · Secure · No card stored. By paying you consent to immediate service delivery and acknowledge the loss of your 14-day right of withdrawal (§ 356 Abs. 5 BGB).
         </p>
+        </>)}
       </div>
       <AppFooter />
     </div>
@@ -780,7 +805,7 @@ function SteuerDone({
               <p style={{ color: MUTED, fontSize: 12.5, lineHeight: 1.7 }}>
                 <strong style={{ color: NAVY }}>Before you submit in ELSTER:</strong> review every value on ELSTER&apos;s summary screen — you are responsible for your entries. After submitting, ELSTER stores a transmission protocol under &quot;Meine Formulare&quot;; save it. The Finanzamt sends your Steuernummer by post after processing.<br />
                 <span style={{ fontSize: 11.5 }}>Field numbers verified against the 2026 form version (fseeun-202401). If ELSTER ever shows a different number, match by the German label next to it — the labels don&apos;t change.</span><br />
-                <span style={{ fontSize: 11.5 }}>Not tax advice — you entered every value yourself; ReadyExpat translated and formatted your own answers (§ 6 Nr. 3 StBerG).</span>
+                <span style={{ fontSize: 11.5 }}>Not tax advice — you entered every value yourself; ReadyExpat translated and formatted your own answers.</span>
               </p>
             </div>
           </>
