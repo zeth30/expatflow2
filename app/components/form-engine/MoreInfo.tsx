@@ -14,8 +14,8 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
   const mt = first ? 0 : 10;
 
   // YES / NO cards
-  const yesMatch = para.match(/^(What (?:counts as )?Yes[^:]*):\s*(.*)$/i);
-  const noMatch = para.match(/^(What No[^:]*):\s*(.*)$/i);
+  const yesMatch = para.match(/^((?:What (?:counts as )?Yes|Was (?:als )?Ja)[^:]*):\s*(.*)$/i);
+  const noMatch = para.match(/^((?:What No|Was Nein)[^:]*):\s*(.*)$/i);
   if (yesMatch || noMatch) {
     const isYes = !!yesMatch;
     const m = (yesMatch ?? noMatch)!;
@@ -36,7 +36,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
             ) : (
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
             )}
-            {isYes ? "YES" : "NO"}
+            {m[1].startsWith("Was") ? (isYes ? "JA" : "NEIN") : (isYes ? "YES" : "NO")}
           </span>
           <span style={{ color: isYes ? "#166534" : "#475569", fontSize: 11, fontWeight: 700 }}>{m[1]}</span>
         </div>
@@ -67,7 +67,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
   }
 
   // ALL-CAPS mini headline: "THE LIMITS (…): body" / "OPTION 1 — use it (…): body"
-  const capsMatch = para.match(/^([A-Z][A-Z0-9 ]{3,}(?:\d)?)(\s*[—(:].*)$/);
+  const capsMatch = para.match(/^([A-ZÄÖÜ][A-ZÄÖÜ0-9 ]{3,}(?:\d)?)(\s*[—(:].*)$/);
   if (capsMatch && capsMatch[1] === capsMatch[1].toUpperCase()) {
     const rest = capsMatch[2].replace(/^[\s:—]+/, "");
     return (
@@ -92,7 +92,7 @@ function MoreBlock({ para, first }: { para: string; first: boolean }) {
   );
 }
 
-export function MoreInfo({ text }: { text: string }) {
+export function MoreInfo({ text, t = s => s }: { text: string; t?: (s: string) => string }) {
   const [open, setOpen] = useState(false);
   const paras = text.split("\n");
   return (
@@ -118,7 +118,7 @@ export function MoreInfo({ text }: { text: string }) {
           fontSize: 11, fontWeight: 800, fontStyle: "italic", fontFamily: "Georgia, serif",
           transition: "all 0.18s ease",
         }}>i</span>
-        {open ? "Got it" : "Tell me more"}
+        {open ? t("Got it") : t("Tell me more")}
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
           style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.25s cubic-bezier(0.4,0,0.2,1)", opacity: 0.7 }}>
           <polyline points="6 9 12 15 18 9" />

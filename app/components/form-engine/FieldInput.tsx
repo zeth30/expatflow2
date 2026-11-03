@@ -8,6 +8,10 @@ import React from "react";
 import type { FieldDef } from "./types";
 import { MoreInfo } from "./MoreInfo";
 
+// Optional translator for all copy (field texts + engine UI strings); identity = English
+export type Translate = (s: string) => string;
+const same: Translate = s => s;
+
 const NAVY = "#0f172a";
 const BLUE = "#0075FF";
 const MUTED = "#64748b";
@@ -23,24 +27,24 @@ export function TipBox({ text }: { text: string }) {
 }
 
 // "Suggested for you" — fills the field in one click, based on earlier answers
-function SuggestBox({ label, matches, onUse }: { label: string; matches: boolean; onUse: () => void }) {
+function SuggestBox({ label, matches, onUse, t }: { label: string; matches: boolean; onUse: () => void; t: Translate }) {
   if (matches) {
-    return <p style={{ color: "#15803d", fontSize: 13, fontWeight: 700, margin: "8px 0 0" }}>✓ Matches the suggestion for you: {label}</p>;
+    return <p style={{ color: "#15803d", fontSize: 13, fontWeight: 700, margin: "8px 0 0" }}>✓ {t("Matches the suggestion for you:")} {label}</p>;
   }
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginTop: 10, padding: "11px 14px", borderRadius: 12, background: "#f0fdf4", border: "1px solid #bbf7d0" }}>
       <p style={{ flex: 1, minWidth: 180, color: "#14532d", fontSize: 14, lineHeight: 1.5, margin: 0 }}>
-        <span style={{ fontWeight: 800 }}>Suggested for you:</span> {label}
+        <span style={{ fontWeight: 800 }}>{t("Suggested for you:")}</span> {label}
       </p>
       <button onClick={onUse} style={{ padding: "8px 16px", borderRadius: 9, border: "none", background: "#16a34a", color: "white", fontWeight: 800, fontSize: 13.5, cursor: "pointer", fontFamily: "inherit" }}>
-        Use this
+        {t("Use this")}
       </button>
     </div>
   );
 }
 
 export function FieldInput<TForm extends Record<string, any>>({
-  fd, form, setForm, decisionHelp,
+  fd, form, setForm, decisionHelp, t = same,
 }: {
   fd: FieldDef<TForm>;
   form: TForm;
@@ -48,6 +52,7 @@ export function FieldInput<TForm extends Record<string, any>>({
   // Product-specific pointer for decision fields, e.g. where the official
   // help lives ("Check ELSTER's official help for this field…").
   decisionHelp: string;
+  t?: Translate;
 }) {
   if (fd.showIf && !fd.showIf(form)) return null;
   const val = form[fd.key];
@@ -55,13 +60,13 @@ export function FieldInput<TForm extends Record<string, any>>({
   return (
     <div style={{ marginBottom: 30 }}>
       <label style={{ display: "block", fontWeight: 800, color: NAVY, fontSize: 16, letterSpacing: "-0.01em", marginBottom: 2 }}>
-        {fd.label}
+        {t(fd.label)}
         <span style={{ fontWeight: 500, color: "#94a3b8", fontSize: 12.5, marginLeft: 8 }}>{fd.deLabel}</span>
       </label>
-      {fd.explain && fd.explain.split("\n").map((para, i) => (
+      {fd.explain && t(fd.explain).split("\n").map((para, i) => (
         <p key={i} style={{ color: "#475569", fontSize: 14, lineHeight: 1.6, margin: i === 0 ? "4px 0 8px" : "0 0 8px" }}>{para}</p>
       ))}
-      {fd.more && <MoreInfo text={fd.more} />}
+      {fd.more && <MoreInfo text={t(fd.more)} t={t} />}
       {fd.decision && (
         <div style={{ padding: "8px 12px", borderRadius: 8, background: "#fffbeb", border: "1px solid #fde68a", marginBottom: 8 }}>
           <p style={{ fontSize: 11.5, color: "#92400e", lineHeight: 1.5 }}>
@@ -79,15 +84,15 @@ export function FieldInput<TForm extends Record<string, any>>({
                 border: on ? `2px solid ${BLUE}` : "1px solid #e2e8f0", background: on ? "#eff6ff" : "white",
                 boxShadow: on ? "0 4px 14px rgba(0,117,255,0.15)" : "0 1px 2px rgba(15,23,42,0.04)",
               }}>
-                <div style={{ fontWeight: 800, fontSize: 15, color: on ? BLUE : NAVY }}>{o.label}</div>
-                {o.desc && <div style={{ fontSize: 13, color: MUTED, lineHeight: 1.5, marginTop: 3 }}>{o.desc}</div>}
+                <div style={{ fontWeight: 800, fontSize: 15, color: on ? BLUE : NAVY }}>{t(o.label)}</div>
+                {o.desc && <div style={{ fontSize: 13, color: MUTED, lineHeight: 1.5, marginTop: 3 }}>{t(o.desc)}</div>}
               </button>
             );
           })}
         </div>
       ) : fd.type === "boolean" ? (
         <div style={{ display: "flex", gap: 10 }}>
-          {[{ v: true, l: "Yes" }, { v: false, l: "No" }].map(({ v, l }) => (
+          {[{ v: true, l: t("Yes") }, { v: false, l: t("No") }].map(({ v, l }) => (
             <button key={l} onClick={() => set(v)} style={{
               flex: 1, padding: "11px", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontFamily: "inherit", fontSize: 15,
               border: val === v ? `2px solid ${BLUE}` : "1px solid #e2e8f0",
@@ -100,26 +105,26 @@ export function FieldInput<TForm extends Record<string, any>>({
           value={fd.selectMap ? fd.selectMap.fromValue(val) : String(val ?? "")}
           onChange={e => set(fd.selectMap ? fd.selectMap.toValue(e.target.value) : e.target.value)}
           style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 15, fontFamily: "inherit", background: "white", color: NAVY }}>
-          <option value="">— select —</option>
-          {fd.options!.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          <option value="">{t("— select —")}</option>
+          {fd.options!.map(o => <option key={o.value} value={o.value}>{t(o.label)}</option>)}
         </select>
       ) : (
         <input
           type={fd.type === "date" ? "date" : "text"}
           inputMode={fd.type === "euro" ? "numeric" : undefined}
           value={String(val ?? "")}
-          placeholder={fd.placeholder}
+          placeholder={fd.placeholder && t(fd.placeholder)}
           onChange={e => set(fd.type === "euro" ? e.target.value.replace(/[^\d]/g, "") : e.target.value)}
           style={{ width: "100%", padding: "12px", borderRadius: 10, border: "1px solid #e2e8f0", fontSize: 15, fontFamily: "inherit", color: NAVY, boxSizing: "border-box" }}
         />
       )}
       {(() => {
         const sug = fd.suggest?.(form);
-        return sug ? <SuggestBox label={sug.label} matches={val === sug.value} onUse={() => set(sug.value)} /> : null;
+        return sug ? <SuggestBox label={t(sug.label)} matches={val === sug.value} onUse={() => set(sug.value)} t={t} /> : null;
       })()}
       {(() => {
         const tip = fd.tip?.(form);
-        return tip ? <TipBox text={tip} /> : null;
+        return tip ? <TipBox text={t(tip)} /> : null;
       })()}
     </div>
   );

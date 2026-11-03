@@ -8,6 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Changelog
 
+### 2026-11-03 (2)
+- **Steuer: EN/DE language switch.** `app/freelance-steuer/i18n.ts` (`tr()` = lookup by English text in `steuer-de.json`, `L(en, de)` for templates, `hasTr()`), module-level lang set during render; form engine takes optional `t`. localStorage key `simplyexpat-steuer-lang`. New copy: wrap in `L()` or add the English string to `steuer-de.json`.
+- **Steuer: "After registration" section** on the done page — `afterRegistration(f)` in `steuer-data.ts` (invoices, deadlines, insurance, shop duties: LUCID, DAC7, dropshipping/GPSR, textile labels, AI Act Art. 4, working from home). New field `salesChannel` (online/dropship/offline) for Handel.
+- Persona runs: Martin (AI consulting), Emir (dropshipping), Erik (T-shirts from the basement).
+
 ### 2026-11-03
 - **Steuer → personal use behind a password.** `/freelance-steuer` is gated by `proxy.ts` (cookie check) → `/steuer-login` form → `/api/steuer-login` (SHA-256 compare, hash in `lib/preview.ts`). Low security on purpose. `/elster-account-english` stays public.
 - **Steuer wizard:** new first step "Your plan" (goal / work type / clients, choice cards) drives personalised `tip`s per field and a "Your game plan" panel (form engine: `type: "choice"`, `tip`, step `tips`, `TipBox`). Tips DO recommend — allowed only while personal-use; re-apply explain-never-recommend before any launch. Review goes straight to the sheet (no payment). Trade (Gewerbe) prints "Einkünfte aus Gewerbebetrieb" with field nr "—" (not verified). The non-existent "§ 6 Nr. 3 StBerG" citation was removed everywhere.

@@ -5,6 +5,7 @@
 // A4 = 595.28 x 841.89 pt. pdf-lib uses bottom-left origin.
 
 import { buildAnswerRows, type SteuerForm } from "./steuer-data";
+import { L, tr, hasTr } from "./i18n";
 
 async function loadPdfLib(): Promise<any> {
   if ((window as any).PDFLib) return (window as any).PDFLib;
@@ -37,6 +38,7 @@ const safe = (s: string): string =>
     .replace(/—/g, "-")
     .replace(/–/g, "-")
     .replace(/≥/g, ">=")
+    .replace(/€/g, "EUR")
     .replace(/→/g, "->")
     .replace(/[^\x00-\xFF]/g, "?");
 
@@ -66,17 +68,17 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
     pg.drawRectangle({ x: 0, y: PH - (first ? 74 : 40), width: PW, height: first ? 74 : 40, color: NAVY });
     pg.drawText("ReadyExpat", { x: ML, y: PH - (first ? 34 : 26), size: 13, font: HB, color: rgb(1, 1, 1) });
     if (first) {
-      pg.drawText("Fragebogen zur steuerlichen Erfassung - Your ELSTER answer sheet", { x: ML, y: PH - 54, size: 10.5, font: HR, color: rgb(0.75, 0.85, 1) });
+      pg.drawText(L("Fragebogen zur steuerlichen Erfassung - Your ELSTER answer sheet", "Fragebogen zur steuerlichen Erfassung - dein ELSTER-Antwortblatt"), { x: ML, y: PH - 54, size: 10.5, font: HR, color: rgb(0.75, 0.85, 1) });
       pg.drawText(fmtToday(), { x: PW - ML - 60, y: PH - 34, size: 9, font: HR, color: rgb(0.75, 0.85, 1) });
     }
   };
   const drawFooter = (pg: any, n: number) => {
     pg.drawText(
-      safe("Not tax advice. You entered every value yourself; ReadyExpat translated and formatted your own answers."),
+      safe(L("Not tax advice. You entered every value yourself; ReadyExpat translated and formatted your own answers.", "Keine Steuerberatung. Alle Werte hast du selbst eingegeben; ReadyExpat hat deine Antworten nur formatiert.")),
       { x: ML, y: 34, size: 7, font: HO, color: MUTED, maxWidth: CW - 40 }
     );
-    pg.drawText("Generated locally in your browser - readyexpat.de", { x: ML, y: 24, size: 7, font: HO, color: MUTED });
-    pg.drawText(`Page ${n}`, { x: PW - ML - 30, y: 24, size: 8, font: HR, color: MUTED });
+    pg.drawText(L("Generated locally in your browser - readyexpat.de", "Lokal in deinem Browser erstellt - readyexpat.de"), { x: ML, y: 24, size: 7, font: HO, color: MUTED });
+    pg.drawText(`${L("Page", "Seite")} ${n}`, { x: PW - ML - 30, y: 24, size: 8, font: HR, color: MUTED });
   };
 
   drawHeader(page, true);
@@ -94,11 +96,11 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
 
   // Intro box
   page.drawRectangle({ x: ML, y: y - 61, width: CW, height: 71, color: rgb(0.94, 0.97, 1), borderColor: rgb(0.73, 0.9, 1), borderWidth: 1 });
-  page.drawText(safe("How to use this sheet: open Mein ELSTER (elster.de) in one window and this sheet next to it."), { x: ML + 10, y: y - 6, size: 8.5, font: HB, color: NAVY });
-  page.drawText(safe("The small numbers match the field numbers ELSTER shows next to each input. Work top to bottom -"), { x: ML + 10, y: y - 19, size: 8.5, font: HR, color: NAVY });
-  page.drawText(safe("every value below is one of YOUR answers, formatted in German. Review each entry before submitting."), { x: ML + 10, y: y - 32, size: 8.5, font: HR, color: NAVY });
-  page.drawText(safe("Field numbers verified against the 2026 form version (fseeun-202401). If ELSTER ever shows a"), { x: ML + 10, y: y - 45, size: 7.5, font: HO, color: MUTED });
-  page.drawText(safe("different number, match by the German label printed next to it - the labels don't change."), { x: ML + 10, y: y - 55, size: 7.5, font: HO, color: MUTED });
+  page.drawText(safe(L("How to use this sheet: open Mein ELSTER (elster.de) in one window and this sheet next to it.", "So nutzt du das Blatt: Mein ELSTER (elster.de) in einem Fenster öffnen, dieses Blatt daneben.")), { x: ML + 10, y: y - 6, size: 8.5, font: HB, color: NAVY });
+  page.drawText(safe(L("The small numbers match the field numbers ELSTER shows next to each input. Work top to bottom -", "Die kleinen Nummern entsprechen den Feldnummern in ELSTER. Arbeite von oben nach unten -")), { x: ML + 10, y: y - 19, size: 8.5, font: HR, color: NAVY });
+  page.drawText(safe(L("every value below is one of YOUR answers, formatted in German. Review each entry before submitting.", "jeder Wert ist eine DEINER Antworten. Prüfe jeden Eintrag vor dem Absenden.")), { x: ML + 10, y: y - 32, size: 8.5, font: HR, color: NAVY });
+  page.drawText(safe(L("Field numbers verified against the 2026 form version (fseeun-202401). If ELSTER ever shows a", "Feldnummern geprüft an der Formularversion 2026 (fseeun-202401). Zeigt ELSTER eine andere")), { x: ML + 10, y: y - 45, size: 7.5, font: HO, color: MUTED });
+  page.drawText(safe(L("different number, match by the German label printed next to it - the labels don't change.", "Nummer, richte dich nach der Bezeichnung daneben - die ändert sich nicht.")), { x: ML + 10, y: y - 55, size: 7.5, font: HO, color: MUTED });
   y -= 83;
 
   // Filled-form layout: every field drawn as a labelled input box with the
@@ -115,7 +117,7 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
     page.drawText(safe(section.title), { x: ML, y, size: 11, font: HB, color: GOV });
     page.drawText(`Seite ${si + 1} von ${allSections.length}`, { x: PW - ML - 70, y, size: 7.5, font: HR, color: MUTED });
     y -= 12;
-    page.drawText(safe(section.titleEn), { x: ML, y, size: 8, font: HO, color: BLUE });
+    if (hasTr(section.titleEn)) page.drawText(safe(tr(section.titleEn)), { x: ML, y, size: 8, font: HO, color: BLUE });
     y -= 8;
     page.drawRectangle({ x: ML, y: y - 2, width: CW, height: 2.2, color: GOV });
     y -= 18;
@@ -133,11 +135,11 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
         page.drawText(clip("[ ] " + safe(row.de), 100), { x: ML + 8, y: y - 9, size: 9, font: HO, color: AMBER_TX });
       } else {
         page.drawRectangle({ x: ML, y: y - 15, width: CW, height: 20, color: row.de ? rgb(0.984, 0.99, 1) : rgb(0.96, 0.97, 0.98), borderColor: BOXLINE, borderWidth: 0.8 });
-        page.drawText(row.de ? clip(safe(row.de), 92) : "- leave empty -", { x: ML + 8, y: y - 9, size: 9.5, font: row.de ? HB : HO, color: row.de ? NAVY : MUTED });
+        page.drawText(row.de ? clip(safe(row.de), 92) : L("- leave empty -", "- leer lassen -"), { x: ML + 8, y: y - 9, size: 9.5, font: row.de ? HB : HO, color: row.de ? NAVY : MUTED });
       }
       y -= 20;
-      if (row.enHint) {
-        page.drawText(clip(safe(row.enHint), 120), { x: ML, y: y - 5, size: 6.5, font: HO, color: MUTED });
+      if (row.enHint && hasTr(row.enHint)) {
+        page.drawText(clip(safe(tr(row.enHint)), 120), { x: ML, y: y - 5, size: 6.5, font: HO, color: MUTED });
         y -= 9;
       }
       y -= 8;
@@ -147,12 +149,12 @@ export async function buildSteuerPDF(form: SteuerForm): Promise<{ bytes: Uint8Ar
 
   // Closing note
   newPageIfNeeded(80);
-  page.drawText("Before you submit in ELSTER:", { x: ML, y, size: 9.5, font: HB, color: NAVY });
+  page.drawText(L("Before you submit in ELSTER:", "Bevor du in ELSTER absendest:"), { x: ML, y, size: 9.5, font: HB, color: NAVY });
   y -= 15;
   for (const line of [
-    "Review every value on the ELSTER summary screen - you are responsible for your entries.",
-    "ELSTER shows a transmission protocol after submitting. Save it.",
-    "The Finanzamt sends your Steuernummer by post after processing.",
+    L("Review every value on the ELSTER summary screen - you are responsible for your entries.", "Prüfe jeden Wert auf der ELSTER-Zusammenfassung - für deine Angaben bist du verantwortlich."),
+    L("ELSTER shows a transmission protocol after submitting. Save it.", "Nach dem Absenden zeigt ELSTER ein Übertragungsprotokoll. Speicher es."),
+    L("The Finanzamt sends your Steuernummer by post after processing.", "Das Finanzamt schickt deine Steuernummer nach der Bearbeitung per Post."),
   ]) {
     page.drawText(safe("-  " + line), { x: ML + 6, y, size: 8.5, font: HR, color: MUTED, maxWidth: CW - 12 });
     y -= 13;
