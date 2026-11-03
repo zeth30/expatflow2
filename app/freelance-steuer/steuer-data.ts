@@ -72,6 +72,7 @@ export type SteuerForm = {
   salesChannel: "" | "online" | "dropship" | "offline"; // not on GewA 1 — drives the after-registration duties
   supplierRegion: "" | "de" | "eu" | "nonEu"; // where the goods come from — customs/import VAT
   salesRegion: "" | "de" | "eu"; // where customers sit — OSS
+  shopType: "" | "own" | "marketplace" | "both"; // own shop vs Amazon/eBay/Etsy — IOSS, legal texts
   staffFull: string; staffPart: string; // Feld 22 (empty = keine)
   permitNeeded: boolean | null; permitDetails: string;      // Feld 28
   handwerkA: boolean | null; handwerkDetails: string;       // Feld 29
@@ -137,7 +138,7 @@ export type SteuerForm = {
 export const EMPTY_STEUER: SteuerForm = {
   goal: "", workType: "", sellsGoods: null, clients: "",
   businessName: "", gender: "", birthName: "", birthPlace: "", citizenship: "",
-  phone: "", email: "", website: "", gewActivity: "", nebenerwerb: null, gewArt: "", salesChannel: "", supplierRegion: "", salesRegion: "",
+  phone: "", email: "", website: "", gewActivity: "", nebenerwerb: null, gewArt: "", salesChannel: "", supplierRegion: "", salesRegion: "", shopType: "",
   staffFull: "", staffPart: "", permitNeeded: null, permitDetails: "",
   handwerkA: null, handwerkDetails: "", needsResidencePermit: null, residenceDetails: "",
   residenceRestriction: null, residenceRestrictionText: "",
@@ -614,6 +615,13 @@ export const STEUER_STEPS: StepDef[] = [
           { value: "eu", label: "Also other EU countries", desc: "Your shop ships to Austria, France, the Netherlands…" },
         ],
         explain: "Not part of the form — decides whether the EU OSS rules show up on your to-do page." },
+      { key: "shopType", label: "Where do you sell online?", deLabel: "Verkaufsplattform", type: "choice", showIf: f => f.gewArt === "Handel" && (f.salesChannel === "online" || f.salesChannel === "dropship"), required: f => f.gewArt === "Handel" && (f.salesChannel === "online" || f.salesChannel === "dropship"),
+        options: [
+          { value: "own", label: "Own shop", desc: "Shopify, WooCommerce, Wix…" },
+          { value: "marketplace", label: "Marketplace", desc: "Amazon, eBay, Etsy, Kaufland…" },
+          { value: "both", label: "Both", desc: "Own shop and marketplace." },
+        ],
+        explain: "Not part of the form — marketplaces take over some tax duties for you, your own shop doesn't." },
       { key: "staffFull", label: "People working with you full-time (not counting you)", deLabel: "Feld 22 — Vollzeit", type: "euro",
         explain: "Including temporary helpers and your spouse/partner if they work in the business. Leave empty if it's just you.",
         tip: f => !f.staffFull && !f.staffPart ? "Just you? Leave both empty — the sheet then says to tick “keine”." : "Employees bring their own duties (payroll, social insurance registration, an employer number from the Arbeitsagentur) — plan those before the first working day." },
@@ -864,6 +872,8 @@ export const STEUER_STEPS: StepDef[] = [
 // §13b tax also owed by Kleinunternehmer (§19 Abs. 1 UStG); Erwerbsschwelle €12,500 (§1a Abs. 3); OSS/IOSS €10,000 / €150.
 export type AfterGroup = { title: string; items: string[] };
 
+const ships0 = (f: SteuerForm) => needsGewerbe(f) && (f.salesChannel === "online" || f.salesChannel === "dropship");
+
 export function afterRegistration(f: SteuerForm): AfterGroup[] {
   const g: AfterGroup[] = [];
   const ku = f.kleinunternehmer === true;
@@ -890,20 +900,10 @@ export function afterRegistration(f: SteuerForm): AfterGroup[] {
   g.push({ title: L("Writing invoices", "Rechnungen schreiben"), items: inv });
 
   const money = [
-    L("Open a separate bank account for the business — not required for sole traders, but it makes the yearly accounts far easier.",
-      "Eröffne ein eigenes Konto fürs Geschäft — für Einzelunternehmer keine Pflicht, aber die Jahresabrechnung wird viel einfacher."),
     L("Keep every invoice and receipt: 8 years for receipts, 10 years for your annual accounts. A folder per year (paper or PDF) is enough.",
       "Bewahre jede Rechnung und jeden Beleg auf: 8 Jahre für Belege, 10 Jahre für die Jahresabschlüsse. Ein Ordner pro Jahr (Papier oder PDF) reicht."),
-    L("Advance tax payments: the Finanzamt sends a notice (Vorauszahlungsbescheid) — payments are due on 10 March, June, September and December.",
-      "Vorauszahlungen: Das Finanzamt schickt einen Vorauszahlungsbescheid — fällig jeweils am 10. März, Juni, September und Dezember."),
   ];
-  if (f.kleinunternehmer === false) money.push(L(
-    "VAT returns (Umsatzsteuer-Voranmeldung) via ELSTER by the 10th of the following month — monthly or quarterly, your Finanzamt letter tells you which.",
-    "Umsatzsteuer-Voranmeldung über ELSTER bis zum 10. des Folgemonats — monatlich oder vierteljährlich, das steht im Brief vom Finanzamt."));
-  money.push(L(
-    "Once a year (deadline 31 July of the following year): income tax return with the Anlage EÜR" + (f.kleinunternehmer === false ? ", the annual VAT return" : "") + (trade ? ", and a trade tax return if your trade profit is above €24,500" : "") + ".",
-    "Einmal im Jahr (Frist 31. Juli des Folgejahres): Einkommensteuererklärung mit Anlage EÜR" + (f.kleinunternehmer === false ? ", Umsatzsteuer-Jahreserklärung" : "") + (trade ? " und Gewerbesteuererklärung, wenn dein Gewerbegewinn über 24.500 € liegt" : "") + "."));
-  g.push({ title: L("Money, bookkeeping, deadlines", "Geld, Buchhaltung, Fristen"), items: money });
+  g.push({ title: L("Bookkeeping", "Buchhaltung"), items: money });
 
   const ins: string[] = [];
   if (f.goal === "fulltime") ins.push(
@@ -920,65 +920,14 @@ export function afterRegistration(f: SteuerForm): AfterGroup[] {
   if (ins.length) g.push({ title: L("Insurance", "Versicherung"), items: ins });
 
   const web: string[] = [];
-  if (sellsOnline || f.workType !== "liberal") web.push(L(
-    "Any business website or shop page needs an Impressum (§ 5 DDG: name, address, email, phone or contact form, VAT ID if you have one) and a privacy policy (Datenschutzerklärung, GDPR).",
-    "Jede geschäftliche Website und jede Shopseite braucht ein Impressum (§ 5 DDG: Name, Anschrift, E-Mail, Telefon oder Kontaktformular, ggf. USt-IdNr.) und eine Datenschutzerklärung (DSGVO)."));
-  if (shipsGoods) web.push(
-    L(`Selling online to consumers: a withdrawal notice (Widerrufsbelehrung, 14 days), final prices (${ku ? "as a Kleinunternehmer without VAT" : "including VAT"}), shipping costs shown up front, and an order button that says “zahlungspflichtig bestellen”. Marketplaces like Etsy or eBay help, but the duties stay yours.`,
-      `Online an Verbraucher verkaufen: Widerrufsbelehrung (14 Tage), Endpreise (${ku ? "als Kleinunternehmer ohne Umsatzsteuer" : "inkl. Umsatzsteuer"}), Versandkosten vorab sichtbar und ein Bestellbutton mit „zahlungspflichtig bestellen“. Marktplätze wie Etsy oder eBay helfen, die Pflichten bleiben aber deine.`));
-  if (f.salesChannel === "online") web.push(
-    L("Packaging: register in the LUCID packaging register (free, verpackungsregister.org) and license your shipping packaging with a dual system BEFORE your first shipment. Selling without it can mean a sales ban and fines.",
-      "Verpackung: Vor dem ersten Versand im Verpackungsregister LUCID registrieren (kostenlos, verpackungsregister.org) und deine Versandverpackung bei einem dualen System lizenzieren. Ohne droht Verkaufsverbot und Bußgeld."));
-  if (shipsGoods) web.push(
-    L("Marketplaces report sellers to the tax office from 30 sales or €2,000 a year (DAC7) — just one more reason to keep clean records.",
+  if (ships0(f)) web.push(L("Marketplaces report sellers to the tax office from 30 sales or €2,000 a year (DAC7) — just one more reason to keep clean records.",
       "Marktplätze melden Verkäufer ab 30 Verkäufen oder 2.000 € im Jahr ans Finanzamt (DAC7) — ein Grund mehr für saubere Aufzeichnungen."));
-  if (f.salesChannel === "dropship") web.push(
-    L("Dropshipping: towards your customers YOU are the seller — warranty (2 years), returns and delivery problems are yours, whatever the supplier does. Put that in your contract with the supplier.",
-      "Dropshipping: Gegenüber deinen Kunden bist DU der Verkäufer — Gewährleistung (2 Jahre), Rücksendungen und Lieferprobleme liegen bei dir, egal was der Lieferant macht. Regle das im Vertrag mit dem Lieferanten."),
-    L("Packaging with dropshipping: usually you, as the seller, are responsible for the LUCID registration — ask your supplier whether they already license the packaging for you.",
-      "Verpackung beim Dropshipping: Meist bist du als Verkäufer für die LUCID-Registrierung zuständig — frag deinen Lieferanten, ob er die Verpackung schon für dich lizenziert."));
-  if (trade && f.supplierRegion === "nonEu") web.push(L(
-    "Product safety (GPSR, since December 2024): every product sold in the EU needs an EU-based responsible person and safety information on the product or listing. If your supplier sits outside the EU and has no EU representative, that responsible person is often YOU. Electronics and toys also need CE marking. Check this BEFORE listing a product.",
-    "Produktsicherheit (GPSR, seit Dezember 2024): Jedes in der EU verkaufte Produkt braucht eine verantwortliche Person in der EU und Sicherheitsinformationen am Produkt oder im Angebot. Sitzt dein Lieferant außerhalb der EU und hat keinen EU-Vertreter, bist das oft DU. Elektronik und Spielzeug brauchen zusätzlich eine CE-Kennzeichnung. Prüf das, BEVOR du ein Produkt einstellst."));
+  if (f.salesChannel === "dropship") web.push(L("Dropshipping: towards your customers YOU are the seller — warranty (2 years), returns and delivery problems are yours, whatever the supplier does. Put that in your contract with the supplier.",
+      "Dropshipping: Gegenüber deinen Kunden bist DU der Verkäufer — Gewährleistung (2 Jahre), Rücksendungen und Lieferprobleme liegen bei dir, egal was der Lieferant macht. Regle das im Vertrag mit dem Lieferanten."));
   if (/shirt|textil|bekleidung|kleidung|mode|hoodie|merch/i.test(what)) web.push(L(
     "Clothing: every textile product sold in the EU needs a label with its fibre composition, e.g. “100 % Baumwolle” (EU Textile Regulation 1007/2011). Blank shirts from a wholesaler usually have it — if you sew or re-label, it's your job. Using someone else's logos or characters on shirts needs a licence.",
     "Kleidung: Jedes in der EU verkaufte Textil braucht ein Etikett mit der Faserzusammensetzung, z. B. „100 % Baumwolle“ (EU-Textilkennzeichnungsverordnung 1007/2011). Rohlinge vom Großhändler haben das meist — wenn du selbst nähst oder umlabelst, ist es deine Aufgabe. Fremde Logos oder Figuren auf Shirts brauchen eine Lizenz."));
-  if (web.length) g.push({ title: L("Website and shop", "Website und Shop"), items: web });
-
-  const goods: string[] = [];
-  if (trade && f.gewArt === "Handel") {
-    const imp = f.supplierRegion === "nonEu";
-    if (ku) goods.push(L(
-      `In short, as a Kleinunternehmer: no VAT on your sales and no OSS returns (as long as sales to other EU countries stay under €10,000). BUT ${imp ? "import VAT, customs duty and " : ""}reverse-charge VAT on foreign services hit${imp ? "" : "s"} you anyway — and you can't get ${imp ? "them" : "it"} back. Below is what each means.`,
-      `Kurz gesagt als Kleinunternehmer: keine Umsatzsteuer auf deine Verkäufe und keine OSS-Meldung (solange Verkäufe ins EU-Ausland unter 10.000 € bleiben). ABER: ${imp ? "Einfuhrumsatzsteuer, Zoll und " : ""}Reverse-Charge-Steuer auf Auslandsleistungen ${imp ? "treffen" : "trifft"} dich trotzdem — und du bekommst ${imp ? "sie" : "sie"} nicht zurück. Was das jeweils heißt, steht hier.`));
-    if (f.supplierRegion === "nonEu") goods.push(
-      L("Import VAT and customs: every parcel from outside the EU (China, USA, Turkey, UK…) pays 19 % German import VAT (Einfuhrumsatzsteuer) — since 2021 even for tiny amounts. Since 1 July 2026 parcels up to €150 also pay a flat customs duty of €3 per item (EU Regulation 2026/382, until July 2028); above €150 the normal duty rate for that product applies. Build both into your prices.",
-        "Einfuhrumsatzsteuer und Zoll: Auf jedes Paket von außerhalb der EU (China, USA, Türkei, UK…) fallen 19 % Einfuhrumsatzsteuer an — seit 2021 auch für Kleinstbeträge. Seit 1. Juli 2026 kommt bei Paketen bis 150 € ein pauschaler Zoll von 3 € pro Artikel dazu (EU-Verordnung 2026/382, bis Juli 2028); über 150 € gilt der normale Zollsatz der Ware. Rechne beides in deine Preise ein."),
-      L("Who imports? If the supplier ships “unverzollt” (DAP), YOUR customer pays import VAT, customs and a carrier fee at the door — many refuse the parcel, and the return is your problem. Better: suppliers with an EU warehouse, or delivery “verzollt” (DDP), where the import is handled before the parcel reaches the customer.",
-        "Wer importiert? Liefert der Lieferant „unverzollt“ (DAP), zahlt DEIN Kunde Einfuhrumsatzsteuer, Zoll und eine Gebühr des Paketdienstes an der Haustür — viele verweigern die Annahme, und die Rücksendung ist dein Problem. Besser: Lieferanten mit EU-Lager oder Lieferung „verzollt“ (DDP), bei der die Einfuhr erledigt ist, bevor das Paket beim Kunden ankommt."),
-      ku ? L("IOSS (Import One-Stop-Shop) lets sellers charge the VAT at checkout for parcels up to €150, so the import itself is VAT-free. As a Kleinunternehmer you don't charge VAT, so IOSS usually doesn't fit — if you import yourself, the import VAT is simply a cost for you. Selling via Amazon, eBay or Etsy? For parcels up to €150 from outside the EU the marketplace handles the VAT for you.",
-             "IOSS (Import-One-Stop-Shop): Damit kassieren Verkäufer die Umsatzsteuer bei Paketen bis 150 € schon an der Kasse, und die Einfuhr ist steuerfrei. Als Kleinunternehmer berechnest du keine Umsatzsteuer, IOSS passt also meist nicht — importierst du selbst, ist die Einfuhrumsatzsteuer für dich einfach Kosten. Verkaufst du über Amazon, eBay oder Etsy? Bei Paketen bis 150 € von außerhalb der EU übernimmt der Marktplatz die Umsatzsteuer für dich.")
-         : L("IOSS (Import One-Stop-Shop): for parcels up to €150 to private customers in the EU you charge the VAT at checkout and report it monthly via the BZSt — the import is then VAT-free and the parcel arrives without a surprise bill. Selling via Amazon, eBay or Etsy? For parcels up to €150 from outside the EU the marketplace counts as the seller for VAT and handles it for you. Import VAT you pay yourself (larger shipments) comes back as input VAT in your VAT return.",
-             "IOSS (Import-One-Stop-Shop): Bei Paketen bis 150 € an Privatkunden in der EU kassierst du die Umsatzsteuer schon an der Kasse und meldest sie monatlich über das BZSt — dann ist die Einfuhr steuerfrei und das Paket kommt ohne Nachzahlung an. Verkaufst du über Amazon, eBay oder Etsy? Bei Paketen bis 150 € von außerhalb der EU gilt der Marktplatz für die Umsatzsteuer als Verkäufer und erledigt das. Einfuhrumsatzsteuer, die du selbst zahlst (größere Lieferungen), holst du dir in der Voranmeldung als Vorsteuer zurück."),
-      L("Importing goods yourself (you are the recipient in the customs declaration, e.g. stock for your basement)? You need an EORI number — free from customs at zoll.de, takes a few days.",
-        "Importierst du selbst (du bist Empfänger in der Zollanmeldung, z. B. Ware fürs eigene Lager)? Dann brauchst du eine EORI-Nummer — kostenlos beim Zoll (zoll.de), dauert ein paar Tage."));
-    if (f.supplierRegion === "eu") goods.push(ku
-      ? L("Buying goods from another EU country as a Kleinunternehmer: as long as these purchases stay under €12,500 a year (Erwerbsschwelle) and you don't give your supplier a VAT ID, the supplier simply charges its own country's VAT — nothing to report for you. Above that, you have to pay German VAT on the purchases (innergemeinschaftlicher Erwerb). Careful: once you give a supplier your VAT ID (e.g. the one you need for reverse charge), the purchase counts as such an acquisition anyway.",
-          "Einkauf aus anderen EU-Ländern als Kleinunternehmer: Solange diese Einkäufe unter 12.500 € im Jahr bleiben (Erwerbsschwelle) und du dem Lieferanten keine USt-IdNr. angibst, berechnet er dir einfach die Umsatzsteuer seines Landes — für dich nichts zu melden. Darüber musst du die Einkäufe in Deutschland versteuern (innergemeinschaftlicher Erwerb). Achtung: Sobald du einem Lieferanten deine USt-IdNr. angibst (z. B. die, die du für Reverse Charge brauchst), gilt der Einkauf trotzdem als solcher Erwerb.")
-      : L("Buying goods from another EU country: give your supplier your VAT ID (USt-IdNr.) and you get an invoice without VAT. You then report German VAT on the purchase in your VAT return (innergemeinschaftlicher Erwerb) and deduct the same amount as input VAT — net €0, but both lines must be there. Your VAT ID comes with your tax registration or from the BZSt.",
-          "Einkauf aus anderen EU-Ländern: Gib dem Lieferanten deine USt-IdNr., dann bekommst du eine Rechnung ohne Umsatzsteuer. Die deutsche Umsatzsteuer darauf meldest du selbst in der Voranmeldung (innergemeinschaftlicher Erwerb) und ziehst denselben Betrag als Vorsteuer wieder ab — unterm Strich 0 €, aber beide Zeilen müssen drinstehen. Die USt-IdNr. kommt mit deiner steuerlichen Erfassung oder vom BZSt."));
-    goods.push(ku
-      ? L("Reverse charge on services from abroad (§ 13b UStG): ads on Meta, Google or TikTok, Shopify and many apps bill from Ireland or other countries without VAT. Then YOU owe the 19 % German VAT on it — and this applies to Kleinunternehmer too, without getting it back: €1,000 of ads cost you €1,190. In months with such invoices you must file a VAT return (Umsatzsteuer-Voranmeldung) despite the Kleinunternehmer scheme.",
-          "Reverse Charge bei Leistungen aus dem Ausland (§ 13b UStG): Werbung bei Meta, Google oder TikTok, Shopify und viele Apps rechnen aus Irland oder anderen Ländern ohne Umsatzsteuer ab. Dann schuldest DU die 19 % deutsche Umsatzsteuer darauf — das gilt auch für Kleinunternehmer, ohne dass du sie zurückbekommst: 1.000 € Werbung kosten dich 1.190 €. In Monaten mit solchen Rechnungen musst du trotz Kleinunternehmerregelung eine Umsatzsteuer-Voranmeldung abgeben.")
-      : L("Reverse charge on services from abroad (§ 13b UStG): ads on Meta, Google or TikTok, Shopify and many apps bill from Ireland or other countries without VAT. Then YOU report the 19 % German VAT on it in your VAT return — and deduct it again as input VAT in the same return. Net €0, but both lines must be there. Enter your VAT ID with these providers so they bill correctly.",
-          "Reverse Charge bei Leistungen aus dem Ausland (§ 13b UStG): Werbung bei Meta, Google oder TikTok, Shopify und viele Apps rechnen aus Irland oder anderen Ländern ohne Umsatzsteuer ab. Dann meldest DU die 19 % deutsche Umsatzsteuer darauf in der Voranmeldung — und ziehst sie in derselben Meldung als Vorsteuer wieder ab. Unterm Strich 0 €, aber beide Zeilen müssen drinstehen. Hinterleg bei diesen Anbietern deine USt-IdNr., damit sie richtig abrechnen."));
-    if (f.salesRegion === "eu") goods.push(ku
-      ? L("Selling to private customers in other EU countries as a Kleinunternehmer: as long as these sales stay under €10,000 a year in total (all EU countries together), German rules apply — so no VAT. Above that, the customer's country's VAT applies and the German Kleinunternehmer scheme doesn't cover it — get advice before you cross the line.",
-          "Verkäufe an Privatkunden in anderen EU-Ländern als Kleinunternehmer: Solange sie unter 10.000 € im Jahr bleiben (alle EU-Länder zusammen), gilt deutsches Recht — also keine Umsatzsteuer. Darüber gilt die Umsatzsteuer des Kundenlandes, und die deutsche Kleinunternehmerregelung deckt das nicht ab — lass dich beraten, bevor du die Grenze erreichst.")
-      : L("OSS (One-Stop-Shop): sales to private customers in other EU countries are taxed with German VAT up to €10,000 a year in total (all EU countries together). From the sale that crosses that line, the customer's country's rate applies (e.g. 20 % Austria, 21 % Netherlands). You report it quarterly via the OSS procedure at the BZSt instead of registering in every country. Selling to businesses in other EU countries with their VAT ID: the supply is VAT-free (“steuerfreie innergemeinschaftliche Lieferung” and both VAT IDs on the invoice), plus a recapitulative statement (Zusammenfassende Meldung) to the BZSt.",
-          "OSS (One-Stop-Shop): Verkäufe an Privatkunden in anderen EU-Ländern versteuerst du bis insgesamt 10.000 € im Jahr (alle EU-Länder zusammen) mit deutscher Umsatzsteuer. Ab dem Verkauf, mit dem du die Grenze überschreitest, gilt der Satz des Kundenlandes (z. B. 20 % Österreich, 21 % Niederlande). Du meldest das vierteljährlich über das OSS-Verfahren beim BZSt, statt dich in jedem Land zu registrieren. Verkaufst du an Firmen in anderen EU-Ländern mit deren USt-IdNr.: Die Lieferung ist steuerfrei („steuerfreie innergemeinschaftliche Lieferung“ und beide USt-IdNrn. auf die Rechnung), dazu eine Zusammenfassende Meldung ans BZSt."));
-  }
-  if (goods.length) g.push({ title: L("Goods, customs and VAT", "Waren, Zoll und Umsatzsteuer"), items: goods });
+  if (web.length) g.push({ title: L("Shop", "Shop"), items: web });
 
   const extra: string[] = [];
   if (/\b(ki|ai)\b|künstliche intelligenz|artificial intelligence/i.test(what)) extra.push(L(

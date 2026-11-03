@@ -10,6 +10,7 @@
 //          Tips may recommend — see header of steuer-data.ts before launching.
 // ═══════════════════════════════════════════════════════════════════
 
+import { actionPlan, PHASES } from "./steuer-actions";
 import React, { useState, useCallback, useEffect } from "react";
 import {
   ArrowRight, ArrowLeft, Check, Copy as CopyIcon, Download, Shield,
@@ -850,8 +851,30 @@ function SteuerDone({
               ))}
             </div>
 
+            {(() => { const plan = actionPlan(form); return (
+            <div style={{ marginBottom: 30 }}>
+              <div style={{ fontWeight: 900, color: NAVY, fontSize: 18, marginBottom: 2 }}>{L("Your plan: what to do, when and where", "Dein Fahrplan: was du wann wo erledigst")}</div>
+              <p style={{ color: MUTED, fontSize: 13.5, lineHeight: 1.6, marginBottom: 14 }}>{L("Made from your answers — step by step, with links.", "Aus deinen Antworten gebaut — Schritt für Schritt, mit Links.")}</p>
+              {PHASES.filter(ph => plan.some(x => x.phase === ph.id)).map(ph => (
+                <div key={ph.id} style={{ marginBottom: 18 }}>
+                  <div style={{ fontWeight: 800, color: BLUE, fontSize: 13, textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 8 }}>{ph.label()}</div>
+                  {plan.filter(x => x.phase === ph.id).map((x, i) => (
+                    <details key={i} style={{ background: "white", border: "1px solid #e8ecf4", borderRadius: 12, padding: "12px 16px", marginBottom: 8 }}>
+                      <summary style={{ cursor: "pointer", fontWeight: 800, color: NAVY, fontSize: 15 }}>{x.title}</summary>
+                      {x.why && <p style={{ color: MUTED, fontSize: 13.5, lineHeight: 1.6, margin: "8px 0" }}>{x.why}</p>}
+                      {x.where && <p style={{ fontSize: 13.5, margin: "6px 0" }}><b>{L("Where: ", "Wo: ")}</b>{x.where.url ? <a href={x.where.url} target="_blank" rel="noreferrer" style={{ color: BLUE }}>{x.where.label}</a> : x.where.label}</p>}
+                      {x.need && x.need.length > 0 && <div style={{ fontSize: 13.5, margin: "6px 0" }}><b>{L("You need:", "Du brauchst:")}</b><ul style={{ margin: "4px 0 0 18px", padding: 0 }}>{x.need.map((t, j) => <li key={j} style={{ lineHeight: 1.55 }}>{t}</li>)}</ul></div>}
+                      <ol style={{ margin: "8px 0 4px 18px", padding: 0, fontSize: 14, color: "#334155" }}>{x.steps.map((t, j) => <li key={j} style={{ lineHeight: 1.6, marginBottom: 4 }}>{t}</li>)}</ol>
+                      {x.copy && <div style={{ marginTop: 8 }}><pre style={{ whiteSpace: "pre-wrap", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 8, padding: 10, fontSize: 12.5, margin: 0 }}>{x.copy}</pre><button onClick={() => navigator.clipboard?.writeText(x.copy!)} style={{ marginTop: 6, border: "none", background: BLUE, color: "white", borderRadius: 8, padding: "6px 12px", fontWeight: 700, cursor: "pointer" }}>{L("Copy message", "Nachricht kopieren")}</button></div>}
+                      {x.cost && <p style={{ fontSize: 13, color: MUTED, margin: "6px 0 0" }}><b>{L("Cost: ", "Kosten: ")}</b>{x.cost}</p>}
+                    </details>
+                  ))}
+                </div>
+              ))}
+            </div>); })()}
+
             <div style={{ marginBottom: 30, padding: "20px 20px 8px", borderRadius: 14, background: "white", border: "1px solid #e8ecf4" }}>
-              <div style={{ fontWeight: 900, color: NAVY, fontSize: 18, marginBottom: 2 }}>{L("After registration: your first months", "Nach der Anmeldung: deine ersten Monate")}</div>
+              <div style={{ fontWeight: 900, color: NAVY, fontSize: 18, marginBottom: 2 }}>{L("Good to know", "Gut zu wissen")}</div>
               <p style={{ color: MUTED, fontSize: 13.5, lineHeight: 1.6, marginBottom: 14 }}>{L("What comes next for your business — picked for your answers.", "Was jetzt auf dein Business zukommt — passend zu deinen Antworten.")}</p>
               {afterRegistration(form).map(grp => (
                 <div key={grp.title} style={{ marginBottom: 16 }}>

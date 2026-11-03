@@ -415,5 +415,12 @@
  "You only ship to German addresses.": "Du verschickst nur an deutsche Adressen.",
  "Also other EU countries": "Auch andere EU-Länder",
  "Your shop ships to Austria, France, the Netherlands…": "Dein Shop liefert nach Österreich, Frankreich, in die Niederlande…",
- "Not part of the form — decides whether the EU OSS rules show up on your to-do page.": "Nicht Teil des Formulars — entscheidet, ob die EU-OSS-Regeln auf deiner To-do-Seite erscheinen."
+ "Not part of the form — decides whether the EU OSS rules show up on your to-do page.": "Nicht Teil des Formulars — entscheidet, ob die EU-OSS-Regeln auf deiner To-do-Seite erscheinen.",
+ "Where do you sell online?": "Wo verkaufst du online?",
+ "Own shop": "Eigener Shop",
+ "Shopify, WooCommerce, Wix…": "Shopify, WooCommerce, Wix…",
+ "Marketplace": "Marktplatz",
+ "Amazon, eBay, Etsy, Kaufland…": "Amazon, eBay, Etsy, Kaufland…",
+ "Own shop and marketplace.": "Eigener Shop und Marktplatz.",
+ "Not part of the form — marketplaces take over some tax duties for you, your own shop doesn't.": "Nicht Teil des Formulars — Marktplätze übernehmen manche Steuerpflichten für dich, dein eigener Shop nicht."
 }
