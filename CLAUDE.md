@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Steuer: EN/DE language switch.** `app/freelance-steuer/i18n.ts` (`tr()` = lookup by English text in `steuer-de.json`, `L(en, de)` for templates, `hasTr()`), module-level lang set during render; form engine takes optional `t`. localStorage key `simplyexpat-steuer-lang`. New copy: wrap in `L()` or add the English string to `steuer-de.json`.
 - **Steuer: "After registration" section** on the done page — `afterRegistration(f)` in `steuer-data.ts` (invoices, deadlines, insurance, shop duties: LUCID, DAC7, dropshipping/GPSR, textile labels, AI Act Art. 4, working from home). New field `salesChannel` (online/dropship/offline) for Handel.
 - Persona runs: Martin (AI consulting), Emir (dropshipping), Erik (T-shirts from the basement).
+- **Steuer: "Goods, customs and VAT" group** for Handel — new fields `supplierRegion` (de/eu/nonEu) and `salesRegion` (de/eu). Explains import VAT, €3/item customs (EU Reg. 2026/382, 1.7.2026–1.7.2028), DAP vs DDP, IOSS, EORI, EU purchases (Erwerbsschwelle €12,500 for KU), §13b reverse charge (also owed by KU), OSS. Separate texts for Kleinunternehmer vs regular VAT.
 
 ### 2026-11-03
 - **Steuer → personal use behind a password.** `/freelance-steuer` is gated by `proxy.ts` (cookie check) → `/steuer-login` form → `/api/steuer-login` (SHA-256 compare, hash in `lib/preview.ts`). Low security on purpose. `/elster-account-english` stays public.
