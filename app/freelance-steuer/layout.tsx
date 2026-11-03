@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     "Register as a freelancer in Germany without speaking German. The ELSTER Fragebogen zur steuerlichen Erfassung explained field by field in English — copy-ready German answers, free ELSTER account guide, your data stays in your browser.",
   metadataBase: new URL(DOMAIN),
+  robots: { index: false, follow: false }, // private preview, see lib/preview.ts
   alternates: {
     canonical: "/freelance-steuer",
     languages: { en: `${DOMAIN}/freelance-steuer`, "x-default": `${DOMAIN}/freelance-steuer` },
