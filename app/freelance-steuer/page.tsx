@@ -287,10 +287,7 @@ function SteuerLanding({ onStart: startWizard }: { onStart: () => void }) {
         <p style={{ color: "#94a3b8", fontSize: 12.5, marginTop: 12 }}>€15 · One-time · Your data stays in your browser</p>
       </div>
 
-      {/* Hidden owner button (bottom right): asks for the preview key, unlocks paid checkout in this browser */}
-      <button aria-hidden="true" tabIndex={-1} title="" onClick={() => { const k = window.prompt("Key"); if (k) window.location.href = `/freelance-steuer?key=${encodeURIComponent(k.trim())}`; }}
-        style={{ position: "fixed", right: 0, bottom: 0, width: 28, height: 28, opacity: 0, border: "none", background: "transparent", cursor: "default", zIndex: 60 }} />
-      <AppFooter />
+<AppFooter />
       <CookieBanner />
     </div>
   );
@@ -535,8 +532,6 @@ function SteuerWizard({
 
 // ─── Payment ──────────────────────────────────────────────────────
 function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSkip: () => void; onBack: () => void }) {
-  const [isOwner, setIsOwner] = useState(false);
-  useEffect(() => { setIsOwner(document.cookie.split("; ").includes("rx_owner=1")); }, []);
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
       <div style={{ background: "linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)", padding: "40px 20px 100px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -608,7 +603,6 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
         <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 12, marginTop: 10 }}>
           Free while we&apos;re in beta — no card required
         </p>
-        {isOwner && (<>
         <button
           id="steuer-pay-btn"
           onClick={async (e) => {
@@ -635,7 +629,6 @@ function SteuerPayment({ form, onDevSkip, onBack }: { form: SteuerForm; onDevSki
         <p style={{ textAlign: "center", color: "#94a3b8", fontSize: 10.5, lineHeight: 1.5, marginTop: 8 }}>
           Payments via Stripe · Secure · No card stored. By paying you consent to immediate service delivery and acknowledge the loss of your 14-day right of withdrawal (§ 356 Abs. 5 BGB).
         </p>
-        </>)}
       </div>
       <AppFooter />
     </div>

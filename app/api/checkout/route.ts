@@ -12,7 +12,6 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { hasPreviewAccess } from "@/lib/preview";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -44,11 +43,6 @@ export async function POST(req: NextRequest) {
       },
     } as const;
     const product = PRODUCTS[productKey];
-
-    // Steuer is not launched yet: only sellable to browsers holding the private preview link
-    if (productKey === "steuer" && !hasPreviewAccess(req)) {
-      return NextResponse.json({ error: "Not available" }, { status: 403 });
-    }
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
